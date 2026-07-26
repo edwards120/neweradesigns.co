@@ -1,0 +1,29 @@
+<script>
+  (function() {
+    var COOKIE_NAME = 'ned_projects_access';
+    var GATE_URL = '/pages/protected-projects-1';
+
+    function getCookie(name) {
+      var nameEQ = name + '=';
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length));
+      }
+      return null;
+    }
+
+    // If not authenticated, redirect to the password gate
+    if (getCookie(COOKIE_NAME) !== 'granted') {
+      window.location.replace(GATE_URL);
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Protected Page Guard",
+  "tag": "div",
+  "settings": []
+}
+{% endschema %}

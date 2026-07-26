@@ -1,0 +1,305 @@
+{% liquid
+  assign is_home = false
+  assign is_services = false
+  assign is_contact = false
+  if request.page_type == 'index'
+    assign is_home = true
+  elsif page.handle == 'marketing-materials'
+    assign is_services = true
+  elsif page.handle == 'contact'
+    assign is_contact = true
+  endif
+  assign hero_title_line_1 = section.settings.hero_title_line_1 | default: 'YOU NEED A'
+  assign hero_title_line_2 = section.settings.hero_title_line_2 | default: 'NEW ERA'
+  assign hero_body = section.settings.hero_body | default: 'We develop brand, wayfinding, and environmental systems that reduce friction and make the physical environment perform.'
+  assign hero_button_label = section.settings.hero_button_label | default: 'START A PROJECT'
+  assign hero_button_link = section.settings.hero_button_link | default: '/pages/contact'
+%}
+
+<section class="ned-shell ned-{{ request.page_type }} ned-{{ page.handle }}" id="NewEra-{{ section.id }}">
+  <div class="ned-orb ned-orb--1"></div><div class="ned-orb ned-orb--2"></div><div class="ned-orb ned-orb--3"></div>
+
+  {% if is_home %}
+    <div class="ned-panel ned-hero">
+      <nav class="ned-hero-nav" aria-label="Homepage navigation">
+        <a href="/pages/design-process">ABOUT US</a>
+        <a href="#Services-{{ section.id }}">WHAT WE DO</a>
+        <a class="ned-hero-brand" href="{{ routes.root_url }}">NEW ERA DESIGNS <small>SPATIAL SYSTEMS STUDIO</small></a>
+        <a href="#SelectedWork-{{ section.id }}">SELECTED WORK</a>
+        <a href="{{ hero_button_link }}">LET'S TALK</a>
+      </nav>
+
+      <div class="ned-hero-core">
+        <span class="ned-hero-star" aria-hidden="true"></span>
+        <h1><span class="ned-hero-title-top">{{ hero_title_line_1 }}</span><span class="ned-hero-title-script">{{ hero_title_line_2 }}</span></h1>
+        <p>{{ hero_body }}</p>
+        <a class="ned-hero-cta" href="{{ hero_button_link }}">{{ hero_button_label }} <span aria-hidden="true">+</span></a>
+      </div>
+
+      <div class="ned-hero-social ned-hero-social--left" aria-label="Social media">
+        {% if settings.social_instagram_link != blank %}<a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener" aria-label="Instagram">IG</a>{% endif %}
+      </div>
+      <div class="ned-hero-social ned-hero-social--right">
+        {% if settings.social_linkedin_link != blank %}<a href="{{ settings.social_linkedin_link }}" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>{% endif %}
+      </div>
+
+      <div class="ned-hero-foot">
+        <span>CLEAR THE NOISE</span>
+        <a href="#Services-{{ section.id }}">SCROLL DOWN <b aria-hidden="true">↓</b></a>
+        <span>MAKE YOUR MOVE</span>
+      </div>
+    </div>
+
+    <div class="ned-panel ned-services" id="Services-{{ section.id }}">
+      <div class="ned-eyebrow">[ WHAT WE DO ]</div>
+      <h2>ALL YOUR <span class="ned-script">design needs</span></h2>
+      <p>One studio. Every creative essential. Built with clarity, personality, and serious intention.</p>
+      <div class="ned-pills"><span>Brand Strategy</span><span>Websites</span><span>Content Design</span><span>Marketing Materials</span><span>Social Media</span><span>Digital Products</span><span>Creative Direction</span><span>Retainers</span></div>
+      <a class="ned-btn ned-btn--light" href="/pages/marketing-materials">EXPLORE SERVICES <span>↗</span></a>
+    </div>
+
+    {% comment %} SIGN PORTFOLIO: red-on-cream editorial sequence with layered cutout imagery. {% endcomment %}
+    <div class="ned-panel ned-portfolio" id="SelectedWork-{{ section.id }}">
+      <header class="ned-portfolio-head">
+        <div class="ned-portfolio-rail">
+          <span>GRAPHIC + ENVIRONMENTAL DESIGN</span>
+          <span>SELECTED WORK / 01</span>
+        </div>
+        <div class="ned-portfolio-intro">
+          <h2>SELECTED WORK <span>+ CONCEPT STUDIES</span></h2>
+          <p>Sign systems, spatial studies, and fabrication-aware ideas documented from first decision to physical impact.</p>
+        </div>
+      </header>
+
+      <div class="ned-portfolio-list">
+        {% for block in section.blocks %}
+          {% if block.type == 'portfolio_item' %}
+            {% liquid
+              assign project_link = block.settings.project_link | default: '/pages/cases'
+              assign project_alt = block.settings.image_alt | default: block.settings.title
+            %}
+            <article class="ned-project" {{ block.shopify_attributes }}>
+              <a class="ned-project-link" href="{{ project_link }}" aria-label="View {{ block.settings.title | escape }}">
+                <div class="ned-project-stage">
+                  <span class="ned-project-word" aria-hidden="true">{{ block.settings.title }}</span>
+                  <div class="ned-project-media">
+                    {% if block.settings.image != blank %}
+                      {{ block.settings.image | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '480, 720, 960, 1200, 1600', sizes: '(min-width: 990px) 58vw, 92vw', alt: project_alt }}
+                    {% else %}
+                      <div class="ned-sign-placeholder" aria-hidden="true"><span></span><i></i><i></i></div>
+                    {% endif %}
+                  </div>
+                  <div class="ned-crosshair ned-crosshair--a" aria-hidden="true"></div>
+                  <div class="ned-crosshair ned-crosshair--b" aria-hidden="true"></div>
+                  <div class="ned-dimension" aria-hidden="true"><span>{{ block.settings.annotation }}</span></div>
+                </div>
+
+                <div class="ned-project-copy">
+                  <div class="ned-project-index">PROJECT / {% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</div>
+                  <p class="ned-project-meta"><span>{{ block.settings.classification }}</span>{{ block.settings.discipline }}</p>
+                  <h3>{{ block.settings.title }}</h3>
+                  <p>{{ block.settings.description }}</p>
+                  <span class="ned-project-cta">VIEW PROJECT <b aria-hidden="true">↗</b></span>
+                </div>
+              </a>
+            </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <footer class="ned-portfolio-foot">
+        <span>DOCUMENTED / MODELED / PRODUCTION-AWARE</span>
+        <a href="/pages/cases">VIEW ALL CASES <b aria-hidden="true">↗</b></a>
+      </footer>
+    </div>
+
+    <div class="ned-panel ned-funk">
+      <div class="ned-eyebrow">[ FEATURED EXPERIENCE ]</div>
+      <h2 class="ned-funk-title">
+        {% if section.settings.mask_video != blank %}
+          <svg viewBox="0 0 1200 420" aria-label="Funk Machine"><defs><mask id="funk-mask-{{ section.id }}"><rect width="1200" height="420" fill="black"/><text x="600" y="176" text-anchor="middle" fill="white">FUNK</text><text x="600" y="370" text-anchor="middle" fill="white">MACHINE</text></mask></defs><foreignObject width="1200" height="420" mask="url(#funk-mask-{{ section.id }})"><div xmlns="http://www.w3.org/1999/xhtml" class="ned-mask-video">{{ section.settings.mask_video | video_tag: autoplay: true, loop: true, muted: true, controls: false }}</div></foreignObject></svg>
+        {% elsif section.settings.mask_image != blank %}
+          <span class="ned-image-text" style="--mask-image:url('{{ section.settings.mask_image | image_url: width: 1800 }}')">FUNK<br>MACHINE</span>
+        {% else %}<span>FUNK<br>MACHINE</span>{% endif %}
+      </h2>
+      <div class="ned-funk-foot"><p>A culture-forward playground for ideas with rhythm, color, and motion.</p><a class="ned-btn" href="/pages/cases">VIEW THE WORK <span>↗</span></a></div>
+    </div>
+  {% endif %}
+
+  {% if is_services %}
+    <div class="ned-panel ned-page-hero"><div class="ned-eyebrow">[ SERVICES ]</div><h1>BIG IDEAS.<br><span class="ned-script">Built beautifully.</span></h1><p>From the first spark to the final launch, we create brand systems and experiences that look sharp, feel alive, and work hard.</p></div>
+    <div class="ned-panel ned-service-grid">
+      <article><b>01</b><h2>BRAND<br>STRATEGY</h2><p>Positioning, voice, naming, and the strategic foundation your next era needs.</p></article>
+      <article><b>02</b><h2>VISUAL<br>IDENTITY</h2><p>Logos, typography, art direction, and flexible systems with unmistakable personality.</p></article>
+      <article><b>03</b><h2>WEB +<br>DIGITAL</h2><p>Editorial websites, Shopify builds, and digital moments designed for conversion.</p></article>
+      <article><b>04</b><h2>CAMPAIGNS +<br>CONTENT</h2><p>Launch concepts, social systems, creative direction, and scroll-stopping assets.</p></article>
+    </div>
+    {% render 'new-era-service-work', section: section %}
+    <div class="ned-panel ned-process"><div><div class="ned-eyebrow">[ OUR PROCESS ]</div><h2>Good work has a <span class="ned-script">rhythm.</span></h2></div><ol><li><span>01</span>Discover</li><li><span>02</span>Define</li><li><span>03</span>Design</li><li><span>04</span>Deliver</li></ol></div>
+    <div class="ned-panel ned-cta"><p>READY FOR SOMETHING NEW?</p><h2>LET’S MAKE<br><span class="ned-script">your next era.</span></h2><a class="ned-btn ned-btn--light" href="/pages/contact">BOOK YOUR PROJECT <span>↗</span></a></div>
+  {% endif %}
+
+  {% if is_contact %}
+    <div class="ned-panel ned-contact">
+      <div class="ned-contact-copy"><div class="ned-eyebrow">[ CONTACT ]</div><h1>LET’S MAKE<br><span class="ned-script">something iconic.</span></h1><p>Tell us what you’re building, what is not working, and where you want to go. We’ll reply within 48 hours.</p><div class="ned-contact-meta"><span>NEW ERA DESIGNS</span><a href="mailto:{{ shop.email }}">{{ shop.email }}</a><a href="https://www.instagram.com/new.era.designs/">@new.era.designs</a></div></div>
+      <div class="ned-form-wrap">{% form 'contact', id: 'NedContact' %}{% if form.posted_successfully? %}<h3>MESSAGE RECEIVED.</h3><p>We’ll be in touch within 48 hours.</p>{% else %}{{ form.errors | default_errors }}<label>YOUR NAME<input name="contact[name]" required></label><label>EMAIL<input type="email" name="contact[email]" required></label><label>WHAT DO YOU NEED?<select name="contact[service]"><option>Brand strategy</option><option>Visual identity</option><option>Website + digital</option><option>Campaign + content</option><option>Something else</option></select></label><label>TELL US EVERYTHING<textarea name="contact[body]" rows="6" required></textarea></label><button class="ned-btn" type="submit">SEND INQUIRY <span>↗</span></button>{% endif %}{% endform %}</div>
+    </div>
+  {% endif %}
+</section>
+
+{% style %}
+@font-face{font-display:swap;font-family:'NED Edwardian';font-style:normal;font-weight:400;src:url("{{ 'edwardianscriptitc.ttf' | file_url }}") format('truetype')}
+@font-face{font-display:swap;font-family:'NED Funk Machine';font-style:normal;font-weight:400;src:url("{{ 'funkmachine.ttf' | file_url }}") format('truetype')}
+{% if is_home %}.shopify-section-group-header-group{display:none}{% endif %}
+#NewEra-{{ section.id }}{--blue:#143cff;--red:#ff271c;--ink:#070707;--paper:#f2eee5;--ned-navy:#071a3a;--ned-gold:#fca311;--ned-soft:#f5f7fa;--ned-halftone-dark:radial-gradient(circle,rgba(7,26,58,.28) 0 1.15px,transparent 1.35px);--ned-halftone-light:radial-gradient(circle,rgba(94,139,224,.42) 0 1.15px,transparent 1.35px);background-color:var(--ned-navy);background-image:var(--ned-halftone-light);background-size:8px 8px;color:var(--ink);max-width:1500px;margin:0 auto;overflow:hidden;position:relative;padding:18px;isolation:isolate}
+#NewEra-{{ section.id }} *{box-sizing:border-box} #NewEra-{{ section.id }} .ned-panel{position:relative;z-index:2;overflow:hidden;border:1px solid rgba(0,0,0,.22);padding:clamp(32px,6vw,92px);margin-bottom:18px;background-color:var(--paper);background-image:var(--ned-halftone-dark)!important;background-size:8px 8px!important}
+#NewEra-{{ section.id }} h1,#NewEra-{{ section.id }} h2,#NewEra-{{ section.id }} p{margin-top:0} #NewEra-{{ section.id }} h1,#NewEra-{{ section.id }} h2{font-family:Arial Black,Arial,sans-serif;font-weight:900;letter-spacing:-.065em;line-height:.82;text-transform:uppercase}
+#NewEra-{{ section.id }} .ned-script{font-family:'Edwardian Script ITC','Bickham Script Pro','Snell Roundhand',cursive;font-weight:400;text-transform:none;letter-spacing:-.025em;line-height:.72}
+#NewEra-{{ section.id }} .ned-eyebrow,#NewEra-{{ section.id }} .ned-kicker{font:700 11px/1.2 Arial,sans-serif;letter-spacing:.18em;margin-bottom:34px}
+#NewEra-{{ section.id }} .ned-btn{display:inline-flex;align-items:center;justify-content:space-between;gap:34px;background:var(--ink);color:white;text-decoration:none;border:0;border-radius:0;padding:16px 22px;font:800 12px/1 Arial,sans-serif;letter-spacing:.08em;cursor:pointer} #NewEra-{{ section.id }} .ned-btn span{animation:nedPageButtonBounce-{{ section.id }} 1.8s linear infinite;display:inline-block;transform-origin:center bottom}#NewEra-{{ section.id }} .ned-btn:hover span,#NewEra-{{ section.id }} .ned-btn:focus-visible span{animation-duration:.72s}#NewEra-{{ section.id }} .ned-btn--light{background:white;color:var(--ink)}@keyframes nedPageButtonBounce-{{ section.id }}{0%,12%,42%,100%{transform:translateY(0) scale(1)}15%{transform:translateY(2px) scale(1.12,.88)}24%{transform:translateY(-7px) scale(.96,1.04)}34%{transform:translateY(0) scale(1.05,.95)}}
+#NewEra-{{ section.id }} .ned-orb{position:absolute;border-radius:50%;z-index:1;pointer-events:none;border:2px solid rgba(255,255,255,.65)} #NewEra-{{ section.id }} .ned-orb--1{width:180px;height:180px;background:var(--blue);top:7%;right:-50px} #NewEra-{{ section.id }} .ned-orb--2{width:90px;height:90px;background:var(--red);top:45%;left:-25px} #NewEra-{{ section.id }} .ned-orb--3{width:130px;height:130px;background:#f4e932;bottom:4%;right:7%}
+/* HERO: full-viewport navy halftone stage with working navigation and conversion paths. */
+#NewEra-{{ section.id }} .ned-hero{background-color:var(--ned-navy);background-image:var(--ned-halftone-light)!important;border-color:#24406f;color:#fff;display:flex;flex-direction:column;isolation:isolate;justify-content:space-between;min-height:max(780px,calc(100vh - 36px));padding:clamp(24px,3vw,42px)}
+#NewEra-{{ section.id }} .ned-hero::before{background:url('https://cdn.shopify.com/s/files/1/0914/0138/8337/files/website_Background.svg?v=1784631913') center/cover;content:'';filter:grayscale(1) contrast(1.35);inset:0;opacity:.13;pointer-events:none;position:absolute;z-index:-1}
+#NewEra-{{ section.id }} .ned-hero-nav{align-items:start;display:grid;font:900 clamp(11px,1.05vw,15px)/1 'Milo',Arial,sans-serif;grid-template-columns:repeat(5,minmax(0,1fr));letter-spacing:.06em;position:relative;text-transform:uppercase;z-index:3}
+#NewEra-{{ section.id }} .ned-hero-nav>a{color:#fff;min-height:44px;text-decoration:none}
+#NewEra-{{ section.id }} .ned-hero-nav>a:nth-child(2),#NewEra-{{ section.id }} .ned-hero-nav>a:nth-child(4){text-align:center}
+#NewEra-{{ section.id }} .ned-hero-nav>a:last-child{text-align:right}
+#NewEra-{{ section.id }} .ned-hero-brand{font-family:'Mathew Rohas','Arial Black',Arial,sans-serif;font-size:clamp(17px,2vw,28px)!important;letter-spacing:-.04em!important;line-height:.72!important;text-align:center}
+#NewEra-{{ section.id }} .ned-hero-brand small{display:block;font-family:'Edwardian Script ITC','Bickham Script Pro','Snell Roundhand',cursive;font-size:.7em;font-weight:400;letter-spacing:0;margin-top:6px;text-transform:none}
+#NewEra-{{ section.id }} .ned-hero-core{align-items:center;display:flex;flex:1;flex-direction:column;justify-content:center;margin:auto;max-width:1180px;padding:clamp(70px,9vh,120px) 0 50px;text-align:center;width:100%}
+#NewEra-{{ section.id }} .ned-hero-star{height:34px;margin-bottom:clamp(28px,4vh,54px);position:relative;width:34px}
+#NewEra-{{ section.id }} .ned-hero-star::before,#NewEra-{{ section.id }} .ned-hero-star::after{background:#fff;content:'';left:50%;position:absolute;top:50%;transform:translate(-50%,-50%)}
+#NewEra-{{ section.id }} .ned-hero-star::before{height:34px;width:2px}
+#NewEra-{{ section.id }} .ned-hero-star::after{height:2px;width:34px}
+#NewEra-{{ section.id }} .ned-hero h1{align-items:center;color:#fff!important;display:flex;flex-direction:column;line-height:.72;margin:0;max-width:1180px;position:relative;width:100%}
+#NewEra-{{ section.id }} .ned-hero-title-top{display:block;font-family:'NED Funk Machine','Arial Black',Arial,sans-serif;font-size:clamp(66px,10vw,150px);font-weight:400;letter-spacing:-.045em;line-height:.76;text-transform:uppercase}
+#NewEra-{{ section.id }} .ned-hero-title-script{display:block;font-family:'NED Edwardian','Edwardian Script ITC','Bickham Script Pro','Snell Roundhand',cursive;font-size:clamp(106px,16.5vw,248px);font-weight:400;letter-spacing:-.04em;line-height:.55;margin-top:clamp(-34px,-2.8vw,-18px);position:relative;text-transform:none;transform:rotate(-4deg);z-index:2}
+#NewEra-{{ section.id }} .ned-hero-core>p{font:500 clamp(16px,1.55vw,22px)/1.15 'Milo',Arial,sans-serif;margin:clamp(34px,5vh,58px) auto 28px;max-width:660px}
+#NewEra-{{ section.id }} .ned-hero-cta{align-items:center;background:#d9d4ff;border:1px solid #fff;border-radius:0;color:var(--ink);display:inline-flex;font:900 12px/1 'Milo',Arial,sans-serif;gap:30px;justify-content:space-between;letter-spacing:.09em;min-height:56px;padding:0 24px;text-decoration:none}
+#NewEra-{{ section.id }} .ned-hero-cta span{font-size:20px;font-weight:400}
+#NewEra-{{ section.id }} .ned-hero-social{bottom:20%;display:flex;gap:12px;position:absolute;z-index:3}
+#NewEra-{{ section.id }} .ned-hero-social--left{left:clamp(24px,3vw,42px)}
+#NewEra-{{ section.id }} .ned-hero-social--right{right:clamp(24px,3vw,42px)}
+#NewEra-{{ section.id }} .ned-hero-social a{align-items:center;border:1px solid #fff;border-radius:0;color:#fff;display:flex;font:800 11px/1 'Milo',Arial,sans-serif;height:40px;justify-content:center;text-decoration:none;width:40px}
+#NewEra-{{ section.id }} .ned-hero-foot{align-items:end;display:grid;font:800 10px/1 'Milo',Arial,sans-serif;grid-template-columns:1fr 1fr 1fr;letter-spacing:.08em;position:relative;text-transform:uppercase;z-index:3}
+#NewEra-{{ section.id }} .ned-hero-foot a{color:#fff;text-align:center;text-decoration:none}
+#NewEra-{{ section.id }} .ned-hero-foot span:last-child{text-align:right}
+#NewEra-{{ section.id }} .ned-services{background:var(--blue);color:white;min-height:760px} #NewEra-{{ section.id }} .ned-services h2{font-size:clamp(62px,10vw,150px);max-width:1000px} #NewEra-{{ section.id }} .ned-services h2 .ned-script{display:block} #NewEra-{{ section.id }} .ned-services>p{max-width:380px;margin-left:auto;font:500 17px/1.4 Arial,sans-serif} #NewEra-{{ section.id }} .ned-pills{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;max-width:1050px;margin:70px auto 42px} #NewEra-{{ section.id }} .ned-pills span{background:white;color:var(--ink);border:1px solid var(--ink);border-radius:100px;padding:17px 30px;font:700 clamp(14px,1.5vw,20px)/1 Arial,sans-serif;transform:rotate(var(--r,0deg))} #NewEra-{{ section.id }} .ned-pills span:nth-child(3n+1){--r:-4deg} #NewEra-{{ section.id }} .ned-pills span:nth-child(3n+2){--r:3deg}
+
+/* SIGN PORTFOLIO: long-form red-on-cream collage with cutouts over display type. */
+#NewEra-{{ section.id }} .ned-portfolio{--ned-editorial-red:#ed171f;--ned-editorial-cream:#efeee8;background:var(--ned-editorial-cream);border-radius:0;color:var(--ink);padding:clamp(34px,5vw,76px)}
+#NewEra-{{ section.id }} .ned-portfolio-head{margin-bottom:clamp(72px,11vw,168px)}
+#NewEra-{{ section.id }} .ned-portfolio-rail{border-bottom:1px solid var(--ink);display:flex;font:800 10px/1.3 'Milo',Arial,sans-serif;justify-content:space-between;letter-spacing:.13em;padding-bottom:13px}
+#NewEra-{{ section.id }} .ned-portfolio-intro{align-items:end;display:grid;gap:24px;grid-template-columns:repeat(12,minmax(0,1fr));padding-top:clamp(58px,9vw,132px)}
+#NewEra-{{ section.id }} .ned-portfolio h2{color:var(--ned-editorial-red);font-family:'Mathew Rohas','Arial Black',Arial,sans-serif;font-size:clamp(66px,12.2vw,186px);grid-column:1 / -1;letter-spacing:-.075em;line-height:.73;margin:0;position:relative;text-transform:uppercase;z-index:2}
+#NewEra-{{ section.id }} .ned-portfolio h2 span{display:block;margin-left:17%;white-space:nowrap}
+#NewEra-{{ section.id }} .ned-portfolio-intro>p{font:500 clamp(15px,1.4vw,18px)/1.45 'Milo',Arial,sans-serif;grid-column:9 / -1;margin:42px 0 0;max-width:35ch}
+#NewEra-{{ section.id }} .ned-portfolio-list{display:block}
+#NewEra-{{ section.id }} .ned-project{margin:0 0 clamp(116px,16vw,240px);position:relative}
+#NewEra-{{ section.id }} .ned-project-link{color:var(--ink);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));min-height:clamp(680px,72vw,960px);position:relative;text-decoration:none}
+#NewEra-{{ section.id }} .ned-project-stage{grid-column:1 / span 9;grid-row:1;isolation:isolate;min-height:680px;position:relative}
+#NewEra-{{ section.id }} .ned-project:nth-child(2n) .ned-project-stage{grid-column:4 / -1}
+#NewEra-{{ section.id }} .ned-project-word{color:var(--ned-editorial-red);font:900 clamp(76px,13.6vw,204px)/.72 'Mathew Rohas','Arial Black',Arial,sans-serif;left:1%;letter-spacing:-.08em;max-width:1100px;overflow-wrap:anywhere;position:absolute;text-transform:uppercase;top:15%;transform:rotate(-2deg);width:108%;z-index:0}
+#NewEra-{{ section.id }} .ned-project:nth-child(2n) .ned-project-word{left:auto;right:0;text-align:right;top:25%;transform:rotate(2deg)}
+#NewEra-{{ section.id }} .ned-project:nth-child(3n) .ned-project-word{top:8%;transform:rotate(-1deg)}
+#NewEra-{{ section.id }} .ned-project-media{align-items:center;bottom:8%;display:flex;justify-content:center;left:16%;position:absolute;top:2%;width:62%;z-index:2}
+#NewEra-{{ section.id }} .ned-project:nth-child(2n) .ned-project-media{left:auto;right:7%;width:66%}
+#NewEra-{{ section.id }} .ned-project:nth-child(3n) .ned-project-media{left:5%;width:72%}
+#NewEra-{{ section.id }} .ned-project-media img{filter:grayscale(1) contrast(1.12);height:100%;object-fit:contain;width:100%}
+#NewEra-{{ section.id }} .ned-sign-placeholder{height:min(42vw,540px);position:relative;width:min(54vw,670px)}
+#NewEra-{{ section.id }} .ned-sign-placeholder span{background:var(--ink);border:10px solid var(--ned-editorial-cream);box-shadow:18px 22px 0 var(--ned-editorial-red);display:block;height:62%;left:5%;position:absolute;top:5%;transform:skewY(-3deg);width:90%}
+#NewEra-{{ section.id }} .ned-sign-placeholder i{background:var(--ink);bottom:0;height:42%;position:absolute;width:20px}
+#NewEra-{{ section.id }} .ned-sign-placeholder i:nth-child(2){left:24%}
+#NewEra-{{ section.id }} .ned-sign-placeholder i:nth-child(3){right:24%}
+#NewEra-{{ section.id }} .ned-crosshair{height:28px;position:absolute;width:28px;z-index:3}
+#NewEra-{{ section.id }} .ned-crosshair::before,#NewEra-{{ section.id }} .ned-crosshair::after{background:var(--ned-editorial-red);content:'';left:50%;position:absolute;top:50%;transform:translate(-50%,-50%)}
+#NewEra-{{ section.id }} .ned-crosshair::before{height:2px;width:28px}
+#NewEra-{{ section.id }} .ned-crosshair::after{height:28px;width:2px}
+#NewEra-{{ section.id }} .ned-crosshair--a{left:3%;top:3%}
+#NewEra-{{ section.id }} .ned-crosshair--b{bottom:7%;right:4%}
+#NewEra-{{ section.id }} .ned-dimension{border-top:1px solid var(--ink);bottom:3%;left:14%;position:absolute;right:11%;text-align:center;z-index:3}
+#NewEra-{{ section.id }} .ned-dimension::before,#NewEra-{{ section.id }} .ned-dimension::after{background:var(--ink);content:'';height:10px;position:absolute;top:-5px;width:1px}
+#NewEra-{{ section.id }} .ned-dimension::before{left:0}
+#NewEra-{{ section.id }} .ned-dimension::after{right:0}
+#NewEra-{{ section.id }} .ned-dimension span{background:var(--ned-editorial-cream);font:800 9px/1 'Milo',Arial,sans-serif;letter-spacing:.14em;padding:0 9px;position:relative;top:-7px}
+#NewEra-{{ section.id }} .ned-project-copy{align-self:end;background:var(--ned-editorial-cream);border-top:1px solid var(--ink);grid-column:8 / -1;grid-row:1;padding:18px 0 0 24px;position:relative;z-index:4}
+#NewEra-{{ section.id }} .ned-project:nth-child(2n) .ned-project-copy{grid-column:1 / span 5;padding:18px 24px 0 0}
+#NewEra-{{ section.id }} .ned-project-index{display:flex;font:800 10px/1.3 'Milo',Arial,sans-serif;justify-content:space-between;letter-spacing:.13em;margin-bottom:clamp(44px,6vw,84px)}
+#NewEra-{{ section.id }} .ned-project-index::after{color:var(--ned-editorial-red);content:'✱';font-size:24px;line-height:.6}
+#NewEra-{{ section.id }} .ned-project-meta{font:800 10px/1.4 'Milo',Arial,sans-serif;letter-spacing:.12em;margin:0 0 14px;text-transform:uppercase}
+#NewEra-{{ section.id }} .ned-project-meta span{color:var(--ned-editorial-red);display:block;margin-bottom:7px}
+#NewEra-{{ section.id }} .ned-project-copy h3{font:900 clamp(34px,4.2vw,66px)/.9 'Mathew Rohas','Arial Black',Arial,sans-serif;letter-spacing:-.055em;margin:0 0 18px;text-transform:uppercase}
+#NewEra-{{ section.id }} .ned-project-copy>p{font:500 15px/1.45 'Milo',Arial,sans-serif;margin:0;max-width:38ch}
+#NewEra-{{ section.id }} .ned-project-cta{border-top:1px solid var(--ink);display:flex;font:800 11px/1 'Milo',Arial,sans-serif;justify-content:space-between;margin-top:34px;padding:15px 0}
+#NewEra-{{ section.id }} .ned-portfolio-foot{align-items:center;border-top:1px solid var(--ink);display:flex;font:800 10px/1.3 'Milo',Arial,sans-serif;justify-content:space-between;letter-spacing:.14em;padding-top:18px}
+#NewEra-{{ section.id }} .ned-portfolio-foot a{color:var(--ink);font-size:12px;text-decoration:none}
+#NewEra-{{ section.id }} .ned-funk{background:var(--red);color:var(--ink);min-height:720px} #NewEra-{{ section.id }} .ned-funk-title{font-size:clamp(62px,12vw,165px);text-align:center;margin:0 auto 40px} #NewEra-{{ section.id }} .ned-funk-title svg{width:100%;height:auto;display:block} #NewEra-{{ section.id }} .ned-mask-video,#NewEra-{{ section.id }} .ned-mask-video video{width:100%;height:100%;object-fit:cover} #NewEra-{{ section.id }} .ned-image-text{display:block;background:var(--mask-image) center/cover;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:1px rgba(0,0,0,.15)} #NewEra-{{ section.id }} .ned-funk-foot{display:flex;justify-content:space-between;align-items:end;gap:30px} #NewEra-{{ section.id }} .ned-funk-foot p{max-width:390px;font:700 18px/1.35 Arial,sans-serif}
+#NewEra-{{ section.id }} .ned-page-hero{min-height:650px;display:flex;flex-direction:column;justify-content:flex-end} #NewEra-{{ section.id }} .ned-page-hero h1{font-size:clamp(72px,13vw,180px);margin-bottom:40px} #NewEra-{{ section.id }} .ned-page-hero p{max-width:500px;margin-left:auto;font:500 19px/1.4 Arial,sans-serif}
+#NewEra-{{ section.id }} .ned-service-grid{background:var(--paper);display:block;padding:0 clamp(28px,5vw,76px)}#NewEra-{{ section.id }} .ned-service-grid article{align-items:center;border-top:1px solid var(--ink);display:grid;gap:clamp(24px,5vw,86px);grid-template-areas:'number title copy';grid-template-columns:70px minmax(0,1.35fr) minmax(260px,.65fr);min-height:clamp(350px,36vw,540px);padding:clamp(46px,6vw,88px) 0}#NewEra-{{ section.id }} .ned-service-grid article:last-child{border-bottom:1px solid var(--ink)}#NewEra-{{ section.id }} .ned-service-grid article:nth-child(even){grid-template-areas:'number copy title';grid-template-columns:70px minmax(260px,.65fr) minmax(0,1.35fr)}#NewEra-{{ section.id }} .ned-service-grid b{align-self:start;font:700 12px Arial,sans-serif;grid-area:number}#NewEra-{{ section.id }} .ned-service-grid h2{font-size:clamp(52px,8vw,112px);grid-area:title;margin:0}#NewEra-{{ section.id }} .ned-service-grid article:nth-child(even) h2{text-align:right}#NewEra-{{ section.id }} .ned-service-grid p{font:500 16px/1.45 Arial,sans-serif;grid-area:copy;margin:0;max-width:390px}
+#NewEra-{{ section.id }} .ned-process{background:var(--blue);color:white;display:grid;grid-template-columns:1fr 1fr;gap:8vw} #NewEra-{{ section.id }} .ned-process h2{font-size:clamp(58px,9vw,125px)} #NewEra-{{ section.id }} .ned-process ol{list-style:none;margin:0;padding:0;border-top:1px solid white} #NewEra-{{ section.id }} .ned-process li{display:flex;gap:30px;align-items:center;border-bottom:1px solid white;padding:24px 0;font:800 clamp(22px,3vw,42px)/1 Arial,sans-serif;text-transform:uppercase} #NewEra-{{ section.id }} .ned-process li span{font-size:11px}
+#NewEra-{{ section.id }} .ned-cta{background:var(--red);text-align:center;min-height:600px;display:flex;flex-direction:column;align-items:center;justify-content:center} #NewEra-{{ section.id }} .ned-cta h2{font-size:clamp(68px,12vw,170px)}
+#NewEra-{{ section.id }} .ned-contact{min-height:900px;display:grid;grid-template-columns:1.1fr .9fr;gap:7vw;align-items:center} #NewEra-{{ section.id }} .ned-contact h1{font-size:clamp(68px,9vw,135px)} #NewEra-{{ section.id }} .ned-contact-copy>p{font:500 18px/1.45 Arial,sans-serif;max-width:520px} #NewEra-{{ section.id }} .ned-contact-meta{display:flex;flex-direction:column;gap:8px;margin-top:55px;font:800 12px/1.4 Arial,sans-serif;letter-spacing:.08em} #NewEra-{{ section.id }} .ned-contact-meta a{color:inherit} #NewEra-{{ section.id }} .ned-form-wrap{background:var(--blue);color:white;padding:clamp(28px,5vw,62px)} #NewEra-{{ section.id }} .ned-form-wrap label{display:block;font:800 11px/1 Arial,sans-serif;letter-spacing:.12em;margin-bottom:26px} #NewEra-{{ section.id }} .ned-form-wrap input,#NewEra-{{ section.id }} .ned-form-wrap select,#NewEra-{{ section.id }} .ned-form-wrap textarea{display:block;width:100%;margin-top:10px;background:transparent;color:white;border:0;border-bottom:1px solid white;border-radius:0;padding:12px 0;font:500 16px Arial,sans-serif} #NewEra-{{ section.id }} .ned-form-wrap select option{color:black} #NewEra-{{ section.id }} .ned-form-wrap textarea{border:1px solid white;padding:14px;resize:vertical}
+@media(max-width:989px){#NewEra-{{ section.id }} .ned-portfolio-intro>p{grid-column:7 / -1}#NewEra-{{ section.id }} .ned-project-link{min-height:760px}#NewEra-{{ section.id }} .ned-project-stage,#NewEra-{{ section.id }} .ned-project:nth-child(2n) .ned-project-stage{grid-column:1 / -1}#NewEra-{{ section.id }} .ned-project-copy{grid-column:7 / -1}#NewEra-{{ section.id }} .ned-project:nth-child(2n) .ned-project-copy{grid-column:1 / span 6}}
+@media(max-width:749px){#NewEra-{{ section.id }}{padding:8px}#NewEra-{{ section.id }} .ned-panel{padding:34px 22px;margin-bottom:8px}#NewEra-{{ section.id }} .ned-hero{min-height:650px}#NewEra-{{ section.id }} .ned-hero-media{right:-12%;top:16%;width:80%;height:48%;opacity:.85}#NewEra-{{ section.id }} .ned-lede{margin-left:0}#NewEra-{{ section.id }} .ned-services{min-height:680px}#NewEra-{{ section.id }} .ned-pills{margin:45px auto 35px}#NewEra-{{ section.id }} .ned-pills span{padding:13px 18px}#NewEra-{{ section.id }} .ned-funk-foot,#NewEra-{{ section.id }} .ned-process{display:block}#NewEra-{{ section.id }} .ned-service-grid{grid-template-columns:1fr}#NewEra-{{ section.id }} .ned-service-grid article{min-height:360px}#NewEra-{{ section.id }} .ned-contact{display:block;min-height:auto}#NewEra-{{ section.id }} .ned-form-wrap{margin-top:45px}#NewEra-{{ section.id }} .ned-orb--1{width:110px;height:110px}#NewEra-{{ section.id }} .ned-portfolio{padding:34px 18px 42px}#NewEra-{{ section.id }} .ned-portfolio-rail{gap:24px}#NewEra-{{ section.id }} .ned-portfolio-intro{display:block;padding-top:58px}#NewEra-{{ section.id }} .ned-portfolio h2 span{margin-left:0;white-space:normal}#NewEra-{{ section.id }} .ned-portfolio-intro>p{margin-top:30px}#NewEra-{{ section.id }} .ned-portfolio-head{margin-bottom:74px}#NewEra-{{ section.id }} .ned-project{margin-bottom:116px}#NewEra-{{ section.id }} .ned-project-link{display:block;min-height:0}#NewEra-{{ section.id }} .ned-project-stage,#NewEra-{{ section.id }} .ned-project:nth-child(2n) .ned-project-stage{min-height:460px}#NewEra-{{ section.id }} .ned-project-word,#NewEra-{{ section.id }} .ned-project:nth-child(2n) .ned-project-word{left:0;right:auto;text-align:left;top:15%;width:100%}#NewEra-{{ section.id }} .ned-project-media,#NewEra-{{ section.id }} .ned-project:nth-child(2n) .ned-project-media,#NewEra-{{ section.id }} .ned-project:nth-child(3n) .ned-project-media{bottom:8%;left:8%;right:auto;top:0;width:84%}#NewEra-{{ section.id }} .ned-sign-placeholder{height:270px;width:94%}#NewEra-{{ section.id }} .ned-project-copy,#NewEra-{{ section.id }} .ned-project:nth-child(2n) .ned-project-copy{padding:18px 0 0}#NewEra-{{ section.id }} .ned-portfolio-foot{align-items:flex-start;display:grid;gap:18px}}
+@media(max-width:989px){#NewEra-{{ section.id }} .ned-hero-nav{font-size:10px}}
+@media(max-width:749px){#NewEra-{{ section.id }} .ned-hero{min-height:720px;padding:22px 18px}#NewEra-{{ section.id }} .ned-hero-nav{gap:12px;grid-template-columns:1fr 1fr;line-height:1.15}#NewEra-{{ section.id }} .ned-hero-nav>a{min-height:28px}#NewEra-{{ section.id }} .ned-hero-nav>a:nth-child(2),#NewEra-{{ section.id }} .ned-hero-nav>a:nth-child(4),#NewEra-{{ section.id }} .ned-hero-nav>a:last-child{text-align:left}#NewEra-{{ section.id }} .ned-hero-brand{grid-column:1 / -1;grid-row:1;margin-bottom:10px;text-align:center!important}#NewEra-{{ section.id }} .ned-hero-core{padding:58px 0 86px}#NewEra-{{ section.id }} .ned-hero-title-top{font-size:clamp(54px,18vw,82px)}#NewEra-{{ section.id }} .ned-hero-title-script{font-size:clamp(88px,29vw,132px);margin-top:-18px}#NewEra-{{ section.id }} .ned-hero-core>p{line-height:1.25;max-width:34ch}#NewEra-{{ section.id }} .ned-hero-social{bottom:72px}#NewEra-{{ section.id }} .ned-hero-social--left{left:18px}#NewEra-{{ section.id }} .ned-hero-social--right{right:18px}#NewEra-{{ section.id }} .ned-hero-foot{grid-template-columns:1fr}#NewEra-{{ section.id }} .ned-hero-foot>span{display:none}#NewEra-{{ section.id }} .ned-orb{display:none}}
+@media(max-width:749px){#NewEra-{{ section.id }} .ned-service-grid{padding:0 22px}#NewEra-{{ section.id }} .ned-service-grid article,#NewEra-{{ section.id }} .ned-service-grid article:nth-child(even){align-items:start;display:grid;gap:24px;grid-template-areas:'number' 'title' 'copy';grid-template-columns:1fr;min-height:0;padding:54px 0}#NewEra-{{ section.id }} .ned-service-grid article:nth-child(even) h2{text-align:left}}
+#NewEra-{{ section.id }} .ned-funk,#NewEra-{{ section.id }} .ned-process{background-color:var(--ned-navy);background-image:var(--ned-halftone-light)!important;color:#fff}
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "New Era page system",
+  "tag": "section",
+  "class": "section-new-era",
+  "settings": [
+    { "type": "text", "id": "hero_title_line_1", "label": "Hero title line 1", "default": "YOU NEED A" },
+    { "type": "text", "id": "hero_title_line_2", "label": "Hero title line 2", "default": "NEW ERA" },
+    { "type": "textarea", "id": "hero_body", "label": "Hero description", "default": "We develop brand, wayfinding, and environmental systems that reduce friction and make the physical environment perform." },
+    { "type": "text", "id": "hero_button_label", "label": "Hero button label", "default": "START A PROJECT" },
+    { "type": "url", "id": "hero_button_link", "label": "Hero button link" },
+    { "type": "image_picker", "id": "hero_image", "label": "Homepage hero image" },
+    { "type": "image_picker", "id": "mask_image", "label": "Funk Machine text image" },
+    { "type": "video", "id": "mask_video", "label": "Funk Machine text video" }
+  ],
+  "blocks": [
+    {
+      "type": "portfolio_item",
+      "name": "Portfolio project",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Project title", "default": "Wayfinding System Study" },
+        {
+          "type": "select",
+          "id": "classification",
+          "label": "Verified classification",
+          "default": "Speculative Study",
+          "options": [
+            { "value": "Client Work", "label": "Client Work" },
+            { "value": "Professional Contribution", "label": "Professional Contribution" },
+            { "value": "Independent Concept", "label": "Independent Concept" },
+            { "value": "Speculative Study", "label": "Speculative Study" }
+          ]
+        },
+        { "type": "text", "id": "discipline", "label": "Discipline", "default": "Wayfinding / Sign Family" },
+        { "type": "text", "id": "annotation", "label": "Technical annotation", "default": "12'-0\" / ALUMINUM CABINET" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "A fabrication-aware study connecting arrival, orientation, tenant visibility, and repeatable production logic." },
+        { "type": "image_picker", "id": "image", "label": "Transparent sign cutout or project image" },
+        { "type": "text", "id": "image_alt", "label": "Image alt text" },
+        { "type": "url", "id": "project_link", "label": "Project link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "New Era page system",
+      "blocks": [
+        { "type": "portfolio_item" },
+        { "type": "portfolio_item" },
+        { "type": "portfolio_item" }
+      ]
+    }
+  ]
+}
+{% endschema %}
