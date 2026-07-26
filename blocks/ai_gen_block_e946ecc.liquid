@@ -1,0 +1,738 @@
+{% doc %}
+  @prompt
+    Adaptive no-crop Bouncy Balls section for a luxury brand.
+    Keeps the original interactive balls and dotted flight path, removes all headline and service text, and replaces the flattened image with a responsive navy CSS halftone field.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-bouncy-balls-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height:
+      {% case block.settings.height_preset %}
+        {% when 'hero' %} clamp(420px, 70vh, 720px)
+        {% when 'banner' %} clamp(260px, 42vh, 420px)
+        {% when 'compact' %} clamp(180px, 28vh, 320px)
+        {% else %} {{ block.settings.desktop_height }}px
+      {% endcase %};
+    min-height: 150px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: {{ block.settings.background_color }};
+    touch-action: pan-y;
+  }
+
+  #shopify-block-{{ block.id }},
+  .shopify-section:has(.ai-bouncy-balls-{{ ai_gen_id }}) {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  {% if block.settings.white_mode %}
+    .ai-bouncy-balls-{{ ai_gen_id }} {
+      background-color: #FFFFFF;
+    }
+  {% endif %}
+
+  .ai-bouncy-balls-{{ ai_gen_id }} {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 246.47 / 94.65;
+    background-color: #0C1D43;
+    background-image:
+      radial-gradient(circle, rgba(255, 255, 255, 0.24) 0 0.62px, transparent 0.78px),
+      radial-gradient(circle, rgba(255, 255, 255, 0.10) 0 0.38px, transparent 0.55px);
+    background-size: 5.86px 5.86px, 5.86px 5.86px;
+    background-position: 0 0, 2.93px 2.93px;
+    background-repeat: repeat;
+  }
+
+  .ai-bouncy-balls-route-{{ ai_gen_id }} {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .ai-bouncy-balls-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, {{ block.settings.overlay_opacity | divided_by: 100.0 }});
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .ai-bouncy-balls-canvas-{{ ai_gen_id }} {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 1;
+    pointer-events: auto;
+    touch-action: pan-y;
+  }
+
+  .ai-bouncy-balls-content-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 40px 20px;
+    pointer-events: none;
+    max-width: 900px;
+  }
+
+  .ai-bouncy-balls-headline-{{ ai_gen_id }} {
+    font-family: "Helvetica Neue", "Arial Narrow", Arial, sans-serif;
+    font-weight: 300;
+    font-size: clamp(34px, 5.2vw, 60px);
+    line-height: 1.05;
+    margin: 0 0 14px;
+    color: {{ block.settings.text_color }};
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .ai-bouncy-balls-subtext-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtext_size }}px;
+    line-height: 1.5;
+    margin: 0 0 24px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.9;
+  }
+
+  .ai-bouncy-balls-button-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 10px 22px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    border: 1px solid {{ block.settings.button_bg_color }};
+    border-radius: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    pointer-events: auto;
+  }
+
+  .ai-bouncy-balls-button-{{ ai_gen_id }}:hover {
+    background-color: transparent;
+    color: {{ block.settings.button_bg_color }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-bouncy-balls-{{ ai_gen_id }} {
+      height: auto;
+      min-height: {{ block.settings.mobile_height }}px;
+      max-height: none;
+    }
+
+    .ai-bouncy-balls-{{ ai_gen_id }} {
+      min-height: 0;
+      aspect-ratio: 246.47 / 94.65;
+    }
+
+    .ai-bouncy-balls-headline-{{ ai_gen_id }} {
+      font-size: clamp(30px, 9vw, 38px);
+      line-height: 1.05;
+    }
+
+    .ai-bouncy-balls-subtext-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.subtext_size }}px * 0.85);
+    }
+
+    .ai-bouncy-balls-content-{{ ai_gen_id }} {
+      padding: 30px 16px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ai-bouncy-balls-canvas-{{ ai_gen_id }} {
+      display: none;
+    }
+  }
+{% endstyle %}
+
+<bouncy-balls-{{ ai_gen_id }}
+  class="ai-bouncy-balls-{{ ai_gen_id }}"
+  data-gradient-percent="{{ block.settings.gradient_percent }}"
+  data-ball-count="{{ block.settings.ball_count }}"
+  data-ball-size="{{ block.settings.ball_size }}"
+  data-bounce-intensity="{{ block.settings.bounce_intensity }}"
+  data-radius-min="{{ block.settings.ball_radius_min }}"
+  data-radius-max="{{ block.settings.ball_radius_max }}"
+  data-color-1="{{ block.settings.ball_color_1 }}"
+  data-color-2="{{ block.settings.ball_color_2 }}"
+  data-color-3="{{ block.settings.ball_color_3 }}"
+  data-color-4="{{ block.settings.ball_color_4 }}"
+  {{ block.shopify_attributes }}
+>
+  <svg viewBox="0 0 246.47 94.65" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="ai-bouncy-balls-route-{{ ai_gen_id }}"><defs><style>.d{fill:#a9252a;}.e{fill:#fff;}.f{fill:url(#c);}.g{opacity:.25;}.h{opacity:.82;}.i{fill:url(#b);}</style><linearGradient gradientUnits="userSpaceOnUse" gradientTransform="translate(0 -576.71) scale(1 -1)" y2="-607.85" x2="91.81" y1="-607.85" x1="-41.72" id="b"><stop stop-color="#fbb03b" offset=".04"></stop><stop stop-color="#fbb537" offset=".05"></stop><stop stop-color="#fbc32c" offset=".07"></stop><stop stop-color="#fddb1a" offset=".09"></stop><stop stop-color="#fefc01" offset=".11"></stop><stop stop-color="#ff0" offset=".12"></stop><stop stop-color="#fee904" offset=".15"></stop><stop stop-color="#fdd807" offset=".18"></stop><stop stop-color="#fdcc09" offset=".23"></stop><stop stop-color="#fdc50a" offset=".29"></stop><stop stop-color="#fdc40b" offset=".47"></stop><stop stop-color="#fcad0f" offset=".59"></stop><stop stop-color="#fca311" offset=".63"></stop><stop stop-color="#fff602" offset=".77"></stop><stop stop-color="#fee904" offset=".79"></stop><stop stop-color="#fdca09" offset=".84"></stop><stop stop-color="#fca311" offset=".88"></stop></linearGradient><linearGradient gradientUnits="userSpaceOnUse" gradientTransform="translate(0 -576.71) scale(1 -1)" y2="-653.48" x2="152.37" y1="-624.03" x1="100.47" id="c"><stop stop-color="#fbb03b" offset=".04"></stop><stop stop-color="#fbb537" offset=".05"></stop><stop stop-color="#fbc32c" offset=".07"></stop><stop stop-color="#fddb1a" offset=".09"></stop><stop stop-color="#fefc01" offset=".11"></stop><stop stop-color="#ff0" offset=".12"></stop><stop stop-color="#fee904" offset=".15"></stop><stop stop-color="#fdd807" offset=".18"></stop><stop stop-color="#fdcc09" offset=".23"></stop><stop stop-color="#fdc50a" offset=".29"></stop><stop stop-color="#fdc40b" offset=".47"></stop><stop stop-color="#fcad0f" offset=".59"></stop><stop stop-color="#fca311" offset=".63"></stop><stop stop-color="#fff602" offset=".77"></stop><stop stop-color="#fee904" offset=".79"></stop><stop stop-color="#fdca09" offset=".84"></stop><stop stop-color="#fca311" offset=".88"></stop></linearGradient></defs><path d="M91.5,62.96s-.08,0-.12,0c-.46-.1-.92-.22-1.36-.36-.18-.06-.29-.25-.23-.43s.25-.29.43-.23c.43.13.87.25,1.31.34.19.04.3.23.26.41-.03.15-.16.25-.3.27ZM87.37,61.49c-.07,0-.13,0-.2-.03-.42-.21-.83-.44-1.23-.68-.16-.1-.22-.31-.12-.48.1-.16.31-.22.48-.12.39.23.79.46,1.19.66.17.09.24.29.15.47-.05.11-.16.18-.27.19h0ZM83.71,59.06c-.09.01-.19-.01-.26-.08-.35-.29-.7-.61-1.05-.94-.14-.13-.15-.35-.01-.49.13-.14.35-.15.49-.01.34.32.68.62,1.02.91.15.12.17.34.04.49-.06.07-.14.11-.22.12h0ZM80.6,55.95c-.11.01-.23-.03-.3-.12-.29-.34-.59-.7-.89-1.07-.12-.15-.1-.37.05-.49.15-.12.37-.1.49.05.3.37.6.72.88,1.06.13.14.11.36-.04.49-.05.05-.12.07-.19.08h0ZM77.87,52.49c-.12.01-.24-.03-.32-.14-.29-.39-.58-.78-.82-1.12-.11-.15-.08-.37.08-.48.15-.11.37-.08.48.08.24.33.53.73.82,1.12.11.15.08.37-.07.49-.05.04-.11.06-.16.07h0ZM75.25,48.94c-.12.01-.24-.03-.32-.14-.3-.4-.58-.76-.84-1.1-.12-.15-.09-.37.06-.49.15-.12.37-.09.49.06.27.34.55.71.85,1.11.12.15.08.37-.07.49-.05.04-.11.06-.17.07ZM72.46,45.52c-.11.01-.22-.02-.3-.11-.32-.35-.63-.68-.94-.99-.14-.14-.13-.36,0-.49.14-.14.36-.13.49,0,.32.32.64.66.97,1.02.13.14.12.36-.02.49-.05.05-.12.08-.19.09h0ZM69.25,42.51c-.09.01-.18-.01-.25-.07-.36-.28-.74-.54-1.11-.79-.16-.1-.2-.32-.1-.48s.32-.2.48-.1c.39.25.77.53,1.15.82.15.12.18.33.06.49-.06.08-.14.12-.23.13ZM39.87,45.78c-.21.02-.42.05-.63.06-.19.02-.36-.13-.37-.32s.13-.36.32-.37c.45-.04.9-.09,1.34-.17.19-.03.37.09.4.28.03.19-.09.37-.28.4-.26.04-.52.08-.78.11h0ZM36.24,45.8s-.05,0-.08,0c-.36-.04-.72-.09-1.09-.14-.1-.02-.21-.03-.31-.05-.19-.03-.31-.21-.28-.4s.21-.31.4-.28c.1.02.2.03.3.05.35.06.7.1,1.05.14.19.02.33.19.31.38-.02.16-.15.29-.3.31h0ZM43.54,44.9c-.16.02-.31-.07-.37-.23-.07-.18.03-.38.21-.44.42-.15.83-.32,1.27-.51.18-.08.38,0,.46.18.08.18,0,.38-.18.46-.44.19-.88.37-1.31.52-.03,0-.05.02-.08.02h0ZM47.54,43.04c-.14.02-.28-.05-.35-.18-.09-.17-.03-.38.14-.47.41-.22.8-.44,1.21-.67.17-.09.38-.03.47.13.09.17.03.38-.13.47-.41.23-.81.45-1.22.67-.04.02-.08.03-.12.04h0ZM31.96,44.83c-.05,0-.11,0-.16-.02-.44-.16-.88-.34-1.31-.53-.17-.08-.25-.29-.17-.46.08-.17.29-.25.46-.17.41.19.83.36,1.26.51.18.07.27.26.21.44-.05.13-.16.21-.29.23h0ZM65.47,40.28c-.06,0-.12,0-.18-.03-.41-.18-.84-.34-1.27-.49-.18-.06-.28-.26-.22-.44.06-.18.26-.28.44-.22.45.15.89.32,1.32.5.18.08.26.28.18.46-.05.12-.16.19-.28.21h0ZM51.4,40.93c-.14.02-.28-.05-.35-.19-.09-.17-.02-.38.15-.47.45-.23.86-.42,1.27-.6.18-.08.38,0,.46.18.08.18,0,.38-.18.46-.39.18-.8.37-1.24.59-.04.02-.08.03-.12.03h0ZM61.25,39.07s-.06,0-.09,0c-.45-.07-.91-.12-1.35-.15-.19-.01-.34-.18-.32-.37s.18-.34.37-.32c.46.03.94.08,1.41.15.19.03.32.21.29.4-.02.16-.15.27-.3.29h0ZM28.05,42.84c-.08,0-.16,0-.24-.06-.38-.26-.77-.54-1.14-.83-.15-.12-.18-.34-.06-.49s.34-.18.49-.06c.36.28.73.55,1.1.8.16.11.2.32.09.48-.06.09-.15.14-.25.15ZM55.5,39.32c-.17.02-.33-.09-.38-.26-.05-.19.07-.37.25-.42.46-.12.93-.21,1.39-.28.19-.03.37.1.4.29.03.19-.1.37-.29.4-.44.07-.88.16-1.32.27-.02,0-.03,0-.04,0h0ZM24.68,40.02c-.1.01-.21-.02-.29-.1-.32-.32-.64-.66-.96-1.02-.13-.14-.12-.36.02-.49.14-.13.36-.12.49.02.31.35.63.68.94.99.14.14.13.36,0,.49-.06.06-.13.09-.2.1h0ZM21.78,36.7c-.12.01-.24-.03-.31-.13-.27-.35-.55-.71-.85-1.11-.12-.15-.08-.37.07-.49.15-.11.37-.08.49.07.29.39.56.75.84,1.1.12.15.09.37-.06.49-.05.04-.11.06-.17.07h0ZM19.17,33.14c-.12.01-.25-.04-.32-.14-.26-.37-.53-.75-.79-1.13h0c-.11-.16-.07-.38.09-.49s.37-.07.48.09h0c.26.38.53.76.79,1.13.11.16.07.37-.08.48-.05.03-.1.05-.16.06ZM16.63,29.54c-.12.01-.25-.04-.32-.14-.29-.4-.56-.77-.82-1.12-.12-.15-.08-.37.07-.49.15-.12.37-.08.49.07.26.35.53.72.83,1.13.11.16.08.37-.08.48-.05.04-.1.06-.16.06h0ZM13.94,26.04c-.11.01-.23-.03-.31-.12-.3-.36-.61-.71-.9-1.04-.13-.14-.12-.36.03-.49s.36-.12.49.03c.3.33.61.69.92,1.06.12.15.1.37-.04.49-.05.04-.12.07-.18.08h0ZM10.9,22.85c-.1.01-.2-.02-.27-.09-.34-.31-.69-.61-1.04-.88-.15-.12-.17-.34-.05-.49.12-.15.34-.17.49-.05.36.29.72.59,1.07.91.14.13.15.35.03.49-.06.07-.14.1-.22.11h0ZM7.36,20.25c-.07,0-.15,0-.22-.04-.39-.23-.79-.44-1.2-.64-.17-.08-.24-.29-.16-.46.08-.17.29-.24.46-.16.42.2.84.43,1.24.67.17.1.22.31.13.47-.06.1-.15.16-.26.17h0ZM3.34,18.5s-.09,0-.14-.01c-.43-.13-.87-.24-1.31-.34-.19-.04-.3-.23-.26-.41s.23-.3.41-.26c.46.1.92.22,1.36.36.18.05.29.25.23.43-.04.14-.16.23-.29.24h0ZM-14.89,20.45c-.12.01-.24.03-.36.04-.19.02-.36-.12-.38-.31-.02-.19.12-.36.3-.38h0c.12-.01.23-.02.35-.04.33-.04.66-.09,1-.15.19-.03.37.09.4.28s-.09.37-.28.4c-.35.06-.7.12-1.04.16h0ZM-18.26,20.49s-.05,0-.07,0c-.46-.04-.93-.11-1.4-.19-.19-.03-.32-.21-.28-.4.03-.19.21-.32.4-.28.45.08.91.14,1.35.18.19.02.33.19.31.38-.02.17-.15.29-.3.31h0ZM-10.95,19.55c-.16.02-.32-.08-.37-.24-.06-.18.05-.38.23-.43.42-.13.85-.27,1.27-.41l.05-.02c.18-.06.38.04.44.22.06.18-.04.38-.22.44l-.05.02c-.42.14-.85.28-1.28.41-.02,0-.04.01-.06.01h0ZM-.99,17.71s-.04,0-.07,0c-.46-.03-.91-.04-1.36-.04-.19,0-.35-.15-.35-.34,0-.19.15-.35.34-.35.46,0,.94.01,1.41.04.19.01.33.18.32.37-.01.17-.14.3-.3.32h0ZM-6.73,18.26c-.17.02-.33-.09-.38-.26-.05-.19.07-.37.25-.42.48-.12.93-.22,1.38-.3.19-.04.37.09.4.28.03.19-.09.37-.28.4-.43.08-.87.18-1.33.29-.02,0-.03,0-.04,0h0ZM-22.56,19.57s-.1,0-.15-.02c-.44-.15-.89-.31-1.32-.48-.18-.07-.26-.27-.19-.45.07-.18.27-.26.45-.19.42.17.85.33,1.28.47.18.06.28.26.22.44-.04.13-.16.22-.29.24h0ZM-26.58,17.78c-.07,0-.15,0-.21-.04-.4-.23-.81-.48-1.2-.73-.16-.1-.21-.32-.1-.48.1-.16.32-.21.48-.1.38.25.78.49,1.17.71.17.09.22.31.13.47-.06.1-.15.16-.26.17h0ZM-30.19,15.27c-.09.01-.19-.01-.26-.08-.35-.29-.71-.6-1.06-.92-.14-.13-.15-.35-.02-.49s.35-.15.49-.02c.34.31.69.61,1.03.9.15.12.17.34.05.49-.06.07-.14.11-.23.12h0ZM-33.38,12.22c-.11.01-.22-.02-.3-.11-.31-.34-.62-.69-.92-1.05-.12-.15-.1-.37.04-.49.15-.12.37-.1.49.04.3.35.6.7.91,1.03.13.14.12.36-.02.49-.06.05-.12.08-.19.09h0ZM-36.15,8.8c-.12.01-.25-.04-.32-.14-.27-.37-.54-.76-.81-1.14-.11-.16-.07-.37.09-.48s.37-.07.48.09c.26.38.53.76.79,1.13.11.15.08.37-.08.48-.05.04-.11.06-.16.06h0ZM-38.58,5.12c-.13.02-.27-.04-.34-.17-.24-.39-.47-.8-.7-1.21-.09-.17-.04-.38.13-.47.17-.09.38-.04.47.13.23.4.46.8.7,1.19.1.16.05.38-.12.48-.04.03-.09.04-.14.05h0ZM-40.71,1.25c-.14.02-.28-.05-.35-.19-.21-.41-.42-.83-.62-1.25-.08-.17-.01-.38.16-.46s.38-.01.46.16c.2.42.41.83.61,1.24.09.17.02.38-.15.47-.04.02-.08.03-.12.04h0Z" class="i"></path></svg>
+  <div class="ai-bouncy-balls-overlay-{{ ai_gen_id }}"></div>
+  <canvas class="ai-bouncy-balls-canvas-{{ ai_gen_id }}"></canvas>
+
+</bouncy-balls-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class BouncyBalls{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.canvas = this.querySelector('.ai-bouncy-balls-canvas-{{ ai_gen_id }}');
+        this.ctx = this.canvas.getContext('2d');
+        this.balls = [];
+        this.animationId = null;
+        this.colors = [];
+        this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      }
+
+      connectedCallback() {
+        if (this.prefersReducedMotion) return;
+
+        this.setupCanvas();
+        this.initBalls();
+        this.animate();
+        this.setupEventListeners();
+      }
+
+      disconnectedCallback() {
+        if (this.animationId) {
+          cancelAnimationFrame(this.animationId);
+        }
+        window.removeEventListener('resize', this.handleResize);
+      }
+
+      setupCanvas() {
+        const rect = this.getBoundingClientRect();
+        const ratio = window.devicePixelRatio || 1;
+        this.canvas.width = rect.width * ratio;
+        this.canvas.height = rect.height * ratio;
+        this.canvas.style.width = rect.width + 'px';
+        this.canvas.style.height = rect.height + 'px';
+        this.ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+        this.canvasLogicalWidth = rect.width;
+        this.canvasLogicalHeight = rect.height;
+      }
+
+      getResponsiveRadiusScale() {
+        const width = this.canvasLogicalWidth || window.innerWidth;
+        return Math.min(2.1, Math.max(0.55, width / 760));
+      }
+
+      getScaledRadius(baseRadius) {
+        const scale = this.getResponsiveRadiusScale();
+        const shortestSide = Math.min(this.canvasLogicalWidth || 1, this.canvasLogicalHeight || 1);
+        const sideLimit = this.canvasLogicalWidth <= 749 ? 0.13 : 0.18;
+        const maxRadiusForCanvas = Math.max(6, shortestSide * sideLimit);
+
+        return Math.max(4, Math.min(baseRadius * scale, maxRadiusForCanvas));
+      }
+
+      initBalls() {
+        this.balls = [];
+
+        const ballCount = parseInt(this.dataset.ballCount, 10);
+        const ballSizeOption = this.dataset.ballSize;
+        const bounceIntensity = this.dataset.bounceIntensity;
+        const c1 = this.dataset.color1 || '#FCA311';
+        const c2 = this.dataset.color2 || '#1B2E9D';
+        const c3 = this.dataset.color3 || '#ffe81c';
+        const c4 = this.dataset.color4 || '#1B2E9D';
+
+        this.primaryA = c1;
+        this.primaryB = c3;
+        this.colors = [c1, c2, c4].filter(Boolean);
+
+        let gravity, damping;
+        if (bounceIntensity === 'calm') {
+          gravity = 0.15;
+          damping = 0.7;
+        } else if (bounceIntensity === 'moderate') {
+          gravity = 0.25;
+          damping = 0.75;
+        } else {
+          gravity = 0.35;
+          damping = 0.8;
+        }
+
+        let minRadius = parseInt(this.dataset.radiusMin || '10', 10);
+        let maxRadius = parseInt(this.dataset.radiusMax || '26', 10);
+
+        if (maxRadius < minRadius) maxRadius = minRadius + 4;
+
+        if (ballSizeOption === 'small') {
+          maxRadius = Math.min(maxRadius, minRadius + 10);
+        } else if (ballSizeOption === 'large') {
+          minRadius = Math.max(10, minRadius);
+          maxRadius = Math.max(maxRadius, minRadius + 18);
+        }
+
+        const gradientPercent = parseInt(this.dataset.gradientPercent || '20', 10) / 100;
+
+        for (let i = 0; i < ballCount; i++) {
+          const baseRadius = minRadius + Math.random() * (maxRadius - minRadius);
+          const radius = this.getScaledRadius(baseRadius);
+
+          this.balls.push({
+            x: radius + Math.random() * Math.max(1, this.canvasLogicalWidth - radius * 2),
+            y: radius + Math.random() * Math.max(1, this.canvasLogicalHeight - radius * 2),
+            vx: (Math.random() - 0.5) * 3,
+            vy: (Math.random() - 0.5) * 3,
+            radius: radius,
+            baseRadius: baseRadius,
+            color: this.colors[Math.floor(Math.random() * this.colors.length)],
+            gravity: gravity,
+            damping: damping,
+            isGradient: Math.random() < gradientPercent
+          });
+        }
+      }
+
+      animate() {
+        this.ctx.clearRect(0, 0, this.canvasLogicalWidth, this.canvasLogicalHeight);
+
+        this.balls.forEach(ball => {
+          ball.vy += ball.gravity;
+          ball.x += ball.vx;
+          ball.y += ball.vy;
+
+          if (ball.x - ball.radius < 0) {
+            ball.x = ball.radius;
+            ball.vx = Math.abs(ball.vx) * ball.damping;
+          } else if (ball.x + ball.radius > this.canvasLogicalWidth) {
+            ball.x = this.canvasLogicalWidth - ball.radius;
+            ball.vx = -Math.abs(ball.vx) * ball.damping;
+          }
+
+          if (ball.y - ball.radius < 0) {
+            ball.y = ball.radius;
+            ball.vy = Math.abs(ball.vy) * ball.damping;
+          } else if (ball.y + ball.radius > this.canvasLogicalHeight) {
+            ball.y = this.canvasLogicalHeight - ball.radius;
+            ball.vy = -Math.abs(ball.vy) * ball.damping;
+          }
+
+          this.ctx.globalAlpha = 1;
+
+          this.ctx.beginPath();
+          this.ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+
+          if (ball.isGradient) {
+            const primaryA = this.primaryA || '#FCA311';
+            const primaryB = this.primaryB || '#ffe81c';
+            const t = performance.now() * 0.001;
+            const highlightX = ball.x + Math.cos(t * 0.5) * ball.radius * 0.35;
+            const highlightY = ball.y + Math.sin(t * 0.5) * ball.radius * 0.35;
+            const grad = this.ctx.createRadialGradient(
+              highlightX,
+              highlightY,
+              ball.radius * 0.15,
+              ball.x,
+              ball.y,
+              ball.radius
+            );
+
+            grad.addColorStop(0, primaryA);
+            grad.addColorStop(0.5, primaryB);
+            grad.addColorStop(1, primaryA);
+            this.ctx.fillStyle = grad;
+          } else {
+            this.ctx.fillStyle = ball.color;
+          }
+
+          this.ctx.fill();
+          this.ctx.globalAlpha = 1;
+        });
+
+        this.animationId = requestAnimationFrame(() => this.animate());
+      }
+
+      setupEventListeners() {
+        this.handleResize = () => {
+          const oldWidth = this.canvasLogicalWidth || 1;
+          const oldHeight = this.canvasLogicalHeight || 1;
+          this.setupCanvas();
+
+          this.balls.forEach(ball => {
+            ball.radius = this.getScaledRadius(ball.baseRadius || ball.radius);
+            ball.x = Math.min(this.canvasLogicalWidth - ball.radius, Math.max(ball.radius, ball.x * (this.canvasLogicalWidth / oldWidth)));
+            ball.y = Math.min(this.canvasLogicalHeight - ball.radius, Math.max(ball.radius, ball.y * (this.canvasLogicalHeight / oldHeight)));
+          });
+        };
+
+        window.addEventListener('resize', this.handleResize);
+
+        const kickBalls = (clientX, clientY) => {
+          const rect = this.canvas.getBoundingClientRect();
+          const clickX = clientX - rect.left;
+          const clickY = clientY - rect.top;
+
+          this.balls.forEach(ball => {
+            const dx = ball.x - clickX;
+            const dy = ball.y - clickY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 150) {
+              const angle = Math.atan2(dy, dx);
+              const force = ((150 - distance) / 150) * 8;
+              ball.vx += Math.cos(angle) * force;
+              ball.vy += Math.sin(angle) * force;
+            }
+          });
+        };
+
+        this.canvas.addEventListener('pointerdown', (event) => {
+          kickBalls(event.clientX, event.clientY);
+        });
+      }
+    }
+
+    if (!customElements.get('bouncy-balls-{{ ai_gen_id }}')) {
+      customElements.define('bouncy-balls-{{ ai_gen_id }}', BouncyBalls{{ ai_gen_id }});
+    }
+  })();
+</script>
+
+<script>
+  (function() {
+    var highlights = document.querySelectorAll('.ned-highlight');
+    if (!highlights.length) return;
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('ned-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    highlights.forEach(function(el) {
+      observer.observe(el);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Bouncy balls",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "gradient_percent",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Gradient balls %",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "height_preset",
+      "label": "Height preset",
+      "options": [
+        {
+          "value": "banner",
+          "label": "Banner (luxury, not huge)"
+        },
+        {
+          "value": "compact",
+          "label": "Compact"
+        },
+        {
+          "value": "hero",
+          "label": "Hero"
+        },
+        {
+          "value": "custom",
+          "label": "Custom (use sliders)"
+        }
+      ],
+      "default": "banner"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "min": 150,
+      "max": 1000,
+      "step": 50,
+      "unit": "px",
+      "label": "Desktop height",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "min": 150,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "label": "Mobile minimum height",
+      "default": 150
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "select",
+      "id": "background_fit",
+      "label": "Background fit",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Contain (no crop)"
+        },
+        {
+          "value": "cover",
+          "label": "Cover (may crop)"
+        }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#16213A"
+    },
+    {
+      "type": "checkbox",
+      "id": "white_mode",
+      "label": "Use white background",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 70,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Bouncy balls"
+    },
+    {
+      "type": "header",
+      "content": "Ball colors"
+    },
+    {
+      "type": "color",
+      "id": "ball_color_1",
+      "label": "Ball color 1",
+      "default": "#FCA311"
+    },
+    {
+      "type": "color",
+      "id": "ball_color_2",
+      "label": "Ball color 2",
+      "default": "#16213A"
+    },
+    {
+      "type": "color",
+      "id": "ball_color_3",
+      "label": "Ball color 3",
+      "default": "#1B2E9D"
+    },
+    {
+      "type": "color",
+      "id": "ball_color_4",
+      "label": "Ball color 4",
+      "default": "#0A1821"
+    },
+    {
+      "type": "header",
+      "content": "Ball size range"
+    },
+    {
+      "type": "range",
+      "id": "ball_radius_min",
+      "min": 4,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Min ball radius",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "ball_radius_max",
+      "min": 8,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Max ball radius",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "ball_count",
+      "min": 6,
+      "max": 12,
+      "step": 1,
+      "label": "Ball count",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "ball_size",
+      "label": "Ball size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "bounce_intensity",
+      "label": "Bounce intensity",
+      "options": [
+        {
+          "value": "calm",
+          "label": "Calm"
+        },
+        {
+          "value": "moderate",
+          "label": "Moderate"
+        },
+        {
+          "value": "energetic",
+          "label": "Energetic"
+        }
+      ],
+      "default": "moderate"
+    },
+    {
+      "type": "header",
+      "content": "Text content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "headline",
+      "label": "Headline",
+      "default": "INTERACTIVE DESIGN. LUXURY IN MOTION."
+    },
+    {
+      "type": "font_picker",
+      "id": "headline_font",
+      "label": "Headline font",
+      "default": "helvetica_n7"
+    },
+    {
+      "type": "range",
+      "id": "headline_size",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Headline size",
+      "default": 48
+    },
+    {
+      "type": "checkbox",
+      "id": "show_subtext",
+      "label": "Show subtext",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Experience the future of interactive luxury design"
+    },
+    {
+      "type": "range",
+      "id": "subtext_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtext size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Explore Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#FCA311"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bouncy balls"
+    }
+  ]
+}
+{% endschema %}

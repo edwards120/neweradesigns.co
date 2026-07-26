@@ -1,0 +1,788 @@
+{% doc %}
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-carousel-container-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.section_padding }}px 0;
+  }
+
+  .ai-carousel-track-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.panel_gap }}px;
+    will-change: transform;
+  }
+
+  .ai-carousel-panel-{{ ai_gen_id }} {
+    flex: 0 0 {{ block.settings.panel_width }}px;
+    height: {{ block.settings.panel_height }}px;
+    position: relative;
+    border-radius: {{ block.settings.panel_border_radius }}px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-carousel-panel-{{ ai_gen_id }}:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .ai-carousel-panel-bg-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: {{ block.settings.panel_bg_color }};
+  }
+
+  .ai-carousel-panel-bg-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-carousel-panel-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, {{ block.settings.overlay_opacity | divided_by: 100.0 }}) 100%
+    );
+  }
+
+  .ai-carousel-panel-content-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: {{ block.settings.content_padding }}px;
+    color: {{ block.settings.text_color }};
+    z-index: 2;
+  }
+
+  .ai-carousel-panel-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+    color: #000000 !important;
+  }
+
+  .ai-carousel-panel-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_size }}px;
+    margin: 0;
+    line-height: 1.4;
+    opacity: 0.9;
+    color: #000000 !important;
+  }
+
+  .ai-carousel-controls-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .ai-carousel-control-btn-{{ ai_gen_id }} {
+    background-color: {{ block.settings.control_bg_color }};
+    color: {{ block.settings.control_text_color }};
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-carousel-control-btn-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.control_hover_bg_color }};
+  }
+
+  .ai-carousel-control-btn-{{ ai_gen_id }} svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-carousel-panel-{{ ai_gen_id }} {
+      flex: 0 0 {{ block.settings.panel_width_mobile }}px;
+      height: {{ block.settings.panel_height_mobile }}px;
+    }
+
+    .ai-carousel-panel-title-{{ ai_gen_id }} {
+      color: #000000 !important;
+      font-size: {{ block.settings.title_size | times: 0.8 }}px;
+    }
+    
+    .ai-carousel-panel-description-{{ ai_gen_id }} {
+      color: #000000 !important;
+      font-size: {{ block.settings.description_size | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<carousel-slider-{{ ai_gen_id }}
+  class="ai-carousel-container-{{ ai_gen_id }}"
+  data-speed="{{ block.settings.scroll_speed }}"
+  data-autoplay="{{ block.settings.autoplay }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-carousel-track-{{ ai_gen_id }}">
+    {% for i in (1..8) %}
+      {% liquid
+        assign panel_enabled_key = 'panel_' | append: i | append: '_enabled'
+        assign panel_image_key = 'panel_' | append: i | append: '_image'
+        assign panel_title_key = 'panel_' | append: i | append: '_title'
+        assign panel_description_key = 'panel_' | append: i | append: '_description'
+        assign panel_link_key = 'panel_' | append: i | append: '_link'
+
+        assign panel_enabled = block.settings[panel_enabled_key]
+        assign panel_image = block.settings[panel_image_key]
+        assign panel_title = block.settings[panel_title_key]
+        assign panel_description = block.settings[panel_description_key]
+        assign panel_link = block.settings[panel_link_key]
+      %}
+
+      {% if panel_enabled %}
+        <a
+          href="{{ panel_link }}"
+          class="ai-carousel-panel-{{ ai_gen_id }}"
+          data-panel-index="{{ i }}"
+        >
+          <div class="ai-carousel-panel-bg-{{ ai_gen_id }}">
+            {% if panel_image %}
+              <img
+                src="{{ panel_image | image_url: width: 800 }}"
+                alt="{{ panel_title | escape }}"
+                loading="lazy"
+                width="800"
+                height="600"
+              >
+            {% else %}
+              {{ 'image' | placeholder_svg_tag }}
+            {% endif %}
+          </div>
+          <div class="ai-carousel-panel-overlay-{{ ai_gen_id }}"></div>
+          <div class="ai-carousel-panel-content-{{ ai_gen_id }}">
+            {% if panel_title != blank %}
+              <h3 class="ai-carousel-panel-title-{{ ai_gen_id }}">{{ panel_title }}</h3>
+            {% endif %}
+            {% if panel_description != blank %}
+              <p class="ai-carousel-panel-description-{{ ai_gen_id }}">{{ panel_description }}</p>
+            {% endif %}
+          </div>
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  {% if block.settings.show_controls %}
+    <div class="ai-carousel-controls-{{ ai_gen_id }}">
+      <button
+        class="ai-carousel-control-btn-{{ ai_gen_id }}"
+        data-action="pause"
+        aria-label="Pause carousel"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="6" y="4" width="4" height="16"></rect>
+          <rect x="14" y="4" width="4" height="16"></rect>
+        </svg>
+      </button>
+      <button
+        class="ai-carousel-control-btn-{{ ai_gen_id }}"
+        data-action="play"
+        aria-label="Play carousel"
+        style="display: none;"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+      </button>
+    </div>
+  {% endif %}
+</carousel-slider-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class CarouselSlider{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.track = this.querySelector('.ai-carousel-track-{{ ai_gen_id }}');
+        this.panels = this.querySelectorAll('.ai-carousel-panel-{{ ai_gen_id }}');
+        this.pauseBtn = this.querySelector('[data-action="pause"]');
+        this.playBtn = this.querySelector('[data-action="play"]');
+        this.speed = parseFloat(this.dataset.speed) || 1;
+        this.autoplay = this.dataset.autoplay === 'true';
+        this.isPaused = false;
+        this.position = 0;
+        this.animationId = null;
+      }
+
+      connectedCallback() {
+        if (this.panels.length === 0) return;
+
+        this.clonePanels();
+        this.setupEventListeners();
+        
+        if (this.autoplay) {
+          this.startAnimation();
+        }
+      }
+
+      clonePanels() {
+        const panelsArray = Array.from(this.panels);
+        panelsArray.forEach(panel => {
+          const clone = panel.cloneNode(true);
+          this.track.appendChild(clone);
+        });
+        panelsArray.forEach(panel => {
+          const clone = panel.cloneNode(true);
+          this.track.appendChild(clone);
+        });
+      }
+
+      setupEventListeners() {
+        if (this.pauseBtn) {
+          this.pauseBtn.addEventListener('click', () => this.pause());
+        }
+        if (this.playBtn) {
+          this.playBtn.addEventListener('click', () => this.play());
+        }
+
+        this.track.addEventListener('mouseenter', () => {
+          if (this.autoplay && !this.isPaused) {
+            this.pause();
+          }
+        });
+
+        this.track.addEventListener('mouseleave', () => {
+          if (this.autoplay && this.isPaused) {
+            this.play();
+          }
+        });
+      }
+
+      startAnimation() {
+        const animate = () => {
+          if (!this.isPaused) {
+            this.position -= this.speed;
+            
+            const firstPanel = this.track.querySelector('.ai-carousel-panel-{{ ai_gen_id }}');
+            const panelWidth = firstPanel.offsetWidth;
+            const gap = {{ block.settings.panel_gap }};
+            const totalWidth = panelWidth + gap;
+            
+            if (Math.abs(this.position) >= totalWidth * this.panels.length) {
+              this.position = 0;
+            }
+            
+            this.track.style.transform = `translateX(${this.position}px)`;
+          }
+          
+          this.animationId = requestAnimationFrame(animate);
+        };
+        
+        this.animationId = requestAnimationFrame(animate);
+      }
+
+      pause() {
+        this.isPaused = true;
+        if (this.pauseBtn) this.pauseBtn.style.display = 'none';
+        if (this.playBtn) this.playBtn.style.display = 'flex';
+      }
+
+      play() {
+        this.isPaused = false;
+        if (this.pauseBtn) this.pauseBtn.style.display = 'flex';
+        if (this.playBtn) this.playBtn.style.display = 'none';
+      }
+
+      disconnectedCallback() {
+        if (this.animationId) {
+          cancelAnimationFrame(this.animationId);
+        }
+      }
+    }
+
+    customElements.define('carousel-slider-{{ ai_gen_id }}', CarouselSlider{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Continuous carousel",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#14213d"
+    },
+    {
+      "type": "header",
+      "content": "Carousel settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "label": "Scroll speed",
+      "min": 0.5,
+      "max": 5,
+      "step": 0.5,
+      "default": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "show_controls",
+      "label": "Show play/pause controls",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "control_bg_color",
+      "label": "Control background",
+      "default": "#fca311"
+    },
+    {
+      "type": "color",
+      "id": "control_text_color",
+      "label": "Control icon color",
+      "default": "#14213d"
+    },
+    {
+      "type": "color",
+      "id": "control_hover_bg_color",
+      "label": "Control hover background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Panel style"
+    },
+    {
+      "type": "range",
+      "id": "panel_width",
+      "label": "Panel width (desktop)",
+      "min": 200,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "panel_height",
+      "label": "Panel height (desktop)",
+      "min": 200,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "panel_width_mobile",
+      "label": "Panel width (mobile)",
+      "min": 200,
+      "max": 400,
+      "step": 20,
+      "unit": "px",
+      "default": 280
+    },
+    {
+      "type": "range",
+      "id": "panel_height_mobile",
+      "label": "Panel height (mobile)",
+      "min": 200,
+      "max": 500,
+      "step": 20,
+      "unit": "px",
+      "default": 360
+    },
+    {
+      "type": "range",
+      "id": "panel_gap",
+      "label": "Gap between panels",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "panel_border_radius",
+      "label": "Panel border radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "panel_bg_color",
+      "label": "Panel background",
+      "default": "#f3f3f3"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Panel content"
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "label": "Content padding",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Panel 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "panel_1_enabled",
+      "label": "Enable panel 1",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "panel_1_title",
+      "label": "Title",
+      "default": "Panel 1"
+    },
+    {
+      "type": "textarea",
+      "id": "panel_1_description",
+      "label": "Description",
+      "default": "Click to explore"
+    },
+    {
+      "type": "url",
+      "id": "panel_1_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Panel 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "panel_2_enabled",
+      "label": "Enable panel 2",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "panel_2_title",
+      "label": "Title",
+      "default": "Panel 2"
+    },
+    {
+      "type": "textarea",
+      "id": "panel_2_description",
+      "label": "Description",
+      "default": "Click to explore"
+    },
+    {
+      "type": "url",
+      "id": "panel_2_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Panel 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "panel_3_enabled",
+      "label": "Enable panel 3",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "panel_3_title",
+      "label": "Title",
+      "default": "Panel 3"
+    },
+    {
+      "type": "textarea",
+      "id": "panel_3_description",
+      "label": "Description",
+      "default": "Click to explore"
+    },
+    {
+      "type": "url",
+      "id": "panel_3_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Panel 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "panel_4_enabled",
+      "label": "Enable panel 4",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_4_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "panel_4_title",
+      "label": "Title",
+      "default": "Panel 4"
+    },
+    {
+      "type": "textarea",
+      "id": "panel_4_description",
+      "label": "Description",
+      "default": "Click to explore"
+    },
+    {
+      "type": "url",
+      "id": "panel_4_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Panel 5"
+    },
+    {
+      "type": "checkbox",
+      "id": "panel_5_enabled",
+      "label": "Enable panel 5",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_5_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "panel_5_title",
+      "label": "Title",
+      "default": "Panel 5"
+    },
+    {
+      "type": "textarea",
+      "id": "panel_5_description",
+      "label": "Description",
+      "default": "Click to explore"
+    },
+    {
+      "type": "url",
+      "id": "panel_5_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Panel 6"
+    },
+    {
+      "type": "checkbox",
+      "id": "panel_6_enabled",
+      "label": "Enable panel 6",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_6_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "panel_6_title",
+      "label": "Title",
+      "default": "Panel 6"
+    },
+    {
+      "type": "textarea",
+      "id": "panel_6_description",
+      "label": "Description",
+      "default": "Click to explore"
+    },
+    {
+      "type": "url",
+      "id": "panel_6_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Panel 7"
+    },
+    {
+      "type": "checkbox",
+      "id": "panel_7_enabled",
+      "label": "Enable panel 7",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_7_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "panel_7_title",
+      "label": "Title",
+      "default": "Panel 7"
+    },
+    {
+      "type": "textarea",
+      "id": "panel_7_description",
+      "label": "Description",
+      "default": "Click to explore"
+    },
+    {
+      "type": "url",
+      "id": "panel_7_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Panel 8"
+    },
+    {
+      "type": "checkbox",
+      "id": "panel_8_enabled",
+      "label": "Enable panel 8",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_8_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "panel_8_title",
+      "label": "Title",
+      "default": "Panel 8"
+    },
+    {
+      "type": "textarea",
+      "id": "panel_8_description",
+      "label": "Description",
+      "default": "Click to explore"
+    },
+    {
+      "type": "url",
+      "id": "panel_8_link",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Continuous carousel"
+    }
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,534 @@
+{% doc %}
+  @prompt
+    make a drop down menu mathcing the branding the entire site. With all the pages need make editable for future use. , place the logo in the middle, and make it more luxury. Please this is ugly, this look so much better. Can you please  PLACE THE ARROW TO THE Left of the page 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-dropdown-menu-{{ ai_gen_id }} {
+    display: block;
+    position: relative;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+  }
+
+  .ai-dropdown-button-{{ ai_gen_id }} {
+    width: 100%;
+    padding: 20px 28px;
+    background: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    border-radius: 0;
+    font-size: {{ block.settings.font_size }}px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-dropdown-button-{{ ai_gen_id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: {{ block.settings.button_hover_bg_color }};
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+  }
+
+  .ai-dropdown-button-{{ ai_gen_id }}:hover::before {
+    left: 0;
+  }
+
+  .ai-dropdown-button-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.button_hover_text_color }};
+  }
+
+  .ai-dropdown-button-content-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ai-dropdown-logo-{{ ai_gen_id }} {
+    height: {{ block.settings.logo_height }}px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .ai-dropdown-button-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.font_size }}px;
+    font-weight: 300;
+    letter-spacing: 2px;
+  }
+
+  .ai-dropdown-icon-{{ ai_gen_id }} {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    stroke-width: 1.5;
+    order: -1;
+  }
+
+  .ai-dropdown-icon-{{ ai_gen_id }}.open {
+    transform: rotate(180deg);
+  }
+
+  .ai-dropdown-content-{{ ai_gen_id }} {
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 0;
+    width: 100%;
+    background-color: {{ block.settings.dropdown_bg_color }};
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    max-height: 500px;
+    overflow-y: auto;
+    border-top: 1px solid {{ block.settings.divider_color }};
+  }
+
+  .ai-dropdown-content-{{ ai_gen_id }}.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .ai-dropdown-link-{{ ai_gen_id }} {
+    display: block;
+    padding: 18px 28px;
+    color: {{ block.settings.link_text_color }};
+    text-decoration: none;
+    font-size: {{ block.settings.link_font_size }}px;
+    font-weight: 300;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-bottom: 1px solid {{ block.settings.divider_color }};
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-dropdown-link-{{ ai_gen_id }}::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: {{ block.settings.link_hover_bg_color }};
+    transform: scaleY(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ai-dropdown-link-{{ ai_gen_id }}:last-child {
+    border-bottom: none;
+  }
+
+  .ai-dropdown-link-{{ ai_gen_id }}:hover {
+    background-color: rgba(252, 163, 17, 0.05);
+    color: {{ block.settings.link_hover_text_color }};
+    padding-left: 36px;
+  }
+
+  .ai-dropdown-link-{{ ai_gen_id }}:hover::before {
+    transform: scaleY(1);
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-dropdown-menu-{{ ai_gen_id }} {
+      width: 100%;
+    }
+
+    .ai-dropdown-button-{{ ai_gen_id }} {
+      padding: 16px 20px;
+    }
+
+    .ai-dropdown-logo-{{ ai_gen_id }} {
+      height: {{ block.settings.logo_height | times: 0.8 }}px;
+    }
+
+    .ai-dropdown-button-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.font_size | times: 0.85 }}px;
+      letter-spacing: 1px;
+    }
+
+    .ai-dropdown-link-{{ ai_gen_id }} {
+      font-size: {{ block.settings.link_font_size | times: 0.85 }}px;
+      padding: 14px 20px;
+      letter-spacing: 1px;
+    }
+
+    .ai-dropdown-link-{{ ai_gen_id }}:hover {
+      padding-left: 28px;
+    }
+  }
+{% endstyle %}
+
+<dropdown-menu-{{ ai_gen_id }} class="ai-dropdown-menu-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <button
+    class="ai-dropdown-button-{{ ai_gen_id }}"
+    aria-expanded="false"
+    aria-haspopup="true"
+  >
+    <div class="ai-dropdown-button-content-{{ ai_gen_id }}">
+      <svg
+        class="ai-dropdown-icon-{{ ai_gen_id }}"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+
+      {% if block.settings.logo != blank %}
+        <img
+          src="{{ block.settings.logo | image_url: width: 400 }}"
+          alt="{{ block.settings.button_label }}"
+          class="ai-dropdown-logo-{{ ai_gen_id }}"
+          width="400"
+          height="{{ block.settings.logo_height }}"
+          loading="lazy"
+        >
+      {% endif %}
+      
+      {% if block.settings.show_label %}
+        <span class="ai-dropdown-button-text-{{ ai_gen_id }}">
+          {{ block.settings.button_label }}
+        </span>
+      {% endif %}
+    </div>
+  </button>
+
+  <div class="ai-dropdown-content-{{ ai_gen_id }}">
+    {% for i in (1..10) %}
+      {% liquid
+        assign link_label_key = 'link_' | append: i | append: '_label'
+        assign link_url_key = 'link_' | append: i | append: '_url'
+        assign link_label = block.settings[link_label_key]
+        assign link_url = block.settings[link_url_key]
+      %}
+
+      {% if link_label != blank %}
+        <a
+          href="{{ link_url }}"
+          class="ai-dropdown-link-{{ ai_gen_id }}"
+        >
+          {{ link_label }}
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</dropdown-menu-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class DropdownMenu{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.button = this.querySelector('.ai-dropdown-button-{{ ai_gen_id }}');
+        this.content = this.querySelector('.ai-dropdown-content-{{ ai_gen_id }}');
+        this.icon = this.querySelector('.ai-dropdown-icon-{{ ai_gen_id }}');
+        this.isOpen = false;
+
+        this.button.addEventListener('click', this.toggleDropdown.bind(this));
+        document.addEventListener('click', this.handleOutsideClick.bind(this));
+      }
+
+      toggleDropdown(event) {
+        event.stopPropagation();
+        this.isOpen = !this.isOpen;
+
+        if (this.isOpen) {
+          this.content.classList.add('open');
+          this.icon.classList.add('open');
+          this.button.setAttribute('aria-expanded', 'true');
+        } else {
+          this.content.classList.remove('open');
+          this.icon.classList.remove('open');
+          this.button.setAttribute('aria-expanded', 'false');
+        }
+      }
+
+      handleOutsideClick(event) {
+        if (!this.contains(event.target) && this.isOpen) {
+          this.content.classList.remove('open');
+          this.icon.classList.remove('open');
+          this.button.setAttribute('aria-expanded', 'false');
+          this.isOpen = false;
+        }
+      }
+
+      disconnectedCallback() {
+        document.removeEventListener('click', this.handleOutsideClick.bind(this));
+      }
+    }
+
+    customElements.define('dropdown-menu-{{ ai_gen_id }}', DropdownMenu{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Dropdown menu",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo height",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_label",
+      "label": "Show label text",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Menu"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Background color",
+      "default": "#14213d"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Hover background color",
+      "default": "#fca311"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Hover text color",
+      "default": "#14213d"
+    },
+    {
+      "type": "header",
+      "content": "Dropdown"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "link_text_color",
+      "label": "Link text color",
+      "default": "#121212"
+    },
+    {
+      "type": "range",
+      "id": "link_font_size",
+      "label": "Link font size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "color",
+      "id": "link_hover_bg_color",
+      "label": "Link hover accent",
+      "default": "#fca311"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_text_color",
+      "label": "Link hover text color",
+      "default": "#fca311"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider color",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Menu links"
+    },
+    {
+      "type": "text",
+      "id": "link_1_label",
+      "label": "Link 1 label",
+      "default": "Home"
+    },
+    {
+      "type": "url",
+      "id": "link_1_url",
+      "label": "Link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_2_label",
+      "label": "Link 2 label",
+      "default": "About"
+    },
+    {
+      "type": "url",
+      "id": "link_2_url",
+      "label": "Link 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_3_label",
+      "label": "Link 3 label",
+      "default": "Services"
+    },
+    {
+      "type": "url",
+      "id": "link_3_url",
+      "label": "Link 3 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_4_label",
+      "label": "Link 4 label",
+      "default": "Portfolio"
+    },
+    {
+      "type": "url",
+      "id": "link_4_url",
+      "label": "Link 4 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_5_label",
+      "label": "Link 5 label",
+      "default": "Contact"
+    },
+    {
+      "type": "url",
+      "id": "link_5_url",
+      "label": "Link 5 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_6_label",
+      "label": "Link 6 label"
+    },
+    {
+      "type": "url",
+      "id": "link_6_url",
+      "label": "Link 6 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_7_label",
+      "label": "Link 7 label"
+    },
+    {
+      "type": "url",
+      "id": "link_7_url",
+      "label": "Link 7 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_8_label",
+      "label": "Link 8 label"
+    },
+    {
+      "type": "url",
+      "id": "link_8_url",
+      "label": "Link 8 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_9_label",
+      "label": "Link 9 label"
+    },
+    {
+      "type": "url",
+      "id": "link_9_url",
+      "label": "Link 9 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_10_label",
+      "label": "Link 10 label"
+    },
+    {
+      "type": "url",
+      "id": "link_10_url",
+      "label": "Link 10 URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dropdown menu"
+    }
+  ]
+}
+{% endschema %}

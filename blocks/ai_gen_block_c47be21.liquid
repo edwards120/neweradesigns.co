@@ -1,0 +1,301 @@
+{% doc %}
+  @prompt
+    create animated halftones, that react when the users interacts with it then goes back to normal (in its orignal postion slowly. with a zero gravity effect. Make the halftones small. Well balance and not to much gaps or spacing in between. high quality, can you make the interaction radius smaller like 2-10. this is amazing. Love this.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-halftone-container-{{ ai_gen_id }} {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: {{ block.settings.container_height }}px;
+    background-color: {{ block.settings.background_color }};
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .ai-halftone-canvas-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-halftone-container-{{ ai_gen_id }} {
+      height: {{ block.settings.container_height | times: 0.7 }}px;
+    }
+  }
+{% endstyle %}
+
+<interactive-halftone-{{ ai_gen_id }}
+  class="ai-halftone-container-{{ ai_gen_id }}"
+  data-dot-size="{{ block.settings.dot_size }}"
+  data-spacing="{{ block.settings.spacing }}"
+  data-primary-color="{{ block.settings.primary_color }}"
+  data-secondary-color="{{ block.settings.secondary_color }}"
+  data-interaction-radius="{{ block.settings.interaction_radius }}"
+  data-return-speed="{{ block.settings.return_speed }}"
+  {{ block.shopify_attributes }}
+>
+  <canvas class="ai-halftone-canvas-{{ ai_gen_id }}"></canvas>
+</interactive-halftone-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class InteractiveHalftone{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.canvas = this.querySelector('.ai-halftone-canvas-{{ ai_gen_id }}');
+        this.ctx = this.canvas.getContext('2d');
+        this.dots = [];
+        this.mouse = { x: null, y: null };
+        this.animationId = null;
+      }
+
+      connectedCallback() {
+        this.dotSize = parseFloat(this.dataset.dotSize);
+        this.spacing = parseFloat(this.dataset.spacing);
+        this.primaryColor = this.dataset.primaryColor;
+        this.secondaryColor = this.dataset.secondaryColor;
+        this.interactionRadius = parseFloat(this.dataset.interactionRadius);
+        this.returnSpeed = parseFloat(this.dataset.returnSpeed);
+
+        this.setupCanvas();
+        this.createDots();
+        this.setupEventListeners();
+        this.animate();
+      }
+
+      disconnectedCallback() {
+        if (this.animationId) {
+          cancelAnimationFrame(this.animationId);
+        }
+        window.removeEventListener('resize', this.handleResize);
+      }
+
+      setupCanvas() {
+        const rect = this.getBoundingClientRect();
+        this.canvas.width = rect.width;
+        this.canvas.height = rect.height;
+      }
+
+      createDots() {
+        this.dots = [];
+        const cols = Math.ceil(this.canvas.width / this.spacing);
+        const rows = Math.ceil(this.canvas.height / this.spacing);
+
+        for (let i = 0; i < cols; i++) {
+          for (let j = 0; j < rows; j++) {
+            const x = i * this.spacing + this.spacing / 2;
+            const y = j * this.spacing + this.spacing / 2;
+            
+            this.dots.push({
+              x: x,
+              y: y,
+              originalX: x,
+              originalY: y,
+              vx: 0,
+              vy: 0,
+              size: this.dotSize,
+              color: Math.random() > 0.5 ? this.primaryColor : this.secondaryColor
+            });
+          }
+        }
+      }
+
+      setupEventListeners() {
+        this.handleMouseMove = this.handleMouseMove.bind(this);
+        this.handleMouseLeave = this.handleMouseLeave.bind(this);
+        this.handleResize = this.handleResize.bind(this);
+
+        this.addEventListener('mousemove', this.handleMouseMove);
+        this.addEventListener('mouseleave', this.handleMouseLeave);
+        this.addEventListener('touchmove', this.handleTouchMove.bind(this));
+        this.addEventListener('touchend', this.handleMouseLeave);
+        window.addEventListener('resize', this.handleResize);
+      }
+
+      handleMouseMove(e) {
+        const rect = this.getBoundingClientRect();
+        this.mouse.x = e.clientX - rect.left;
+        this.mouse.y = e.clientY - rect.top;
+      }
+
+      handleTouchMove(e) {
+        e.preventDefault();
+        const rect = this.getBoundingClientRect();
+        const touch = e.touches[0];
+        this.mouse.x = touch.clientX - rect.left;
+        this.mouse.y = touch.clientY - rect.top;
+      }
+
+      handleMouseLeave() {
+        this.mouse.x = null;
+        this.mouse.y = null;
+      }
+
+      handleResize() {
+        this.setupCanvas();
+        this.createDots();
+      }
+
+      updateDots() {
+        this.dots.forEach(dot => {
+          if (this.mouse.x !== null && this.mouse.y !== null) {
+            const dx = this.mouse.x - dot.x;
+            const dy = this.mouse.y - dot.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < this.interactionRadius) {
+              const force = (this.interactionRadius - distance) / this.interactionRadius;
+              const angle = Math.atan2(dy, dx);
+              const pushStrength = force * 15;
+              
+              dot.vx -= Math.cos(angle) * pushStrength;
+              dot.vy -= Math.sin(angle) * pushStrength;
+            }
+          }
+
+          const returnForceX = (dot.originalX - dot.x) * this.returnSpeed;
+          const returnForceY = (dot.originalY - dot.y) * this.returnSpeed;
+          
+          dot.vx += returnForceX;
+          dot.vy += returnForceY;
+
+          dot.vx *= 0.85;
+          dot.vy *= 0.85;
+
+          dot.x += dot.vx;
+          dot.y += dot.vy;
+        });
+      }
+
+      drawDots() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.dots.forEach(dot => {
+          this.ctx.beginPath();
+          this.ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2);
+          this.ctx.fillStyle = dot.color;
+          this.ctx.fill();
+        });
+      }
+
+      animate() {
+        this.updateDots();
+        this.drawDots();
+        this.animationId = requestAnimationFrame(() => this.animate());
+      }
+    }
+
+    customElements.define('interactive-halftone-{{ ai_gen_id }}', InteractiveHalftone{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Interactive halftones",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_height",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Height",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Halftone dots"
+    },
+    {
+      "type": "range",
+      "id": "dot_size",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Dot size",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "spacing",
+      "min": 8,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Dot spacing",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary dot color",
+      "default": "#FCA311"
+    },
+    {
+      "type": "color",
+      "id": "secondary_color",
+      "label": "Secondary dot color",
+      "default": "#14213D"
+    },
+    {
+      "type": "header",
+      "content": "Interaction"
+    },
+    {
+      "type": "range",
+      "id": "interaction_radius",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Interaction radius",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "return_speed",
+      "min": 0,
+      "max": 0.5,
+      "step": 0.1,
+      "label": "Return speed",
+      "default": 0.1
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Interactive halftones"
+    }
+  ]
+}
+{% endschema %}

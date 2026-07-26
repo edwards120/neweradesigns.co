@@ -1,0 +1,435 @@
+{% doc %}
+  @prompt
+    A 3D interactive model viewer section using Google's model-viewer web component.
+    Supports GLB/GLTF model URLs, auto-rotate, camera controls, and New Era Designs brand colors.
+{% enddoc %}
+
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  /* ── New Era Designs Brand Colors ──
+     Primary Dark : #0A0A0A
+     Accent Gold  : #C8A951
+     White        : #FFFFFF
+  */
+
+  .ned-model-viewer-wrap-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  .ned-model-viewer-container-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: {{ block.settings.viewer_height }}px;
+    background-color: {{ block.settings.background_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+  }
+
+  .ned-model-viewer-container-{{ ai_gen_id }} model-viewer {
+    width: 100%;
+    height: 100%;
+    display: block;
+    --progress-bar-color: #C8A951;
+    --progress-bar-height: 3px;
+  }
+
+  /* Controls bar */
+  .ned-mv-controls-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    background: rgba(10,10,10,0.75);
+    border: 1px solid rgba(200,169,81,0.35);
+    padding: 8px 14px;
+    border-radius: 30px;
+    z-index: 10;
+    backdrop-filter: blur(6px);
+  }
+
+  .ned-mv-btn-{{ ai_gen_id }} {
+    background-color: transparent;
+    color: #C8A951;
+    border: 1px solid #C8A951;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .ned-mv-btn-{{ ai_gen_id }}:hover {
+    background-color: #C8A951;
+    color: #0A0A0A;
+    transform: scale(1.1);
+  }
+
+  .ned-mv-btn-{{ ai_gen_id }} svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  /* Loading overlay */
+  .ned-mv-loading-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #C8A951;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    z-index: 5;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .ned-mv-loading-{{ ai_gen_id }}::after {
+    content: '';
+    display: block;
+    margin: 10px auto 0;
+    width: 28px;
+    height: 28px;
+    border: 2px solid rgba(200,169,81,0.25);
+    border-top-color: #C8A951;
+    border-radius: 50%;
+    animation: ned-spin-{{ ai_gen_id }} 0.8s linear infinite;
+  }
+
+  @keyframes ned-spin-{{ ai_gen_id }} {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Label / title badge */
+  .ned-mv-label-{{ ai_gen_id }} {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: rgba(10,10,10,0.8);
+    border-left: 3px solid #C8A951;
+    color: #FFFFFF;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 2px;
+    z-index: 10;
+    backdrop-filter: blur(4px);
+  }
+
+  /* Hotspot */
+  button.ned-hotspot-{{ ai_gen_id }} {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #C8A951;
+    background-color: rgba(10,10,10,0.8);
+    box-shadow: 0 0 8px rgba(200,169,81,0.6);
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .ned-model-viewer-wrap-{{ ai_gen_id }} {
+      width: 100% !important;
+    }
+    .ned-model-viewer-container-{{ ai_gen_id }} {
+      height: {{ block.settings.mobile_height }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ned-model-viewer-wrap-{{ ai_gen_id }}" id="ned-mv-wrap-{{ ai_gen_id }}">
+  <div class="ned-model-viewer-container-{{ ai_gen_id }}">
+
+    <!-- Label badge -->
+    {% if block.settings.model_label != blank %}
+      <div class="ned-mv-label-{{ ai_gen_id }}">{{ block.settings.model_label }}</div>
+    {% endif %}
+
+    <!-- Loading state -->
+    <div class="ned-mv-loading-{{ ai_gen_id }}" id="ned-loading-{{ ai_gen_id }}">Loading</div>
+
+    <!-- model-viewer component -->
+    <model-viewer
+      id="ned-mv-{{ ai_gen_id }}"
+      src="{{ block.settings.model_url }}"
+      {% if block.settings.poster_url != blank %}poster="{{ block.settings.poster_url }}"{% endif %}
+      alt="{{ block.settings.model_alt | default: '3D Model' }}"
+      {% if block.settings.auto_rotate %}auto-rotate auto-rotate-delay="500"{% endif %}
+      rotation-per-second="{{ block.settings.rotation_speed }}deg"
+      camera-controls
+      touch-action="pan-y"
+      shadow-intensity="{{ block.settings.shadow_intensity }}"
+      shadow-softness="0.7"
+      exposure="{{ block.settings.exposure }}"
+      environment-image="{{ block.settings.environment_image | default: 'neutral' }}"
+      interaction-prompt="none"
+          camera-orbit="0deg 75deg 70%"
+      style="background-color: transparent;">
+    </model-viewer>
+
+    <!-- Controls -->
+    <div class="ned-mv-controls-{{ ai_gen_id }}">
+      <!-- Rotate toggle -->
+      <button class="ned-mv-btn-{{ ai_gen_id }}" id="ned-rotate-btn-{{ ai_gen_id }}" aria-label="Toggle rotation" title="Toggle Auto-Rotate">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+      </button>
+      <!-- Zoom in -->
+      <button class="ned-mv-btn-{{ ai_gen_id }}" id="ned-zoomin-btn-{{ ai_gen_id }}" aria-label="Zoom in" title="Zoom In">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zM12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z"/></svg>
+      </button>
+      <!-- Zoom out -->
+      <button class="ned-mv-btn-{{ ai_gen_id }}" id="ned-zoomout-btn-{{ ai_gen_id }}" aria-label="Zoom out" title="Zoom Out">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zM7 9h5v1H7z"/></svg>
+      </button>
+      <!-- Reset camera -->
+      <button class="ned-mv-btn-{{ ai_gen_id }}" id="ned-reset-btn-{{ ai_gen_id }}" aria-label="Reset camera" title="Reset View">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Load model-viewer script once -->
+<script>
+  (function() {
+    if (!customElements.get('model-viewer')) {
+      var s = document.createElement('script');
+      s.type = 'module';
+      s.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js';
+      document.head.appendChild(s);
+    }
+  })();
+</script>
+
+<script>
+(function() {
+  function initNedViewer() {
+    var mv      = document.getElementById('ned-mv-{{ ai_gen_id }}');
+    var loading = document.getElementById('ned-loading-{{ ai_gen_id }}');
+    var rotBtn  = document.getElementById('ned-rotate-btn-{{ ai_gen_id }}');
+    var zinBtn  = document.getElementById('ned-zoomin-btn-{{ ai_gen_id }}');
+    var zoutBtn = document.getElementById('ned-zoomout-btn-{{ ai_gen_id }}');
+    var rstBtn  = document.getElementById('ned-reset-btn-{{ ai_gen_id }}');
+
+    if (!mv) return;
+
+    var defaultCameraOrbit  = null;
+    var defaultCameraTarget = null;
+    var isRotating = {{ block.settings.auto_rotate | default: true }};
+
+    // Hide loading spinner once model is loaded
+    mv.addEventListener('load', function() {
+      if (loading) loading.style.display = 'none';
+      defaultCameraOrbit  = mv.getCameraOrbit();
+      defaultCameraTarget = mv.getCameraTarget();
+    });
+
+    // Rotate toggle
+    if (rotBtn) {
+      rotBtn.addEventListener('click', function() {
+        isRotating = !isRotating;
+        if (isRotating) {
+          mv.setAttribute('auto-rotate', '');
+          rotBtn.style.color = '#C8A951';
+          rotBtn.style.borderColor = '#C8A951';
+        } else {
+          mv.removeAttribute('auto-rotate');
+          rotBtn.style.color = '#555';
+          rotBtn.style.borderColor = '#555';
+        }
+      });
+    }
+
+    // Zoom in (decrease FOV)
+    if (zinBtn) {
+      zinBtn.addEventListener('click', function() {
+        var orbit = mv.getCameraOrbit();
+        mv.cameraOrbit = orbit.theta + 'rad ' + orbit.phi + 'rad ' + (orbit.radius * 0.85) + 'm';
+      });
+    }
+
+    // Zoom out (increase FOV)
+    if (zoutBtn) {
+      zoutBtn.addEventListener('click', function() {
+        var orbit = mv.getCameraOrbit();
+        mv.cameraOrbit = orbit.theta + 'rad ' + orbit.phi + 'rad ' + (orbit.radius * 1.15) + 'm';
+      });
+    }
+
+    // Reset camera
+    if (rstBtn) {
+      rstBtn.addEventListener('click', function() {
+        mv.cameraOrbit = '0deg 75deg 70%';
+        mv.cameraTarget = 'auto auto auto';
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNedViewer);
+  } else {
+    initNedViewer();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "3D Model Viewer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Model"
+    },
+    {
+      "type": "text",
+      "id": "model_url",
+      "label": "Model URL (.glb or .gltf)",
+      "default": "https://cdn.shopify.com/3d/models/671178fd2179fd6a/Auraria_Wayfinding.glb",
+      "info": "Enter the full CDN URL to your GLB or GLTF model file."
+    },
+    {
+      "type": "text",
+      "id": "poster_url",
+      "label": "Poster image URL (optional)",
+      "info": "Shown while the model loads. Use a PNG or JPG."
+    },
+    {
+      "type": "text",
+      "id": "model_alt",
+      "label": "Model alt text",
+      "default": "Interactive 3D model"
+    },
+    {
+      "type": "text",
+      "id": "model_label",
+      "label": "Label / badge text",
+      "default": "New Era Designs",
+      "info": "Short label shown in the top-left corner of the viewer."
+    },
+    {
+      "type": "header",
+      "content": "Viewer Size"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width (%)",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "viewer_height",
+      "label": "Desktop height (px)",
+      "min": 300,
+      "max": 900,
+      "step": 10,
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Mobile height (px)",
+      "min": 200,
+      "max": 600,
+      "step": 10,
+      "default": 350
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Corner radius (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#0A0A0A"
+    },
+    {
+      "type": "header",
+      "content": "Lighting"
+    },
+    {
+      "type": "range",
+      "id": "shadow_intensity",
+      "label": "Shadow intensity",
+      "min": 0,
+      "max": 2,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "exposure",
+      "label": "Exposure",
+      "min": 0,
+      "max": 2,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "environment_image",
+      "label": "Environment lighting",
+      "options": [
+        { "value": "neutral",  "label": "Neutral" },
+        { "value": "legacy",   "label": "Legacy" },
+        { "value": "commerce", "label": "Commerce" }
+      ],
+      "default": "neutral"
+    },
+    {
+      "type": "header",
+      "content": "Rotation"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_rotate",
+      "label": "Auto-rotate",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rotation_speed",
+      "label": "Rotation speed (deg/s)",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "default": 15
+    }
+  ],
+  "presets": [
+    {
+      "name": "3D Model Viewer"
+    }
+  ]
+}
+{% endschema %}

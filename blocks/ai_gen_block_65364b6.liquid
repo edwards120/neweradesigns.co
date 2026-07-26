@@ -1,0 +1,933 @@
+{% doc %}
+  @prompt
+    A section responsive for mobile and desktop, wanting to place a couple image of one product. Hero Product, able to place a video, and images, also can you make animation of balls bouncing in the framed section, allow me to change ball colors, can you place a backgorund image, and show the movement of balls going in random directions, the image and video, slideshow, if you click on it it should take me to the product page
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-hero-product-{{ ai_gen_id }} {
+    display: block;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    min-height: 500px;
+    padding: {{ block.settings.section_padding }}px 20px;
+  }
+
+  .ai-hero-product-background-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  .ai-hero-product-background-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: {{ block.settings.background_opacity | divided_by: 100.0 }};
+  }
+
+  .ai-hero-product-background-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-hero-product-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .ai-hero-product-content-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-hero-product-content-{{ ai_gen_id }} {
+      grid-template-columns: {% if block.settings.layout == 'image-left' %}1fr 1fr{% else %}1fr 1fr{% endif %};
+      gap: 60px;
+    }
+
+    .ai-hero-product-media-{{ ai_gen_id }} {
+      {% if block.settings.layout == 'image-right' %}
+        order: 2;
+      {% endif %}
+    }
+
+    .ai-hero-product-info-{{ ai_gen_id }} {
+      {% if block.settings.layout == 'image-right' %}
+        order: 1;
+      {% endif %}
+    }
+  }
+
+  .ai-hero-product-media-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+  }
+
+  .ai-hero-product-slideshow-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    border-radius: {{ block.settings.media_border_radius }}px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .ai-hero-product-slide-{{ ai_gen_id }} {
+    display: none;
+    width: 100%;
+  }
+
+  .ai-hero-product-slide-{{ ai_gen_id }}.active {
+    display: block;
+  }
+
+  .ai-hero-product-slide-{{ ai_gen_id }} img,
+  .ai-hero-product-slide-{{ ai_gen_id }} video {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .ai-hero-product-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ai-hero-product-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 300px;
+    max-height: 300px;
+  }
+
+  .ai-hero-product-empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .ai-hero-product-dots-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .ai-hero-product-dot-{{ ai_gen_id }} {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: {{ block.settings.text_color }};
+    opacity: 0.3;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-hero-product-dot-{{ ai_gen_id }}.active {
+    opacity: 1;
+  }
+
+  .ai-hero-product-info-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .ai-hero-product-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .ai-hero-product-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_size }}px;
+    color: {{ block.settings.text_color }};
+    line-height: 1.6;
+  }
+
+  .ai-hero-product-price-{{ ai_gen_id }} {
+    font-size: {{ block.settings.price_size }}px;
+    color: {{ block.settings.text_color }};
+    font-weight: 600;
+  }
+
+  .ai-hero-product-button-{{ ai_gen_id }} {
+    display: inline-block;
+    padding: 16px 32px;
+    background-color: {{ block.settings.button_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    text-align: center;
+  }
+
+  .ai-hero-product-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+  }
+
+  .ai-hero-product-balls-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .ai-hero-product-ball-{{ ai_gen_id }} {
+    position: absolute;
+    border-radius: 50%;
+    opacity: {{ block.settings.ball_opacity | divided_by: 100.0 }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-hero-product-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.title_size }}px * 0.7);
+    }
+
+    .ai-hero-product-description-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.description_size }}px * 0.9);
+    }
+
+    .ai-hero-product-price-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.price_size }}px * 0.9);
+    }
+  }
+{% endstyle %}
+
+<hero-product-{{ ai_gen_id }}
+  class="ai-hero-product-{{ ai_gen_id }}"
+  data-ball-count="{{ block.settings.ball_count }}"
+  data-ball-size="{{ block.settings.ball_size }}"
+  data-ball-speed="{{ block.settings.ball_speed }}"
+  data-ball-color-1="{{ block.settings.ball_color_1 }}"
+  data-ball-color-2="{{ block.settings.ball_color_2 }}"
+  data-ball-color-3="{{ block.settings.ball_color_3 }}"
+  data-product-url="{% if block.settings.product != blank %}{{ block.settings.product.url }}{% else %}{{ block.settings.button_link }}{% endif %}"
+  data-autoplay="{{ block.settings.autoplay_slideshow }}"
+  data-autoplay-speed="{{ block.settings.autoplay_speed }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-hero-product-background-{{ ai_gen_id }}">
+    {% if block.settings.background_image %}
+      <img
+        src="{{ block.settings.background_image | image_url: width: 2000 }}"
+        alt="{{ block.settings.background_image.alt | escape }}"
+        loading="lazy"
+      >
+    {% else %}
+      <div class="ai-hero-product-background-placeholder-{{ ai_gen_id }}"></div>
+    {% endif %}
+  </div>
+
+  {% if block.settings.enable_balls %}
+    <div class="ai-hero-product-balls-{{ ai_gen_id }}"></div>
+  {% endif %}
+
+  <div class="ai-hero-product-container-{{ ai_gen_id }}">
+    <div class="ai-hero-product-content-{{ ai_gen_id }}">
+      <div class="ai-hero-product-media-{{ ai_gen_id }}">
+        <div class="ai-hero-product-slideshow-{{ ai_gen_id }}">
+          {% assign has_media = false %}
+          
+          {% if block.settings.slide_1_type == 'image' and block.settings.slide_1_image %}
+            {% assign has_media = true %}
+            <div class="ai-hero-product-slide-{{ ai_gen_id }} active" data-slide="1">
+              <img
+                src="{{ block.settings.slide_1_image | image_url: width: 1200 }}"
+                alt="{{ block.settings.slide_1_image.alt | escape }}"
+                loading="lazy"
+                width="{{ block.settings.slide_1_image.width }}"
+                height="{{ block.settings.slide_1_image.height }}"
+              >
+            </div>
+          {% elsif block.settings.slide_1_type == 'video' and block.settings.slide_1_video != blank %}
+            {% assign has_media = true %}
+            <div class="ai-hero-product-slide-{{ ai_gen_id }} active" data-slide="1">
+              <video autoplay muted loop playsinline src="{{ block.settings.slide_1_video }}"></video>
+            </div>
+          {% endif %}
+
+          {% if block.settings.slide_2_type == 'image' and block.settings.slide_2_image %}
+            {% assign has_media = true %}
+            <div class="ai-hero-product-slide-{{ ai_gen_id }}" data-slide="2">
+              <img
+                src="{{ block.settings.slide_2_image | image_url: width: 1200 }}"
+                alt="{{ block.settings.slide_2_image.alt | escape }}"
+                loading="lazy"
+                width="{{ block.settings.slide_2_image.width }}"
+                height="{{ block.settings.slide_2_image.height }}"
+              >
+            </div>
+          {% elsif block.settings.slide_2_type == 'video' and block.settings.slide_2_video != blank %}
+            {% assign has_media = true %}
+            <div class="ai-hero-product-slide-{{ ai_gen_id }}" data-slide="2">
+              <video autoplay muted loop playsinline src="{{ block.settings.slide_2_video }}"></video>
+            </div>
+          {% endif %}
+
+          {% if block.settings.slide_3_type == 'image' and block.settings.slide_3_image %}
+            {% assign has_media = true %}
+            <div class="ai-hero-product-slide-{{ ai_gen_id }}" data-slide="3">
+              <img
+                src="{{ block.settings.slide_3_image | image_url: width: 1200 }}"
+                alt="{{ block.settings.slide_3_image.alt | escape }}"
+                loading="lazy"
+                width="{{ block.settings.slide_3_image.width }}"
+                height="{{ block.settings.slide_3_image.height }}"
+              >
+            </div>
+          {% elsif block.settings.slide_3_type == 'video' and block.settings.slide_3_video != blank %}
+            {% assign has_media = true %}
+            <div class="ai-hero-product-slide-{{ ai_gen_id }}" data-slide="3">
+              <video autoplay muted loop playsinline src="{{ block.settings.slide_3_video }}"></video>
+            </div>
+          {% endif %}
+
+          {% if block.settings.slide_4_type == 'image' and block.settings.slide_4_image %}
+            {% assign has_media = true %}
+            <div class="ai-hero-product-slide-{{ ai_gen_id }}" data-slide="4">
+              <img
+                src="{{ block.settings.slide_4_image | image_url: width: 1200 }}"
+                alt="{{ block.settings.slide_4_image.alt | escape }}"
+                loading="lazy"
+                width="{{ block.settings.slide_4_image.width }}"
+                height="{{ block.settings.slide_4_image.height }}"
+              >
+            </div>
+          {% elsif block.settings.slide_4_type == 'video' and block.settings.slide_4_video != blank %}
+            {% assign has_media = true %}
+            <div class="ai-hero-product-slide-{{ ai_gen_id }}" data-slide="4">
+              <video autoplay muted loop playsinline src="{{ block.settings.slide_4_video }}"></video>
+            </div>
+          {% endif %}
+
+          {% unless has_media %}
+            <div class="ai-hero-product-placeholder-{{ ai_gen_id }}">
+              {{ 'product-1' | placeholder_svg_tag }}
+              <div class="ai-hero-product-empty-state-{{ ai_gen_id }}">
+                Add images or videos to slideshow
+              </div>
+            </div>
+          {% endunless %}
+        </div>
+
+        <div class="ai-hero-product-dots-{{ ai_gen_id }}"></div>
+      </div>
+
+      <div class="ai-hero-product-info-{{ ai_gen_id }}">
+        {% if block.settings.product_title != blank %}
+          <h2 class="ai-hero-product-title-{{ ai_gen_id }}">{{ block.settings.product_title }}</h2>
+        {% endif %}
+
+        {% if block.settings.product_description != blank %}
+          <div class="ai-hero-product-description-{{ ai_gen_id }}">
+            {{ block.settings.product_description }}
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_price and block.settings.product != blank %}
+          <div class="ai-hero-product-price-{{ ai_gen_id }}">
+            {{ block.settings.product.price | money }}
+          </div>
+        {% endif %}
+
+        {% if block.settings.button_text != blank %}
+          <a
+            href="{% if block.settings.product != blank %}{{ block.settings.product.url }}{% else %}{{ block.settings.button_link }}{% endif %}"
+            class="ai-hero-product-button-{{ ai_gen_id }}"
+          >
+            {{ block.settings.button_text }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</hero-product-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class HeroProduct{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.balls = [];
+        this.animationFrame = null;
+        this.currentSlide = 0;
+        this.slides = [];
+        this.autoplayInterval = null;
+      }
+
+      connectedCallback() {
+        const ballCount = parseInt(this.dataset.ballCount) || 0;
+        if (ballCount > 0) {
+          this.initBalls();
+          this.animateBalls();
+        }
+
+        this.initSlideshow();
+      }
+
+      disconnectedCallback() {
+        if (this.animationFrame) {
+          cancelAnimationFrame(this.animationFrame);
+        }
+        if (this.autoplayInterval) {
+          clearInterval(this.autoplayInterval);
+        }
+      }
+
+      initSlideshow() {
+        this.slides = Array.from(this.querySelectorAll('.ai-hero-product-slide-{{ ai_gen_id }}'));
+        const dotsContainer = this.querySelector('.ai-hero-product-dots-{{ ai_gen_id }}');
+        const slideshow = this.querySelector('.ai-hero-product-slideshow-{{ ai_gen_id }}');
+        const productUrl = this.dataset.productUrl;
+
+        if (this.slides.length === 0) return;
+
+        if (slideshow && productUrl) {
+          slideshow.addEventListener('click', () => {
+            window.location.href = productUrl;
+          });
+        }
+
+        this.slides.forEach((slide, index) => {
+          const dot = document.createElement('button');
+          dot.className = 'ai-hero-product-dot-{{ ai_gen_id }}';
+          if (index === 0) dot.classList.add('active');
+          dot.setAttribute('aria-label', 'Go to slide ' + (index + 1));
+          dot.addEventListener('click', () => this.goToSlide(index));
+          dotsContainer.appendChild(dot);
+        });
+
+        if (this.dataset.autoplay === 'true') {
+          const speed = parseInt(this.dataset.autoplaySpeed) || 3000;
+          this.autoplayInterval = setInterval(() => {
+            this.nextSlide();
+          }, speed);
+        }
+      }
+
+      goToSlide(index) {
+        this.slides[this.currentSlide].classList.remove('active');
+        const dots = this.querySelectorAll('.ai-hero-product-dot-{{ ai_gen_id }}');
+        dots[this.currentSlide].classList.remove('active');
+
+        this.currentSlide = index;
+        this.slides[this.currentSlide].classList.add('active');
+        dots[this.currentSlide].classList.add('active');
+      }
+
+      nextSlide() {
+        const nextIndex = (this.currentSlide + 1) % this.slides.length;
+        this.goToSlide(nextIndex);
+      }
+
+      initBalls() {
+        const container = this.querySelector('.ai-hero-product-balls-{{ ai_gen_id }}');
+        if (!container) return;
+
+        const ballCount = parseInt(this.dataset.ballCount);
+        const ballSize = parseInt(this.dataset.ballSize);
+        const ballSpeed = parseFloat(this.dataset.ballSpeed);
+        const colors = [
+          this.dataset.ballColor1,
+          this.dataset.ballColor2,
+          this.dataset.ballColor3
+        ];
+
+        for (let i = 0; i < ballCount; i++) {
+          const ball = document.createElement('div');
+          ball.className = 'ai-hero-product-ball-{{ ai_gen_id }}';
+          
+          const size = ballSize + Math.random() * 20;
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          
+          ball.style.width = size + 'px';
+          ball.style.height = size + 'px';
+          ball.style.backgroundColor = color;
+          ball.style.left = Math.random() * 100 + '%';
+          ball.style.top = Math.random() * 100 + '%';
+
+          container.appendChild(ball);
+
+          const angle = Math.random() * Math.PI * 2;
+          const speed = ballSpeed + Math.random() * 2;
+
+          this.balls.push({
+            element: ball,
+            x: Math.random() * container.offsetWidth,
+            y: Math.random() * container.offsetHeight,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            size: size
+          });
+        }
+      }
+
+      animateBalls() {
+        const container = this.querySelector('.ai-hero-product-balls-{{ ai_gen_id }}');
+        if (!container) return;
+
+        const width = container.offsetWidth;
+        const height = container.offsetHeight;
+
+        this.balls.forEach(ball => {
+          ball.x += ball.vx;
+          ball.y += ball.vy;
+
+          if (ball.x + ball.size / 2 > width || ball.x - ball.size / 2 < 0) {
+            ball.vx *= -1;
+            ball.x = ball.x + ball.size / 2 > width ? width - ball.size / 2 : ball.size / 2;
+          }
+
+          if (ball.y + ball.size / 2 > height || ball.y - ball.size / 2 < 0) {
+            ball.vy *= -1;
+            ball.y = ball.y + ball.size / 2 > height ? height - ball.size / 2 : ball.size / 2;
+          }
+
+          ball.element.style.left = ball.x + 'px';
+          ball.element.style.top = ball.y + 'px';
+        });
+
+        this.animationFrame = requestAnimationFrame(() => this.animateBalls());
+      }
+    }
+
+    customElements.define('hero-product-{{ ai_gen_id }}', HeroProduct{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero product",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "image-left",
+          "label": "Image left"
+        },
+        {
+          "value": "image-right",
+          "label": "Image right"
+        }
+      ],
+      "default": "image-left"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "label": "Maximum width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "range",
+      "id": "background_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Background opacity",
+      "default": 30
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Slideshow"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay_slideshow",
+      "label": "Autoplay slideshow",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 2000,
+      "max": 8000,
+      "step": 500,
+      "unit": "ms",
+      "label": "Autoplay speed",
+      "default": 3000
+    },
+    {
+      "type": "range",
+      "id": "media_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Media border radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Slide 1"
+    },
+    {
+      "type": "select",
+      "id": "slide_1_type",
+      "label": "Type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "slide_1_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "header",
+      "content": "Slide 2"
+    },
+    {
+      "type": "select",
+      "id": "slide_2_type",
+      "label": "Type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "slide_2_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "header",
+      "content": "Slide 3"
+    },
+    {
+      "type": "select",
+      "id": "slide_3_type",
+      "label": "Type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "slide_3_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "header",
+      "content": "Slide 4"
+    },
+    {
+      "type": "select",
+      "id": "slide_4_type",
+      "label": "Type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_4_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "slide_4_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "header",
+      "content": "Product content"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "product_title",
+      "label": "Title",
+      "default": "Featured product"
+    },
+    {
+      "type": "richtext",
+      "id": "product_description",
+      "label": "Description",
+      "default": "<p>Showcase your best product with stunning visuals and compelling copy.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show price",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 24,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Title size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "min": 12,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Description size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "price_size",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Price size",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#121212"
+    },
+    {
+      "type": "header",
+      "content": "Button style"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Background color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Hover background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Bouncing balls"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_balls",
+      "label": "Enable bouncing balls",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "ball_count",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "label": "Number of balls",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "ball_size",
+      "min": 10,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Ball size",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "ball_speed",
+      "min": 1,
+      "max": 5,
+      "step": 0.5,
+      "label": "Ball speed",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "ball_opacity",
+      "min": 10,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Ball opacity",
+      "default": 60
+    },
+    {
+      "type": "color",
+      "id": "ball_color_1",
+      "label": "Ball color 1",
+      "default": "#FF5252"
+    },
+    {
+      "type": "color",
+      "id": "ball_color_2",
+      "label": "Ball color 2",
+      "default": "#FFD740"
+    },
+    {
+      "type": "color",
+      "id": "ball_color_3",
+      "label": "Ball color 3",
+      "default": "#40C4FF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero product"
+    }
+  ]
+}
+{% endschema %}

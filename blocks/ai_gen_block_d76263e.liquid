@@ -1,0 +1,717 @@
+{% doc %}
+  @prompt
+    A magazine-style editorial layout, headers, text, images, luxury high-class, subtext, able to change color. one boucy ball animation , can i be able to adjust image size, make sure its adjustable on all devices
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-editorial-layout-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.section_padding }}px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-editorial-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .ai-editorial-header-{{ ai_gen_id }} {
+    margin-bottom: {{ block.settings.header_spacing }}px;
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .ai-editorial-eyebrow-{{ ai_gen_id }} {
+    font-size: {{ block.settings.eyebrow_size }}px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: {{ block.settings.eyebrow_color }};
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+
+  .ai-editorial-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    line-height: 1.1;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 20px;
+    font-weight: 300;
+    letter-spacing: -1px;
+  }
+
+  .ai-editorial-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    line-height: 1.6;
+    color: {{ block.settings.subtitle_color }};
+    margin: 0;
+    font-weight: 300;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .ai-editorial-content-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.columns_desktop }}, 1fr);
+    gap: {{ block.settings.grid_gap }}px;
+    margin-bottom: {{ block.settings.content_spacing }}px;
+  }
+
+  .ai-editorial-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: {{ block.settings.image_height_desktop }}px;
+  }
+
+  .ai-editorial-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: {{ block.settings.image_fit }};
+    display: block;
+  }
+
+  .ai-editorial-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-editorial-image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-editorial-text-block-{{ ai_gen_id }} {
+    padding: {{ block.settings.text_block_padding }}px;
+  }
+
+  .ai-editorial-text-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.text_heading_size }}px;
+    color: {{ block.settings.text_heading_color }};
+    margin: 0 0 16px;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+  }
+
+  .ai-editorial-text-body-{{ ai_gen_id }} {
+    font-size: {{ block.settings.text_body_size }}px;
+    line-height: 1.8;
+    color: {{ block.settings.text_body_color }};
+    margin: 0;
+    font-weight: 300;
+  }
+
+  .ai-editorial-ball-container-{{ ai_gen_id }} {
+    position: absolute;
+    top: {{ block.settings.ball_position_y }}%;
+    left: {{ block.settings.ball_position_x }}%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .ai-editorial-ball-{{ ai_gen_id }} {
+    width: {{ block.settings.ball_size }}px;
+    height: {{ block.settings.ball_size }}px;
+    border-radius: 50%;
+    background: {{ block.settings.ball_color }};
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-editorial-image-wrapper-{{ ai_gen_id }} {
+      height: {{ block.settings.image_height_tablet }}px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-editorial-content-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+    }
+
+    .ai-editorial-image-wrapper-{{ ai_gen_id }} {
+      height: {{ block.settings.image_height_mobile }}px;
+    }
+
+    .ai-editorial-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.title_size }}px * 0.6);
+    }
+
+    .ai-editorial-subtitle-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.subtitle_size }}px * 0.9);
+    }
+
+    .ai-editorial-text-heading-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.text_heading_size }}px * 0.85);
+    }
+
+    .ai-editorial-ball-{{ ai_gen_id }} {
+      width: calc({{ block.settings.ball_size }}px * 0.5);
+      height: calc({{ block.settings.ball_size }}px * 0.5);
+    }
+  }
+{% endstyle %}
+
+<editorial-layout-{{ ai_gen_id }} class="ai-editorial-layout-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-editorial-ball-container-{{ ai_gen_id }}">
+    <div class="ai-editorial-ball-{{ ai_gen_id }}"></div>
+  </div>
+
+  <div class="ai-editorial-container-{{ ai_gen_id }}">
+    {% if block.settings.show_header %}
+      <div class="ai-editorial-header-{{ ai_gen_id }}">
+        {% if block.settings.eyebrow != blank %}
+          <div class="ai-editorial-eyebrow-{{ ai_gen_id }}">{{ block.settings.eyebrow }}</div>
+        {% endif %}
+        {% if block.settings.title != blank %}
+          <h2 class="ai-editorial-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+        {% endif %}
+        {% if block.settings.subtitle != blank %}
+          <div class="ai-editorial-subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="ai-editorial-content-{{ ai_gen_id }}">
+      {% if block.settings.show_image_1 %}
+        <div class="ai-editorial-image-wrapper-{{ ai_gen_id }}">
+          {% if block.settings.image_1 %}
+            <img
+              src="{{ block.settings.image_1 | image_url: width: 1200 }}"
+              alt="{{ block.settings.image_1.alt | escape }}"
+              loading="lazy"
+              width="{{ block.settings.image_1.width }}"
+              height="{{ block.settings.image_1.height }}"
+              class="ai-editorial-image-{{ ai_gen_id }}"
+            >
+          {% else %}
+            <div class="ai-editorial-image-placeholder-{{ ai_gen_id }}">
+              {{ 'image' | placeholder_svg_tag }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_text_block_1 %}
+        <div class="ai-editorial-text-block-{{ ai_gen_id }}">
+          {% if block.settings.text_heading_1 != blank %}
+            <h3 class="ai-editorial-text-heading-{{ ai_gen_id }}">{{ block.settings.text_heading_1 }}</h3>
+          {% endif %}
+          {% if block.settings.text_body_1 != blank %}
+            <div class="ai-editorial-text-body-{{ ai_gen_id }}">{{ block.settings.text_body_1 }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_image_2 %}
+        <div class="ai-editorial-image-wrapper-{{ ai_gen_id }}">
+          {% if block.settings.image_2 %}
+            <img
+              src="{{ block.settings.image_2 | image_url: width: 1200 }}"
+              alt="{{ block.settings.image_2.alt | escape }}"
+              loading="lazy"
+              width="{{ block.settings.image_2.width }}"
+              height="{{ block.settings.image_2.height }}"
+              class="ai-editorial-image-{{ ai_gen_id }}"
+            >
+          {% else %}
+            <div class="ai-editorial-image-placeholder-{{ ai_gen_id }}">
+              {{ 'image' | placeholder_svg_tag }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_text_block_2 %}
+        <div class="ai-editorial-text-block-{{ ai_gen_id }}">
+          {% if block.settings.text_heading_2 != blank %}
+            <h3 class="ai-editorial-text-heading-{{ ai_gen_id }}">{{ block.settings.text_heading_2 }}</h3>
+          {% endif %}
+          {% if block.settings.text_body_2 != blank %}
+            <div class="ai-editorial-text-body-{{ ai_gen_id }}">{{ block.settings.text_body_2 }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</editorial-layout-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class EditorialLayout{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.ball = this.querySelector('.ai-editorial-ball-{{ ai_gen_id }}');
+        this.container = this.querySelector('.ai-editorial-ball-container-{{ ai_gen_id }}');
+        this.animationId = null;
+        this.velocity = { x: 2, y: 2 };
+        this.position = { x: 0, y: 0 };
+        this.bounds = { width: 0, height: 0 };
+      }
+
+      connectedCallback() {
+        this.initBallAnimation();
+        window.addEventListener('resize', () => this.updateBounds());
+      }
+
+      disconnectedCallback() {
+        if (this.animationId) {
+          cancelAnimationFrame(this.animationId);
+        }
+        window.removeEventListener('resize', () => this.updateBounds());
+      }
+
+      updateBounds() {
+        const rect = this.getBoundingClientRect();
+        this.bounds.width = rect.width;
+        this.bounds.height = rect.height;
+      }
+
+      initBallAnimation() {
+        if (!this.ball || !this.container) return;
+
+        this.updateBounds();
+        const ballSize = this.ball.offsetWidth;
+
+        this.position.x = this.bounds.width * ({{ block.settings.ball_position_x }} / 100);
+        this.position.y = this.bounds.height * ({{ block.settings.ball_position_y }} / 100);
+
+        const animate = () => {
+          this.position.x += this.velocity.x;
+          this.position.y += this.velocity.y;
+
+          if (this.position.x <= 0 || this.position.x >= this.bounds.width - ballSize) {
+            this.velocity.x *= -1;
+            this.position.x = Math.max(0, Math.min(this.position.x, this.bounds.width - ballSize));
+          }
+
+          if (this.position.y <= 0 || this.position.y >= this.bounds.height - ballSize) {
+            this.velocity.y *= -1;
+            this.position.y = Math.max(0, Math.min(this.position.y, this.bounds.height - ballSize));
+          }
+
+          this.container.style.left = this.position.x + 'px';
+          this.container.style.top = this.position.y + 'px';
+          this.container.style.transform = 'none';
+
+          this.animationId = requestAnimationFrame(animate);
+        };
+
+        animate();
+      }
+    }
+
+    customElements.define('editorial-layout-{{ ai_gen_id }}', EditorialLayout{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Magazine editorial",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "label": "Maximum width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 20,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 60
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Columns on desktop",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Grid gap",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Header section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Show header",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Editorial"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "Luxury Redefined"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<p>Discover the art of sophisticated living through curated collections and timeless design.</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Header spacing",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Header colors"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow color",
+      "default": "#999999"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Eyebrow size",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#121212"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Title size",
+      "default": 60
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "min": 14,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Subtitle size",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Image 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_1",
+      "label": "Show image 1",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1"
+    },
+    {
+      "type": "header",
+      "content": "Text block 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text_block_1",
+      "label": "Show text block 1",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "text_heading_1",
+      "label": "Heading",
+      "default": "Crafted Excellence"
+    },
+    {
+      "type": "richtext",
+      "id": "text_body_1",
+      "label": "Body text",
+      "default": "<p>Every detail matters in the pursuit of perfection. Our collection represents the pinnacle of craftsmanship and design.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Image 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_2",
+      "label": "Show image 2",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "header",
+      "content": "Text block 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text_block_2",
+      "label": "Show text block 2",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "text_heading_2",
+      "label": "Heading",
+      "default": "Timeless Design"
+    },
+    {
+      "type": "richtext",
+      "id": "text_body_2",
+      "label": "Body text",
+      "default": "<p>Elegance transcends trends. Discover pieces that will remain relevant for generations to come.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Image sizing"
+    },
+    {
+      "type": "range",
+      "id": "image_height_desktop",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Desktop height",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "image_height_tablet",
+      "min": 200,
+      "max": 600,
+      "step": 50,
+      "unit": "px",
+      "label": "Tablet height",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "min": 150,
+      "max": 500,
+      "step": 50,
+      "unit": "px",
+      "label": "Mobile height",
+      "default": 300
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover (fill space)"
+        },
+        {
+          "value": "contain",
+          "label": "Contain (fit inside)"
+        },
+        {
+          "value": "fill",
+          "label": "Fill (stretch)"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "header",
+      "content": "Content style"
+    },
+    {
+      "type": "range",
+      "id": "text_block_padding",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Text block padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "content_spacing",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Content spacing",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Text block colors"
+    },
+    {
+      "type": "color",
+      "id": "text_heading_color",
+      "label": "Heading color",
+      "default": "#121212"
+    },
+    {
+      "type": "range",
+      "id": "text_heading_size",
+      "min": 18,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "text_body_color",
+      "label": "Body color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "text_body_size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Body size",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Bouncy ball"
+    },
+    {
+      "type": "color",
+      "id": "ball_color",
+      "label": "Ball color",
+      "default": "#fca311"
+    },
+    {
+      "type": "range",
+      "id": "ball_size",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Ball size",
+      "default": 150
+    },
+    {
+      "type": "range",
+      "id": "ball_position_x",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Ball start position X",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "ball_position_y",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Ball start position Y",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Magazine editorial"
+    }
+  ]
+}
+{% endschema %}
