@@ -16,6 +16,7 @@ The complete Shopify baseline and current development work now live on `developm
 
 - [`docs/WHY_THE_WEBSITE_EXISTS.md`](docs/WHY_THE_WEBSITE_EXISTS.md) — the strategic reason for the website and the business problems it must solve
 - [`docs/WEBSITE_EDIT_BACKLOG.md`](docs/WEBSITE_EDIT_BACKLOG.md) — prioritized edits with the problem, reasoning, work, and definition of done
+- [`docs/LAYOUT_TYPOGRAPHY_AND_MEDIA_MAP.md`](docs/LAYOUT_TYPOGRAPHY_AND_MEDIA_MAP.md) — the current five-stage execution order, exact layout files, known visual problems, code excerpts, and first Copilot task
 - [`docs/DEVELOPMENT_PLAYBOOK.md`](docs/DEVELOPMENT_PLAYBOOK.md) — GitHub/Shopify workflow, HTML, CSS, Liquid, animation, debugging, commits, and launch standards
 - [`docs/AI_WORKFLOW_AND_BUILD_SEQUENCE.md`](docs/AI_WORKFLOW_AND_BUILD_SEQUENCE.md) — the 12-step build order, AI responsibilities, commands, and reusable task scripts
 - [`docs/CODE_COMMENT_STANDARD.md`](docs/CODE_COMMENT_STANDARD.md) — how code should explain purpose, dependencies, safety, and non-obvious decisions
