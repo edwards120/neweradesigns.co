@@ -15,6 +15,7 @@ const requiredDirectories = [
 
 const errors = [];
 const warnings = [];
+const parsedJson = new Map();
 
 function pathExists(path) {
   return existsSync(join(root, path));
@@ -29,6 +30,78 @@ function walk(directory) {
     const repoPath = relative(root, fullPath).replaceAll("\\", "/");
     return statSync(fullPath).isDirectory() ? walk(repoPath) : [repoPath];
   });
+}
+
+function stripJsonComments(input) {
+  let output = "";
+  let inString = false;
+  let escaped = false;
+  let inLineComment = false;
+  let inBlockComment = false;
+
+  for (let index = 0; index < input.length; index += 1) {
+    const character = input[index];
+    const nextCharacter = input[index + 1];
+
+    if (inLineComment) {
+      if (character === "\n") {
+        inLineComment = false;
+        output += character;
+      }
+      continue;
+    }
+
+    if (inBlockComment) {
+      if (character === "*" && nextCharacter === "/") {
+        inBlockComment = false;
+        index += 1;
+      } else if (character === "\n") {
+        output += character;
+      }
+      continue;
+    }
+
+    if (inString) {
+      output += character;
+
+      if (escaped) {
+        escaped = false;
+      } else if (character === "\\") {
+        escaped = true;
+      } else if (character === '"') {
+        inString = false;
+      }
+      continue;
+    }
+
+    if (character === '"') {
+      inString = true;
+      output += character;
+      continue;
+    }
+
+    if (character === "/" && nextCharacter === "/") {
+      inLineComment = true;
+      index += 1;
+      continue;
+    }
+
+    if (character === "/" && nextCharacter === "*") {
+      inBlockComment = true;
+      index += 1;
+      continue;
+    }
+
+    output += character;
+  }
+
+  return output.replace(/^\uFEFF/, "").trim();
+}
+
+function parseThemeJson(file) {
+  const raw = readFileSync(join(root, file), "utf8");
+  const cleaned = stripJsonComments(raw);
+  return JSON.parse(cleaned);
 }
 
 for (const directory of requiredDirectories) {
@@ -47,7 +120,7 @@ const jsonFiles = ["config", "locales", "sections", "templates"]
 
 for (const file of jsonFiles) {
   try {
-    JSON.parse(readFileSync(join(root, file), "utf8"));
+    parsedJson.set(file, parseThemeJson(file));
   } catch (error) {
     errors.push(`Invalid JSON in ${file}: ${error.message}`);
   }
@@ -55,16 +128,18 @@ for (const file of jsonFiles) {
 
 const templateFiles = walk("templates").filter((file) => extname(file) === ".json");
 for (const file of templateFiles) {
-  let template;
-  try {
-    template = JSON.parse(readFileSync(join(root, file), "utf8"));
-  } catch {
-    continue;
-  }
+  const template = parsedJson.get(file);
+  if (!template) continue;
 
   for (const section of Object.values(template.sections ?? {})) {
     const type = section?.type;
-    if (typeof type !== "string" || type.startsWith("@")) continue;
+    if (
+      typeof type !== "string" ||
+      type.startsWith("@") ||
+      type.startsWith("shopify://apps/")
+    ) {
+      continue;
+    }
 
     const expectedSection = `sections/${type}.liquid`;
     if (!pathExists(expectedSection)) {
