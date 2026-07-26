@@ -19,3 +19,15 @@
 - Follow the brand direction: sharp but imperfect, luxurious without being cold, historical and modern, masculine and feminine, serious but strange enough to feel alive.
 - Keep commit messages short and specific.
 - Report incomplete work, warnings, and uncertainty honestly.
+
+## Code comments and reasoning
+
+- Read `docs/CODE_COMMENT_STANDARD.md` before creating or substantially changing custom Liquid, CSS, or JavaScript.
+- Add comments when they preserve non-obvious intent, dependencies, Shopify behavior, accessibility requirements, performance decisions, safety rules, or removal conditions.
+- For substantial custom files, use a concise `PURPOSE`, `USED BY`, and `EDIT SAFELY` header in the comment syntax appropriate to that language.
+- Explain why a design or technical decision exists; do not narrate obvious syntax line by line.
+- Keep comments current when behavior changes. Remove comments that no longer describe the code.
+- Do not add sensitive information, client details, credentials, or passwords to comments.
+- Preserve Shopify-generated comments in JSON templates.
+- Use specific `TODO(NED)` notes with a replacement plan and removal condition instead of vague `fix later` comments.
+- At completion, summarize the problem solved, files changed, reasoning, dependencies, validation, and remaining visual review.
