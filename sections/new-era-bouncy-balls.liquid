@@ -25,6 +25,7 @@
   data-click-radius="{{ section.settings.pointer_radius }}"
   data-click-force="{{ section.settings.pointer_force }}"
   data-mobile-breakpoint="{{ section.settings.mobile_breakpoint }}"
+  data-drop-from-top="{{ section.settings.drop_from_top }}"
   style="
     --ned-overlay-z: {{ section.settings.layer_order }};
   "
@@ -53,9 +54,9 @@
           class="ned-bouncy-overlay__object"
           data-bouncy-object
           data-desktop-x="{{ 8 | plus: i | times: 4 | modulo: 88 | plus: 6 }}"
-          data-desktop-y="{{ 12 | plus: i | times: 3 | modulo: 66 | plus: 8 }}"
+          data-desktop-y="{{ 2 | plus: i | times: 2 | modulo: 16 | plus: 2 }}"
           data-mobile-x="{{ 8 | plus: i | times: 5 | modulo: 84 | plus: 8 }}"
-          data-mobile-y="{{ 10 | plus: i | times: 4 | modulo: 70 | plus: 10 }}"
+          data-mobile-y="{{ 2 | plus: i | times: 2 | modulo: 20 | plus: 2 }}"
           style="
             --object-size: {{ desktop_size }}px;
             --object-mobile-size: {{ mobile_size }}px;
@@ -144,8 +145,9 @@
     { "type": "color", "id": "ball_color_1", "label": "Ball color 1", "default": "#fca311" },
     { "type": "color", "id": "ball_color_2", "label": "Ball color 2", "default": "#1b2e9d" },
     { "type": "color", "id": "ball_color_3", "label": "Ball color 3", "default": "#0a1821" },
-    { "type": "range", "id": "gravity_strength", "label": "Gravity", "min": 8, "max": 40, "step": 1, "unit": "%", "default": 24 },
-    { "type": "range", "id": "bounce_damping", "label": "Bounce damping", "min": 55, "max": 92, "step": 1, "unit": "%", "default": 76 },
+    { "type": "checkbox", "id": "drop_from_top", "label": "Drop objects from top on load", "default": true },
+    { "type": "range", "id": "gravity_strength", "label": "Gravity", "min": 8, "max": 40, "step": 1, "unit": "%", "default": 32 },
+    { "type": "range", "id": "bounce_damping", "label": "Bounce damping", "min": 55, "max": 92, "step": 1, "unit": "%", "default": 72 },
     { "type": "range", "id": "max_speed", "label": "Max speed", "min": 8, "max": 40, "step": 1, "default": 22 },
     { "type": "range", "id": "pointer_radius", "label": "Pointer push radius", "min": 50, "max": 280, "step": 10, "unit": "px", "default": 150 },
     { "type": "range", "id": "pointer_force", "label": "Pointer push force", "min": 1, "max": 16, "step": 1, "default": 8 },

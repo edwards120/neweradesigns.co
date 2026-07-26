@@ -19,6 +19,7 @@
       this.clickRadius = Number(root.dataset.clickRadius || 150);
       this.clickForce = Number(root.dataset.clickForce || 8);
       this.mobileBreakpoint = Number(root.dataset.mobileBreakpoint || 989);
+      this.dropFromTop = root.dataset.dropFromTop !== 'false';
       this.bounds = { left: 0, top: 0, width: 0, height: 0 };
       this.states = [];
       this.obstacles = [];
@@ -137,14 +138,16 @@
 
         const x = initial || !prior ? this.bounds.width * (startX / 100) : prior.x * (this.bounds.width / Math.max(1, prior.boundsWidth));
         const y = initial || !prior ? this.bounds.height * (startY / 100) : prior.y * (this.bounds.height / Math.max(1, prior.boundsHeight));
+        const dropY = radius + (Math.random() * Math.max(10, this.bounds.height * 0.12));
 
         return {
           el,
           radius,
           x: Math.max(radius, Math.min(this.bounds.width - radius, x)),
-          y: Math.max(radius, Math.min(this.bounds.height - radius, y)),
+          y: this.dropFromTop && initial ? dropY : Math.max(radius, Math.min(this.bounds.height - radius, y)),
           vx: prior?.vx ?? ((index % 2 ? -1 : 1) * (1 + Math.random() * 1.8)),
-          vy: prior?.vy ?? (-2 - Math.random() * 2),
+          vy: this.dropFromTop && initial ? (0.2 + (Math.random() * 1.2)) : (prior?.vy ?? (-2 - Math.random() * 2)),
+          resting: false,
           boundsWidth: this.bounds.width,
           boundsHeight: this.bounds.height,
         };
@@ -201,6 +204,8 @@
             a.vy += impulse * ny;
             b.vx -= impulse * nx;
             b.vy -= impulse * ny;
+            a.resting = false;
+            b.resting = false;
           }
         }
       }
@@ -218,6 +223,7 @@
         const angle = Math.atan2(dy, dx);
         state.vx += Math.cos(angle) * force;
         state.vy += Math.sin(angle) * force;
+        state.resting = false;
       });
     }
 
@@ -227,11 +233,13 @@
       this.lastTime = now;
 
       this.states.forEach((state) => {
-        state.vy += this.gravity * step;
+        if (!state.resting) {
+          state.vy += this.gravity * step;
+        }
         state.x += state.vx * step;
         state.y += state.vy * step;
 
-        state.vx *= 0.998;
+        state.vx *= state.resting ? 0.965 : 0.998;
         state.vy *= 0.998;
 
         const speed = Math.hypot(state.vx, state.vy);
@@ -244,17 +252,27 @@
         if (state.x - state.radius < 0) {
           state.x = state.radius;
           state.vx = Math.abs(state.vx) * this.damping;
+          state.resting = false;
         } else if (state.x + state.radius > this.bounds.width) {
           state.x = this.bounds.width - state.radius;
           state.vx = -Math.abs(state.vx) * this.damping;
+          state.resting = false;
         }
 
         if (state.y - state.radius < 0) {
           state.y = state.radius;
           state.vy = Math.abs(state.vy) * this.damping;
+          state.resting = false;
         } else if (state.y + state.radius > this.bounds.height) {
           state.y = this.bounds.height - state.radius;
-          state.vy = -Math.abs(state.vy) * this.damping;
+          if (Math.abs(state.vy) < 1.15) {
+            state.vy = 0;
+            state.resting = true;
+          } else {
+            state.vy = -Math.abs(state.vy) * this.damping;
+            state.resting = false;
+          }
+          state.vx *= 0.94;
         }
 
         this.collideWithObstacles(state);

@@ -62,6 +62,13 @@
   width: 100%;
 }
 
+.ned-bouncy-overlay__icon svg,
+.ned-bouncy-overlay__icon svg * {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 0.8;
+}
+
 @media (max-width: 989px) {
   .ned-bouncy-overlay__object {
     height: var(--object-mobile-size, var(--object-size, 46px));
