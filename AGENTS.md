@@ -123,6 +123,7 @@ Before major work, review:
 - `docs/WHY_THE_WEBSITE_EXISTS.md`
 - `docs/WEBSITE_EDIT_BACKLOG.md`
 - `docs/DEVELOPMENT_PLAYBOOK.md`
+- `docs/AI_WORKFLOW_AND_BUILD_SEQUENCE.md`
 - `docs/SEO_FOUNDATION.md`
 - `docs/CODE_COMMENT_STANDARD.md`
 - `RECOVERY.md`
