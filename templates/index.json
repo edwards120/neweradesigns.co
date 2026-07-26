@@ -812,6 +812,37 @@
         "motion_speed": 400,
         "motion_distance": 25
       }
+    },
+    "blocks_AU37Vf": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_4f9a07b_iF9DkH": {
+          "type": "ai_gen_block_4f9a07b",
+          "settings": {
+            "headline": "INTERACTIVE DESIGN. LUXURY IN MOTION.",
+            "subtext": "Tap to move the system.",
+            "heading_font": "sans_serif_n4",
+            "text_color": "#ffffff",
+            "button_label": "",
+            "button_link": "",
+            "button_bg_color": "#FCA311",
+            "button_text_color": "#000000",
+            "background_white_mode": "transparent",
+            "overlay_opacity": 40,
+            "ball_count": 8,
+            "ball_size": "medium",
+            "bounce_energy": 0.5,
+            "desktop_height": 600,
+            "mobile_height": 640
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_4f9a07b_iF9DkH"
+      ],
+      "name": "Bouncing balls",
+      "settings": {}
     }
   },
   "order": [
@@ -822,6 +853,7 @@
     "funk_machine",
     "process",
     "podcast",
-    "closing"
+    "closing",
+    "blocks_AU37Vf"
   ]
 }

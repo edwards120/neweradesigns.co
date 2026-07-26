@@ -145,10 +145,10 @@
         "nav_tracking": 1,
         "mobile_nav_font_size": 22,
         "mobile_nav_tracking": 1,
-        "motion_speed": 270,
-        "hover_tracking": 7,
+        "motion_speed": 180,
+        "hover_tracking": 3,
         "hover_lift": 1,
-        "hover_scale": 106,
+        "hover_scale": 101,
         "underline_width": 2,
         "show_social_links": true
       }
@@ -227,6 +227,65 @@
       "type": "_blocks",
       "disabled": true,
       "settings": {}
+    },
+    "blocks_kQLgTh": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_c47be21_ejC7UN": {
+          "type": "ai_gen_block_c47be21",
+          "disabled": true,
+          "settings": {
+            "container_height": 350,
+            "desktop_width_percent": 100,
+            "dot_size": 4,
+            "spacing": 12,
+            "primary_color": "#FCA311",
+            "secondary_color": "#14213D",
+            "interaction_radius": 50,
+            "return_speed": 0.1,
+            "background_color": "#0C1A39"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_c47be21_ejC7UN"
+      ],
+      "name": "Interactive halftones",
+      "settings": {}
+    },
+    "blocks_FLnqzH": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_4f9a07b_z9n3cN": {
+          "type": "ai_gen_block_4f9a07b",
+          "name": "Bouncing balls",
+          "disabled": true,
+          "settings": {
+            "headline": "INTERACTIVE DESIGN. LUXURY IN MOTION.",
+            "subtext": "Tap to move the system.",
+            "heading_font": "sans_serif_n4",
+            "text_color": "#ffffff",
+            "button_label": "",
+            "button_link": "",
+            "button_bg_color": "#FCA311",
+            "button_text_color": "#000000",
+            "background_white_mode": "transparent",
+            "overlay_opacity": 40,
+            "ball_count": 8,
+            "ball_size": "medium",
+            "bounce_energy": 0.5,
+            "desktop_height": 600,
+            "mobile_height": 640
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_4f9a07b_z9n3cN"
+      ],
+      "name": "Bouncing balls",
+      "settings": {}
     }
   },
   "order": [
@@ -234,6 +293,8 @@
     "new_era_editorial_header",
     "177986068685599a61",
     "header",
-    "1767320545c14c8ed9"
+    "1767320545c14c8ed9",
+    "blocks_kQLgTh",
+    "blocks_FLnqzH"
   ]
 }
