@@ -1,3 +1,9 @@
+/**
+ * PURPOSE: Catch structural Shopify theme errors before work reaches the connected preview theme.
+ * USED BY: .github/workflows/theme-validate.yml and local development checks.
+ * EDIT SAFELY: Preserve support for Shopify-generated JSON comments and app-owned section references;
+ * ordinary JSON.parse() and local-file assumptions will create false failures on valid Shopify themes.
+ */
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { extname, join, relative } from "node:path";
 
@@ -32,6 +38,10 @@ function walk(directory) {
   });
 }
 
+/**
+ * Shopify can prepend generated `/* ... *\/` headers to JSON templates. This scanner removes comments
+ * without corrupting URLs or comment-like text inside quoted JSON strings, unlike a broad regular expression.
+ */
 function stripJsonComments(input) {
   let output = "";
   let inString = false;
@@ -133,6 +143,8 @@ for (const file of templateFiles) {
 
   for (const section of Object.values(template.sections ?? {})) {
     const type = section?.type;
+
+    // App sections are resolved by Shopify and therefore do not have a matching local sections/*.liquid file.
     if (
       typeof type !== "string" ||
       type.startsWith("@") ||
@@ -152,6 +164,7 @@ const liquidFiles = ["layout", "sections", "snippets", "templates"]
   .flatMap(walk)
   .filter((file) => extname(file) === ".liquid");
 
+// This intentionally checks only static asset names. Dynamic Liquid expressions require Shopify-aware analysis.
 const assetReferencePattern = /["']([^"']+)["']\s*\|\s*asset_url/g;
 for (const file of liquidFiles) {
   const source = readFileSync(join(root, file), "utf8");
