@@ -26,6 +26,42 @@ This repository contains the working Shopify theme for New Era Designs. The webs
 7. Test after meaningful batches rather than after every tiny edit.
 8. Explain incomplete work, warnings, and assumptions honestly.
 
+## Code comments and decision records
+
+Read `docs/CODE_COMMENT_STANDARD.md` before substantial custom-code work.
+
+Comments should help both Christopher and future AI assistants understand decisions that are not obvious from syntax alone.
+
+Add comments for:
+
+- The problem a custom file or system solves
+- Dependencies between templates, sections, snippets, assets, and settings
+- Shopify Theme Editor behavior
+- Accessibility and reduced-motion requirements
+- Performance-sensitive animation or browser behavior
+- Security and privacy boundaries
+- Important fallback logic
+- Temporary work and the exact condition required for removal
+
+For substantial custom files, prefer a short header using:
+
+```text
+PURPOSE: What problem this file solves.
+USED BY: What depends on this code.
+EDIT SAFELY: What must remain true when it changes.
+```
+
+Do not narrate obvious syntax line by line. Do not place passwords, keys, client details, or other sensitive information in comments. Preserve Shopify-generated JSON comments. Update or remove comments whenever behavior changes.
+
+At completion, report:
+
+- Problem solved
+- Files changed
+- Reasoning
+- Dependencies and assumptions
+- Validation performed
+- Remaining visual review or unfinished work
+
 ## Required validation
 
 Run:
@@ -88,4 +124,5 @@ Before major work, review:
 - `docs/WEBSITE_EDIT_BACKLOG.md`
 - `docs/DEVELOPMENT_PLAYBOOK.md`
 - `docs/SEO_FOUNDATION.md`
+- `docs/CODE_COMMENT_STANDARD.md`
 - `RECOVERY.md`
