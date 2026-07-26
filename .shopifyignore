@@ -1,0 +1,31 @@
+# Repository documentation
+README.md
+RECOVERY.md
+
+# Git and local tooling
+.git/
+.gitignore
+.github/
+.shopify/
+
+# Archives and source files
+*.zip
+*.rar
+*.7z
+*.psd
+*.psb
+*.ai
+*.aep
+*.fig
+
+# Local environment
+.env
+.env.*
+node_modules/
+dist/
+build/
+
+# Recovery work that must never be pushed to Shopify
+_recovery/
+_codex-salvage/
+recovered-features/
