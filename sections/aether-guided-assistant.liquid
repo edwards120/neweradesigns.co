@@ -1,5 +1,4 @@
 {{ 'aether-guided-assistant.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'aether-guided-assistant.js' | asset_url }}" defer="defer"></script>
 
 {%- if section.settings.enabled -%}
   <aside
@@ -1347,41 +1346,9 @@
         
         window.addEventListener('resize', () => {
           this.updateBounds();
+          this.resolveStartPosition();
           if (!this.isPanelOpen && !this.isDragging) {
-            this.constrainToBounds();
-          }
-
-          resolveStartPosition() {
-            const isMobile = window.innerWidth <= 989;
-            if (this.startMode === 'manual') {
-              const startX = isMobile ? this.startMobileX : this.startDesktopX;
-              const startY = isMobile ? this.startMobileY : this.startDesktopY;
-              this.initialX = (window.innerWidth - this.charSize) * (startX / 100);
-              this.initialY = (window.innerHeight - this.charSize) * (startY / 100);
-              return;
-            }
-
-            const heroAnchor = document.querySelector(
-              '#MainContent .ned-hero-title-top, [id^="NedEditorialHero-"] .ned-editorial-hero__line--1 > span'
-            );
-
-            if (heroAnchor) {
-              const rect = heroAnchor.getBoundingClientRect();
-              const header = document.querySelector('#shopify-section-sections--header, .shopify-section-group-header-group, header');
-              const headerRect = header ? header.getBoundingClientRect() : null;
-              const headerBottom = headerRect ? Math.max(0, headerRect.bottom) : 0;
-              this.initialX = rect.left + (rect.width * 0.5) - (this.charSize * 0.5);
-              this.initialY = Math.max(this.padding + 8, headerBottom + 6, rect.top - (this.charSize * 0.18));
-              return;
-            }
-
-            const panelWidth = parseInt(getComputedStyle(this.assistant).getPropertyValue('--aether-panel-width')) || 390;
-            const panelRight = 20;
-            const panelBottom = 20;
-            const panelLeft = window.innerWidth - panelWidth - panelRight - 20;
-            const panelTop = window.innerHeight - 400 - panelBottom;
-            this.initialX = Math.min(panelLeft - this.charSize - 20, window.innerWidth * 0.7);
-            this.initialY = Math.min(panelTop + 150, window.innerHeight * 0.5);
+            this.setInitialPosition();
           }
         }, { passive: true });
         
@@ -1393,6 +1360,39 @@
             }
           }, 400);
         });
+      }
+
+      resolveStartPosition() {
+        const isMobile = window.innerWidth <= 989;
+        if (this.startMode === 'manual') {
+          const startX = isMobile ? this.startMobileX : this.startDesktopX;
+          const startY = isMobile ? this.startMobileY : this.startDesktopY;
+          this.initialX = (window.innerWidth - this.charSize) * (startX / 100);
+          this.initialY = (window.innerHeight - this.charSize) * (startY / 100);
+          return;
+        }
+
+        const heroAnchor = document.querySelector(
+          '#MainContent .ned-hero-title-top, [id^="NedEditorialHero-"] .ned-editorial-hero__line--1 > span'
+        );
+
+        if (heroAnchor) {
+          const rect = heroAnchor.getBoundingClientRect();
+          const header = document.querySelector('#shopify-section-sections--header, .shopify-section-group-header-group, header');
+          const headerRect = header ? header.getBoundingClientRect() : null;
+          const headerBottom = headerRect ? Math.max(0, headerRect.bottom) : 0;
+          this.initialX = rect.left + (rect.width * 0.5) - (this.charSize * 0.5);
+          this.initialY = Math.max(this.padding + 8, headerBottom + 6, rect.top - (this.charSize * 0.18));
+          return;
+        }
+
+        const panelWidth = parseInt(getComputedStyle(this.assistant).getPropertyValue('--aether-panel-width')) || 390;
+        const panelRight = 20;
+        const panelBottom = 20;
+        const panelLeft = window.innerWidth - panelWidth - panelRight - 20;
+        const panelTop = window.innerHeight - 400 - panelBottom;
+        this.initialX = Math.min(panelLeft - this.charSize - 20, window.innerWidth * 0.7);
+        this.initialY = Math.min(panelTop + 150, window.innerHeight * 0.5);
       }
 
       updateBounds() {
