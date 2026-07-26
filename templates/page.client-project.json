@@ -1,0 +1,33 @@
+{
+  "sections": {
+    "protected-guard": {
+      "type": "section-protected-guard",
+      "settings": {}
+    },
+    "projects-showcase": {
+      "type": "section-projects-showcase",
+      "blocks": {
+        "project-houstonian": {
+          "type": "project",
+          "settings": {
+            "model_url": "https://cdn.shopify.com/3d/models/a043af865fe74f4c/Houstonian_Hotel.glb",
+            "title": "Houstonian Hotel Wayfinding",
+            "date": "May 2026",
+            "description": "Comprehensive wayfinding system for the Houstonian Hotel featuring interactive 3D signage and environmental graphics.",
+            "client": "Houstonian Hotel",
+            "location": "Houston, TX"
+          }
+        }
+      },
+      "block_order": ["project-houstonian"],
+      "settings": {
+        "heading": "Client Projects",
+        "subtitle": "Explore our portfolio of premium wayfinding and environmental graphic design projects"
+      }
+    }
+  },
+  "order": [
+    "protected-guard",
+    "projects-showcase"
+  ]
+}

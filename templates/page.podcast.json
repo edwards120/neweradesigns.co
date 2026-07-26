@@ -1,0 +1,84 @@
+{
+  "sections": {
+    "podcast": {
+      "type": "podcast-studio",
+      "blocks": {
+        "spotify": {
+          "type": "platform",
+          "settings": {
+            "label": "Spotify"
+          }
+        },
+        "apple": {
+          "type": "platform",
+          "settings": {
+            "label": "Apple Podcasts"
+          }
+        },
+        "youtube": {
+          "type": "platform",
+          "settings": {
+            "label": "YouTube"
+          }
+        },
+        "episode_one": {
+          "type": "episode",
+          "settings": {
+            "title": "The beautiful tension between polish and personality",
+            "category": "Design + culture",
+            "duration": "48 min",
+            "description": "<p>A conversation about keeping the rough edges that make creative work memorable while still building a system people can trust.</p>"
+          }
+        },
+        "episode_two": {
+          "type": "episode",
+          "settings": {
+            "title": "Building a brand people can actually feel",
+            "category": "Brand systems",
+            "duration": "36 min",
+            "description": "<p>Why the strongest brands behave like places: they set a mood, make choices easier, and give people a reason to return.</p>"
+          }
+        },
+        "episode_three": {
+          "type": "episode",
+          "settings": {
+            "title": "Good work, strange paths, and staying curious",
+            "category": "Field notes",
+            "duration": "51 min",
+            "description": "<p>An honest look at nonlinear careers, creative detours, and the small experiments that quietly change the direction of the work.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "spotify",
+        "apple",
+        "youtube",
+        "episode_one",
+        "episode_two",
+        "episode_three"
+      ],
+      "settings": {
+        "eyebrow": "New Era on air",
+        "title_line_1": "NEW ERA",
+        "title_script": "Podcast",
+        "episodes_eyebrow": "Now broadcasting",
+        "episodes_heading": "Latest episodes",
+        "about_eyebrow": "Behind the mic",
+        "about_heading": "Conversations for people who make things matter.",
+        "footer_kicker": "A New Era Designs original",
+        "footer_heading": "Put your headphones on.",
+        "script_font": "At Works Script",
+        "display_font": "Mathew Rohas",
+        "body_font": "Milo",
+        "ink_color": "#141411",
+        "paper_color": "#f0e8d8",
+        "accent_color": "#c9ff45",
+        "hot_color": "#ef5b36",
+        "blue_color": "#7277ff"
+      }
+    }
+  },
+  "order": [
+    "podcast"
+  ]
+}
