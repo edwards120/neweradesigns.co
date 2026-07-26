@@ -1,0 +1,53 @@
+<div class="ned-panel ned-portfolio" id="ServiceWork-{{ section.id }}">
+  <header class="ned-portfolio-head">
+    <div class="ned-portfolio-rail">
+      <span>SERVICES IN THE REAL WORLD</span>
+      <span>SELECTED APPLICATIONS / 01</span>
+    </div>
+    <div class="ned-portfolio-intro">
+      <h2>PHYSICAL PROOF <span>+ SYSTEM STUDIES</span></h2>
+      <p>Whole project images placed beside the strategic and production thinking that turns a service into something people can use.</p>
+    </div>
+  </header>
+
+  <div class="ned-portfolio-list">
+    {% for block in section.blocks %}
+      {% if block.type == 'portfolio_item' %}
+        {% liquid
+          assign project_link = block.settings.project_link | default: '/pages/cases'
+          assign project_alt = block.settings.image_alt | default: block.settings.title
+        %}
+        <article class="ned-project" {{ block.shopify_attributes }}>
+          <a class="ned-project-link" href="{{ project_link }}" aria-label="View {{ block.settings.title | escape }}">
+            <div class="ned-project-stage">
+              <span class="ned-project-word" aria-hidden="true">{{ block.settings.title }}</span>
+              <div class="ned-project-media">
+                {% if block.settings.image != blank %}
+                  {{ block.settings.image | image_url: width: 1800 | image_tag: loading: 'lazy', widths: '480, 720, 960, 1200, 1600, 1800', sizes: '(min-width: 990px) 58vw, 92vw', alt: project_alt }}
+                {% else %}
+                  <div class="ned-sign-placeholder" aria-hidden="true"><span></span><i></i><i></i></div>
+                {% endif %}
+              </div>
+              <div class="ned-crosshair ned-crosshair--a" aria-hidden="true"></div>
+              <div class="ned-crosshair ned-crosshair--b" aria-hidden="true"></div>
+              <div class="ned-dimension" aria-hidden="true"><span>{{ block.settings.annotation }}</span></div>
+            </div>
+
+            <div class="ned-project-copy">
+              <div class="ned-project-index">APPLICATION / {% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</div>
+              <p class="ned-project-meta"><span>{{ block.settings.classification }}</span>{{ block.settings.discipline }}</p>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.description }}</p>
+              <span class="ned-project-cta">VIEW PROJECT <b aria-hidden="true">↗</b></span>
+            </div>
+          </a>
+        </article>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <footer class="ned-portfolio-foot">
+    <span>DOCUMENTED / MODELED / PRODUCTION-AWARE</span>
+    <a href="/pages/cases">VIEW ALL CASES <b aria-hidden="true">↗</b></a>
+  </footer>
+</div>

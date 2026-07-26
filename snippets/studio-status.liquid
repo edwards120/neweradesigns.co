@@ -1,0 +1,63 @@
+{% assign studio_online = settings.studio_status_online %}
+{% assign studio_label = settings.studio_status_label | default: '' %}
+
+{% if studio_online %}
+  {% assign dot_color = '#22c55e' %}
+  {% assign glow_color = 'rgba(34,197,94,0.45)' %}
+  {% assign default_label = 'In Studio — Replies within 24 hours' %}
+{% else %}
+  {% assign dot_color = '#ef4444' %}
+  {% assign glow_color = 'rgba(239,68,68,0.35)' %}
+  {% assign default_label = 'Offline — Replies next business day' %}
+{% endif %}
+
+{% if studio_label != blank %}
+  {% assign display_label = studio_label %}
+{% else %}
+  {% assign display_label = default_label %}
+{% endif %}
+
+<div class="studio-status-badge" aria-label="Studio status: {{ display_label }}">
+  <span class="studio-status-dot"></span>
+  <span class="studio-status-text">{{ display_label }}</span>
+</div>
+
+<style>
+  .studio-status-badge {
+        position: fixed;
+    bottom: 20px;
+    left: 24px;
+    z-index: 9999;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: #0d1f0f;
+    border: 1px solid {{ dot_color }}33;
+    color: #e8f5e9;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    font-family: inherit;
+    pointer-events: none;
+    user-select: none;
+  }
+  .studio-status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: {{ dot_color }};
+    box-shadow: 0 0 0 3px {{ glow_color }}, 0 0 10px {{ dot_color }};
+    flex-shrink: 0;
+    animation: studio-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes studio-pulse {
+    0%, 100% { box-shadow: 0 0 0 3px {{ glow_color }}, 0 0 10px {{ dot_color }}; }
+    50% { box-shadow: 0 0 0 6px {{ glow_color }}, 0 0 18px {{ dot_color }}; }
+  }
+  .studio-status-text {
+    color: #d1fae5;
+  }
+</style>
