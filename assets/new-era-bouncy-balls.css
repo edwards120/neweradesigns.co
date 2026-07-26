@@ -1,0 +1,73 @@
+/*
+ * PURPOSE: Shared floating balls + icon-balls overlay that can run independently from hero markup.
+ * USED BY: sections/new-era-bouncy-balls.liquid.
+ * EDIT SAFELY: Keep pointer-events layering so links and form controls under the overlay remain usable.
+ */
+
+.ned-bouncy-overlay {
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: var(--ned-overlay-z, 18);
+}
+
+.ned-bouncy-overlay[hidden] {
+  display: none !important;
+}
+
+.ned-bouncy-overlay__field {
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+  position: absolute;
+}
+
+.ned-bouncy-overlay__object {
+  align-items: center;
+  background: var(--object-color, #fca311);
+  border-radius: 50%;
+  box-shadow: inset -10px -12px 20px rgba(12, 29, 67, 0.16), 0 12px 24px rgba(12, 29, 67, 0.16);
+  color: #fff;
+  display: flex;
+  height: var(--object-size, 56px);
+  justify-content: center;
+  left: 0;
+  opacity: var(--object-opacity, 0.95);
+  pointer-events: auto;
+  position: absolute;
+  top: 0;
+  transform: translate3d(0, 0, 0);
+  user-select: none;
+  width: var(--object-size, 56px);
+  will-change: transform;
+}
+
+.ned-bouncy-overlay__object--icon {
+  color: var(--object-icon-color, #fff);
+}
+
+.ned-bouncy-overlay__icon {
+  display: flex;
+  filter: drop-shadow(0 1px 0 rgba(7, 26, 58, 0.35));
+  height: 60%;
+  width: 60%;
+}
+
+.ned-bouncy-overlay__icon svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+@media (max-width: 989px) {
+  .ned-bouncy-overlay__object {
+    height: var(--object-mobile-size, var(--object-size, 46px));
+    width: var(--object-mobile-size, var(--object-size, 46px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ned-bouncy-overlay {
+    display: none !important;
+  }
+}

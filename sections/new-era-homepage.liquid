@@ -1106,18 +1106,16 @@
 <section id="NewEraHome-{{ section.id }}" class="is-high-energy" aria-label="{{ section.settings.accessible_label | escape }}">
   <div class="ne-energy" role="region" aria-label="Motion and display controls"><strong>Mental Energy Level</strong><div class="ne-energy-toggle"><button type="button" data-energy="high" aria-pressed="true">High Energy</button><button type="button" data-energy="focus" aria-pressed="false" aria-label="Use focus mode and stop decorative motion">Low Energy / Focus</button></div></div>
   {% comment %} Interactive balls span the complete section and collide with marked content blocks. {% endcomment %}
-  {% if section.settings.show_balls %}
-    <div class="ne-balls" aria-label="Interactive design-ball playground">
-      <button class="ne-ball" type="button" aria-label="Bounce orange design ball" style="--ball-size:3.4vw;--ball-color:{{ section.settings.ball_color_1 }};--ball-highlight:{{ section.settings.ball_color_3 }}"></button>
-      <button class="ne-ball" type="button" aria-label="Bounce navy design ball" style="--ball-size:5vw;--ball-color:{{ section.settings.ball_color_2 }}"></button>
-      <button class="ne-ball" type="button" aria-label="Bounce orange design ball" style="--ball-size:3vw;--ball-color:{{ section.settings.ball_color_1 }}"></button>
-      <button class="ne-ball" type="button" aria-label="Bounce navy design ball" style="--ball-size:2.3vw;--ball-color:{{ section.settings.ball_color_4 }}"></button>
-      <button class="ne-ball" type="button" aria-label="Bounce orange design ball" style="--ball-size:4.2vw;--ball-color:{{ section.settings.ball_color_1 }}"></button>
-      <button class="ne-ball" type="button" aria-label="Bounce navy design ball" style="--ball-size:1.8vw;--ball-color:{{ section.settings.ball_color_2 }};--ball-highlight:{{ section.settings.ball_color_3 }}"></button>
-      <button class="ne-ball" type="button" aria-label="Bounce orange design ball" style="--ball-size:4.6vw;--ball-color:{{ section.settings.ball_color_1 }}"></button>
-      <button class="ne-ball" type="button" aria-label="Bounce navy design ball" style="--ball-size:2.7vw;--ball-color:{{ section.settings.ball_color_2 }}"></button>
-    </div>
-  {% endif %}
+  <div class="ne-balls" aria-label="Interactive design-ball playground">
+    <button class="ne-ball" type="button" aria-label="Bounce orange design ball" style="--ball-size:3.4vw;--ball-color:{{ section.settings.ball_color_1 }};--ball-highlight:{{ section.settings.ball_color_3 }}"></button>
+    <button class="ne-ball" type="button" aria-label="Bounce navy design ball" style="--ball-size:5vw;--ball-color:{{ section.settings.ball_color_2 }}"></button>
+    <button class="ne-ball" type="button" aria-label="Bounce orange design ball" style="--ball-size:3vw;--ball-color:{{ section.settings.ball_color_1 }}"></button>
+    <button class="ne-ball" type="button" aria-label="Bounce navy design ball" style="--ball-size:2.3vw;--ball-color:{{ section.settings.ball_color_4 }}"></button>
+    <button class="ne-ball" type="button" aria-label="Bounce orange design ball" style="--ball-size:4.2vw;--ball-color:{{ section.settings.ball_color_1 }}"></button>
+    <button class="ne-ball" type="button" aria-label="Bounce navy design ball" style="--ball-size:1.8vw;--ball-color:{{ section.settings.ball_color_2 }};--ball-highlight:{{ section.settings.ball_color_3 }}"></button>
+    <button class="ne-ball" type="button" aria-label="Bounce orange design ball" style="--ball-size:4.6vw;--ball-color:{{ section.settings.ball_color_1 }}"></button>
+    <button class="ne-ball" type="button" aria-label="Bounce navy design ball" style="--ball-size:2.7vw;--ball-color:{{ section.settings.ball_color_2 }}"></button>
+  </div>
   {% comment %} HERO: All essential copy is live text. The artwork is optional and decorative/supporting. {% endcomment %}
   <section class="ne-hero hero ne-dots">
     <canvas class="ne-behavior-canvas" aria-hidden="true"></canvas>

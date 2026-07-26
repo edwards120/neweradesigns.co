@@ -41,7 +41,7 @@
 %}
 
 <section
-  class="ned-editorial-hero ned-editorial-hero--{{ section.settings.desktop_layout }} ned-editorial-hero--frame-{{ section.settings.frame_position }}{% if section.settings.animate_content %} has-entry-motion{% endif %}{% if section.settings.animate_halftone %} has-halftone-motion{% endif %}{% if section.settings.animate_kinetic_labels %} has-kinetic-motion{% endif %}"
+  class="ned-editorial-hero ned-editorial-hero--{{ section.settings.desktop_layout }} ned-editorial-hero--frame-{{ section.settings.frame_position }}{% if section.settings.animate_content %} has-entry-motion{% endif %}{% if section.settings.animate_halftone %} has-halftone-motion{% endif %}{% if section.settings.animate_kinetic_labels and section.settings.enable_gravity == false %} has-kinetic-motion{% endif %}"
   id="NedEditorialHero-{{ section.id }}"
   style="
     --ned-hero-bg: {{ section.settings.background_color }};
@@ -147,19 +147,24 @@
           ><span>{{ block.settings.label | escape }}</span></a>
         {% elsif block.type == 'hero_icon' and section.settings.show_hero_icons %}
           {% liquid
-            assign icon_character = '✦'
+            assign icon_asset = block.settings.icon | default: 'icon-star.svg'
             case block.settings.icon
+              when 'spark'
+                assign icon_asset = 'icon-star.svg'
               when 'crosshair'
-                assign icon_character = '⊕'
+                assign icon_asset = 'icon-plus.svg'
               when 'arrow'
-                assign icon_character = '↗'
+                assign icon_asset = 'icon-arrow.svg'
               when 'plus'
-                assign icon_character = '＋'
+                assign icon_asset = 'icon-plus.svg'
               when 'ring'
-                assign icon_character = '◎'
+                assign icon_asset = 'icon-map-pin.svg'
               when 'asterisk'
-                assign icon_character = '✳'
+                assign icon_asset = 'icon-star.svg'
             endcase
+            unless icon_asset contains '.svg'
+              assign icon_asset = 'icon-star.svg'
+            endunless
           %}
           <a
             class="ned-editorial-hero__icon{% if block.settings.hide_mobile %} is-mobile-hidden{% endif %}"
@@ -173,7 +178,7 @@
             data-rotation="{{ block.settings.rotation }}"
             style="--icon-x:{{ block.settings.x }}%;--icon-y:{{ block.settings.y }}%;--icon-mobile-x:{{ block.settings.mobile_x }}%;--icon-mobile-y:{{ block.settings.mobile_y }}%;--icon-size:{{ block.settings.size }}px;--icon-mobile-size:{{ block.settings.mobile_size }}px;--icon-color:{{ block.settings.color }};--icon-rotate:{{ block.settings.rotation }}deg;--icon-bounce:{{ block.settings.bounce_height }}px;--icon-speed:{{ block.settings.speed }}s;--icon-delay:-{{ block.settings.delay }}s"
             {{ block.shopify_attributes }}
-          >{{ icon_character }}</a>
+          ><span class="ned-editorial-hero__icon-svg" aria-hidden="true">{{ icon_asset | inline_asset_content }}</span></a>
         {% endif %}
       {% endfor %}
     </div>
@@ -223,14 +228,16 @@
   #NedEditorialHero-{{ section.id }}.has-halftone-motion .ned-editorial-hero__halftone{animation-name:nedHeroHalftone-{{ section.id }}}
   @keyframes nedHeroHalftone-{{ section.id }}{0%,100%{background-position:50% 50%;transform:scale(1)}50%{background-position:calc(50% + var(--ned-halftone-shift)) calc(50% - var(--ned-halftone-shift));transform:scale(1.018)}}
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetics{inset:0;pointer-events:none;position:absolute;z-index:2}
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic{align-items:center;aspect-ratio:1;background:var(--node-bg);border-radius:50%;clip-path:none;color:var(--node-ink);display:flex;font:900 clamp(9px,1vw,13px)/1 'NED Milo',Arial,sans-serif;justify-content:center;left:var(--node-x);letter-spacing:.14em;padding:18px;pointer-events:auto;position:absolute;text-align:center;text-decoration:none;text-transform:uppercase;top:var(--node-y);transform:translate(-50%,-50%) rotate(var(--node-rotate));transition:filter .18s ease;white-space:nowrap;width:var(--node-width)}
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:nth-child(2){aspect-ratio:1.5;border-radius:0;clip-path:polygon(8% 0,88% 4%,100% 28%,94% 92%,72% 100%,8% 90%,0 62%,3% 14%)}#NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:nth-child(3){aspect-ratio:1.75;border-radius:44% 56% 61% 39%/52% 42% 58% 48%}
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic{align-items:center;aspect-ratio:1;background:var(--node-bg);border-radius:50%;box-shadow:inset -10px -12px 20px rgba(12,29,67,.16),0 12px 24px rgba(12,29,67,.16);clip-path:none;color:var(--node-ink);display:flex;font:900 clamp(9px,1vw,13px)/1 'NED Milo',Arial,sans-serif;justify-content:center;left:var(--node-x);letter-spacing:.08em;padding:18px;pointer-events:auto;position:absolute;text-align:center;text-decoration:none;text-transform:uppercase;top:var(--node-y);transform:translate(-50%,-50%) rotate(var(--node-rotate));transition:filter .18s ease;white-space:nowrap;width:var(--node-width)}
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:nth-child(2),#NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:nth-child(3){aspect-ratio:1;border-radius:50%;clip-path:none}
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic span{transition:letter-spacing .18s ease,transform .18s cubic-bezier(.2,1.4,.3,1)}
   #NedEditorialHero-{{ section.id }}.has-kinetic-motion .ned-editorial-hero__kinetic{animation:nedHeroBounce-{{ section.id }} var(--node-speed) linear var(--node-delay) infinite;transform-origin:center bottom}
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:hover,#NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:focus-visible{animation-play-state:paused;filter:saturate(1.3) brightness(1.08);z-index:6}
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:hover span,#NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:focus-visible span{letter-spacing:.2em;transform:scale(1.04)}
   @keyframes nedHeroBounce-{{ section.id }}{0%,8%,28%,42%,100%{transform:translate(-50%,-50%) translate3d(0,0,0) rotate(var(--node-rotate)) scale(1)}10%{transform:translate(-50%,-50%) translate3d(0,2px,0) rotate(var(--node-rotate)) scale(1.04,.94)}18%{transform:translate(-50%,-50%) translate3d(var(--node-drift-x),calc(0px - var(--node-drift-y)),0) rotate(calc(var(--node-rotate) + 1deg)) scale(.98,1.02)}30%{transform:translate(-50%,-50%) translate3d(0,1px,0) rotate(var(--node-rotate)) scale(1.02,.97)}35%{transform:translate(-50%,-50%) translate3d(calc(var(--node-drift-x) * -.25),calc(var(--node-drift-y) * -.25),0) rotate(var(--node-rotate)) scale(.99,1.01)}}
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon{color:var(--icon-color);font:400 var(--icon-size)/1 'NED Milo',Arial,sans-serif;left:var(--icon-x);pointer-events:auto;position:absolute;text-decoration:none;top:var(--icon-y);transform:translate(-50%,-50%) rotate(var(--icon-rotate));z-index:4}
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon{align-items:center;background:color-mix(in srgb,var(--icon-color) 84%,#ffffff);border-radius:50%;box-shadow:inset -10px -12px 20px rgba(12,29,67,.16),0 12px 24px rgba(12,29,67,.16);color:#ffffff;display:flex;height:calc(var(--icon-size) * 1.9);justify-content:center;left:var(--icon-x);pointer-events:auto;position:absolute;text-decoration:none;top:var(--icon-y);transform:translate(-50%,-50%) rotate(var(--icon-rotate));width:calc(var(--icon-size) * 1.9);z-index:4}
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg{display:flex;filter:drop-shadow(0 1px 0 rgba(7,26,58,.35));height:62%;width:62%}
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg svg{display:block;height:100%;width:100%}
   #NedEditorialHero-{{ section.id }}.has-kinetic-motion .ned-editorial-hero__icon{animation:nedHeroIconBounce-{{ section.id }} var(--icon-speed) linear var(--icon-delay) infinite;transform-origin:center bottom}
   #NedEditorialHero-{{ section.id }}.is-gravity-active [data-ned-gravity-object]{animation:none!important;left:0;top:0;will-change:transform}
   @keyframes nedHeroIconBounce-{{ section.id }}{0%,10%,30%,43%,100%{transform:translate(-50%,-50%) translateY(0) rotate(var(--icon-rotate)) scale(1)}12%{transform:translate(-50%,-50%) translateY(2px) rotate(var(--icon-rotate)) scale(1.08,.9)}20%{transform:translate(-50%,-50%) translateY(calc(0px - var(--icon-bounce))) rotate(calc(var(--icon-rotate) + 5deg)) scale(.96,1.04)}32%{transform:translate(-50%,-50%) translateY(1px) rotate(var(--icon-rotate)) scale(1.04,.96)}37%{transform:translate(-50%,-50%) translateY(calc(var(--icon-bounce) * -.24)) rotate(calc(var(--icon-rotate) - 2deg))}}
@@ -272,7 +279,7 @@
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__button{margin-top:4px;min-height:54px}
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic{font-size:8px;left:var(--node-mobile-x);padding:12px;top:var(--node-mobile-y);width:var(--node-mobile-width)}
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic.is-mobile-hidden{display:none}
-    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon{font-size:var(--icon-mobile-size);left:var(--icon-mobile-x);top:var(--icon-mobile-y)}#NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon.is-mobile-hidden{display:none}
+    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon{font-size:var(--icon-mobile-size);height:calc(var(--icon-mobile-size) * 2);left:var(--icon-mobile-x);top:var(--icon-mobile-y);width:calc(var(--icon-mobile-size) * 2)}#NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon.is-mobile-hidden{display:none}
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social{bottom:62px}#NedEditorialHero-{{ section.id }} .ned-editorial-hero__social--left{left:22px}#NedEditorialHero-{{ section.id }} .ned-editorial-hero__social--right{right:22px}
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__rail{bottom:24px;grid-template-columns:1fr;left:22px;right:22px}#NedEditorialHero-{{ section.id }} .ned-editorial-hero__rail>span{display:none}
   }
@@ -471,6 +478,12 @@
     { "type": "checkbox", "id": "show_kinetic_labels", "label": "Show moving skill objects", "default": true },
     { "type": "checkbox", "id": "animate_kinetic_labels", "label": "Bounce skill objects and icons", "default": true },
     { "type": "checkbox", "id": "show_hero_icons", "label": "Show decorative hero icons", "default": true },
+    { "type": "header", "content": "Bouncy balls" },
+    { "type": "checkbox", "id": "show_hero_balls", "label": "Show bouncy balls", "default": true },
+    { "type": "color", "id": "hero_ball_color_1", "label": "Ball color 1", "default": "#fca311" },
+    { "type": "color", "id": "hero_ball_color_2", "label": "Ball color 2", "default": "#1b2e9d" },
+    { "type": "color", "id": "hero_ball_color_3", "label": "Ball color 3", "default": "#0a1821" },
+    { "type": "range", "id": "hero_ball_opacity", "label": "Ball opacity", "min": 20, "max": 100, "step": 5, "unit": "%", "default": 95 },
     { "type": "checkbox", "id": "enable_gravity", "label": "Use live-site gravity physics", "default": true },
     { "type": "range", "id": "gravity_strength", "label": "Gravity strength", "min": 10, "max": 45, "step": 5, "unit": "%", "default": 25 },
     { "type": "range", "id": "gravity_damping", "label": "Bounce damping", "min": 60, "max": 90, "step": 5, "unit": "%", "default": 75 }
@@ -502,7 +515,7 @@
       "type": "hero_icon",
       "name": "Bouncing hero icon",
       "settings": [
-        { "type": "select", "id": "icon", "label": "Icon", "options": [{ "value": "spark", "label": "Spark" }, { "value": "crosshair", "label": "Crosshair" }, { "value": "arrow", "label": "Arrow" }, { "value": "plus", "label": "Plus" }, { "value": "ring", "label": "Ring" }, { "value": "asterisk", "label": "Asterisk" }], "default": "spark" },
+        { "type": "select", "id": "icon", "label": "Icon", "options": [{ "value": "icon-star.svg", "label": "Star" }, { "value": "icon-plus.svg", "label": "Plus" }, { "value": "icon-arrow.svg", "label": "Arrow" }, { "value": "icon-map-pin.svg", "label": "Map pin" }, { "value": "icon-heart.svg", "label": "Heart" }, { "value": "icon-lightning-bolt.svg", "label": "Lightning bolt" }, { "value": "icon-fire.svg", "label": "Fire" }, { "value": "icon-chat-bubble.svg", "label": "Chat bubble" }, { "value": "icon-search.svg", "label": "Search" }, { "value": "icon-play.svg", "label": "Play" }, { "value": "icon-checkmark.svg", "label": "Checkmark" }, { "value": "icon-question-mark.svg", "label": "Question mark" }, { "value": "icon-share.svg", "label": "Share" }, { "value": "icon-paw-print.svg", "label": "Paw print" }, { "value": "icon-leaf.svg", "label": "Leaf" }, { "value": "icon-plane.svg", "label": "Plane" }, { "value": "icon-shopify.svg", "label": "Shopify" }, { "value": "spark", "label": "Legacy spark" }, { "value": "crosshair", "label": "Legacy crosshair" }, { "value": "ring", "label": "Legacy ring" }, { "value": "asterisk", "label": "Legacy asterisk" }], "default": "icon-star.svg" },
         { "type": "text", "id": "label", "label": "Accessible link label", "default": "Explore New Era Designs" },
         { "type": "url", "id": "link", "label": "Page link" },
         { "type": "color", "id": "color", "label": "Color", "default": "#ffffff" },

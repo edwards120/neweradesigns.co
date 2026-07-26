@@ -1,0 +1,184 @@
+{% comment %}
+  PURPOSE: Independent floating object overlay (balls + asset SVG icon-balls) so motion is not tied to hero internals.
+  USED BY: Homepage templates and any template that includes this section.
+  EDIT SAFELY: Keep data attributes aligned with assets/new-era-bouncy-balls.js.
+{% endcomment %}
+{{ 'new-era-bouncy-balls.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'new-era-bouncy-balls.js' | asset_url }}" defer></script>
+
+{% liquid
+  assign palette_a = section.settings.ball_color_1
+  assign palette_b = section.settings.ball_color_2
+  assign palette_c = section.settings.ball_color_3
+%}
+
+<div
+  id="NedBouncyOverlay-{{ section.id }}"
+  class="ned-bouncy-overlay"
+  data-ned-bouncy-overlay
+  data-section-id="{{ section.id }}"
+  data-scope-selector="{{ section.settings.scope_selector | escape }}"
+  data-obstacle-selector="{{ section.settings.obstacle_selector | escape }}"
+  data-gravity="{{ section.settings.gravity_strength | divided_by: 100.0 }}"
+  data-damping="{{ section.settings.bounce_damping | divided_by: 100.0 }}"
+  data-max-speed="{{ section.settings.max_speed }}"
+  data-click-radius="{{ section.settings.pointer_radius }}"
+  data-click-force="{{ section.settings.pointer_force }}"
+  data-mobile-breakpoint="{{ section.settings.mobile_breakpoint }}"
+  style="
+    --ned-overlay-z: {{ section.settings.layer_order }};
+  "
+  {% unless section.settings.enabled %}hidden{% endunless %}
+>
+  <div class="ned-bouncy-overlay__field" data-bouncy-field>
+    {% for i in (1..18) %}
+      {% if i <= section.settings.ball_count %}
+        {% liquid
+          assign mod = i | modulo: 3
+          assign desktop_size = section.settings.ball_desktop_size
+          assign mobile_size = section.settings.ball_mobile_size
+          assign hue = palette_a
+          case mod
+            when 1
+              assign desktop_size = section.settings.ball_desktop_size | minus: 10
+              assign mobile_size = section.settings.ball_mobile_size | minus: 8
+              assign hue = palette_b
+            when 2
+              assign desktop_size = section.settings.ball_desktop_size | plus: 8
+              assign mobile_size = section.settings.ball_mobile_size | plus: 6
+              assign hue = palette_c
+          endcase
+        %}
+        <span
+          class="ned-bouncy-overlay__object"
+          data-bouncy-object
+          data-desktop-x="{{ 8 | plus: i | times: 4 | modulo: 88 | plus: 6 }}"
+          data-desktop-y="{{ 12 | plus: i | times: 3 | modulo: 66 | plus: 8 }}"
+          data-mobile-x="{{ 8 | plus: i | times: 5 | modulo: 84 | plus: 8 }}"
+          data-mobile-y="{{ 10 | plus: i | times: 4 | modulo: 70 | plus: 10 }}"
+          style="
+            --object-size: {{ desktop_size }}px;
+            --object-mobile-size: {{ mobile_size }}px;
+            --object-color: {{ hue }};
+            --object-opacity: {{ section.settings.object_opacity | divided_by: 100.0 }};
+          "
+          aria-hidden="true"
+        ></span>
+      {% endif %}
+    {% endfor %}
+
+    {% for block in section.blocks %}
+      {% liquid
+        assign icon_asset = block.settings.icon
+        assign icon_markup = ''
+        case icon_asset
+          when 'spark'
+            assign icon_asset = 'icon-star.svg'
+          when 'crosshair'
+            assign icon_asset = 'icon-plus.svg'
+          when 'ring'
+            assign icon_asset = 'icon-heart.svg'
+          when 'asterisk'
+            assign icon_asset = 'icon-lightning-bolt.svg'
+        endcase
+
+        if icon_asset contains '.svg'
+          assign icon_markup = icon_asset | asset_url | inline_asset_content
+        endif
+      %}
+      <button
+        type="button"
+        class="ned-bouncy-overlay__object ned-bouncy-overlay__object--icon"
+        data-bouncy-object
+        data-desktop-x="{{ block.settings.x }}"
+        data-desktop-y="{{ block.settings.y }}"
+        data-mobile-x="{{ block.settings.mobile_x }}"
+        data-mobile-y="{{ block.settings.mobile_y }}"
+        style="
+          --object-size: {{ block.settings.size }}px;
+          --object-mobile-size: {{ block.settings.mobile_size }}px;
+          --object-color: {{ block.settings.background }};
+          --object-icon-color: {{ block.settings.color }};
+          --object-opacity: {{ section.settings.object_opacity | divided_by: 100.0 }};
+        "
+        aria-label="{{ block.settings.label | default: 'Open page' | escape }}"
+        {% if block.settings.link != blank %}data-link="{{ block.settings.link }}"{% endif %}
+        {{ block.shopify_attributes }}
+      >
+        {% if icon_markup != blank %}
+          <span class="ned-bouncy-overlay__icon">{{ icon_markup }}</span>
+        {% endif %}
+      </button>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  (() => {
+    const overlay = document.getElementById('NedBouncyOverlay-{{ section.id }}');
+    if (!overlay) return;
+    overlay.addEventListener('click', (event) => {
+      const target = event.target.closest('[data-link]');
+      if (!target) return;
+      const href = target.getAttribute('data-link');
+      if (href) window.location.href = href;
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "NED bouncy balls overlay",
+  "tag": "section",
+  "class": "section-ned-bouncy-overlay",
+  "limit": 1,
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "Enable overlay", "default": true },
+    { "type": "text", "id": "scope_selector", "label": "Scope selector", "default": ".ned-editorial-hero" },
+    { "type": "text", "id": "obstacle_selector", "label": "Obstacle selector (inside scope)", "default": ".ned-editorial-hero__content,.ned-editorial-hero__pillars" },
+    { "type": "range", "id": "layer_order", "label": "Layer order", "min": 1, "max": 40, "step": 1, "default": 18 },
+    { "type": "range", "id": "ball_count", "label": "Ball count", "min": 0, "max": 18, "step": 1, "default": 8 },
+    { "type": "range", "id": "ball_desktop_size", "label": "Ball desktop size", "min": 26, "max": 110, "step": 2, "unit": "px", "default": 54 },
+    { "type": "range", "id": "ball_mobile_size", "label": "Ball mobile size", "min": 18, "max": 86, "step": 2, "unit": "px", "default": 42 },
+    { "type": "range", "id": "object_opacity", "label": "Object opacity", "min": 20, "max": 100, "step": 5, "unit": "%", "default": 95 },
+    { "type": "color", "id": "ball_color_1", "label": "Ball color 1", "default": "#fca311" },
+    { "type": "color", "id": "ball_color_2", "label": "Ball color 2", "default": "#1b2e9d" },
+    { "type": "color", "id": "ball_color_3", "label": "Ball color 3", "default": "#0a1821" },
+    { "type": "range", "id": "gravity_strength", "label": "Gravity", "min": 8, "max": 40, "step": 1, "unit": "%", "default": 24 },
+    { "type": "range", "id": "bounce_damping", "label": "Bounce damping", "min": 55, "max": 92, "step": 1, "unit": "%", "default": 76 },
+    { "type": "range", "id": "max_speed", "label": "Max speed", "min": 8, "max": 40, "step": 1, "default": 22 },
+    { "type": "range", "id": "pointer_radius", "label": "Pointer push radius", "min": 50, "max": 280, "step": 10, "unit": "px", "default": 150 },
+    { "type": "range", "id": "pointer_force", "label": "Pointer push force", "min": 1, "max": 16, "step": 1, "default": 8 },
+    { "type": "range", "id": "mobile_breakpoint", "label": "Mobile breakpoint", "min": 480, "max": 1200, "step": 10, "unit": "px", "default": 989 }
+  ],
+  "blocks": [
+    {
+      "type": "icon_ball",
+      "name": "Floating icon ball",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [{ "value": "icon-star.svg", "label": "Star" }, { "value": "icon-plus.svg", "label": "Plus" }, { "value": "icon-arrow.svg", "label": "Arrow" }, { "value": "icon-map-pin.svg", "label": "Map pin" }, { "value": "icon-heart.svg", "label": "Heart" }, { "value": "icon-lightning-bolt.svg", "label": "Lightning bolt" }, { "value": "icon-fire.svg", "label": "Fire" }, { "value": "icon-chat-bubble.svg", "label": "Chat bubble" }, { "value": "icon-search.svg", "label": "Search" }, { "value": "icon-play.svg", "label": "Play" }, { "value": "icon-checkmark.svg", "label": "Checkmark" }, { "value": "icon-question-mark.svg", "label": "Question mark" }, { "value": "icon-share.svg", "label": "Share" }, { "value": "icon-paw-print.svg", "label": "Paw print" }, { "value": "icon-leaf.svg", "label": "Leaf" }, { "value": "icon-plane.svg", "label": "Plane" }, { "value": "icon-shopify.svg", "label": "Shopify" }, { "value": "spark", "label": "Legacy spark" }, { "value": "crosshair", "label": "Legacy crosshair" }, { "value": "ring", "label": "Legacy ring" }, { "value": "asterisk", "label": "Legacy asterisk" }], "default": "icon-star.svg" },
+        { "type": "text", "id": "label", "label": "Accessible label", "default": "Explore page" },
+        { "type": "url", "id": "link", "label": "Optional page link" },
+        { "type": "color", "id": "background", "label": "Ball color", "default": "#1b2e9d" },
+        { "type": "color", "id": "color", "label": "Icon color", "default": "#ffffff" },
+        { "type": "range", "id": "size", "label": "Desktop size", "min": 22, "max": 110, "step": 2, "unit": "px", "default": 56 },
+        { "type": "range", "id": "mobile_size", "label": "Mobile size", "min": 18, "max": 82, "step": 2, "unit": "px", "default": 42 },
+        { "type": "range", "id": "x", "label": "Desktop X", "min": 2, "max": 98, "step": 1, "unit": "%", "default": 72 },
+        { "type": "range", "id": "y", "label": "Desktop Y", "min": 2, "max": 98, "step": 1, "unit": "%", "default": 24 },
+        { "type": "range", "id": "mobile_x", "label": "Mobile X", "min": 2, "max": 98, "step": 1, "unit": "%", "default": 70 },
+        { "type": "range", "id": "mobile_y", "label": "Mobile Y", "min": 2, "max": 98, "step": 1, "unit": "%", "default": 24 }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "NED bouncy balls overlay",
+      "blocks": [
+        { "type": "icon_ball" },
+        { "type": "icon_ball" }
+      ]
+    }
+  ]
+}
+{% endschema %}
