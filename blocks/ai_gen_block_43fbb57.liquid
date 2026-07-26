@@ -1,0 +1,471 @@
+{% doc %}
+  @prompt
+    Build a SketchUp 3D Integration section for a design studio website. The section should:
+    
+    1. HEADING: Bold section title "3D DESIGN PREVIEW" with animated ned-highlight underline and ned-highlight-circle oval around key words, dark navy background (#0A0F1E), gold accent (#D4AF37). Add subtitle text: "Powered by SketchUp · Import & View Your 3D Models"
+    
+    2. SKETCHUP EMBED VIEWER: A large iframe/embed area that accepts a SketchUp 3D Warehouse embed URL (use SketchUp Viewer embed format: https://3dwarehouse.sketchup.com/embed/). Default to showing a placeholder frame with a SketchUp logo icon, a text field where the studio owner can paste a SketchUp 3D Warehouse embed URL, and an "Load 3D Model" button.
+    
+    3. FILE UPLOAD INFO PANEL: A styled info card below showing: "Upload Process: Export your .skp file → Upload to SketchUp 3D Warehouse → Paste the embed link above". Include 3 step icons (01, 02, 03) styled in gold on dark navy.
+    
+    4. ANIMATED HIGHLIGHTS: Apply ned-highlight class to key phrases like "3D Design", "SketchUp", "Import". Apply ned-highlight-circle to the section number/badge.
+    
+    SketchUp 3D integration section: dark navy background #0A0F1E, gold #D4AF37 accents, white text. SECTION HEADING: '3D DESIGN PREVIEW' bold large, with ned-highlight-circle oval animation around '3D', and ned-highlight animated gold underline on 'DESIGN PREVIEW'. Subtitle: 'Powered by SketchUp · Import & View Your 3D Models'. MAIN FEATURE: Large embed viewer card with a text input field for pasting a SketchUp 3D Warehouse embed URL and a gold 'Load Model' button that loads the URL into an iframe below it. STEP GUIDE: 3 steps below in gold numbered badges (01, 02, 03) on dark cards: '01 Export .GLB or .USDZ from SketchUp', '02 Drag + Drop to Shopify Product Media', '03 3D Model Live on Product Page + AR on iOS'. Luxury rounded card styling, responsive. Apply ned-highlight class to words 'SketchUp' and 'Import'.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-sketchup-section-{{ ai_gen_id }} {
+    display: block;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.section_padding }}px 20px;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+  }
+
+  .ai-sketchup-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .ai-sketchup-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .ai-sketchup-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 16px;
+    line-height: 1.2;
+  }
+
+  .ai-sketchup-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.9;
+    margin: 0;
+  }
+
+  .ned-highlight {
+    position: relative;
+    display: inline-block;
+  }
+
+  .ned-highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: {{ block.settings.accent_color }};
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: ai-sketchup-highlight-{{ ai_gen_id }} 1s ease-out 0.3s forwards;
+  }
+
+  .ned-highlight-circle {
+    position: relative;
+    display: inline-block;
+    padding: 0 8px;
+  }
+
+  .ned-highlight-circle::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% + 20px);
+    height: calc(100% + 16px);
+    border: 2px solid {{ block.settings.accent_color }};
+    border-radius: 50%;
+    opacity: 0;
+    animation: ai-sketchup-circle-{{ ai_gen_id }} 1s ease-out 0.5s forwards;
+  }
+
+  @keyframes ai-sketchup-highlight-{{ ai_gen_id }} {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes ai-sketchup-circle-{{ ai_gen_id }} {
+    to {
+      opacity: 1;
+    }
+  }
+
+  .ai-sketchup-viewer-card-{{ ai_gen_id }} {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: {{ block.settings.card_radius }}px;
+    padding: 30px;
+    margin-bottom: 40px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+  }
+
+  .ai-sketchup-input-group-{{ ai_gen_id }} {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .ai-sketchup-input-{{ ai_gen_id }} {
+    flex: 1;
+    min-width: 250px;
+    padding: 14px 18px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 4px;
+    color: {{ block.settings.text_color }};
+    font-size: 14px;
+  }
+
+  .ai-sketchup-input-{{ ai_gen_id }}::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .ai-sketchup-load-btn-{{ ai_gen_id }} {
+    padding: 14px 32px;
+    background-color: {{ block.settings.accent_color }};
+    color: {{ block.settings.background_color }};
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .ai-sketchup-load-btn-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+    transform: translateY(-2px);
+  }
+
+  .ai-sketchup-viewer-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    min-height: {{ block.settings.viewer_height }}px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .ai-sketchup-placeholder-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: {{ block.settings.viewer_height }}px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.6;
+  }
+
+  .ai-sketchup-placeholder-icon-{{ ai_gen_id }} {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 16px;
+  }
+
+  .ai-sketchup-placeholder-text-{{ ai_gen_id }} {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .ai-sketchup-iframe-{{ ai_gen_id }} {
+    width: 100%;
+    height: {{ block.settings.viewer_height }}px;
+    border: none;
+    display: none;
+  }
+
+  .ai-sketchup-iframe-{{ ai_gen_id }}.active {
+    display: block;
+  }
+
+  .ai-sketchup-steps-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .ai-sketchup-step-{{ ai_gen_id }} {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: {{ block.settings.card_radius }}px;
+    padding: 24px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .ai-sketchup-step-{{ ai_gen_id }}:hover {
+    border-color: {{ block.settings.accent_color }};
+    transform: translateY(-4px);
+  }
+
+  .ai-sketchup-step-badge-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background-color: {{ block.settings.accent_color }};
+    color: {{ block.settings.background_color }};
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .ai-sketchup-step-title-{{ ai_gen_id }} {
+    font-size: 16px;
+    font-weight: 600;
+    color: {{ block.settings.text_color }};
+    margin: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-sketchup-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.title_size }}px * 0.7);
+    }
+
+    .ai-sketchup-subtitle-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.subtitle_size }}px * 0.85);
+    }
+
+    .ai-sketchup-input-group-{{ ai_gen_id }} {
+      flex-direction: column;
+    }
+
+    .ai-sketchup-input-{{ ai_gen_id }} {
+      min-width: 100%;
+    }
+
+    .ai-sketchup-viewer-wrapper-{{ ai_gen_id }},
+    .ai-sketchup-placeholder-{{ ai_gen_id }},
+    .ai-sketchup-iframe-{{ ai_gen_id }} {
+      min-height: 300px;
+      height: 300px;
+    }
+  }
+{% endstyle %}
+
+<sketchup-viewer-{{ ai_gen_id }} class="ai-sketchup-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-sketchup-container-{{ ai_gen_id }}">
+    <div class="ai-sketchup-header-{{ ai_gen_id }}">
+      <h2 class="ai-sketchup-title-{{ ai_gen_id }}">
+        <span class="ned-highlight-circle">3D</span> <span class="ned-highlight">DESIGN PREVIEW</span>
+      </h2>
+      <p class="ai-sketchup-subtitle-{{ ai_gen_id }}">
+        Powered by <span class="ned-highlight">SketchUp</span> · <span class="ned-highlight">Import</span> & View Your 3D Models
+      </p>
+    </div>
+
+    <div class="ai-sketchup-viewer-card-{{ ai_gen_id }}">
+      <div class="ai-sketchup-input-group-{{ ai_gen_id }}">
+        <input
+          type="url"
+          class="ai-sketchup-input-{{ ai_gen_id }}"
+          placeholder="Paste SketchUp 3D Warehouse embed URL here..."
+          aria-label="SketchUp embed URL"
+          data-url-input
+        >
+        <button
+          class="ai-sketchup-load-btn-{{ ai_gen_id }}"
+          data-load-button
+        >
+          Load 3D Model
+        </button>
+      </div>
+
+      <div class="ai-sketchup-viewer-wrapper-{{ ai_gen_id }}">
+        <div class="ai-sketchup-placeholder-{{ ai_gen_id }}" data-placeholder>
+          <svg class="ai-sketchup-placeholder-icon-{{ ai_gen_id }}" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 10L90 30V70L50 90L10 70V30L50 10Z" stroke="{{ block.settings.accent_color }}" stroke-width="2" fill="none"/>
+            <path d="M50 10V50M50 50L90 70M50 50L10 70" stroke="{{ block.settings.accent_color }}" stroke-width="2"/>
+            <circle cx="50" cy="50" r="8" fill="{{ block.settings.accent_color }}"/>
+          </svg>
+          <p class="ai-sketchup-placeholder-text-{{ ai_gen_id }}">
+            Enter a SketchUp 3D Warehouse embed URL above<br>to load your 3D model
+          </p>
+        </div>
+        <iframe
+          class="ai-sketchup-iframe-{{ ai_gen_id }}"
+          data-viewer-iframe
+          title="SketchUp 3D Model Viewer"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+
+    <div class="ai-sketchup-steps-{{ ai_gen_id }}">
+      <div class="ai-sketchup-step-{{ ai_gen_id }}">
+        <div class="ai-sketchup-step-badge-{{ ai_gen_id }}">01</div>
+        <h3 class="ai-sketchup-step-title-{{ ai_gen_id }}">Export .GLB or .USDZ from SketchUp</h3>
+      </div>
+      <div class="ai-sketchup-step-{{ ai_gen_id }}">
+        <div class="ai-sketchup-step-badge-{{ ai_gen_id }}">02</div>
+        <h3 class="ai-sketchup-step-title-{{ ai_gen_id }}">Drag + Drop to Shopify Product Media</h3>
+      </div>
+      <div class="ai-sketchup-step-{{ ai_gen_id }}">
+        <div class="ai-sketchup-step-badge-{{ ai_gen_id }}">03</div>
+        <h3 class="ai-sketchup-step-title-{{ ai_gen_id }}">3D Model Live on Product Page + AR on iOS</h3>
+      </div>
+    </div>
+  </div>
+</sketchup-viewer-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class SketchUpViewer{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.urlInput = this.querySelector('[data-url-input]');
+        this.loadButton = this.querySelector('[data-load-button]');
+        this.placeholder = this.querySelector('[data-placeholder]');
+        this.iframe = this.querySelector('[data-viewer-iframe]');
+
+        this.loadButton.addEventListener('click', () => this.loadModel());
+        this.urlInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            this.loadModel();
+          }
+        });
+      }
+
+      loadModel() {
+        const url = this.urlInput.value.trim();
+
+        if (!url) {
+          alert('Please enter a SketchUp 3D Warehouse embed URL');
+          return;
+        }
+
+        if (!url.includes('3dwarehouse.sketchup.com')) {
+          alert('Please enter a valid SketchUp 3D Warehouse URL');
+          return;
+        }
+
+        this.iframe.src = url;
+        this.placeholder.style.display = 'none';
+        this.iframe.classList.add('active');
+      }
+    }
+
+    customElements.define('sketchup-viewer-{{ ai_gen_id }}', SketchUpViewer{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "SketchUp 3D integration",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#0A0F1E"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#D4AF37"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover color",
+      "default": "#C19B2E"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 24,
+      "max": 72,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "min": 12,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "3D viewer"
+    },
+    {
+      "type": "range",
+      "id": "viewer_height",
+      "label": "Viewer height",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "default": 500
+    }
+  ],
+  "presets": [
+    {
+      "name": "SketchUp 3D integration"
+    }
+  ]
+}
+{% endschema %}

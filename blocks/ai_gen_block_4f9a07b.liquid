@@ -1,0 +1,573 @@
+{% doc %}
+  @prompt
+    Build a full-width interactive section with a “bouncing balls” animation (NOT floating/drifting).
+    Visual style: minimalist, editorial, luxury. Balls must be flat solid colors only (no gradients, no glow, no shadows, no 3D).
+    Colors (only these):
+    • Gold #FCA311
+    • Deep Navy #16213A
+    • Royal Blue #1B2E9D
+    • Obsidian #0A1821
+    Background options:
+    • Allow an optional background image upload (cover, centered).
+    • Allow an optional plain white background mode.
+    • Add an adjustable dark overlay slider (0–70%) to keep text readable on photos.
+    Animation behavior:
+    • Create 6–12 balls that bounce within the section boundaries, colliding with the edges and changing direction naturally.
+    • Motion should be smooth and “physical” (gravity + bounce), not slow float.
+    • On click/tap, the balls should “burst” outward slightly, then continue bouncing.
+    • On desktop hover, balls slightly react (small nudge), but primary interaction is click/tap.
+    Content layer:
+    • Center text overlay:
+    Headline: “INTERACTIVE DESIGN. LUXURY IN MOTION.”
+    Optional subtext line under it (small): “Tap to move the system.”
+    • Ensure balls stay behind text and never block readability.
+    Responsive height:
+    • Desktop section min-height: 520–680px with a slider setting.
+    • Mobile section min-height: 520–760px with a separate slider setting.
+    • Keep animation responsive and recalculated on resize/orientation change.
+    Performance & accessibility:
+    • Optimize for mobile performance (requestAnimationFrame).
+    • Respect “prefers-reduced-motion” (show static balls).
+    • Do not use heavy video backgrounds.
+    Settings/controls in the block:
+    • Ball count slider (6–12)
+    • Ball size range (small/medium/large)
+    • Bounce energy slider (calm → energetic)
+    • Desktop height slider + mobile height slider
+    • Background image selector + toggle for white background
+    • Overlay opacity slider
+    • Optional button (label + link)
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-bouncing-balls-{{ ai_gen_id }} {
+    display: block;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: {{ block.settings.background_white_mode }};
+  }
+
+  .ai-bouncing-balls-container-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    min-height: {{ block.settings.desktop_height }}px;
+  }
+
+  @media screen and (max-width: 1000px) {
+    .ai-bouncing-balls-container-{{ ai_gen_id }} {
+      min-height: {{ block.settings.mobile_height }}px;
+    }
+  }
+
+  .ai-bouncing-balls-bg-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .ai-bouncing-balls-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, {{ block.settings.overlay_opacity | divided_by: 100.0 }});
+    pointer-events: none;
+  }
+
+  .ai-bouncing-balls-canvas-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ai-bouncing-balls-content-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: inherit;
+    padding: 40px 20px;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .ai-bouncing-balls-headline-{{ ai_gen_id }} {
+    font-family: {{ block.settings.heading_font.family }}, {{ block.settings.heading_font.fallback_families }};
+    font-weight: {{ block.settings.heading_font.weight }};
+    font-style: {{ block.settings.heading_font.style }};
+    font-size: 48px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 16px;
+    max-width: 900px;
+    text-transform: uppercase;
+  }
+
+  @media screen and (max-width: 1000px) {
+    .ai-bouncing-balls-headline-{{ ai_gen_id }} {
+      font-size: 32px;
+    }
+  }
+
+  .ai-bouncing-balls-subtext-{{ ai_gen_id }} {
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    color: {{ block.settings.text_color }};
+    opacity: 0.8;
+    margin: 0 0 24px;
+    max-width: 600px;
+  }
+
+  .ai-bouncing-balls-button-{{ ai_gen_id }} {
+    display: inline-block;
+    padding: 14px 32px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: 1px solid {{ block.settings.button_bg_color }};
+    transition: all 0.3s ease;
+    pointer-events: auto;
+  }
+
+  .ai-bouncing-balls-button-{{ ai_gen_id }}:hover {
+    background-color: transparent;
+    color: {{ block.settings.button_bg_color }};
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ai-bouncing-balls-canvas-{{ ai_gen_id }} {
+      display: none;
+    }
+    
+    .ai-bouncing-balls-static-{{ ai_gen_id }} {
+      display: block;
+    }
+  }
+
+  .ai-bouncing-balls-static-{{ ai_gen_id }} {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .ai-bouncing-balls-static-ball-{{ ai_gen_id }} {
+    position: absolute;
+    border-radius: 50%;
+  }
+{% endstyle %}
+
+<bouncing-balls-{{ ai_gen_id }}
+  class="ai-bouncing-balls-{{ ai_gen_id }}"
+  data-ball-count="{{ block.settings.ball_count }}"
+  data-ball-size="{{ block.settings.ball_size }}"
+  data-bounce-energy="{{ block.settings.bounce_energy }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-bouncing-balls-container-{{ ai_gen_id }}">
+    {% if block.settings.background_image and block.settings.background_white_mode == 'transparent' %}
+      <img
+        src="{{ block.settings.background_image | image_url: width: 2000 }}"
+        alt="{{ block.settings.background_image.alt | escape }}"
+        class="ai-bouncing-balls-bg-{{ ai_gen_id }}"
+        loading="lazy"
+        width="{{ block.settings.background_image.width }}"
+        height="{{ block.settings.background_image.height }}"
+      >
+      <div class="ai-bouncing-balls-overlay-{{ ai_gen_id }}"></div>
+    {% endif %}
+
+    <canvas class="ai-bouncing-balls-canvas-{{ ai_gen_id }}"></canvas>
+
+    <div class="ai-bouncing-balls-static-{{ ai_gen_id }}">
+      {% for i in (1..12) %}
+        {% if i <= block.settings.ball_count %}
+          {% assign color_index = i | modulo: 4 %}
+          {% case color_index %}
+            {% when 0 %}
+              {% assign ball_color = '#FCA311' %}
+            {% when 1 %}
+              {% assign ball_color = '#16213A' %}
+            {% when 2 %}
+              {% assign ball_color = '#1B2E9D' %}
+            {% else %}
+              {% assign ball_color = '#0A1821' %}
+          {% endcase %}
+          
+          {% assign x_pos = i | times: 7 | modulo: 80 | plus: 10 %}
+          {% assign y_pos = i | times: 11 | modulo: 70 | plus: 15 %}
+          {% assign size_multiplier = 1 %}
+          {% if block.settings.ball_size == 'small' %}
+            {% assign size_multiplier = 0.8 %}
+          {% elsif block.settings.ball_size == 'large' %}
+            {% assign size_multiplier = 1.3 %}
+          {% endif %}
+          {% assign ball_size_px = 40 | times: size_multiplier %}
+          
+          <div
+            class="ai-bouncing-balls-static-ball-{{ ai_gen_id }}"
+            style="
+              left: {{ x_pos }}%;
+              top: {{ y_pos }}%;
+              width: {{ ball_size_px }}px;
+              height: {{ ball_size_px }}px;
+              background-color: {{ ball_color }};
+            "
+          ></div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="ai-bouncing-balls-content-{{ ai_gen_id }}">
+      {% if block.settings.headline != blank %}
+        <h2 class="ai-bouncing-balls-headline-{{ ai_gen_id }}">
+          {{ block.settings.headline }}
+        </h2>
+      {% endif %}
+
+      {% if block.settings.subtext != blank %}
+        <p class="ai-bouncing-balls-subtext-{{ ai_gen_id }}">
+          {{ block.settings.subtext }}
+        </p>
+      {% endif %}
+
+      {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+        <a
+          href="{{ block.settings.button_link }}"
+          class="ai-bouncing-balls-button-{{ ai_gen_id }}"
+        >
+          {{ block.settings.button_label }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</bouncing-balls-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class BouncingBalls{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.canvas = null;
+        this.ctx = null;
+        this.balls = [];
+        this.animationId = null;
+        this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      }
+
+      connectedCallback() {
+        if (this.isReducedMotion) return;
+
+        this.canvas = this.querySelector('.ai-bouncing-balls-canvas-{{ ai_gen_id }}');
+        if (!this.canvas) return;
+
+        this.ctx = this.canvas.getContext('2d');
+        this.setupCanvas();
+        this.initBalls();
+        this.animate();
+
+        this.canvas.addEventListener('click', this.handleClick.bind(this));
+        this.canvas.addEventListener('touchstart', this.handleClick.bind(this), { passive: true });
+        
+        window.addEventListener('resize', this.handleResize.bind(this));
+      }
+
+      disconnectedCallback() {
+        if (this.animationId) {
+          cancelAnimationFrame(this.animationId);
+        }
+        window.removeEventListener('resize', this.handleResize.bind(this));
+      }
+
+      setupCanvas() {
+        const container = this.canvas.parentElement;
+        this.canvas.width = container.offsetWidth;
+        this.canvas.height = container.offsetHeight;
+      }
+
+      initBalls() {
+        const ballCount = parseInt(this.dataset.ballCount) || 8;
+        const ballSizeType = this.dataset.ballSize || 'medium';
+        const bounceEnergy = parseFloat(this.dataset.bounceEnergy) || 0.5;
+
+        const colors = ['#FCA311', '#16213A', '#1B2E9D', '#0A1821'];
+        
+        let baseSize = 40;
+        if (ballSizeType === 'small') baseSize = 32;
+        if (ballSizeType === 'large') baseSize = 52;
+
+        const baseSpeed = 1 + (bounceEnergy * 2);
+        const gravity = 0.3 + (bounceEnergy * 0.2);
+        const damping = 0.85 + (bounceEnergy * 0.1);
+
+        this.balls = [];
+        for (let i = 0; i < ballCount; i++) {
+          const radius = baseSize / 2 + (Math.random() * 8 - 4);
+          this.balls.push({
+            x: Math.random() * (this.canvas.width - radius * 2) + radius,
+            y: Math.random() * (this.canvas.height - radius * 2) + radius,
+            vx: (Math.random() - 0.5) * baseSpeed * 2,
+            vy: (Math.random() - 0.5) * baseSpeed * 2,
+            radius: radius,
+            color: colors[i % colors.length],
+            gravity: gravity,
+            damping: damping
+          });
+        }
+      }
+
+      handleClick(e) {
+        const rect = this.canvas.getBoundingClientRect();
+        const x = (e.clientX || e.touches[0].clientX) - rect.left;
+        const y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+        this.balls.forEach(ball => {
+          const dx = ball.x - x;
+          const dy = ball.y - y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < ball.radius + 50) {
+            const angle = Math.atan2(dy, dx);
+            const force = 8;
+            ball.vx += Math.cos(angle) * force;
+            ball.vy += Math.sin(angle) * force;
+          }
+        });
+      }
+
+      handleResize() {
+        this.setupCanvas();
+        this.initBalls();
+      }
+
+      animate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.balls.forEach(ball => {
+          ball.vy += ball.gravity;
+
+          ball.x += ball.vx;
+          ball.y += ball.vy;
+
+          if (ball.x - ball.radius < 0) {
+            ball.x = ball.radius;
+            ball.vx *= -ball.damping;
+          } else if (ball.x + ball.radius > this.canvas.width) {
+            ball.x = this.canvas.width - ball.radius;
+            ball.vx *= -ball.damping;
+          }
+
+          if (ball.y - ball.radius < 0) {
+            ball.y = ball.radius;
+            ball.vy *= -ball.damping;
+          } else if (ball.y + ball.radius > this.canvas.height) {
+            ball.y = this.canvas.height - ball.radius;
+            ball.vy *= -ball.damping;
+            
+            if (Math.abs(ball.vy) < 0.5) {
+              ball.vy = 0;
+            }
+          }
+
+          this.ctx.beginPath();
+          this.ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+          this.ctx.fillStyle = ball.color;
+          this.ctx.fill();
+        });
+
+        this.animationId = requestAnimationFrame(this.animate.bind(this));
+      }
+    }
+
+    customElements.define('bouncing-balls-{{ ai_gen_id }}', BouncingBalls{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Bouncing balls",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "headline",
+      "label": "Headline",
+      "default": "INTERACTIVE DESIGN. LUXURY IN MOTION."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Tap to move the system."
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#FCA311"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "select",
+      "id": "background_white_mode",
+      "label": "Background mode",
+      "options": [
+        {
+          "value": "transparent",
+          "label": "Use image"
+        },
+        {
+          "value": "#ffffff",
+          "label": "White background"
+        }
+      ],
+      "default": "transparent"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Dark overlay",
+      "min": 0,
+      "max": 70,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "ball_count",
+      "label": "Ball count",
+      "min": 6,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "ball_size",
+      "label": "Ball size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "range",
+      "id": "bounce_energy",
+      "label": "Bounce energy",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.5
+    },
+    {
+      "type": "header",
+      "content": "Section height"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "label": "Desktop height",
+      "min": 520,
+      "max": 680,
+      "step": 20,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Mobile height",
+      "min": 520,
+      "max": 760,
+      "step": 20,
+      "unit": "px",
+      "default": 640
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bouncing balls"
+    }
+  ]
+}
+{% endschema %}

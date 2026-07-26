@@ -1,0 +1,451 @@
+{% doc %}
+  @prompt
+    Write a four-step design process for a luxury signage project, focusing on Site Analysis, Conceptual Sketching, Material Selection, and Final Production.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-design-process-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: {{ block.settings.section_padding }}px 20px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-design-process-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+  }
+
+  .ai-design-process-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: {{ block.settings.header_spacing }}px;
+  }
+
+  .ai-design-process-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 16px;
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+
+  .ai-design-process-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.subtitle_color }};
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .ai-design-process-steps-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: {{ block.settings.step_gap }}px;
+    margin-top: {{ block.settings.steps_top_margin }}px;
+  }
+
+  .ai-design-process-step-{{ ai_gen_id }} {
+    background-color: {{ block.settings.step_background }};
+    padding: {{ block.settings.step_padding }}px;
+    border-radius: {{ block.settings.step_border_radius }}px;
+    border: {{ block.settings.step_border_width }}px solid {{ block.settings.step_border_color }};
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-design-process-step-number-{{ ai_gen_id }} {
+    font-size: {{ block.settings.number_size }}px;
+    font-weight: 300;
+    color: {{ block.settings.accent_color }};
+    margin: 0 0 12px;
+    line-height: 1;
+  }
+
+  .ai-design-process-step-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.step_title_size }}px;
+    color: {{ block.settings.step_title_color }};
+    margin: 0 0 12px;
+    font-weight: 400;
+  }
+
+  .ai-design-process-step-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.step_description_size }}px;
+    color: {{ block.settings.step_description_color }};
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .ai-design-process-step-accent-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background-color: {{ block.settings.accent_color }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-design-process-steps-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+    }
+
+    .ai-design-process-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.title_size }}px * 0.8);
+    }
+
+    .ai-design-process-subtitle-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.subtitle_size }}px * 0.9);
+    }
+  }
+{% endstyle %}
+
+<design-process-{{ ai_gen_id }} class="ai-design-process-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-design-process-container-{{ ai_gen_id }}">
+    {% if block.settings.show_header %}
+      <div class="ai-design-process-header-{{ ai_gen_id }}">
+        {% if block.settings.title != blank %}
+          <h2 class="ai-design-process-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+        {% endif %}
+        {% if block.settings.subtitle != blank %}
+          <div class="ai-design-process-subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="ai-design-process-steps-{{ ai_gen_id }}">
+      <div class="ai-design-process-step-{{ ai_gen_id }}">
+        <div class="ai-design-process-step-accent-{{ ai_gen_id }}"></div>
+        <div class="ai-design-process-step-number-{{ ai_gen_id }}">01</div>
+        <h3 class="ai-design-process-step-title-{{ ai_gen_id }}">{{ block.settings.step_1_title }}</h3>
+        <div class="ai-design-process-step-description-{{ ai_gen_id }}">{{ block.settings.step_1_description }}</div>
+      </div>
+
+      <div class="ai-design-process-step-{{ ai_gen_id }}">
+        <div class="ai-design-process-step-accent-{{ ai_gen_id }}"></div>
+        <div class="ai-design-process-step-number-{{ ai_gen_id }}">02</div>
+        <h3 class="ai-design-process-step-title-{{ ai_gen_id }}">{{ block.settings.step_2_title }}</h3>
+        <div class="ai-design-process-step-description-{{ ai_gen_id }}">{{ block.settings.step_2_description }}</div>
+      </div>
+
+      <div class="ai-design-process-step-{{ ai_gen_id }}">
+        <div class="ai-design-process-step-accent-{{ ai_gen_id }}"></div>
+        <div class="ai-design-process-step-number-{{ ai_gen_id }}">03</div>
+        <h3 class="ai-design-process-step-title-{{ ai_gen_id }}">{{ block.settings.step_3_title }}</h3>
+        <div class="ai-design-process-step-description-{{ ai_gen_id }}">{{ block.settings.step_3_description }}</div>
+      </div>
+
+      <div class="ai-design-process-step-{{ ai_gen_id }}">
+        <div class="ai-design-process-step-accent-{{ ai_gen_id }}"></div>
+        <div class="ai-design-process-step-number-{{ ai_gen_id }}">04</div>
+        <h3 class="ai-design-process-step-title-{{ ai_gen_id }}">{{ block.settings.step_4_title }}</h3>
+        <div class="ai-design-process-step-description-{{ ai_gen_id }}">{{ block.settings.step_4_description }}</div>
+      </div>
+    </div>
+  </div>
+</design-process-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class DesignProcess{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.style.display = 'block';
+      }
+    }
+
+    customElements.define('design-process-{{ ai_gen_id }}', DesignProcess{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Design process",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Show header",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "Our Design Process"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "From concept to completion, we bring your vision to life"
+    },
+    {
+      "type": "header",
+      "content": "Step 1"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "step_1_title",
+      "label": "Title",
+      "default": "Site Analysis"
+    },
+    {
+      "type": "richtext",
+      "id": "step_1_description",
+      "label": "Description",
+      "default": "<p>We evaluate your space, architecture, and brand identity to understand the environment and context for your signage.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Step 2"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "step_2_title",
+      "label": "Title",
+      "default": "Conceptual Sketching"
+    },
+    {
+      "type": "richtext",
+      "id": "step_2_description",
+      "label": "Description",
+      "default": "<p>Our designers create initial sketches and renderings that capture your vision and align with your brand aesthetic.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Step 3"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "step_3_title",
+      "label": "Title",
+      "default": "Material Selection"
+    },
+    {
+      "type": "richtext",
+      "id": "step_3_description",
+      "label": "Description",
+      "default": "<p>We select premium materials and finishes that ensure durability, elegance, and perfect integration with your space.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Step 4"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "step_4_title",
+      "label": "Title",
+      "default": "Final Production"
+    },
+    {
+      "type": "richtext",
+      "id": "step_4_description",
+      "label": "Description",
+      "default": "<p>Expert craftsmen fabricate and install your signage with precision, delivering a flawless finished product.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title",
+      "default": "#14213d"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle",
+      "default": "#242833"
+    },
+    {
+      "type": "color",
+      "id": "step_background",
+      "label": "Step background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "step_title_color",
+      "label": "Step title",
+      "default": "#14213d"
+    },
+    {
+      "type": "color",
+      "id": "step_description_color",
+      "label": "Step description",
+      "default": "#242833"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#fca311"
+    },
+    {
+      "type": "color",
+      "id": "step_border_color",
+      "label": "Step border",
+      "default": "#f3f3f3"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "label": "Maximum width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "min": 20,
+      "max": 80,
+      "step": 10,
+      "unit": "px",
+      "label": "Header spacing",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "steps_top_margin",
+      "min": 0,
+      "max": 60,
+      "step": 10,
+      "unit": "px",
+      "label": "Steps top margin",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "step_gap",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Gap between steps",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "step_padding",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Step padding",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "step_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Step border radius",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "step_border_width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "label": "Step border width",
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Title size",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "number_size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Step number size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "step_title_size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Step title size",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "step_description_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Step description size",
+      "default": 15
+    }
+  ],
+  "presets": [
+    {
+      "name": "Design process"
+    }
+  ]
+}
+{% endschema %}

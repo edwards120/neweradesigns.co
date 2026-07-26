@@ -1,0 +1,107 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "podcast": {
+      "type": "podcast-studio",
+      "blocks": {
+        "spotify": {
+          "type": "platform",
+          "settings": {
+            "label": "Spotify"
+          }
+        },
+        "apple": {
+          "type": "platform",
+          "settings": {
+            "label": "Apple Podcasts"
+          }
+        },
+        "youtube": {
+          "type": "platform",
+          "settings": {
+            "label": "YouTube"
+          }
+        },
+        "episode_one": {
+          "type": "episode",
+          "settings": {
+            "title": "Why luxury still needs a point of view",
+            "category": "Luxury + culture",
+            "duration": "48 min",
+            "description": "<p>A conversation about desire, restraint, and why the most memorable luxury has <strong>something specific to say</strong>.</p>"
+          }
+        },
+        "episode_two": {
+          "type": "episode",
+          "settings": {
+            "title": "Getting dressed is a design decision",
+            "category": "Fashion + identity",
+            "duration": "36 min",
+            "description": "<p>Personal style, visual memory, and the tiny choices that make an outfit feel like <strong>a complete point of view</strong>.</p>"
+          }
+        },
+        "episode_three": {
+          "type": "episode",
+          "settings": {
+            "title": "Taste, status, and the stories objects tell",
+            "category": "Anything worth discussing",
+            "duration": "51 min",
+            "description": "<p>An unfiltered detour through fashion objects, social signals, nostalgia, and <strong>whatever else the conversation unlocks</strong>.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "spotify",
+        "apple",
+        "youtube",
+        "episode_one",
+        "episode_two",
+        "episode_three"
+      ],
+      "settings": {
+        "eyebrow": "New Era on air",
+        "title_line_1": "NEW ERA",
+        "title_script": "Podcast",
+        "intro": "<p>Unfiltered conversations about <strong>fashion, luxury, culture</strong>, and whatever else is interesting enough to follow.</p>",
+        "record_kicker": "Taste in motion",
+        "record_footer": "Fashion / luxury / anything",
+        "show_whimsy": true,
+        "sticker_one": "Dressed to talk",
+        "sticker_two": "Off the record",
+        "marquee_1": "FASHION",
+        "marquee_2": "LUXURY",
+        "marquee_3": "CULTURE",
+        "marquee_4": "WHATEVER ELSE",
+        "record_spin_seconds": 18,
+        "marquee_seconds": 18,
+        "episodes_eyebrow": "Now broadcasting",
+        "episodes_heading": "Latest episodes",
+        "episodes_note": "Fashion, luxury, taste, culture, and whatever else is worth talking about.",
+        "about_eyebrow": "Behind the mic",
+        "about_heading": "Taste is personal. The conversation can go anywhere.",
+        "about_text": "<p>The New Era Podcast moves between <strong>fashion, luxury, culture, desire</strong>, and the beautifully random thoughts that refuse to stay in one category.</p>",
+        "footer_kicker": "No dress code required",
+        "footer_heading": "Put something good on.",
+        "script_font": "At Works Script",
+        "display_font": "Mathew Rohas",
+        "body_font": "Milo",
+        "ink_color": "#341F28",
+        "paper_color": "#D8EFFD",
+        "accent_color": "#EAEF55",
+        "hot_color": "#FE5D31",
+        "blue_color": "#ACB8A0"
+      }
+    }
+  },
+  "order": [
+    "podcast"
+  ]
+}

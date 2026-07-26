@@ -1,0 +1,361 @@
+{% doc %}
+  @prompt
+    The halftone should be small, high-quality, and closely grouped so the text is easy to read  JOIN THE NEW ERA
+    When the user moves their cursor or touches the screen, the halftones should gently react within a small radius (about 2–10).
+    After interaction, the dots should slowly float back to their original position, with a soft zero-gravity feel.
+    Keep the design minimal, balanced, and elegant — no large gaps, no aggressive movement.
+    The section must be fully responsive, editable text, and smooth on all device, This is amazing. Good job this is perfect. Could you add a secondary color
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-halftone-text-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: {{ block.settings.section_padding_top }}px 20px {{ block.settings.section_padding_bottom }}px;
+    background-color: {{ block.settings.background_color }};
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ai-halftone-text__container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .ai-halftone-text__canvas-{{ ai_gen_id }} {
+    width: 100%;
+    height: auto;
+    display: block;
+    touch-action: none;
+    cursor: default;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-halftone-text-{{ ai_gen_id }} {
+      padding: {{ block.settings.section_padding_top | times: 0.6 }}px 16px {{ block.settings.section_padding_bottom | times: 0.6 }}px;
+    }
+  }
+{% endstyle %}
+
+<halftone-text-{{ ai_gen_id }}
+  class="ai-halftone-text-{{ ai_gen_id }}"
+  data-text="{{ block.settings.text }}"
+  data-font-size="{{ block.settings.font_size }}"
+  data-dot-size="{{ block.settings.dot_size }}"
+  data-dot-spacing="{{ block.settings.dot_spacing }}"
+  data-dot-color="{{ block.settings.dot_color }}"
+  data-dot-color-secondary="{{ block.settings.dot_color_secondary }}"
+  data-interaction-radius="{{ block.settings.interaction_radius }}"
+  data-return-speed="{{ block.settings.return_speed }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-halftone-text__container-{{ ai_gen_id }}">
+    <canvas class="ai-halftone-text__canvas-{{ ai_gen_id }}"></canvas>
+  </div>
+</halftone-text-{{ ai_gen_id }}>
+
+<script>
+(function() {
+  class HalftoneText{{ ai_gen_id }} extends HTMLElement {
+    constructor() {
+      super();
+      this.canvas = null;
+      this.ctx = null;
+      this.dots = [];
+      this.mouse = { x: -1000, y: -1000 };
+      this.animationFrame = null;
+      this.isTouch = false;
+    }
+
+    connectedCallback() {
+      this.canvas = this.querySelector('.ai-halftone-text__canvas-{{ ai_gen_id }}');
+      this.ctx = this.canvas.getContext('2d');
+      
+      this.text = this.dataset.text || 'JOIN THE NEW ERA';
+      this.fontSize = parseInt(this.dataset.fontSize) || 80;
+      this.dotSize = parseFloat(this.dataset.dotSize) || 2.5;
+      this.dotSpacing = parseFloat(this.dataset.dotSpacing) || 4;
+      this.dotColor = this.dataset.dotColor || '#000000';
+      this.dotColorSecondary = this.dataset.dotColorSecondary || '#FF6B35';
+      this.interactionRadius = parseFloat(this.dataset.interactionRadius) || 50;
+      this.returnSpeed = parseFloat(this.dataset.returnSpeed) || 0.08;
+
+      this.init();
+      this.setupEventListeners();
+      this.animate();
+    }
+
+    init() {
+      const dpr = window.devicePixelRatio || 1;
+      const container = this.querySelector('.ai-halftone-text__container-{{ ai_gen_id }}');
+      const containerWidth = container.offsetWidth;
+      
+      this.ctx.font = `bold ${this.fontSize}px Arial, sans-serif`;
+      const metrics = this.ctx.measureText(this.text);
+      const textWidth = metrics.width;
+      const textHeight = this.fontSize * 1.2;
+      
+      const canvasWidth = containerWidth;
+      const canvasHeight = textHeight + 40;
+      
+      this.canvas.width = canvasWidth * dpr;
+      this.canvas.height = canvasHeight * dpr;
+      this.canvas.style.width = canvasWidth + 'px';
+      this.canvas.style.height = canvasHeight + 'px';
+      
+      this.ctx.scale(dpr, dpr);
+      
+      this.ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+      this.ctx.font = `bold ${this.fontSize}px Arial, sans-serif`;
+      this.ctx.fillStyle = '#000';
+      this.ctx.textAlign = 'center';
+      this.ctx.textBaseline = 'middle';
+      this.ctx.fillText(this.text, canvasWidth / 2, canvasHeight / 2);
+      
+      const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      const pixels = imageData.data;
+      
+      this.dots = [];
+      let dotIndex = 0;
+      
+      for (let y = 0; y < canvasHeight; y += this.dotSpacing) {
+        for (let x = 0; x < canvasWidth; x += this.dotSpacing) {
+          const pixelIndex = (Math.floor(y * dpr) * this.canvas.width + Math.floor(x * dpr)) * 4;
+          const alpha = pixels[pixelIndex + 3];
+          
+          if (alpha > 128) {
+            this.dots.push({
+              x: x,
+              y: y,
+              originalX: x,
+              originalY: y,
+              vx: 0,
+              vy: 0,
+              size: this.dotSize,
+              colorIndex: dotIndex % 2
+            });
+            dotIndex++;
+          }
+        }
+      }
+    }
+
+    setupEventListeners() {
+      const handleMove = (e) => {
+        const rect = this.canvas.getBoundingClientRect();
+        if (e.touches) {
+          this.isTouch = true;
+          this.mouse.x = e.touches[0].clientX - rect.left;
+          this.mouse.y = e.touches[0].clientY - rect.top;
+        } else {
+          this.mouse.x = e.clientX - rect.left;
+          this.mouse.y = e.clientY - rect.top;
+        }
+      };
+
+      const handleEnd = () => {
+        this.mouse.x = -1000;
+        this.mouse.y = -1000;
+      };
+
+      this.canvas.addEventListener('mousemove', handleMove);
+      this.canvas.addEventListener('touchmove', handleMove, { passive: true });
+      this.canvas.addEventListener('touchend', handleEnd);
+      this.canvas.addEventListener('mouseleave', handleEnd);
+
+      window.addEventListener('resize', () => {
+        if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
+        this.resizeTimeout = setTimeout(() => {
+          this.init();
+        }, 250);
+      });
+    }
+
+    animate() {
+      const canvasWidth = this.canvas.offsetWidth;
+      const canvasHeight = this.canvas.offsetHeight;
+      
+      this.ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+      
+      this.dots.forEach(dot => {
+        const dx = this.mouse.x - dot.x;
+        const dy = this.mouse.y - dot.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < this.interactionRadius) {
+          const force = (this.interactionRadius - distance) / this.interactionRadius;
+          const angle = Math.atan2(dy, dx);
+          const pushDistance = force * 10;
+          
+          dot.vx -= Math.cos(angle) * pushDistance * 0.15;
+          dot.vy -= Math.sin(angle) * pushDistance * 0.15;
+        }
+        
+        const returnX = (dot.originalX - dot.x) * this.returnSpeed;
+        const returnY = (dot.originalY - dot.y) * this.returnSpeed;
+        
+        dot.vx += returnX;
+        dot.vy += returnY;
+        
+        dot.vx *= 0.92;
+        dot.vy *= 0.92;
+        
+        dot.x += dot.vx;
+        dot.y += dot.vy;
+        
+        this.ctx.fillStyle = dot.colorIndex === 0 ? this.dotColor : this.dotColorSecondary;
+        this.ctx.beginPath();
+        this.ctx.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2);
+        this.ctx.fill();
+      });
+      
+      this.animationFrame = requestAnimationFrame(() => this.animate());
+    }
+
+    disconnectedCallback() {
+      if (this.animationFrame) {
+        cancelAnimationFrame(this.animationFrame);
+      }
+      if (this.resizeTimeout) {
+        clearTimeout(this.resizeTimeout);
+      }
+    }
+  }
+
+  customElements.define('halftone-text-{{ ai_gen_id }}', HalftoneText{{ ai_gen_id }});
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Halftone text",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "JOIN THE NEW ERA"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 40,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Halftone style"
+    },
+    {
+      "type": "range",
+      "id": "dot_size",
+      "label": "Dot size",
+      "min": 1,
+      "max": 5,
+      "step": 0.5,
+      "unit": "px",
+      "default": 2.5
+    },
+    {
+      "type": "range",
+      "id": "dot_spacing",
+      "label": "Dot spacing",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "dot_color",
+      "label": "Primary dot color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "dot_color_secondary",
+      "label": "Secondary dot color",
+      "default": "#FF6B35"
+    },
+    {
+      "type": "header",
+      "content": "Interaction"
+    },
+    {
+      "type": "range",
+      "id": "interaction_radius",
+      "label": "Interaction radius",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "return_speed",
+      "label": "Return speed",
+      "min": 0,
+      "max": 0.2,
+      "step": 0.1,
+      "default": 0.1
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum width",
+      "min": 600,
+      "max": 1400,
+      "step": 100,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Halftone text"
+    }
+  ]
+}
+{% endschema %}

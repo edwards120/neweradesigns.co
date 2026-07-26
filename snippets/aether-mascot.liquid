@@ -1,0 +1,18 @@
+{%- if image != blank -%}
+  {{- image
+    | image_url: width: 256
+    | image_tag: class: class, alt: '', width: 256, height: 256, loading: loading
+  -}}
+{%- else -%}
+  <picture>
+    <source media="(prefers-reduced-motion: reduce)" srcset="{{ 'aether-assistant.png' | asset_url }}">
+    <img
+      class="{{ class }}"
+      src="{{ 'aether-assistant-animated.webp' | asset_url }}"
+      width="256"
+      height="256"
+      alt=""
+      loading="{{ loading | default: 'lazy' }}"
+    >
+  </picture>
+{%- endif -%}

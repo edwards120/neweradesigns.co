@@ -1,0 +1,841 @@
+{% doc %}
+  @prompt
+    Downloadable Documents and Contacts Section with text, collapsable 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-docs-contacts-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: 40px 20px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-docs-contacts-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+  }
+
+  .ai-docs-contacts-header-{{ ai_gen_id }} {
+    margin-bottom: 32px;
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .ai-docs-contacts-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+
+  .ai-docs-contacts-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0;
+  }
+
+  .ai-docs-contacts-content-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-docs-contacts-content-{{ ai_gen_id }} {
+      {% if block.settings.layout == 'two_columns' %}
+        grid-template-columns: 1fr 1fr;
+      {% else %}
+        grid-template-columns: 1fr;
+      {% endif %}
+    }
+  }
+
+  .ai-docs-contacts-section-{{ ai_gen_id }} {
+    background-color: {{ block.settings.section_background }};
+    border: {{ block.settings.border_thickness }}px solid {{ block.settings.border_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    overflow: hidden;
+  }
+
+  .ai-docs-contacts-section-header-{{ ai_gen_id }} {
+    padding: 20px;
+    background-color: {{ block.settings.header_background }};
+    border-bottom: {{ block.settings.border_thickness }}px solid {{ block.settings.border_color }};
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s ease;
+  }
+
+  .ai-docs-contacts-section-header-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.header_hover_background }};
+  }
+
+  .ai-docs-contacts-section-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.section_title_size }}px;
+    color: {{ block.settings.section_title_color }};
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .ai-docs-contacts-toggle-icon-{{ ai_gen_id }} {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+    color: {{ block.settings.section_title_color }};
+  }
+
+  .ai-docs-contacts-section-header-{{ ai_gen_id }}[aria-expanded="true"] .ai-docs-contacts-toggle-icon-{{ ai_gen_id }} {
+    transform: rotate(180deg);
+  }
+
+  .ai-docs-contacts-section-body-{{ ai_gen_id }} {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .ai-docs-contacts-section-body-{{ ai_gen_id }}.active {
+    max-height: 2000px;
+  }
+
+  .ai-docs-contacts-section-content-{{ ai_gen_id }} {
+    padding: 20px;
+  }
+
+  .ai-docs-contacts-documents-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ai-docs-contacts-document-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background-color: {{ block.settings.document_background }};
+    border-radius: {{ block.settings.document_border_radius }}px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .ai-docs-contacts-document-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.document_hover_background }};
+  }
+
+  .ai-docs-contacts-document-icon-{{ ai_gen_id }} {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: {{ block.settings.icon_color }};
+  }
+
+  .ai-docs-contacts-document-info-{{ ai_gen_id }} {
+    flex-grow: 1;
+  }
+
+  .ai-docs-contacts-document-name-{{ ai_gen_id }} {
+    font-size: {{ block.settings.document_name_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 4px;
+    font-weight: 500;
+  }
+
+  .ai-docs-contacts-document-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.document_description_size }}px;
+    color: {{ block.settings.secondary_text_color }};
+    margin: 0;
+  }
+
+  .ai-docs-contacts-download-icon-{{ ai_gen_id }} {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: {{ block.settings.icon_color }};
+  }
+
+  .ai-docs-contacts-contact-list-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ai-docs-contacts-contact-item-{{ ai_gen_id }} {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .ai-docs-contacts-contact-icon-{{ ai_gen_id }} {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: {{ block.settings.icon_color }};
+    margin-top: 2px;
+  }
+
+  .ai-docs-contacts-contact-info-{{ ai_gen_id }} {
+    flex-grow: 1;
+  }
+
+  .ai-docs-contacts-contact-label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.contact_label_size }}px;
+    color: {{ block.settings.secondary_text_color }};
+    margin: 0 0 4px;
+    font-weight: 500;
+  }
+
+  .ai-docs-contacts-contact-value-{{ ai_gen_id }} {
+    font-size: {{ block.settings.contact_value_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0;
+  }
+
+  .ai-docs-contacts-contact-value-{{ ai_gen_id }} a {
+    color: {{ block.settings.link_color }};
+    text-decoration: none;
+  }
+
+  .ai-docs-contacts-contact-value-{{ ai_gen_id }} a:hover {
+    text-decoration: underline;
+  }
+
+  .ai-docs-contacts-empty-{{ ai_gen_id }} {
+    padding: 20px;
+    text-align: center;
+    color: {{ block.settings.secondary_text_color }};
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-docs-contacts-{{ ai_gen_id }} {
+      padding: 30px 16px;
+    }
+
+    .ai-docs-contacts-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.title_size }}px * 0.8);
+    }
+
+    .ai-docs-contacts-section-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.section_title_size }}px * 0.9);
+    }
+  }
+{% endstyle %}
+
+<docs-contacts-{{ ai_gen_id }} class="ai-docs-contacts-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-docs-contacts-container-{{ ai_gen_id }}">
+    {% if block.settings.title != blank or block.settings.description != blank %}
+      <div class="ai-docs-contacts-header-{{ ai_gen_id }}">
+        {% if block.settings.title != blank %}
+          <h2 class="ai-docs-contacts-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+        {% endif %}
+        {% if block.settings.description != blank %}
+          <div class="ai-docs-contacts-description-{{ ai_gen_id }}">{{ block.settings.description }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="ai-docs-contacts-content-{{ ai_gen_id }}">
+      {% if block.settings.show_documents %}
+        <div class="ai-docs-contacts-section-{{ ai_gen_id }}">
+          <button
+            class="ai-docs-contacts-section-header-{{ ai_gen_id }}"
+            aria-expanded="{% if block.settings.documents_expanded %}true{% else %}false{% endif %}"
+            data-section="documents"
+          >
+            <h3 class="ai-docs-contacts-section-title-{{ ai_gen_id }}">{{ block.settings.documents_title }}</h3>
+            <svg class="ai-docs-contacts-toggle-icon-{{ ai_gen_id }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="ai-docs-contacts-section-body-{{ ai_gen_id }} {% if block.settings.documents_expanded %}active{% endif %}" data-body="documents">
+            <div class="ai-docs-contacts-section-content-{{ ai_gen_id }}">
+              {% assign has_documents = false %}
+              {% for i in (1..5) %}
+                {% liquid
+                  assign doc_name_key = 'doc_' | append: i | append: '_name'
+                  assign doc_desc_key = 'doc_' | append: i | append: '_description'
+                  assign doc_url_key = 'doc_' | append: i | append: '_url'
+                  
+                  assign doc_name = block.settings[doc_name_key]
+                  assign doc_desc = block.settings[doc_desc_key]
+                  assign doc_url = block.settings[doc_url_key]
+                %}
+                {% if doc_name != blank and doc_url != blank %}
+                  {% assign has_documents = true %}
+                {% endif %}
+              {% endfor %}
+
+              {% if has_documents %}
+                <div class="ai-docs-contacts-documents-{{ ai_gen_id }}">
+                  {% for i in (1..5) %}
+                    {% liquid
+                      assign doc_name_key = 'doc_' | append: i | append: '_name'
+                      assign doc_desc_key = 'doc_' | append: i | append: '_description'
+                      assign doc_url_key = 'doc_' | append: i | append: '_url'
+                      
+                      assign doc_name = block.settings[doc_name_key]
+                      assign doc_desc = block.settings[doc_desc_key]
+                      assign doc_url = block.settings[doc_url_key]
+                    %}
+                    {% if doc_name != blank and doc_url != blank %}
+                      <a href="{{ doc_url }}" class="ai-docs-contacts-document-{{ ai_gen_id }}" download>
+                        <svg class="ai-docs-contacts-document-icon-{{ ai_gen_id }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <div class="ai-docs-contacts-document-info-{{ ai_gen_id }}">
+                          <p class="ai-docs-contacts-document-name-{{ ai_gen_id }}">{{ doc_name }}</p>
+                          {% if doc_desc != blank %}
+                            <p class="ai-docs-contacts-document-description-{{ ai_gen_id }}">{{ doc_desc }}</p>
+                          {% endif %}
+                        </div>
+                        <svg class="ai-docs-contacts-download-icon-{{ ai_gen_id }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                      </a>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% else %}
+                <div class="ai-docs-contacts-empty-{{ ai_gen_id }}">
+                  Add documents in the block settings
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_contacts %}
+        <div class="ai-docs-contacts-section-{{ ai_gen_id }}">
+          <button
+            class="ai-docs-contacts-section-header-{{ ai_gen_id }}"
+            aria-expanded="{% if block.settings.contacts_expanded %}true{% else %}false{% endif %}"
+            data-section="contacts"
+          >
+            <h3 class="ai-docs-contacts-section-title-{{ ai_gen_id }}">{{ block.settings.contacts_title }}</h3>
+            <svg class="ai-docs-contacts-toggle-icon-{{ ai_gen_id }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div class="ai-docs-contacts-section-body-{{ ai_gen_id }} {% if block.settings.contacts_expanded %}active{% endif %}" data-body="contacts">
+            <div class="ai-docs-contacts-section-content-{{ ai_gen_id }}">
+              {% assign has_contacts = false %}
+              {% if block.settings.contact_email != blank or block.settings.contact_phone != blank or block.settings.contact_address != blank %}
+                {% assign has_contacts = true %}
+              {% endif %}
+
+              {% if has_contacts %}
+                <div class="ai-docs-contacts-contact-list-{{ ai_gen_id }}">
+                  {% if block.settings.contact_email != blank %}
+                    <div class="ai-docs-contacts-contact-item-{{ ai_gen_id }}">
+                      <svg class="ai-docs-contacts-contact-icon-{{ ai_gen_id }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                      </svg>
+                      <div class="ai-docs-contacts-contact-info-{{ ai_gen_id }}">
+                        <p class="ai-docs-contacts-contact-label-{{ ai_gen_id }}">Email</p>
+                        <p class="ai-docs-contacts-contact-value-{{ ai_gen_id }}">
+                          <a href="mailto:{{ block.settings.contact_email }}">{{ block.settings.contact_email }}</a>
+                        </p>
+                      </div>
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.contact_phone != blank %}
+                    <div class="ai-docs-contacts-contact-item-{{ ai_gen_id }}">
+                      <svg class="ai-docs-contacts-contact-icon-{{ ai_gen_id }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                      </svg>
+                      <div class="ai-docs-contacts-contact-info-{{ ai_gen_id }}">
+                        <p class="ai-docs-contacts-contact-label-{{ ai_gen_id }}">Phone</p>
+                        <p class="ai-docs-contacts-contact-value-{{ ai_gen_id }}">
+                          <a href="tel:{{ block.settings.contact_phone }}">{{ block.settings.contact_phone }}</a>
+                        </p>
+                      </div>
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.contact_address != blank %}
+                    <div class="ai-docs-contacts-contact-item-{{ ai_gen_id }}">
+                      <svg class="ai-docs-contacts-contact-icon-{{ ai_gen_id }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      </svg>
+                      <div class="ai-docs-contacts-contact-info-{{ ai_gen_id }}">
+                        <p class="ai-docs-contacts-contact-label-{{ ai_gen_id }}">Address</p>
+                        <p class="ai-docs-contacts-contact-value-{{ ai_gen_id }}">{{ block.settings.contact_address }}</p>
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
+              {% else %}
+                <div class="ai-docs-contacts-empty-{{ ai_gen_id }}">
+                  Add contact information in the block settings
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</docs-contacts-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class DocsContacts{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.headers = this.querySelectorAll('.ai-docs-contacts-section-header-{{ ai_gen_id }}');
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.headers.forEach((header) => {
+          header.addEventListener('click', () => {
+            const section = header.getAttribute('data-section');
+                    const body = this.querySelector('[data-body="' + section + '"]');
+            const isExpanded = header.getAttribute('aria-expanded') === 'true';
+
+            header.setAttribute('aria-expanded', !isExpanded);
+            body.classList.toggle('active');
+          });
+        });
+      }
+    }
+
+    customElements.define('docs-contacts-{{ ai_gen_id }}', DocsContacts{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Documents and contacts",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "Resources"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Access important documents and contact information</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum width",
+      "min": 600,
+      "max": 1400,
+      "step": 100,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Desktop layout",
+      "options": [
+        {
+          "value": "one_column",
+          "label": "One column"
+        },
+        {
+          "value": "two_columns",
+          "label": "Two columns"
+        }
+      ],
+      "default": "two_columns"
+    },
+    {
+      "type": "header",
+      "content": "Documents section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_documents",
+      "label": "Show documents section",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "documents_title",
+      "label": "Section title",
+      "default": "Downloadable documents"
+    },
+    {
+      "type": "checkbox",
+      "id": "documents_expanded",
+      "label": "Expanded by default",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Document 1"
+    },
+    {
+      "type": "text",
+      "id": "doc_1_name",
+      "label": "Name",
+      "default": "Product catalog"
+    },
+    {
+      "type": "text",
+      "id": "doc_1_description",
+      "label": "Description",
+      "default": "Complete product listing and specifications"
+    },
+    {
+      "type": "url",
+      "id": "doc_1_url",
+      "label": "File URL"
+    },
+    {
+      "type": "header",
+      "content": "Document 2"
+    },
+    {
+      "type": "text",
+      "id": "doc_2_name",
+      "label": "Name"
+    },
+    {
+      "type": "text",
+      "id": "doc_2_description",
+      "label": "Description"
+    },
+    {
+      "type": "url",
+      "id": "doc_2_url",
+      "label": "File URL"
+    },
+    {
+      "type": "header",
+      "content": "Document 3"
+    },
+    {
+      "type": "text",
+      "id": "doc_3_name",
+      "label": "Name"
+    },
+    {
+      "type": "text",
+      "id": "doc_3_description",
+      "label": "Description"
+    },
+    {
+      "type": "url",
+      "id": "doc_3_url",
+      "label": "File URL"
+    },
+    {
+      "type": "header",
+      "content": "Document 4"
+    },
+    {
+      "type": "text",
+      "id": "doc_4_name",
+      "label": "Name"
+    },
+    {
+      "type": "text",
+      "id": "doc_4_description",
+      "label": "Description"
+    },
+    {
+      "type": "url",
+      "id": "doc_4_url",
+      "label": "File URL"
+    },
+    {
+      "type": "header",
+      "content": "Document 5"
+    },
+    {
+      "type": "text",
+      "id": "doc_5_name",
+      "label": "Name"
+    },
+    {
+      "type": "text",
+      "id": "doc_5_description",
+      "label": "Description"
+    },
+    {
+      "type": "url",
+      "id": "doc_5_url",
+      "label": "File URL"
+    },
+    {
+      "type": "header",
+      "content": "Contacts section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_contacts",
+      "label": "Show contacts section",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "contacts_title",
+      "label": "Section title",
+      "default": "Contact information"
+    },
+    {
+      "type": "checkbox",
+      "id": "contacts_expanded",
+      "label": "Expanded by default",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Email",
+      "default": "info@example.com"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Phone",
+      "default": "+1 (555) 123-4567"
+    },
+    {
+      "type": "textarea",
+      "id": "contact_address",
+      "label": "Address",
+      "default": "123 Main Street, Suite 100\nCity, State 12345"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "secondary_text_color",
+      "label": "Secondary text",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link",
+      "default": "#14213d"
+    },
+    {
+      "type": "color",
+      "id": "section_background",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "header_background",
+      "label": "Section header background",
+      "default": "#f3f3f3"
+    },
+    {
+      "type": "color",
+      "id": "header_hover_background",
+      "label": "Section header hover",
+      "default": "#e8e8e8"
+    },
+    {
+      "type": "color",
+      "id": "section_title_color",
+      "label": "Section title",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "color",
+      "id": "document_background",
+      "label": "Document background",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "color",
+      "id": "document_hover_background",
+      "label": "Document hover background",
+      "default": "#f3f3f3"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon",
+      "default": "#14213d"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "section_title_size",
+      "label": "Section title size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "document_name_size",
+      "label": "Document name size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "document_description_size",
+      "label": "Document description size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "contact_label_size",
+      "label": "Contact label size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "contact_value_size",
+      "label": "Contact value size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "border_thickness",
+      "label": "Border thickness",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Section border radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "document_border_radius",
+      "label": "Document border radius",
+      "min": 0,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "default": 6
+    }
+  ],
+  "presets": [
+    {
+      "name": "Documents and contacts"
+    }
+  ]
+}
+{% endschema %}

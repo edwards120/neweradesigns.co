@@ -1,0 +1,591 @@
+{% doc %}
+  @prompt
+    Create a continuous, moving panel section moving naturally, and the user can be able to scroll, and when he stop scrolling, it, continue moving, do a hovering for the panels and be able to have links background images for each panels and background images for the section please make this responsive to any layout on devices
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-moving-panels-{{ ai_gen_id }} {
+    display: block;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: {{ block.settings.section_padding }}px 0;
+  }
+
+  .ai-moving-panels-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: {{ block.settings.overlay_color }};
+    opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+    pointer-events: none;
+  }
+
+  .ai-moving-panels-container-{{ ai_gen_id }} {
+    position: relative;
+    display: flex;
+    gap: {{ block.settings.panel_gap }}px;
+    will-change: transform;
+    cursor: grab;
+  }
+
+  .ai-moving-panels-container-{{ ai_gen_id }}.is-dragging {
+    cursor: grabbing;
+  }
+
+  .ai-moving-panel-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: {{ block.settings.panel_width }}px;
+    height: {{ block.settings.panel_height }}px;
+    border-radius: {{ block.settings.panel_border_radius }}px;
+    overflow: hidden;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-moving-panel-{{ ai_gen_id }}:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .ai-moving-panel-link-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .ai-moving-panel-content-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .ai-moving-panel-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: {{ block.settings.panel_overlay_color }};
+    opacity: {{ block.settings.panel_overlay_opacity | divided_by: 100.0 }};
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-moving-panel-{{ ai_gen_id }}:hover .ai-moving-panel-overlay-{{ ai_gen_id }} {
+    opacity: {{ block.settings.panel_hover_overlay_opacity | divided_by: 100.0 }};
+  }
+
+  .ai-moving-panel-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-moving-panel-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-moving-panel-{{ ai_gen_id }} {
+      width: {{ block.settings.panel_width_mobile }}px;
+      height: {{ block.settings.panel_height_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+<continuous-moving-panels-{{ ai_gen_id }}
+  class="ai-moving-panels-{{ ai_gen_id }}"
+  style="{% if block.settings.section_background %}background-image: url('{{ block.settings.section_background | image_url: width: 2000 }}');{% endif %}"
+  data-speed="{{ block.settings.scroll_speed }}"
+  {{ block.shopify_attributes }}
+>
+  {% if block.settings.section_background or block.settings.overlay_opacity > 0 %}
+    <div class="ai-moving-panels-overlay-{{ ai_gen_id }}"></div>
+  {% endif %}
+
+  <div class="ai-moving-panels-container-{{ ai_gen_id }}">
+    {% for i in (1..4) %}
+      {% liquid
+        assign panel_image_key = 'panel_' | append: i | append: '_image'
+        assign panel_link_key = 'panel_' | append: i | append: '_link'
+        assign panel_image = block.settings[panel_image_key]
+        assign panel_link = block.settings[panel_link_key]
+      %}
+
+      <div
+        class="ai-moving-panel-{{ ai_gen_id }}"
+        style="{% if panel_image %}background-image: url('{{ panel_image | image_url: width: 800 }}');{% endif %}"
+      >
+        {% if panel_link != blank %}
+          <a href="{{ panel_link }}" class="ai-moving-panel-link-{{ ai_gen_id }}">
+            <div class="ai-moving-panel-content-{{ ai_gen_id }}">
+              <div class="ai-moving-panel-overlay-{{ ai_gen_id }}"></div>
+              {% unless panel_image %}
+                <div class="ai-moving-panel-placeholder-{{ ai_gen_id }}">
+                  {{ 'image' | placeholder_svg_tag }}
+                </div>
+              {% endunless %}
+            </div>
+          </a>
+        {% else %}
+          <div class="ai-moving-panel-content-{{ ai_gen_id }}">
+            <div class="ai-moving-panel-overlay-{{ ai_gen_id }}"></div>
+            {% unless panel_image %}
+              <div class="ai-moving-panel-placeholder-{{ ai_gen_id }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            {% endunless %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    {% for i in (1..4) %}
+      {% liquid
+        assign panel_image_key = 'panel_' | append: i | append: '_image'
+        assign panel_link_key = 'panel_' | append: i | append: '_link'
+        assign panel_image = block.settings[panel_image_key]
+        assign panel_link = block.settings[panel_link_key]
+      %}
+
+      <div
+        class="ai-moving-panel-{{ ai_gen_id }}"
+        style="{% if panel_image %}background-image: url('{{ panel_image | image_url: width: 800 }}');{% endif %}"
+      >
+        {% if panel_link != blank %}
+          <a href="{{ panel_link }}" class="ai-moving-panel-link-{{ ai_gen_id }}">
+            <div class="ai-moving-panel-content-{{ ai_gen_id }}">
+              <div class="ai-moving-panel-overlay-{{ ai_gen_id }}"></div>
+              {% unless panel_image %}
+                <div class="ai-moving-panel-placeholder-{{ ai_gen_id }}">
+                  {{ 'image' | placeholder_svg_tag }}
+                </div>
+              {% endunless %}
+            </div>
+          </a>
+        {% else %}
+          <div class="ai-moving-panel-content-{{ ai_gen_id }}">
+            <div class="ai-moving-panel-overlay-{{ ai_gen_id }}"></div>
+            {% unless panel_image %}
+              <div class="ai-moving-panel-placeholder-{{ ai_gen_id }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            {% endunless %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</continuous-moving-panels-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class ContinuousMovingPanels{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.container = this.querySelector('.ai-moving-panels-container-{{ ai_gen_id }}');
+        this.speed = parseFloat(this.dataset.speed) || 0.5;
+        this.position = 0;
+        this.isDragging = false;
+        this.startX = 0;
+        this.scrollLeft = 0;
+        this.animationId = null;
+        this.userInteracting = false;
+        this.interactionTimeout = null;
+      }
+
+      connectedCallback() {
+        this.setupEventListeners();
+        this.startAutoScroll();
+      }
+
+      disconnectedCallback() {
+        this.stopAutoScroll();
+        if (this.interactionTimeout) {
+          clearTimeout(this.interactionTimeout);
+        }
+      }
+
+      setupEventListeners() {
+        this.container.addEventListener('mousedown', this.handleMouseDown.bind(this));
+        this.container.addEventListener('mousemove', this.handleMouseMove.bind(this));
+        this.container.addEventListener('mouseup', this.handleMouseUp.bind(this));
+        this.container.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
+
+        this.container.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: true });
+        this.container.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: true });
+        this.container.addEventListener('touchend', this.handleTouchEnd.bind(this));
+
+        this.container.addEventListener('mouseenter', this.handleMouseEnter.bind(this));
+        this.addEventListener('wheel', this.handleWheel.bind(this), { passive: true });
+      }
+
+      handleMouseDown(e) {
+        this.isDragging = true;
+        this.userInteracting = true;
+        this.container.classList.add('is-dragging');
+        this.startX = e.pageX;
+        this.scrollLeft = this.position;
+        this.stopAutoScroll();
+      }
+
+      handleMouseMove(e) {
+        if (!this.isDragging) return;
+        e.preventDefault();
+        const x = e.pageX;
+        const walk = (x - this.startX) * 2;
+        this.position = this.scrollLeft - walk;
+        this.updatePosition();
+      }
+
+      handleMouseUp() {
+        this.isDragging = false;
+        this.container.classList.remove('is-dragging');
+        this.resumeAfterInteraction();
+      }
+
+      handleMouseLeave() {
+        if (this.isDragging) {
+          this.isDragging = false;
+          this.container.classList.remove('is-dragging');
+          this.resumeAfterInteraction();
+        }
+      }
+
+      handleTouchStart(e) {
+        this.isDragging = true;
+        this.userInteracting = true;
+        this.startX = e.touches[0].pageX;
+        this.scrollLeft = this.position;
+        this.stopAutoScroll();
+      }
+
+      handleTouchMove(e) {
+        if (!this.isDragging) return;
+        const x = e.touches[0].pageX;
+        const walk = (x - this.startX) * 2;
+        this.position = this.scrollLeft - walk;
+        this.updatePosition();
+      }
+
+      handleTouchEnd() {
+        this.isDragging = false;
+        this.resumeAfterInteraction();
+      }
+
+      handleMouseEnter() {
+        this.userInteracting = true;
+        this.stopAutoScroll();
+        this.resumeAfterInteraction();
+      }
+
+      handleWheel() {
+        this.userInteracting = true;
+        this.stopAutoScroll();
+        this.resumeAfterInteraction();
+      }
+
+      resumeAfterInteraction() {
+        if (this.interactionTimeout) {
+          clearTimeout(this.interactionTimeout);
+        }
+        this.interactionTimeout = setTimeout(() => {
+          this.userInteracting = false;
+          this.startAutoScroll();
+        }, 1000);
+      }
+
+      startAutoScroll() {
+        if (this.animationId) return;
+        
+        const animate = () => {
+          if (!this.userInteracting && !this.isDragging) {
+            this.position += this.speed;
+            this.updatePosition();
+          }
+          this.animationId = requestAnimationFrame(animate);
+        };
+        
+        this.animationId = requestAnimationFrame(animate);
+      }
+
+      stopAutoScroll() {
+        if (this.animationId) {
+          cancelAnimationFrame(this.animationId);
+          this.animationId = null;
+        }
+      }
+
+      updatePosition() {
+        const containerWidth = this.container.scrollWidth / 2;
+        
+        if (this.position >= containerWidth) {
+          this.position = 0;
+        } else if (this.position < 0) {
+          this.position = containerWidth + this.position;
+        }
+        
+        this.container.style.transform = `translateX(-${this.position}px)`;
+      }
+    }
+
+    customElements.define('continuous-moving-panels-{{ ai_gen_id }}', ContinuousMovingPanels{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Continuous moving panels",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section background"
+    },
+    {
+      "type": "image_picker",
+      "id": "section_background",
+      "label": "Background image"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "label": "Scroll speed",
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Panel style"
+    },
+    {
+      "type": "range",
+      "id": "panel_width",
+      "min": 200,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "label": "Panel width (desktop)",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "panel_height",
+      "min": 200,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "label": "Panel height (desktop)",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "panel_width_mobile",
+      "min": 150,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Panel width (mobile)",
+      "default": 280
+    },
+    {
+      "type": "range",
+      "id": "panel_height_mobile",
+      "min": 150,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Panel height (mobile)",
+      "default": 280
+    },
+    {
+      "type": "range",
+      "id": "panel_gap",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Gap between panels",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "panel_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Panel border radius",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "panel_overlay_color",
+      "label": "Panel overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "panel_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Panel overlay opacity",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "panel_hover_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Panel hover overlay opacity",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Panel 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "panel_1_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Panel 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "panel_2_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Panel 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "panel_3_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Panel 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_4_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "panel_4_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Panel 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_5_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "panel_5_link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Panel 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "panel_6_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "panel_6_link",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Continuous moving panels"
+    }
+  ]
+}
+{% endschema %}

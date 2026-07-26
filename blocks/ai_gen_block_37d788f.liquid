@@ -1,0 +1,292 @@
+{% doc %}
+  @prompt
+    Create an interactive section with tightly-spaced text where words are grouped closely together with minimal spacing between them. Use reduced letter-spacing and word-spacing for a compact, cohesive text appearance. Support the brand's two-color palette (orange and blue). No buttons or additional text elements needed.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-tight-text-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: {{ block.settings.section_padding }}px;
+    background-color: {{ block.settings.background_color }};
+    overflow: hidden;
+  }
+
+  .ai-tight-text-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+  }
+
+  .ai-tight-text-content-{{ ai_gen_id }} {
+    font-size: {{ block.settings.font_size }}px;
+    line-height: {{ block.settings.line_height }};
+    color: {{ block.settings.text_color }};
+    letter-spacing: -0.05em;
+    word-spacing: -0.2em;
+    text-align: {{ block.settings.text_alignment }};
+    font-weight: {{ block.settings.font_weight }};
+  }
+
+  .ai-tight-text-word-{{ ai_gen_id }} {
+    display: inline-block;
+    transition: color 0.3s ease, transform 0.2s ease;
+    cursor: default;
+  }
+
+  .ai-tight-text-word-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.hover_color }};
+    transform: scale({{ block.settings.hover_scale }});
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-tight-text-content-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.font_size }}px * 0.7);
+    }
+  }
+{% endstyle %}
+
+<tight-text-{{ ai_gen_id }}
+  class="ai-tight-text-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-tight-text-container-{{ ai_gen_id }}">
+    <div class="ai-tight-text-content-{{ ai_gen_id }}" data-text-content>
+      {% if block.settings.text != blank %}
+        {{ block.settings.text }}
+      {% else %}
+        <p>Add your tightly-spaced text here to see the compact typography effect</p>
+      {% endif %}
+    </div>
+  </div>
+</tight-text-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class TightText{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.textContent = this.querySelector('[data-text-content]');
+        if (this.textContent) {
+          this.wrapWords();
+        }
+      }
+
+      wrapWords() {
+        const originalHTML = this.textContent.innerHTML;
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = originalHTML;
+        
+        const textNodes = this.getTextNodes(tempDiv);
+        
+        textNodes.forEach(node => {
+          const words = node.textContent.split(/(\s+)/);
+          const fragment = document.createDocumentFragment();
+          
+          words.forEach(word => {
+            if (word.trim()) {
+              const span = document.createElement('span');
+              span.className = 'ai-tight-text-word-{{ ai_gen_id }}';
+              span.textContent = word;
+              fragment.appendChild(span);
+            } else if (word) {
+              fragment.appendChild(document.createTextNode(word));
+            }
+          });
+          
+          node.parentNode.replaceChild(fragment, node);
+        });
+        
+        this.textContent.innerHTML = tempDiv.innerHTML;
+      }
+
+      getTextNodes(element) {
+        const textNodes = [];
+        const walker = document.createTreeWalker(
+          element,
+          NodeFilter.SHOW_TEXT,
+          null,
+          false
+        );
+        
+        let node;
+        while (node = walker.nextNode()) {
+          if (node.textContent.trim()) {
+            textNodes.push(node);
+          }
+        }
+        
+        return textNodes;
+      }
+    }
+
+    customElements.define('tight-text-{{ ai_gen_id }}', TightText{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Tight text",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Experience the power of tightly-spaced typography where every word flows seamlessly into the next creating a cohesive visual rhythm that draws the eye across the page</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 16,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line height",
+      "min": 0.8,
+      "max": 2,
+      "step": 0.1,
+      "default": 1.1
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#14213d"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "hover_color",
+      "label": "Hover text",
+      "default": "#fca311"
+    },
+    {
+      "type": "header",
+      "content": "Interactive"
+    },
+    {
+      "type": "range",
+      "id": "hover_scale",
+      "label": "Hover scale",
+      "min": 1,
+      "max": 1.5,
+      "step": 0.1,
+      "default": 1.1
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 400,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "default": 1000
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tight text"
+    }
+  ]
+}
+{% endschema %}

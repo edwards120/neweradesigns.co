@@ -1,0 +1,805 @@
+{% doc %}
+  @prompt
+    Please make a header/drawer in the editable colors, and luxury AND COOL. making it sure the logo is included and all the pages I have for navigation
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-luxury-header-sticky-{{ ai_gen_id }} {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  body.ai-luxury-header-page-{{ ai_gen_id }} {
+    overflow-x: clip;
+    overflow-y: visible;
+  }
+
+  html.ai-luxury-menu-open-{{ ai_gen_id }},
+  body.ai-luxury-menu-open-{{ ai_gen_id }} {
+    overflow: hidden !important;
+    overscroll-behavior: none;
+  }
+
+  body.ai-luxury-menu-open-{{ ai_gen_id }} {
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+  body.ai-luxury-menu-open-{{ ai_gen_id }} .ai-luxury-header-sticky-{{ ai_gen_id }} {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  .ai-luxury-header-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    position: relative;
+    background-color: {{ block.settings.header_bg_color }};
+    border-bottom: 1px solid {{ block.settings.border_color }};
+  }
+
+  .ai-luxury-header__container-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: {{ block.settings.header_padding }}px {{ block.settings.horizontal_padding }}px;
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+  }
+
+  .ai-luxury-header__logo-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    z-index: 1001;
+  }
+
+  .ai-luxury-header__logo-{{ ai_gen_id }} img {
+    height: {{ block.settings.logo_height | plus: 10 }}px;
+    width: auto;
+    display: block;
+  }
+
+  .ai-luxury-header__logo-image--mobile-{{ ai_gen_id }} {
+    display: none !important;
+  }
+
+  @media screen and (max-width: 1099px) {
+    .ai-luxury-header__logo--has-mobile-{{ ai_gen_id }} .ai-luxury-header__logo-image--desktop-{{ ai_gen_id }} {
+      display: none !important;
+    }
+
+    .ai-luxury-header__logo--has-mobile-{{ ai_gen_id }} .ai-luxury-header__logo-image--mobile-{{ ai_gen_id }} {
+      display: block !important;
+      height: {{ block.settings.mobile_logo_height | plus: 20 }}px;
+      width: auto;
+    }
+  }
+
+  .ai-luxury-header__nav-{{ ai_gen_id }} {
+    display: none;
+    gap: {{ block.settings.nav_spacing }}px;
+    align-items: center;
+  }
+
+  @media screen and (min-width: 990px) {
+    .ai-luxury-header__nav-{{ ai_gen_id }} {
+      display: flex;
+    }
+  }
+
+  .ai-luxury-header__nav-link-{{ ai_gen_id }} {
+    color: {{ block.settings.nav_text_color }};
+    text-decoration: none;
+    font-size: {{ block.settings.nav_font_size }}px;
+    font-weight: {{ block.settings.nav_font_weight }};
+    letter-spacing: {{ block.settings.letter_spacing }}px;
+    text-transform: {{ block.settings.text_transform }};
+    transition: color 0.3s ease, transform 0.2s ease;
+    position: relative;
+    padding: 8px 0;
+  }
+
+  .ai-luxury-header__nav-link-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.nav_hover_color }};
+    transform: translateY(-2px);
+  }
+
+  .ai-luxury-header__nav-link-{{ ai_gen_id }}::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: {{ block.settings.nav_hover_color }};
+    transition: width 0.3s ease;
+  }
+
+  .ai-luxury-header__nav-link-{{ ai_gen_id }}:hover::after {
+    width: 100%;
+  }
+
+  .ai-luxury-header__menu-toggle-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1001;
+    position: relative;
+  }
+
+  @media screen and (min-width: 990px) {
+    .ai-luxury-header__menu-toggle-{{ ai_gen_id }} {
+      display: none;
+    }
+  }
+
+  .ai-luxury-header__menu-line-{{ ai_gen_id }} {
+    width: 28px;
+    height: 2px;
+    background-color: {{ block.settings.nav_text_color }};
+    transition: all 0.3s ease;
+  }
+
+  .ai-luxury-header__menu-toggle-{{ ai_gen_id }}.active .ai-luxury-header__menu-line-{{ ai_gen_id }}:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+  }
+
+  .ai-luxury-header__menu-toggle-{{ ai_gen_id }}.active .ai-luxury-header__menu-line-{{ ai_gen_id }}:nth-child(2) {
+    opacity: 0;
+  }
+
+  .ai-luxury-header__menu-toggle-{{ ai_gen_id }}.active .ai-luxury-header__menu-line-{{ ai_gen_id }}:nth-child(3) {
+    transform: rotate(-45deg) translate(8px, -8px);
+  }
+
+  .ai-luxury-header__drawer-{{ ai_gen_id }} {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: {{ block.settings.drawer_width }}px;
+    height: 100vh;
+    background-color: {{ block.settings.drawer_bg_color }};
+    z-index: 1000;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .ai-luxury-header__drawer-{{ ai_gen_id }}.active {
+    right: 0;
+  }
+
+  .ai-luxury-header__drawer-content-{{ ai_gen_id }} {
+    padding: {{ block.settings.drawer_padding }}px;
+    padding-top: 100px;
+  }
+
+  .ai-luxury-header__drawer-nav-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.drawer_nav_spacing }}px;
+  }
+
+  .ai-luxury-header__drawer-link-{{ ai_gen_id }} {
+    color: {{ block.settings.drawer_text_color }};
+    text-decoration: none;
+    font-size: {{ block.settings.drawer_font_size }}px;
+    font-weight: {{ block.settings.drawer_font_weight }};
+    letter-spacing: {{ block.settings.drawer_letter_spacing }}px;
+    text-transform: {{ block.settings.drawer_text_transform }};
+    padding: {{ block.settings.drawer_link_padding }}px 0;
+    border-bottom: 1px solid {{ block.settings.drawer_divider_color }};
+    transition: color 0.3s ease, padding-left 0.3s ease;
+  }
+
+  .ai-luxury-header__drawer-link-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.drawer_hover_color }};
+    padding-left: 12px;
+  }
+
+  .ai-luxury-header__overlay-{{ ai_gen_id }} {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, {{ block.settings.overlay_opacity }});
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+
+  .ai-luxury-header__overlay-{{ ai_gen_id }}.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  .ai-luxury-header__socials-{{ ai_gen_id }} {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    margin-left: 24px;
+  }
+
+  @media screen and (min-width: 990px) {
+    .ai-luxury-header__socials-{{ ai_gen_id }} {
+      display: flex;
+    }
+  }
+
+  .ai-luxury-header__social-link-{{ ai_gen_id }} {
+    color: {{ block.settings.nav_text_color }};
+    border: 1px solid {{ block.settings.border_color }};
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .ai-luxury-header__social-link-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.nav_hover_color }};
+    border-color: {{ block.settings.nav_hover_color }};
+    transform: translateY(-2px);
+  }
+
+  .ai-luxury-header__drawer-socials-{{ ai_gen_id }} {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .ai-luxury-header__drawer-social-link-{{ ai_gen_id }} {
+    color: {{ block.settings.drawer_text_color }};
+    border: 1px solid {{ block.settings.drawer_divider_color }};
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .ai-luxury-header__drawer-social-link-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.drawer_hover_color }};
+    border-color: {{ block.settings.drawer_hover_color }};
+  }
+  @media screen and (max-width: 989px) {
+    .ai-luxury-header__container-{{ ai_gen_id }} {
+      padding: {{ block.settings.mobile_header_padding }}px {{ block.settings.mobile_horizontal_padding }}px;
+    }
+
+    .ai-luxury-header__logo-{{ ai_gen_id }} img {
+      height: {{ block.settings.mobile_logo_height | plus: 20 }}px;
+    }
+  }
+{% endstyle %}
+
+{%- liquid
+  assign instagram_url = block.settings.instagram_url
+  assign linkedin_url = block.settings.linkedin_url
+
+  if instagram_url == blank and settings.social_instagram_link != blank
+    assign instagram_url = settings.social_instagram_link
+  endif
+
+  if linkedin_url == blank and settings.social_linkedin_link != blank
+    assign linkedin_url = settings.social_linkedin_link
+  endif
+-%}
+
+<luxury-header-{{ ai_gen_id }} class="ai-luxury-header-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-luxury-header__container-{{ ai_gen_id }}">
+    <div class="ai-luxury-header__logo-{{ ai_gen_id }}{% if block.settings.mobile_logo_url != blank %} ai-luxury-header__logo--has-mobile-{{ ai_gen_id }}{% endif %}">
+      {% if settings.logo %}
+        <a href="/">
+          <img
+            src="{{ block.settings.desktop_logo_url | default: 'https://cdn.shopify.com/s/files/1/0914/0138/8337/files/Wordamrk_Lgoo.svg?v=1784272602' | escape }}"
+            alt="{{ shop.name }}"
+            width="400"
+            height="auto"
+            loading="eager"
+            class="ai-luxury-header__logo-image--desktop-{{ ai_gen_id }}"
+          >
+          {% if block.settings.mobile_logo_url != blank %}
+            <img
+              src="{{ block.settings.mobile_logo_url | escape }}"
+              alt="{{ shop.name }}"
+              width="400"
+              height="auto"
+              loading="eager"
+              class="ai-luxury-header__logo-image--mobile-{{ ai_gen_id }}"
+            >
+          {% endif %}
+        </a>
+      {% else %}
+        <a href="/" style="color: {{ block.settings.nav_text_color }}; font-size: {{ block.settings.nav_font_size | plus: 4 }}px; font-weight: 700; text-decoration: none;">
+          {{ shop.name }}
+        </a>
+      {% endif %}
+    </div>
+
+    <nav class="ai-luxury-header__nav-{{ ai_gen_id }}">
+      {% for link in linklists[block.settings.menu].links %}
+        <a href="{{ link.url }}" class="ai-luxury-header__nav-link-{{ ai_gen_id }}">
+          {{ link.title }}
+        </a>
+      {% endfor %}
+    </nav>
+
+    <button
+      class="ai-luxury-header__menu-toggle-{{ ai_gen_id }}"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+    >
+      <span class="ai-luxury-header__menu-line-{{ ai_gen_id }}"></span>
+      <span class="ai-luxury-header__menu-line-{{ ai_gen_id }}"></span>
+      <span class="ai-luxury-header__menu-line-{{ ai_gen_id }}"></span>
+    </button>
+  </div>
+
+  <div class="ai-luxury-header__overlay-{{ ai_gen_id }}"></div>
+
+  <div class="ai-luxury-header__drawer-{{ ai_gen_id }}">
+    <div class="ai-luxury-header__drawer-content-{{ ai_gen_id }}">
+      <nav class="ai-luxury-header__drawer-nav-{{ ai_gen_id }}">
+        {% for link in linklists[block.settings.menu].links %}
+          <a href="{{ link.url }}" class="ai-luxury-header__drawer-link-{{ ai_gen_id }}">
+            {{ link.title }}
+          </a>
+        {% endfor %}
+      </nav>
+    </div>
+  </div>
+</luxury-header-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class LuxuryHeader{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.menuToggle = this.querySelector('.ai-luxury-header__menu-toggle-{{ ai_gen_id }}');
+        this.drawer = this.querySelector('.ai-luxury-header__drawer-{{ ai_gen_id }}');
+        this.overlay = this.querySelector('.ai-luxury-header__overlay-{{ ai_gen_id }}');
+        this.drawerLinks = this.querySelectorAll('.ai-luxury-header__drawer-link-{{ ai_gen_id }}');
+      }
+
+      connectedCallback() {
+        this.headerSection = this.closest('.shopify-section-group-header-group');
+        document.body.classList.add('ai-luxury-header-page-{{ ai_gen_id }}');
+
+        if (this.headerSection) {
+          this.headerSection.classList.add('ai-luxury-header-sticky-{{ ai_gen_id }}');
+        }
+
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        if (this.menuToggle) {
+          this.menuToggle.addEventListener('click', () => this.toggleDrawer());
+        }
+
+        if (this.overlay) {
+          this.overlay.addEventListener('click', () => this.closeDrawer());
+        }
+
+        this.drawerLinks.forEach(link => {
+          link.addEventListener('click', () => this.closeDrawer());
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.drawer.classList.contains('active')) {
+            this.closeDrawer();
+          }
+        });
+      }
+
+      toggleDrawer() {
+        const isActive = this.drawer.classList.contains('active');
+        
+        if (isActive) {
+          this.closeDrawer();
+        } else {
+          this.openDrawer();
+        }
+      }
+
+      openDrawer() {
+        this.drawer.classList.add('active');
+        this.overlay.classList.add('active');
+        this.menuToggle.classList.add('active');
+        this.menuToggle.setAttribute('aria-expanded', 'true');
+        this.scrollPosition = window.scrollY;
+        document.documentElement.classList.add('ai-luxury-menu-open-{{ ai_gen_id }}');
+        document.body.classList.add('ai-luxury-menu-open-{{ ai_gen_id }}');
+        document.body.style.top = `-${this.scrollPosition}px`;
+      }
+
+      closeDrawer() {
+        this.drawer.classList.remove('active');
+        this.overlay.classList.remove('active');
+        this.menuToggle.classList.remove('active');
+        this.menuToggle.setAttribute('aria-expanded', 'false');
+        const scrollPosition = this.scrollPosition || 0;
+        document.documentElement.classList.remove('ai-luxury-menu-open-{{ ai_gen_id }}');
+        document.body.classList.remove('ai-luxury-menu-open-{{ ai_gen_id }}');
+        document.body.style.top = '';
+        window.scrollTo(0, scrollPosition);
+      }
+    }
+
+    customElements.define('luxury-header-{{ ai_gen_id }}', LuxuryHeader{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Luxury header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Header style"
+    },
+    {
+      "type": "color",
+      "id": "header_bg_color",
+      "label": "Background color",
+      "default": "#14213d"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#fca311"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 1000,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "header_padding",
+      "label": "Vertical padding",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "horizontal_padding",
+      "label": "Horizontal padding",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "text",
+      "id": "desktop_logo_url",
+      "label": "Desktop logo URL",
+      "default": "https://cdn.shopify.com/s/files/1/0914/0138/8337/files/Wordamrk_Lgoo.svg?v=1784272602",
+      "info": "Editable desktop wordmark/logo URL. Tablets and mobile still use the mobile 2x2 logo URL."
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Desktop logo height",
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_height",
+      "label": "Mobile logo height",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "text",
+      "id": "mobile_logo_url",
+      "label": "Mobile logo URL",
+      "default": "https://cdn.shopify.com/s/files/1/0914/0138/8337/files/Website_2026.8-17.webp?v=1774900032",
+      "info": "Editable smaller-layout logo URL. Desktop still uses the main Shopify wordmark logo."
+    },
+    {
+      "type": "header",
+      "content": "Desktop navigation"
+    },
+    {
+      "type": "color",
+      "id": "nav_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "nav_hover_color",
+      "label": "Hover color",
+      "default": "#fca311"
+    },
+    {
+      "type": "range",
+      "id": "nav_font_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "nav_font_weight",
+      "label": "Font weight",
+      "min": 300,
+      "max": 700,
+      "step": 100,
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "Letter spacing",
+      "min": 0,
+      "max": 3,
+      "step": 0.5,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "text_transform",
+      "label": "Text transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "nav_spacing",
+      "label": "Link spacing",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Mobile drawer"
+    },
+    {
+      "type": "color",
+      "id": "drawer_bg_color",
+      "label": "Background color",
+      "default": "#14213d"
+    },
+    {
+      "type": "color",
+      "id": "drawer_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "drawer_hover_color",
+      "label": "Hover color",
+      "default": "#fca311"
+    },
+    {
+      "type": "color",
+      "id": "drawer_divider_color",
+      "label": "Divider color",
+      "default": "#fca311"
+    },
+    {
+      "type": "range",
+      "id": "drawer_width",
+      "label": "Drawer width",
+      "min": 250,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "default": 350
+    },
+    {
+      "type": "range",
+      "id": "drawer_padding",
+      "label": "Drawer padding",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "drawer_font_size",
+      "label": "Font size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "drawer_font_weight",
+      "label": "Font weight",
+      "min": 300,
+      "max": 700,
+      "step": 100,
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "drawer_letter_spacing",
+      "label": "Letter spacing",
+      "min": 0,
+      "max": 3,
+      "step": 0.5,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "drawer_text_transform",
+      "label": "Text transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "drawer_nav_spacing",
+      "label": "Link spacing",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "drawer_link_padding",
+      "label": "Link padding",
+      "min": 10,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.5
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "range",
+      "id": "mobile_header_padding",
+      "label": "Vertical padding",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_horizontal_padding",
+      "label": "Horizontal padding",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury header"
+    }
+  ]
+}
+{% endschema %}

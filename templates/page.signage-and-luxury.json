@@ -1,0 +1,495 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "1769321169d8538fa1": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 60,
+        "padding_bottom": 0
+      }
+    },
+    "blocks_feJw9p": {
+      "type": "_blocks",
+      "name": "Image banner",
+      "settings": {}
+    },
+    "blocks_Yd3K9U": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_5b1cc8d_rF4LTp": {
+          "type": "ai_gen_block_5b1cc8d",
+          "settings": {
+            "image": "shopify://shop_images/Artboard_19_copy_9ab4ea5e-6cf1-4477-a1d3-1c3421ffdb91.png",
+            "image_fit": "cover",
+            "image_position": "center",
+            "max_width": 2000,
+            "banner_height": 100,
+            "mobile_height": 80,
+            "banner_link": "shopify://pages/contact",
+            "link_aria_label": "View banner content",
+            "background_color": "#f3f3f3"
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_e946ecc_KnxjQX": {
+          "type": "ai_gen_block_e946ecc",
+          "name": "Bouncy balls",
+          "settings": {
+            "gradient_percent": 20,
+            "height_preset": "banner",
+            "desktop_height": 500,
+            "mobile_height": 150,
+            "background_fit": "cover",
+            "background_color": "#ffffff",
+            "white_mode": false,
+            "overlay_opacity": 0,
+            "ball_color_1": "#fca311",
+            "ball_color_2": "#16213a",
+            "ball_color_3": "#1b2e9d",
+            "ball_color_4": "#0a1821",
+            "ball_radius_min": 10,
+            "ball_radius_max": 26,
+            "ball_count": 8,
+            "ball_size": "medium",
+            "bounce_intensity": "moderate",
+            "headline": "Signage and wayfinding for modern mixed-use environments.",
+            "headline_font": "sans_serif_n7",
+            "headline_size": 42,
+            "show_subtext": true,
+            "subtext": "New Era Designs plans, designs, and visualizes complete sign families for retail, mixed-use, and commercial properties—so every movement through your building feels intentional.",
+            "subtext_size": 19,
+            "text_color": "#14213d",
+            "show_button": true,
+            "button_text": "Start a Signage Project",
+            "button_link": "shopify://pages/contact",
+            "button_bg_color": "#fca311",
+            "button_text_color": "#ffffff"
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_ad22dba_LGTWmN": {
+          "type": "ai_gen_block_ad22dba",
+          "settings": {
+            "heading_left": "",
+            "text_left": "<p>Channel letter systems are developed with attention to <strong>letterform proportions, depth, materials, illumination type, and mounting methods</strong>. Decisions around front-lit vs. halo-lit letters, neon vs. LED, raceway vs. flush mount, and finish selection are made early to avoid issues during fabrication or permitting.</p><p>Wayfinding systems are designed based on how people actually move through space. Hierarchy, placement, contrast, and scale are used to guide movement clearly without visual clutter—especially important in mixed-use and multi-tenant environments.</p>",
+            "heading_right": "",
+            "text_right": "<p>This work involves constant coordination with <strong>architects, engineers, fabricators, installers, and property teams</strong>. Acting as the design lead keeps everyone aligned to the same standards, drawings, and intent, reducing revisions, delays, and miscommunication.</p><p>Fabrication and installation are handled through <strong>trusted, insured third-party vendors</strong> with long-standing working relationships. Those relationships matter—they ensure reliable quality, realistic timelines, and fair pricing across current and future projects.</p>",
+            "max_width": 1000,
+            "column_gap": 60,
+            "mobile_column_gap": 40,
+            "heading_size": 28,
+            "mobile_heading_size": 24,
+            "text_size": 16,
+            "mobile_text_size": 14,
+            "line_height": 1.6,
+            "heading_margin_bottom": 16,
+            "paragraph_spacing": 16,
+            "background_color": "#ffffff",
+            "heading_color": "#121212",
+            "text_color": "#121212",
+            "section_padding_top": 60,
+            "section_padding_bottom": 60,
+            "section_padding_horizontal": 20,
+            "mobile_padding_top": 40,
+            "mobile_padding_bottom": 40,
+            "mobile_padding_horizontal": 16
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_fdb0f49_PWQD76": {
+          "type": "ai_gen_block_fdb0f49",
+          "name": "Magazine editorial",
+          "settings": {
+            "background_image": "shopify://shop_images/Custom_Signage.jpg",
+            "background_opacity": 30,
+            "background_color": "#16213a",
+            "content_width": 1000,
+            "padding_top": 80,
+            "padding_bottom": 80,
+            "padding_horizontal": 40,
+            "header_spacing": 40,
+            "eyebrow": "CHANNEL LETTER INSTALLATION",
+            "eyebrow_size": 12,
+            "eyebrow_color": "#ffffff",
+            "heading": "Precision, Coordination, and Accountability",
+            "heading_size": 48,
+            "heading_color": "#ffffff",
+            "subheading": "Discover the intersection of elegance and innovation",
+            "subheading_size": 20,
+            "subheading_color": "#ffffff",
+            "body_text": "<p>Channel letter installation is treated as a controlled, multi-step process—not a last-minute task. Every installation is planned in advance to protect the building, the brand, and the long-term performance of the signage.</p><p>This work prioritizes <strong>accuracy, safety, and clean execution</strong>, especially in high-visibility or luxury environments.</p>",
+            "body_size": 22,
+            "body_color": "#ffffff",
+            "image": "shopify://shop_images/Proposed_Graphics_Signage_Template_proposed_graphics.jpg",
+            "image_width": 100,
+            "show_ball": true,
+            "ball_size": 80,
+            "ball_color": "#fca311",
+            "ball_position_x": 85,
+            "ball_position_y": 20,
+            "show_icons": true,
+            "icon_size": 60,
+            "icon_background": "#ffffff",
+            "icon_color": "#14213d",
+            "icon_border_color": "#e0e0e0",
+            "icon_1_link": "",
+            "icon_1_label": "Explore",
+            "icon_2_link": "",
+            "icon_2_label": "Discover",
+            "icon_3_link": "",
+            "icon_3_label": "Download",
+            "icon_4_link": "",
+            "icon_4_label": "Contact"
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_16c29fe_dYwrEY": {
+          "type": "ai_gen_block_16c29fe",
+          "name": "Design process",
+          "settings": {
+            "show_header": true,
+            "title": "Channel Letter Process",
+            "subtitle": "From concept to completion, we bring your vision to life",
+            "step_1_title": "Pre-Installation Planning",
+            "step_1_description": "<p><strong>Nothing is improvised on-site</strong></p><p>Before installation begins, drawings, specifications, and mounting methods are finalized and reviewed. This includes confirmation of dimensions, placement, power access, and attachment strategy in coordination with architects, engineers, and property management when required.</p><p>This step reduces surprises, prevents damage, and ensures the installation proceeds efficiently.</p>",
+            "step_2_title": "Fabrication-to-Install Coordination",
+            "step_2_description": "<p><strong>Design intent carried through execution</strong></p><p>Installers work from the same approved drawings and specifications used during design and fabrication. This ensures letter spacing, alignment, illumination, and mounting details match the original intent—without interpretation or adjustment in the field.</p><p>Clear coordination between design, fabrication, and installation keeps timelines realistic and outcomes consistent.</p>",
+            "step_3_title": "On-Site Installation",
+            "step_3_description": "<p><br/>Clean, controlled, and respectful of the property<br/></p><p>Installation is handled by <strong>trusted, insured third-party professionals</strong> experienced in architectural signage. Letters are mounted, wired, leveled, and tested with care—accounting for building materials, finish protection, and surrounding conditions.</p><p>The focus is on precision and restraint: straight lines, clean penetrations, proper sealing, and balanced illumination.</p>",
+            "step_4_title": "Testing & Final Review",
+            "step_4_description": "<p>Once installed, signage is powered on, tested, and reviewed for alignment, brightness consistency, and overall presentation—both during the day and at night when applicable.</p><p>Any adjustments needed to meet standards are addressed before the project is considered complete.</p>",
+            "background_color": "#ffffff",
+            "title_color": "#14213d",
+            "subtitle_color": "#242833",
+            "step_background": "#ffffff",
+            "step_title_color": "#14213d",
+            "step_description_color": "#242833",
+            "accent_color": "#fca311",
+            "step_border_color": "#f3f3f3",
+            "max_width": 1200,
+            "section_padding": 60,
+            "header_spacing": 40,
+            "steps_top_margin": 20,
+            "step_gap": 30,
+            "step_padding": 30,
+            "step_border_radius": 4,
+            "step_border_width": 1,
+            "title_size": 42,
+            "subtitle_size": 18,
+            "number_size": 36,
+            "step_title_size": 22,
+            "step_description_size": 15
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_7044218_Dd7t6B": {
+          "type": "ai_gen_block_7044218",
+          "settings": {
+            "overlay_color": "#000000",
+            "overlay_opacity": 0,
+            "section_padding": 60,
+            "scroll_speed": 1,
+            "panel_width": 400,
+            "panel_height": 400,
+            "panel_width_mobile": 280,
+            "panel_height_mobile": 280,
+            "panel_gap": 20,
+            "panel_border_radius": 12,
+            "panel_overlay_color": "#000000",
+            "panel_overlay_opacity": 20,
+            "panel_hover_overlay_opacity": 10,
+            "panel_1_image": "shopify://shop_images/5.jpg",
+            "panel_1_link": "",
+            "panel_2_image": "shopify://shop_images/c3aa05bf277a330aa8956464630dd8af_3570eb14-e603-4632-960a-385824d53908.jpg",
+            "panel_2_link": "",
+            "panel_3_image": "shopify://shop_images/dc18108466b6c93fb719a336a56bd673.jpg",
+            "panel_3_link": "",
+            "panel_4_image": "shopify://shop_images/6_2.jpg",
+            "panel_4_link": "",
+            "panel_5_image": "shopify://shop_images/Outdoor_signage.jpg",
+            "panel_5_link": "",
+            "panel_6_image": "shopify://shop_images/Custom_Signage.jpg",
+            "panel_6_link": ""
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_16c29fe_zxdBMg": {
+          "type": "ai_gen_block_16c29fe",
+          "settings": {
+            "show_header": true,
+            "title": "Our Production Process",
+            "subtitle": "From concept to completion, we bring your vision to life",
+            "step_1_title": "Context + Site Analysis",
+            "step_1_description": "<p>Reviewing existing <strong>brand systems</strong>, <strong>site conditions</strong>, and <strong>material requirements</strong> are evaluated to ensure all marketing materials align with <strong>scale</strong>, <strong>environment</strong>, and <strong>intended use</strong>. Basically still keeping the essence of your brand, as we want to avoid <strong>brand drifts!</strong></p>",
+            "step_2_title": "Material + Layout Design",
+            "step_2_description": "<p>Marketing assets are designed using high <strong>quality imagery</strong>, <strong>custom graphics</strong>, with <strong>production standards both modern and classic</strong>, ensuring consistency across <strong>print, digital</strong>, and <strong>environmental</strong> (wayfinding, and signages) and applications.</p>",
+            "step_3_title": "Production & Fabrication",
+            "step_3_description": "<p>Final files are prepared for print or fabrication, coordinating finishes, materials, and specifications. <strong> Production timelines and vendor coordination</strong> are managed to <strong>ensure materials meet specifications, </strong>quality expectations, and <strong>delivery schedules.</strong></p>",
+            "step_4_title": "Delivery & Installation  (If Required)",
+            "step_4_description": "<p>Materials are <strong>delivered</strong>, <strong>staged</strong>, or <strong>installed on-site as required</strong>, <strong>coordinated with insured third-party fabricators </strong>and installers to ensure <strong>proper placement,</strong> <strong>alignment</strong>, and <strong>presentation</strong>.</p>",
+            "background_color": "#ffffff",
+            "title_color": "#14213d",
+            "subtitle_color": "#242833",
+            "step_background": "#ffffff",
+            "step_title_color": "#14213d",
+            "step_description_color": "#242833",
+            "accent_color": "#fca311",
+            "step_border_color": "#f3f3f3",
+            "max_width": 1200,
+            "section_padding": 60,
+            "header_spacing": 40,
+            "steps_top_margin": 20,
+            "step_gap": 30,
+            "step_padding": 30,
+            "step_border_radius": 4,
+            "step_border_width": 1,
+            "title_size": 42,
+            "subtitle_size": 18,
+            "number_size": 36,
+            "step_title_size": 22,
+            "step_description_size": 15
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_6b11b29_gXpNpC": {
+          "type": "ai_gen_block_6b11b29",
+          "disabled": true,
+          "settings": {
+            "content_width": 1200,
+            "padding_top": 80,
+            "padding_bottom": 80,
+            "padding_horizontal": 40,
+            "grid_gap": 40,
+            "columns_desktop": "2",
+            "text_alignment": "left",
+            "background_image": "shopify://shop_images/c3aa05bf277a330aa8956464630dd8af.jpg",
+            "background_opacity": 20,
+            "background_color": "#000000",
+            "show_header": true,
+            "eyebrow": "Editorial",
+            "eyebrow_size": 12,
+            "eyebrow_color": "#ffffff",
+            "heading": "The Art of Luxury Design",
+            "heading_size": 48,
+            "heading_color": "#fca311",
+            "subheading": "<p>Exploring the intersection of elegance and innovation</p>",
+            "subheading_size": 18,
+            "subheading_color": "#ffffff",
+            "header_spacing": 40,
+            "body_text": "<p>In the world of high-end design, every detail matters. From the carefully curated color palette to the precise placement of each element, luxury is found in the thoughtful execution of vision. This editorial explores the principles that define exceptional design and the artistry behind creating timeless pieces.</p>",
+            "body_text_size": 20,
+            "body_text_color": "#ffffff",
+            "text_spacing": 30,
+            "show_image_1": true,
+            "image_1": "shopify://shop_images/4.jpg",
+            "show_image_2": true,
+            "image_width": 100,
+            "image_spacing": 30,
+            "image_border_radius": 0,
+            "show_ball": true,
+            "ball_size": 80,
+            "ball_color": "#16213a",
+            "ball_start_x": 20,
+            "ball_start_y": 10,
+            "ball_speed": 2
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_5b1cc8d_rF4LTp",
+        "ai_gen_block_e946ecc_KnxjQX",
+        "ai_gen_block_ad22dba_LGTWmN",
+        "ai_gen_block_fdb0f49_PWQD76",
+        "ai_gen_block_16c29fe_dYwrEY",
+        "ai_gen_block_7044218_Dd7t6B",
+        "ai_gen_block_16c29fe_zxdBMg",
+        "ai_gen_block_6b11b29_gXpNpC"
+      ],
+      "name": "Image banner",
+      "settings": {}
+    },
+    "blocks_EgnFN7": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_e946ecc_GpcrFf": {
+          "type": "ai_gen_block_e946ecc",
+          "disabled": true,
+          "settings": {
+            "gradient_percent": 20,
+            "height_preset": "banner",
+            "desktop_height": 850,
+            "mobile_height": 180,
+            "background_image": "shopify://shop_images/Artboard_17.png",
+            "background_fit": "cover",
+            "background_color": "#ffffff",
+            "white_mode": true,
+            "overlay_opacity": 70,
+            "ball_color_1": "#fca311",
+            "ball_color_2": "#16213a",
+            "ball_color_3": "#1b2e9d",
+            "ball_color_4": "#0a1821",
+            "ball_radius_min": 4,
+            "ball_radius_max": 22,
+            "ball_count": 6,
+            "ball_size": "medium",
+            "bounce_intensity": "energetic",
+            "headline": "",
+            "headline_font": "sans_serif_n7",
+            "headline_size": 48,
+            "show_subtext": false,
+            "subtext": "Experience the future of interactive luxury design",
+            "subtext_size": 16,
+            "text_color": "#ffffff",
+            "show_button": false,
+            "button_text": "Explore Now",
+            "button_link": "",
+            "button_bg_color": "#fca311",
+            "button_text_color": "#ffffff"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_e946ecc_GpcrFf"
+      ],
+      "name": "Bouncy balls",
+      "settings": {}
+    },
+    "1767808723351ba5d4": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "blocks_878EJc": {
+      "type": "_blocks",
+      "name": "Bouncing balls",
+      "settings": {}
+    },
+    "1767334955972e40bc": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_5b1cc8d_HArLUj": {
+          "type": "ai_gen_block_5b1cc8d",
+          "settings": {
+            "image": "shopify://shop_images/New_Era_Design_Web_Site_Template_-13_7e428cee-34eb-4a64-854b-afea550d11ac.jpg",
+            "image_fit": "contain",
+            "image_position": "center",
+            "max_width": 2000,
+            "banner_height": 80,
+            "mobile_height": 50,
+            "banner_link": "shopify://pages/how-to-receive-services",
+            "link_aria_label": "View banner content",
+            "background_color": "#f3f3f3"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_5b1cc8d_HArLUj"
+      ],
+      "settings": {}
+    },
+    "blocks_g7HW7M": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_5b1cc8d_LEHcrJ": {
+          "type": "ai_gen_block_5b1cc8d",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Master_WEBSITE_Template_Design10_4ef623c4-d572-42a3-9dbc-630d6b667ef6.jpg",
+            "image_fit": "cover",
+            "image_position": "center",
+            "max_width": 2000,
+            "banner_height": 320,
+            "mobile_height": 110,
+            "banner_link": "shopify://pages/contact",
+            "link_aria_label": "View banner content",
+            "background_color": "#f3f3f3"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_5b1cc8d_LEHcrJ"
+      ],
+      "name": "Image banner",
+      "settings": {}
+    },
+    "blocks_CKYtnT": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_e946ecc_VqeVDB": {
+          "type": "ai_gen_block_e946ecc",
+          "settings": {
+            "gradient_percent": 20,
+            "height_preset": "banner",
+            "desktop_height": 400,
+            "mobile_height": 480,
+            "background_image": "shopify://shop_images/11.svg",
+            "background_fit": "cover",
+            "background_color": "#14213d",
+            "white_mode": false,
+            "overlay_opacity": 0,
+            "ball_color_1": "#fca311",
+            "ball_color_2": "#ffffff",
+            "ball_color_3": "#1b2e9d",
+            "ball_color_4": "#ffffff",
+            "ball_radius_min": 16,
+            "ball_radius_max": 42,
+            "ball_count": 8,
+            "ball_size": "large",
+            "bounce_intensity": "energetic",
+            "headline": "<strong>INTERACTIVE DESIGN. LUXURY IN MOTION.</strong>",
+            "headline_font": "urbanist_n4",
+            "headline_size": 28,
+            "show_subtext": true,
+            "subtext": "<strong>Experience the future of interactive luxury design</strong>",
+            "subtext_size": 22,
+            "text_color": "#ffffff",
+            "show_button": true,
+            "button_text": "Get a Quote",
+            "button_link": "shopify://pages/contact",
+            "button_bg_color": "#fca311",
+            "button_text_color": "#ffffff"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_e946ecc_VqeVDB"
+      ],
+      "name": "Bouncy balls",
+      "settings": {}
+    },
+    "177459711156c1249f": {
+      "type": "_blocks",
+      "settings": {}
+    }
+  },
+  "order": [
+    "1769321169d8538fa1",
+    "main",
+    "blocks_feJw9p",
+    "blocks_Yd3K9U",
+    "blocks_EgnFN7",
+    "1767808723351ba5d4",
+    "blocks_878EJc",
+    "1767334955972e40bc",
+    "blocks_g7HW7M",
+    "blocks_CKYtnT",
+    "177459711156c1249f"
+  ]
+}
