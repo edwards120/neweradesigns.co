@@ -72,19 +72,25 @@
       {% liquid
         assign icon_asset = block.settings.icon
         assign icon_markup = ''
-        case icon_asset
-          when 'spark'
-            assign icon_asset = 'icon-star.svg'
-          when 'crosshair'
-            assign icon_asset = 'icon-plus.svg'
-          when 'ring'
-            assign icon_asset = 'icon-heart.svg'
-          when 'asterisk'
-            assign icon_asset = 'icon-lightning-bolt.svg'
-        endcase
+        if block.settings.custom_icon_image != blank
+          capture icon_markup
+            echo block.settings.custom_icon_image | image_url: width: 240 | image_tag: widths: '80,120,160,240', sizes: '(max-width: 989px) 42px, 56px', loading: 'lazy', alt: block.settings.label
+          endcapture
+        else
+          case icon_asset
+            when 'spark'
+              assign icon_asset = 'icon-star.svg'
+            when 'crosshair'
+              assign icon_asset = 'icon-plus.svg'
+            when 'ring'
+              assign icon_asset = 'icon-heart.svg'
+            when 'asterisk'
+              assign icon_asset = 'icon-lightning-bolt.svg'
+          endcase
 
-        if icon_asset contains '.svg'
-          assign icon_markup = icon_asset | asset_url | inline_asset_content
+          if icon_asset contains '.svg'
+            assign icon_markup = icon_asset | asset_url | inline_asset_content
+          endif
         endif
       %}
       <button
@@ -160,6 +166,7 @@
       "name": "Floating icon ball",
       "settings": [
         { "type": "select", "id": "icon", "label": "Icon", "options": [{ "value": "icon-star.svg", "label": "Star" }, { "value": "icon-plus.svg", "label": "Plus" }, { "value": "icon-arrow.svg", "label": "Arrow" }, { "value": "icon-map-pin.svg", "label": "Map pin" }, { "value": "icon-heart.svg", "label": "Heart" }, { "value": "icon-lightning-bolt.svg", "label": "Lightning bolt" }, { "value": "icon-fire.svg", "label": "Fire" }, { "value": "icon-chat-bubble.svg", "label": "Chat bubble" }, { "value": "icon-search.svg", "label": "Search" }, { "value": "icon-play.svg", "label": "Play" }, { "value": "icon-checkmark.svg", "label": "Checkmark" }, { "value": "icon-question-mark.svg", "label": "Question mark" }, { "value": "icon-share.svg", "label": "Share" }, { "value": "icon-paw-print.svg", "label": "Paw print" }, { "value": "icon-leaf.svg", "label": "Leaf" }, { "value": "icon-plane.svg", "label": "Plane" }, { "value": "icon-shopify.svg", "label": "Shopify" }, { "value": "spark", "label": "Legacy spark" }, { "value": "crosshair", "label": "Legacy crosshair" }, { "value": "ring", "label": "Legacy ring" }, { "value": "asterisk", "label": "Legacy asterisk" }], "default": "icon-star.svg" },
+        { "type": "image_picker", "id": "custom_icon_image", "label": "Custom icon image (Files panel)" },
         { "type": "text", "id": "label", "label": "Accessible label", "default": "Explore page" },
         { "type": "url", "id": "link", "label": "Optional page link" },
         { "type": "color", "id": "background", "label": "Ball color", "default": "#1b2e9d" },

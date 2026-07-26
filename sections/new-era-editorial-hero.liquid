@@ -147,24 +147,32 @@
           ><span>{{ block.settings.label | escape }}</span></a>
         {% elsif block.type == 'hero_icon' and section.settings.show_hero_icons %}
           {% liquid
+            assign icon_markup = ''
             assign icon_asset = block.settings.icon | default: 'icon-star.svg'
-            case block.settings.icon
-              when 'spark'
+            if block.settings.custom_icon_image != blank
+              capture icon_markup
+                echo block.settings.custom_icon_image | image_url: width: 240 | image_tag: widths: '80,120,160,240', sizes: '(max-width: 989px) 42px, 56px', loading: 'lazy', alt: block.settings.label
+              endcapture
+            else
+              case block.settings.icon
+                when 'spark'
+                  assign icon_asset = 'icon-star.svg'
+                when 'crosshair'
+                  assign icon_asset = 'icon-plus.svg'
+                when 'arrow'
+                  assign icon_asset = 'icon-arrow.svg'
+                when 'plus'
+                  assign icon_asset = 'icon-plus.svg'
+                when 'ring'
+                  assign icon_asset = 'icon-map-pin.svg'
+                when 'asterisk'
+                  assign icon_asset = 'icon-star.svg'
+              endcase
+              unless icon_asset contains '.svg'
                 assign icon_asset = 'icon-star.svg'
-              when 'crosshair'
-                assign icon_asset = 'icon-plus.svg'
-              when 'arrow'
-                assign icon_asset = 'icon-arrow.svg'
-              when 'plus'
-                assign icon_asset = 'icon-plus.svg'
-              when 'ring'
-                assign icon_asset = 'icon-map-pin.svg'
-              when 'asterisk'
-                assign icon_asset = 'icon-star.svg'
-            endcase
-            unless icon_asset contains '.svg'
-              assign icon_asset = 'icon-star.svg'
-            endunless
+              endunless
+              assign icon_markup = icon_asset | inline_asset_content
+            endif
           %}
           <a
             class="ned-editorial-hero__icon{% if block.settings.hide_mobile %} is-mobile-hidden{% endif %}"
@@ -178,7 +186,7 @@
             data-rotation="{{ block.settings.rotation }}"
             style="--icon-x:{{ block.settings.x }}%;--icon-y:{{ block.settings.y }}%;--icon-mobile-x:{{ block.settings.mobile_x }}%;--icon-mobile-y:{{ block.settings.mobile_y }}%;--icon-size:{{ block.settings.size }}px;--icon-mobile-size:{{ block.settings.mobile_size }}px;--icon-color:{{ block.settings.color }};--icon-rotate:{{ block.settings.rotation }}deg;--icon-bounce:{{ block.settings.bounce_height }}px;--icon-speed:{{ block.settings.speed }}s;--icon-delay:-{{ block.settings.delay }}s"
             {{ block.shopify_attributes }}
-          ><span class="ned-editorial-hero__icon-svg" aria-hidden="true">{{ icon_asset | inline_asset_content }}</span></a>
+          ><span class="ned-editorial-hero__icon-svg" aria-hidden="true">{{ icon_markup }}</span></a>
         {% endif %}
       {% endfor %}
     </div>
@@ -238,6 +246,7 @@
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon{align-items:center;background:none;border-radius:0;box-shadow:none;color:var(--icon-color);display:flex;height:var(--icon-size);justify-content:center;left:var(--icon-x);pointer-events:auto;position:absolute;text-decoration:none;top:var(--icon-y);transform:translate(-50%,-50%) rotate(var(--icon-rotate));width:var(--icon-size);z-index:4}
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg{display:flex;filter:drop-shadow(0 1px 0 rgba(7,26,58,.35));height:100%;width:100%}
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg svg{display:block;height:100%;width:100%}
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg img{display:block;height:100%;object-fit:contain;width:100%}
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg svg,#NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg svg *{fill:currentColor;stroke:currentColor;stroke-width:.8}
   #NedEditorialHero-{{ section.id }}.has-kinetic-motion .ned-editorial-hero__icon{animation:nedHeroIconBounce-{{ section.id }} var(--icon-speed) linear var(--icon-delay) infinite;transform-origin:center bottom}
   #NedEditorialHero-{{ section.id }}.is-gravity-active [data-ned-gravity-object]{animation:none!important;left:0;top:0;will-change:transform}
@@ -517,6 +526,7 @@
       "name": "Bouncing hero icon",
       "settings": [
         { "type": "select", "id": "icon", "label": "Icon", "options": [{ "value": "icon-star.svg", "label": "Star" }, { "value": "icon-plus.svg", "label": "Plus" }, { "value": "icon-arrow.svg", "label": "Arrow" }, { "value": "icon-map-pin.svg", "label": "Map pin" }, { "value": "icon-heart.svg", "label": "Heart" }, { "value": "icon-lightning-bolt.svg", "label": "Lightning bolt" }, { "value": "icon-fire.svg", "label": "Fire" }, { "value": "icon-chat-bubble.svg", "label": "Chat bubble" }, { "value": "icon-search.svg", "label": "Search" }, { "value": "icon-play.svg", "label": "Play" }, { "value": "icon-checkmark.svg", "label": "Checkmark" }, { "value": "icon-question-mark.svg", "label": "Question mark" }, { "value": "icon-share.svg", "label": "Share" }, { "value": "icon-paw-print.svg", "label": "Paw print" }, { "value": "icon-leaf.svg", "label": "Leaf" }, { "value": "icon-plane.svg", "label": "Plane" }, { "value": "icon-shopify.svg", "label": "Shopify" }, { "value": "spark", "label": "Legacy spark" }, { "value": "crosshair", "label": "Legacy crosshair" }, { "value": "ring", "label": "Legacy ring" }, { "value": "asterisk", "label": "Legacy asterisk" }], "default": "icon-star.svg" },
+        { "type": "image_picker", "id": "custom_icon_image", "label": "Custom icon image (Files panel)" },
         { "type": "text", "id": "label", "label": "Accessible link label", "default": "Explore New Era Designs" },
         { "type": "url", "id": "link", "label": "Page link" },
         { "type": "color", "id": "color", "label": "Color", "default": "#ffffff" },
