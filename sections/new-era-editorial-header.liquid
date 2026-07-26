@@ -1,0 +1,233 @@
+{% liquid
+  assign desktop_logo = section.settings.desktop_logo | default: settings.logo
+  assign mobile_logo = section.settings.mobile_logo | default: settings.favicon
+  assign header_mode = section.settings.header_mode | default: 'overlay'
+%}
+
+<new-era-header
+  class="ned-editorial-header ned-editorial-header--{{ header_mode }}{% if section.settings.enable_sticky %} is-sticky{% endif %}"
+  style="
+    --ned-header-bg: {{ section.settings.background_color }};
+    --ned-header-text: {{ section.settings.text_color }};
+    --ned-header-mobile-bg: {{ section.settings.mobile_background_color }};
+    --ned-header-mobile-text: {{ section.settings.mobile_text_color }};
+    --ned-header-hover: {{ section.settings.hover_color }};
+    --ned-header-border: {{ section.settings.border_color }};
+    --ned-header-border-width: {{ section.settings.border_width }}px;
+    --ned-header-padding-x: {{ section.settings.padding_horizontal }}px;
+    --ned-header-padding-y: {{ section.settings.padding_vertical }}px;
+    --ned-header-logo-width: {{ section.settings.desktop_logo_width }}px;
+    --ned-header-mobile-logo-width: {{ section.settings.mobile_logo_width }}px;
+    --ned-header-font-size: {{ section.settings.nav_font_size }}px;
+    --ned-header-tracking: {{ section.settings.nav_tracking }}px;
+    --ned-header-mobile-font-size: {{ section.settings.mobile_nav_font_size }}px;
+    --ned-header-mobile-tracking: {{ section.settings.mobile_nav_tracking }}px;
+    --ned-header-hover-tracking: {{ section.settings.hover_tracking }}px;
+    --ned-header-hover-y: {{ section.settings.hover_lift }}px;
+    --ned-header-hover-scale: {{ section.settings.hover_scale | divided_by: 100.0 }};
+    --ned-header-motion-speed: {{ section.settings.motion_speed }}ms;
+    --ned-header-underline: {{ section.settings.underline_width }}px;
+  "
+  data-section-id="{{ section.id }}"
+>
+  <div class="ned-editorial-header__frame{% unless section.settings.show_frame %} is-unframed{% endunless %}">
+    <nav class="ned-editorial-header__desktop" aria-label="Primary navigation">
+      <div class="ned-editorial-header__links ned-editorial-header__links--left">
+        {% for block in section.blocks %}
+          {% if block.type == 'nav_link' and block.settings.side == 'left' %}
+            <a href="{{ block.settings.link | default: routes.root_url }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <a class="ned-editorial-header__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }} home">
+        {% if desktop_logo != blank %}
+          {{ desktop_logo | image_url: width: 900 | image_tag: class: 'ned-editorial-header__logo ned-editorial-header__logo--desktop', loading: 'eager', widths: '220, 360, 520, 720, 900', alt: shop.name }}
+        {% else %}
+          <span class="ned-editorial-header__wordmark-fallback">NEW ERA DESIGNS</span>
+        {% endif %}
+        {% if mobile_logo != blank %}
+          {{ mobile_logo | image_url: width: 360 | image_tag: class: 'ned-editorial-header__logo ned-editorial-header__logo--compact', loading: 'eager', widths: '100, 160, 240, 360', alt: '' }}
+        {% endif %}
+      </a>
+
+      <div class="ned-editorial-header__links ned-editorial-header__links--right">
+        {% for block in section.blocks %}
+          {% if block.type == 'nav_link' and block.settings.side == 'right' %}
+            <a href="{{ block.settings.link | default: routes.root_url }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </nav>
+
+    <div class="ned-editorial-header__mobile">
+      <a class="ned-editorial-header__mobile-brand" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }} home">
+        {% if mobile_logo != blank %}
+          {{ mobile_logo | image_url: width: 360 | image_tag: class: 'ned-editorial-header__logo ned-editorial-header__logo--mobile', loading: 'eager', widths: '100, 160, 240, 360', alt: shop.name }}
+        {% elsif desktop_logo != blank %}
+          {{ desktop_logo | image_url: width: 520 | image_tag: class: 'ned-editorial-header__logo ned-editorial-header__logo--mobile', loading: 'eager', widths: '160, 240, 360, 520', alt: shop.name }}
+        {% else %}
+          <span>NEW ERA</span>
+        {% endif %}
+      </a>
+
+      <button class="ned-editorial-header__toggle" type="button" aria-expanded="false" aria-controls="NedHeaderDrawer-{{ section.id }}">
+        <span class="visually-hidden">Toggle navigation</span>
+        <i></i><i></i>
+      </button>
+    </div>
+
+    {% if section.settings.show_mobile_quick_links %}
+      <nav class="ned-editorial-header__mobile-quick" aria-label="Mobile quick navigation">
+        {% for block in section.blocks %}
+          {% if block.type == 'nav_link' %}
+            <a href="{{ block.settings.link | default: routes.root_url }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+          {% endif %}
+        {% endfor %}
+      </nav>
+    {% endif %}
+
+    <div class="ned-editorial-header__drawer" id="NedHeaderDrawer-{{ section.id }}" hidden>
+      <nav aria-label="Mobile navigation">
+        {% for block in section.blocks %}
+          {% if block.type == 'nav_link' %}
+            <a href="{{ block.settings.link | default: routes.root_url }}" {{ block.shopify_attributes }}><span>0{{ forloop.index }}</span>{{ block.settings.label | escape }}</a>
+          {% endif %}
+        {% endfor %}
+      </nav>
+
+      {% if section.settings.show_social_links %}
+        <div class="ned-editorial-header__social">
+          {% if settings.social_instagram_link != blank %}<a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener" aria-label="Instagram">{{ 'icon-instagram.svg' | inline_asset_content }}</a>{% endif %}
+          {% if settings.social_linkedin_link != blank %}<a href="{{ settings.social_linkedin_link }}" target="_blank" rel="noopener" aria-label="LinkedIn">{{ 'icon-linkedin.svg' | inline_asset_content }}</a>{% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</new-era-header>
+
+{% style %}
+  #shopify-section-{{ section.id }}{overflow:visible!important;position:relative;z-index:70}
+  #shopify-section-{{ section.id }}:has(.ned-editorial-header--overlay){height:0}
+  .ned-editorial-header{color:var(--ned-header-text);display:block;left:0;position:relative;top:0;width:100%;z-index:70}
+  .ned-editorial-header--overlay{position:absolute}
+  .ned-editorial-header.is-sticky{position:sticky}
+  .ned-editorial-header__frame{background:var(--ned-header-bg);border:var(--ned-header-border-width) solid var(--ned-header-border);margin:clamp(8px,1.2vw,18px);padding:var(--ned-header-padding-y) var(--ned-header-padding-x)}
+  .ned-editorial-header--overlay .ned-editorial-header__frame{background:color-mix(in srgb,var(--ned-header-bg) 18%,transparent);backdrop-filter:blur(2px)}
+  .ned-editorial-header__frame.is-unframed{border:0}
+  .ned-editorial-header__desktop{align-items:center;display:grid;grid-template-columns:1fr minmax(160px,.44fr) 1fr;min-height:64px}
+  .ned-editorial-header__links{align-items:center;display:flex;gap:clamp(20px,3.5vw,62px)}
+  .ned-editorial-header__links--right{justify-content:flex-end}
+  .ned-editorial-header__links a{color:inherit;font:800 var(--ned-header-font-size)/1 'NED Milo',Arial,sans-serif;letter-spacing:var(--ned-header-tracking);padding:14px 0;position:relative;text-decoration:none;text-transform:uppercase;transition:color var(--ned-header-motion-speed) ease,letter-spacing var(--ned-header-motion-speed) cubic-bezier(.2,1.35,.3,1),transform var(--ned-header-motion-speed) cubic-bezier(.2,1.35,.3,1)}
+  .ned-editorial-header__links a::after{background:var(--ned-header-hover);bottom:6px;content:'';height:var(--ned-header-underline);left:0;position:absolute;transform:scaleX(0);transform-origin:right;transition:transform var(--ned-header-motion-speed) cubic-bezier(.2,1.35,.3,1);width:100%}
+  .ned-editorial-header__links a:hover,.ned-editorial-header__links a:focus-visible{color:var(--ned-header-hover);letter-spacing:var(--ned-header-hover-tracking);transform:translateY(var(--ned-header-hover-y)) scale(var(--ned-header-hover-scale))}
+  .ned-editorial-header__links a:hover::after,.ned-editorial-header__links a:focus-visible::after{transform:scaleX(1);transform-origin:left}
+  .ned-editorial-header__brand{align-items:center;display:flex;justify-content:center;justify-self:center;max-width:var(--ned-header-logo-width);min-height:64px;position:relative;transition:max-width var(--ned-header-motion-speed) cubic-bezier(.2,1.35,.3,1);width:100%}
+  .ned-editorial-header__logo{display:block;height:auto;transition:opacity var(--ned-header-motion-speed) ease,transform var(--ned-header-motion-speed) cubic-bezier(.2,1.35,.3,1);width:100%}
+  .ned-editorial-header__logo--desktop,.ned-editorial-header__wordmark-fallback{opacity:1;transform:scale(1)}
+  .ned-editorial-header__logo--compact{left:50%;max-width:var(--ned-header-mobile-logo-width);opacity:0;position:absolute;top:50%;transform:translate(-50%,-50%) scale(.82)}
+  .ned-editorial-header__logo--compact,.ned-editorial-header__logo--mobile{filter:brightness(0) invert(1)}
+  .ned-editorial-header__brand span{color:inherit;font:900 24px/.82 'NED Funk Machine','Arial Black',sans-serif;letter-spacing:-.03em;text-align:center}
+  .ned-editorial-header__mobile,.ned-editorial-header__mobile-quick,.ned-editorial-header__drawer{display:none}
+  .ned-editorial-header__toggle{appearance:none;background:transparent;border:0;border-radius:0;color:inherit;height:44px;padding:10px;position:relative;width:50px}
+  .ned-editorial-header__toggle i{background:currentColor;height:2px;left:8px;position:absolute;transition:transform .25s ease,top .25s ease;width:34px}
+  .ned-editorial-header__toggle i:first-of-type{top:15px}.ned-editorial-header__toggle i:last-of-type{top:27px}
+  .ned-editorial-header.is-open .ned-editorial-header__toggle i:first-of-type{top:21px;transform:rotate(45deg)}
+  .ned-editorial-header.is-open .ned-editorial-header__toggle i:last-of-type{top:21px;transform:rotate(-45deg)}
+  @media(max-width:{{ section.settings.compact_logo_breakpoint }}px) and (min-width:990px){
+    .ned-editorial-header__desktop{grid-template-columns:minmax(0,1fr) 86px minmax(0,1.35fr)}
+    .ned-editorial-header__links{gap:clamp(10px,1.4vw,18px)}
+    .ned-editorial-header__links a{font-size:max(9px,calc(var(--ned-header-font-size) - 2px));letter-spacing:min(var(--ned-header-tracking),.5px)}
+    .ned-editorial-header__brand{max-width:var(--ned-header-mobile-logo-width)}
+    .ned-editorial-header__logo--desktop,.ned-editorial-header__wordmark-fallback{opacity:0;transform:scale(1.08)}
+    .ned-editorial-header__logo--compact{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  }
+  @media(max-width:989px){
+    #shopify-section-{{ section.id }}:has(.ned-editorial-header--overlay){height:0}
+    .ned-editorial-header--overlay{position:absolute}
+    .ned-editorial-header__frame,.ned-editorial-header--overlay .ned-editorial-header__frame{background:transparent;box-shadow:none;color:var(--ned-header-mobile-text);margin:0;padding:18px clamp(18px,5vw,34px)}
+    .ned-editorial-header__desktop{display:none}.ned-editorial-header__mobile{align-items:center;display:flex;justify-content:space-between;min-height:54px}
+    .ned-editorial-header__mobile-brand{align-items:center;display:flex;min-height:58px;position:relative;width:var(--ned-header-mobile-logo-width);z-index:3}
+    .ned-editorial-header__logo--mobile{max-height:62px;object-fit:contain;object-position:left center}
+    .ned-editorial-header__mobile-quick{border-top:1px solid color-mix(in srgb,var(--ned-header-mobile-text) 34%,transparent);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:8px;padding-top:8px}
+    .ned-editorial-header__mobile-quick a{color:inherit;font:900 9px/1 'NED Milo',Arial,sans-serif;letter-spacing:var(--ned-header-mobile-tracking);padding:9px 5px;text-align:center;text-decoration:none;text-transform:uppercase;transition:background var(--ned-header-motion-speed) ease,color var(--ned-header-motion-speed) ease,letter-spacing var(--ned-header-motion-speed) ease}
+    .ned-editorial-header__mobile-quick a:hover,.ned-editorial-header__mobile-quick a:focus-visible{background:var(--ned-header-hover);color:#fff;letter-spacing:var(--ned-header-hover-tracking)}
+    .ned-editorial-header__toggle{position:relative;z-index:3}
+    .ned-editorial-header__drawer{background:var(--ned-header-mobile-bg);border:0;color:var(--ned-header-mobile-text);inset:0;min-height:100dvh;overflow:auto;padding:clamp(116px,18vh,170px) clamp(24px,8vw,68px) 38px;position:fixed;z-index:2}
+    .ned-editorial-header__drawer[hidden]{display:none}.ned-editorial-header__drawer:not([hidden]){display:block}
+    .ned-editorial-header__drawer nav{border-top:1px solid color-mix(in srgb,var(--ned-header-mobile-text) 30%,transparent)}
+    .ned-editorial-header__drawer nav a{align-items:center;border-bottom:1px solid color-mix(in srgb,var(--ned-header-mobile-text) 30%,transparent);color:inherit;display:flex;font:800 clamp(28px,9vw,64px)/.9 'NED Milo',Arial,sans-serif;gap:20px;letter-spacing:var(--ned-header-mobile-tracking);padding:clamp(18px,3.5vh,30px) 4px;text-decoration:none;text-transform:uppercase;transition:color var(--ned-header-motion-speed) ease,letter-spacing var(--ned-header-motion-speed) ease,padding-left var(--ned-header-motion-speed) cubic-bezier(.2,1.35,.3,1)}
+    .ned-editorial-header__drawer nav a:hover,.ned-editorial-header__drawer nav a:focus-visible{color:var(--ned-header-hover);letter-spacing:var(--ned-header-hover-tracking);padding-left:12px}
+    .ned-editorial-header__drawer nav a span{font-size:10px;opacity:.58}
+    .ned-editorial-header__social{display:flex;gap:10px;padding-top:18px}.ned-editorial-header__social a{align-items:center;border:1px solid currentColor;color:inherit;display:flex;height:42px;justify-content:center;width:42px}.ned-editorial-header__social svg{height:18px;width:18px}
+  }
+  @media(max-width:419px){.ned-editorial-header__mobile-quick a{font-size:8px;letter-spacing:.5px;padding:8px 2px}}
+  @media(prefers-reduced-motion:reduce){.ned-editorial-header *{scroll-behavior:auto!important;transition:none!important}}
+{% endstyle %}
+
+<script>
+  if(!customElements.get('new-era-header')){
+    customElements.define('new-era-header',class extends HTMLElement{
+      connectedCallback(){
+        this.button=this.querySelector('.ned-editorial-header__toggle');
+        this.drawer=this.querySelector('.ned-editorial-header__drawer');
+        if(!this.button||!this.drawer)return;
+        this.button.addEventListener('click',()=>this.setOpen(!this.classList.contains('is-open')));
+        this.addEventListener('keydown',event=>{if(event.key==='Escape')this.setOpen(false)});
+        this.drawer.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>this.setOpen(false)));
+      }
+      setOpen(open){this.classList.toggle('is-open',open);this.button.setAttribute('aria-expanded',String(open));this.drawer.hidden=!open}
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "NED editorial header",
+  "class": "section-ned-editorial-header",
+  "settings": [
+    { "type": "image_picker", "id": "desktop_logo", "label": "Desktop wordmark" },
+    { "type": "range", "id": "desktop_logo_width", "label": "Desktop logo width", "min": 120, "max": 420, "step": 10, "unit": "px", "default": 220 },
+    { "type": "image_picker", "id": "mobile_logo", "label": "Mobile brand icon" },
+    { "type": "range", "id": "mobile_logo_width", "label": "Mobile logo width", "min": 36, "max": 180, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "compact_logo_breakpoint", "label": "Wordmark switches to icon", "min": 1000, "max": 1400, "step": 20, "unit": "px", "default": 1180 },
+    { "type": "checkbox", "id": "show_mobile_quick_links", "label": "Show navigation options on mobile", "default": true },
+    { "type": "select", "id": "header_mode", "label": "Header mode", "options": [{ "value": "overlay", "label": "Transparent overlay" }, { "value": "solid", "label": "Solid" }], "default": "overlay" },
+    { "type": "checkbox", "id": "enable_sticky", "label": "Sticky header", "default": false },
+    { "type": "checkbox", "id": "show_frame", "label": "Show header frame", "default": true },
+    { "type": "color_background", "id": "background_color", "label": "Background", "default": "#071a3a" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
+    { "type": "color_background", "id": "mobile_background_color", "label": "Mobile background", "default": "#f3efe7" },
+    { "type": "color", "id": "mobile_text_color", "label": "Mobile text and menu", "default": "#071a3a" },
+    { "type": "color", "id": "hover_color", "label": "Hover / pink accent", "default": "#ff4fa3" },
+    { "type": "color", "id": "border_color", "label": "Frame color", "default": "#000000" },
+    { "type": "range", "id": "border_width", "label": "Frame thickness", "min": 0, "max": 12, "step": 1, "unit": "px", "default": 1 },
+    { "type": "range", "id": "padding_horizontal", "label": "Desktop horizontal padding", "min": 12, "max": 80, "step": 2, "unit": "px", "default": 34 },
+    { "type": "range", "id": "padding_vertical", "label": "Desktop vertical padding", "min": 4, "max": 40, "step": 2, "unit": "px", "default": 10 },
+    { "type": "range", "id": "nav_font_size", "label": "Desktop navigation size", "min": 9, "max": 22, "step": 1, "unit": "px", "default": 12 },
+    { "type": "range", "id": "nav_tracking", "label": "Desktop navigation tracking", "min": -2, "max": 10, "step": 0.5, "unit": "px", "default": 1 },
+    { "type": "range", "id": "mobile_nav_font_size", "label": "Mobile navigation size", "min": 14, "max": 34, "step": 1, "unit": "px", "default": 22 },
+    { "type": "range", "id": "mobile_nav_tracking", "label": "Mobile navigation tracking", "min": -2, "max": 10, "step": 0.5, "unit": "px", "default": 1 },
+    { "type": "header", "content": "Fast interaction controls" },
+    { "type": "range", "id": "motion_speed", "label": "Hover response", "min": 120, "max": 300, "step": 10, "unit": "ms", "default": 180 },
+    { "type": "range", "id": "hover_tracking", "label": "Hover tracking", "min": -2, "max": 12, "step": 0.5, "unit": "px", "default": 2 },
+    { "type": "range", "id": "hover_lift", "label": "Hover vertical shift", "min": -8, "max": 8, "step": 1, "unit": "px", "default": -2 },
+    { "type": "range", "id": "hover_scale", "label": "Hover scale", "min": 95, "max": 110, "step": 1, "unit": "%", "default": 102 },
+    { "type": "range", "id": "underline_width", "label": "Blueprint underline thickness", "min": 0, "max": 6, "step": 1, "unit": "px", "default": 2 },
+    { "type": "checkbox", "id": "show_social_links", "label": "Show social links in mobile drawer", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "nav_link",
+      "name": "Navigation link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Link" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "select", "id": "side", "label": "Desktop side", "options": [{ "value": "left", "label": "Left of logo" }, { "value": "right", "label": "Right of logo" }], "default": "left" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [{ "name": "NED editorial header" }]
+}
+{% endschema %}

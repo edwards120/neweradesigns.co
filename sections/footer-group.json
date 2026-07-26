@@ -1,0 +1,95 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "blocks_imqyzt": {
+      "type": "_blocks",
+      "name": "Before and after slider",
+      "settings": {}
+    },
+    "blocks_k8cQaX": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_e946ecc_eAQbjx": {
+          "type": "ai_gen_block_e946ecc",
+          "disabled": true,
+          "settings": {
+            "gradient_percent": 20,
+            "height_preset": "banner",
+            "desktop_height": 200,
+            "mobile_height": 320,
+            "background_image": "shopify://shop_images/banner_svg_03b5cade-e518-4ee8-969b-cecffd2e8e1e.svg",
+            "background_fit": "cover",
+            "background_color": "#ffffff",
+            "white_mode": false,
+            "overlay_opacity": 0,
+            "ball_color_1": "#fca311",
+            "ball_color_2": "#fca311",
+            "ball_color_3": "#d40b0b",
+            "ball_color_4": "#0a1821",
+            "ball_radius_min": 10,
+            "ball_radius_max": 26,
+            "ball_count": 8,
+            "ball_size": "medium",
+            "bounce_intensity": "moderate",
+            "headline": "",
+            "headline_font": "sans_serif_n7",
+            "headline_size": 48,
+            "show_subtext": false,
+            "subtext": "Experience the future of interactive luxury design",
+            "subtext_size": 16,
+            "text_color": "#ffffff",
+            "show_button": false,
+            "button_text": "Explore Now",
+            "button_link": "",
+            "button_bg_color": "#fca311",
+            "button_text_color": "#ffffff"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_e946ecc_eAQbjx"
+      ],
+      "name": "Bouncy balls",
+      "settings": {}
+    },
+    "blocks_XeUitq": {
+      "type": "_blocks",
+      "name": "Bouncy balls",
+      "settings": {}
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "color_scheme": "scheme-bd4a68ba-d418-49a5-acd1-a41dec11d102",
+        "newsletter_enable": true,
+        "newsletter_heading": "Subscribe to our emails",
+        "enable_follow_on_shop": false,
+        "show_social": true,
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "payment_enable": false,
+        "show_policy": false,
+        "margin_top": 0,
+        "padding_top": 48,
+        "padding_bottom": 32
+      }
+    }
+  },
+  "order": [
+    "blocks_imqyzt",
+    "blocks_k8cQaX",
+    "blocks_XeUitq",
+    "footer"
+  ]
+}
