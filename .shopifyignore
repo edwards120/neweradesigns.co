@@ -1,12 +1,14 @@
 # Repository documentation
 README.md
 RECOVERY.md
+docs/
 
 # Git and local tooling
 .git/
 .gitignore
 .github/
 .shopify/
+scripts/
 
 # Archives and source files
 *.zip
