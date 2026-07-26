@@ -1,0 +1,196 @@
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+
+{%- style -%}
+  .model-viewer-section {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.background_color }};
+  }
+  .model-viewer-section__heading {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+  }
+  .model-viewer-section__subheading {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #666;
+  }
+  .model-viewer-section model-viewer {
+    width: 100%;
+    max-width: {{ section.settings.max_width }}px;
+    height: {{ section.settings.viewer_height }}px;
+    margin: 0 auto;
+    display: block;
+    border-radius: {{ section.settings.border_radius }}px;
+    background-color: {{ section.settings.viewer_bg }};
+  }
+{%- endstyle -%}
+
+<section class="model-viewer-section page-width">
+  {%- if section.settings.heading != blank -%}
+    <h2 class="model-viewer-section__heading">{{ section.settings.heading }}</h2>
+  {%- endif -%}
+
+  {%- if section.settings.subheading != blank -%}
+    <p class="model-viewer-section__subheading">{{ section.settings.subheading }}</p>
+  {%- endif -%}
+
+  {%- if section.settings.glb_url != blank -%}
+    <model-viewer
+      src="{{ section.settings.glb_url }}"
+      alt="{{ section.settings.model_alt }}"
+      {% if section.settings.auto_rotate %}auto-rotate{% endif %}
+      {% if section.settings.camera_controls %}camera-controls{% endif %}
+      {% if section.settings.ar_enabled %}ar ar-modes="webxr scene-viewer quick-look"{% endif %}
+      {% if section.settings.shadow_intensity %}shadow-intensity="1"{% endif %}
+      loading="eager">
+      <div class="progress-bar hide" slot="progress-bar">
+        <div class="update-bar"></div>
+      </div>
+    </model-viewer>
+  {%- else -%}
+    <p style="text-align:center;color:#999;">Add a GLB model URL in the Theme Editor to display your 3D model here.</p>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "3D Model Viewer",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "3D Model"
+    },
+    {
+      "type": "text",
+      "id": "glb_url",
+      "label": "GLB Model URL",
+      "default": "https://cdn.shopify.com/3d/models/671178fd2179fd6a/Auraria_Wayfinding.glb",
+      "info": "Paste the full URL of your .glb 3D model file here."
+    },
+    {
+      "type": "text",
+      "id": "model_alt",
+      "label": "Model Alt Text",
+      "default": "Interactive 3D Model"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Explore in 3D"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Drag to rotate \u2022 Pinch to zoom \u2022 View in AR"
+    },
+    {
+      "type": "header",
+      "content": "Viewer Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_rotate",
+      "label": "Auto Rotate",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "camera_controls",
+      "label": "Camera Controls (drag/zoom)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "ar_enabled",
+      "label": "Enable AR Button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "shadow_intensity",
+      "label": "Show Drop Shadow",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "viewer_height",
+      "label": "Viewer Height (px)",
+      "min": 300,
+      "max": 900,
+      "step": 50,
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max Width (px)",
+      "min": 400,
+      "max": 1400,
+      "step": 50,
+      "default": 900
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Corner Radius (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "viewer_bg",
+      "label": "Viewer Background",
+      "default": "#f4f4f4"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "3D Model Viewer"
+    }
+  ]
+}
+{% endschema %}

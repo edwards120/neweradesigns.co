@@ -1,0 +1,807 @@
+{% comment %}
+  New Era Designs - editorial service panel layout
+  Add this file to your Shopify theme under /sections, then add the section
+  from the theme customizer.
+{% endcomment %}
+
+{{ 'section-new-era-service-panels.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="ned-service-panels"
+  id="ned-services-{{ section.id }}"
+  style="
+    --ned-ink: {{ section.settings.text_color }};
+    --ned-paper: {{ section.settings.background_color }};
+    --ned-navy: {{ section.settings.primary_color }};
+    --ned-orange: {{ section.settings.accent_color }};
+    --ned-panel-background: {{ section.settings.panel_background }};
+    --ned-heading-size: {{ section.settings.heading_size | divided_by: 10.0 }}rem;
+    --ned-title-size: {{ section.settings.panel_title_size | divided_by: 10.0 }}rem;
+    --ned-body-size: {{ section.settings.body_size | divided_by: 10.0 }}rem;
+    --ned-script-size: {{ section.settings.script_size | divided_by: 10.0 }}rem;
+    --ned-header-width: {{ section.settings.header_width }}rem;
+    --ned-title-width: {{ section.settings.panel_title_width }}ch;
+    --ned-copy-width: {{ section.settings.panel_copy_width }}rem;
+  "
+  data-ball-count="{{ section.settings.ball_count }}"
+  data-ball-size="{{ section.settings.ball_size }}"
+  data-bounce-intensity="{{ section.settings.bounce_intensity }}"
+  data-radius-min="{{ section.settings.ball_radius_min }}"
+  data-radius-max="{{ section.settings.ball_radius_max }}"
+  data-gradient-percent="{{ section.settings.gradient_percent }}"
+  data-color-1="{{ section.settings.ball_color_1 }}"
+  data-color-2="{{ section.settings.ball_color_2 }}"
+  data-color-3="{{ section.settings.ball_color_3 }}"
+  data-color-4="{{ section.settings.ball_color_4 }}"
+>
+  <div class="ned-service-panels__inner page-width">
+    <header class="ned-service-panels__header">
+      {% if section.settings.kicker != blank %}
+        <p class="ned-service-panels__kicker">{{ section.settings.kicker }}</p>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h2 class="ned-service-panels__heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      {% if section.settings.show_script_accents and section.settings.script_heading != blank %}
+        <p class="ned-service-panels__script">{{ section.settings.script_heading }}</p>
+      {% endif %}
+
+      {% if section.settings.text != blank %}
+        <div class="ned-service-panels__intro rte">{{ section.settings.text }}</div>
+      {% endif %}
+    </header>
+
+    {% if section.blocks.size > 0 %}
+      <nav class="ned-service-panels__nav" aria-label="{{ section.settings.heading | default: 'Services' | escape }}">
+        {% for block in section.blocks %}
+          <a class="ned-service-panels__nav-link" href="#service-panel-{{ section.id }}-{{ block.id }}">
+            {{ block.settings.title | default: 'Service' }}
+          </a>
+        {% endfor %}
+      </nav>
+
+      <div class="ned-service-panels__grid">
+        {% for block in section.blocks %}
+          {% liquid
+            assign image = block.settings.image
+            assign layout_class = block.settings.layout
+            assign panel_link = block.settings.link
+          %}
+
+          <article
+            class="ned-service-panel ned-service-panel--{{ layout_class }}"
+            id="service-panel-{{ section.id }}-{{ block.id }}"
+            {{ block.shopify_attributes }}
+          >
+            {% if section.settings.show_diagonal_lines %}
+              <div class="ned-service-panel__diagonals" aria-hidden="true">
+                <span class="ned-service-panel__diagonal ned-service-panel__diagonal--orange"></span>
+                <span class="ned-service-panel__diagonal ned-service-panel__diagonal--navy"></span>
+                <span class="ned-service-panel__diagonal ned-service-panel__diagonal--shadow"></span>
+                <span class="ned-service-panel__diagonal ned-service-panel__diagonal--white"></span>
+              </div>
+            {% endif %}
+
+            {% if section.settings.show_bouncy_balls %}
+              <canvas class="ned-service-panel__balls" aria-hidden="true"></canvas>
+            {% endif %}
+
+            {% if panel_link != blank %}
+              <a class="ned-service-panel__link" href="{{ panel_link }}" aria-label="View {{ block.settings.title | escape }}"></a>
+            {% endif %}
+
+            <div class="ned-service-panel__media">
+              {% if image != blank %}
+                <img
+                  src="{{ image | image_url: width: 1600 }}"
+                  alt="{{ image.alt | default: block.settings.title | escape }}"
+                  width="{{ image.width }}"
+                  height="{{ image.height }}"
+                  loading="lazy"
+                  class="ned-service-panel__image"
+                >
+              {% else %}
+                {{ 'image' | placeholder_svg_tag: 'ned-service-panel__placeholder' }}
+              {% endif %}
+            </div>
+
+            <div class="ned-service-panel__content">
+              {% if block.settings.eyebrow != blank %}
+                <p class="ned-service-panel__eyebrow">{{ block.settings.eyebrow }}</p>
+              {% endif %}
+
+              {% if section.settings.show_script_accents and block.settings.script_accent != blank %}
+                <p class="ned-service-panel__script">{{ block.settings.script_accent }}</p>
+              {% endif %}
+
+              <h3 class="ned-service-panel__title">{{ block.settings.title }}</h3>
+
+              {% if block.settings.description != blank %}
+                <div class="ned-service-panel__description rte">{{ block.settings.description }}</div>
+              {% endif %}
+
+              {% if block.settings.points != blank %}
+                <ul class="ned-service-panel__points">
+                  {% assign points = block.settings.points | newline_to_br | split: '<br />' %}
+                  {% for point in points %}
+                    {% assign clean_point = point | strip %}
+                    {% if clean_point != blank %}
+                      <li>{{ clean_point }}</li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              {% endif %}
+
+              {% if block.settings.supporting_text != blank %}
+                <div class="ned-service-panel__supporting rte">{{ block.settings.supporting_text }}</div>
+              {% endif %}
+
+              {% if block.settings.link_label != blank and panel_link != blank %}
+                <span class="ned-service-panel__cta">{{ block.settings.link_label }}</span>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% if section.settings.show_diagonal_lines and section.settings.animate_diagonal_lines %}
+  <script>
+    (function () {
+      var section = document.getElementById('ned-services-{{ section.id }}');
+      if (!section || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var ticking = false;
+
+      function updateDiagonalMotion() {
+        var rect = section.getBoundingClientRect();
+        var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+        var progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
+        var clamped = Math.max(0, Math.min(1, progress));
+        var shift = (clamped - 0.5) * {{ section.settings.diagonal_motion }};
+        var tilt = (clamped - 0.5) * 3.6;
+
+        section.style.setProperty('--ned-scroll-shift', shift.toFixed(2) + 'px');
+        section.style.setProperty('--ned-scroll-tilt', tilt.toFixed(2) + 'deg');
+        section.style.setProperty('--ned-scroll-tilt-reverse', (tilt * -1).toFixed(2) + 'deg');
+        ticking = false;
+      }
+
+      function requestUpdate() {
+        if (!ticking) {
+          window.requestAnimationFrame(updateDiagonalMotion);
+          ticking = true;
+        }
+      }
+
+      updateDiagonalMotion();
+      window.addEventListener('scroll', requestUpdate, { passive: true });
+      window.addEventListener('resize', requestUpdate);
+    })();
+  </script>
+{% endif %}
+
+{% if section.settings.show_bouncy_balls %}
+  <script>
+    (function () {
+      var section = document.getElementById('ned-services-{{ section.id }}');
+      if (!section || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var engines = [];
+      var canvases = section.querySelectorAll('.ned-service-panel__balls');
+
+      function createBallSettings() {
+        var ballCount = parseInt(section.dataset.ballCount || '8', 10);
+        var ballSizeOption = section.dataset.ballSize || 'medium';
+        var bounceIntensity = section.dataset.bounceIntensity || 'moderate';
+        var c1 = section.dataset.color1 || '#FCA311';
+        var c2 = section.dataset.color2 || '#16213A';
+        var c3 = section.dataset.color3 || '#1B2E9D';
+        var c4 = section.dataset.color4 || '#0A1821';
+        var colors = [c1, c2, c4].filter(Boolean);
+        var gravity = 0.25;
+        var damping = 0.75;
+
+        if (bounceIntensity === 'calm') {
+          gravity = 0.15;
+          damping = 0.7;
+        } else if (bounceIntensity === 'energetic') {
+          gravity = 0.35;
+          damping = 0.8;
+        }
+
+        var minRadius = parseInt(section.dataset.radiusMin || '10', 10);
+        var maxRadius = parseInt(section.dataset.radiusMax || '26', 10);
+
+        if (maxRadius < minRadius) maxRadius = minRadius + 4;
+
+        if (ballSizeOption === 'small') {
+          maxRadius = Math.min(maxRadius, minRadius + 10);
+        } else if (ballSizeOption === 'large') {
+          minRadius = Math.max(10, minRadius);
+          maxRadius = Math.max(maxRadius, minRadius + 18);
+        }
+
+        return {
+          ballCount: ballCount,
+          colors: colors,
+          gravity: gravity,
+          damping: damping,
+          minRadius: minRadius,
+          maxRadius: maxRadius,
+          gradientPercent: parseInt(section.dataset.gradientPercent || '20', 10) / 100,
+          primaryA: c1,
+          primaryB: c3
+        };
+      }
+
+      function setupEngine(canvas) {
+        var panel = canvas.closest('.ned-service-panel');
+        var ctx = canvas.getContext('2d');
+        var balls = [];
+        var logicalWidth = 1;
+        var logicalHeight = 1;
+        var settings = createBallSettings();
+
+        function setupCanvas() {
+          var rect = panel.getBoundingClientRect();
+          var ratio = window.devicePixelRatio || 1;
+          logicalWidth = Math.max(1, rect.width);
+          logicalHeight = Math.max(1, rect.height);
+          canvas.width = logicalWidth * ratio;
+          canvas.height = logicalHeight * ratio;
+          canvas.style.width = logicalWidth + 'px';
+          canvas.style.height = logicalHeight + 'px';
+          ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+        }
+
+        function initBalls() {
+          balls = [];
+
+          for (var i = 0; i < settings.ballCount; i += 1) {
+            var radius = settings.minRadius + Math.random() * (settings.maxRadius - settings.minRadius);
+
+            balls.push({
+              x: radius + Math.random() * Math.max(1, logicalWidth - radius * 2),
+              y: radius + Math.random() * Math.max(1, logicalHeight - radius * 2),
+              vx: (Math.random() - 0.5) * 3,
+              vy: (Math.random() - 0.5) * 3,
+              radius: radius,
+              color: settings.colors[Math.floor(Math.random() * settings.colors.length)],
+              gravity: settings.gravity,
+              damping: settings.damping,
+              isGradient: Math.random() < settings.gradientPercent
+            });
+          }
+        }
+
+        function draw() {
+          ctx.clearRect(0, 0, logicalWidth, logicalHeight);
+
+          balls.forEach(function (ball) {
+            ball.vy += ball.gravity;
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+
+            if (ball.x - ball.radius < 0) {
+              ball.x = ball.radius;
+              ball.vx = Math.abs(ball.vx) * ball.damping;
+            } else if (ball.x + ball.radius > logicalWidth) {
+              ball.x = logicalWidth - ball.radius;
+              ball.vx = -Math.abs(ball.vx) * ball.damping;
+            }
+
+            if (ball.y - ball.radius < 0) {
+              ball.y = ball.radius;
+              ball.vy = Math.abs(ball.vy) * ball.damping;
+            } else if (ball.y + ball.radius > logicalHeight) {
+              ball.y = logicalHeight - ball.radius;
+              ball.vy = -Math.abs(ball.vy) * ball.damping;
+            }
+
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+
+            if (ball.isGradient) {
+              var t = performance.now() * 0.001;
+              var highlightX = ball.x + Math.cos(t * 0.5) * ball.radius * 0.35;
+              var highlightY = ball.y + Math.sin(t * 0.5) * ball.radius * 0.35;
+              var grad = ctx.createRadialGradient(highlightX, highlightY, ball.radius * 0.15, ball.x, ball.y, ball.radius);
+
+              grad.addColorStop(0, settings.primaryA);
+              grad.addColorStop(0.5, settings.primaryB);
+              grad.addColorStop(1, settings.primaryA);
+              ctx.fillStyle = grad;
+            } else {
+              ctx.fillStyle = ball.color;
+            }
+
+            ctx.fill();
+          });
+        }
+
+        function kickBalls(clientX, clientY) {
+          var rect = canvas.getBoundingClientRect();
+          var clickX = clientX - rect.left;
+          var clickY = clientY - rect.top;
+
+          balls.forEach(function (ball) {
+            var dx = ball.x - clickX;
+            var dy = ball.y - clickY;
+            var distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 150) {
+              var angle = Math.atan2(dy, dx);
+              var force = ((150 - distance) / 150) * 8;
+              ball.vx += Math.cos(angle) * force;
+              ball.vy += Math.sin(angle) * force;
+            }
+          });
+        }
+
+        function resize() {
+          var oldWidth = logicalWidth || 1;
+          var oldHeight = logicalHeight || 1;
+
+          setupCanvas();
+
+          balls.forEach(function (ball) {
+            ball.x = Math.min(logicalWidth - ball.radius, Math.max(ball.radius, ball.x * (logicalWidth / oldWidth)));
+            ball.y = Math.min(logicalHeight - ball.radius, Math.max(ball.radius, ball.y * (logicalHeight / oldHeight)));
+          });
+        }
+
+        setupCanvas();
+        initBalls();
+
+        canvas.addEventListener('click', function (event) {
+          kickBalls(event.clientX, event.clientY);
+        });
+
+        canvas.addEventListener('touchstart', function (event) {
+          var touch = event.touches[0];
+          if (touch) kickBalls(touch.clientX, touch.clientY);
+        }, { passive: true });
+
+        return {
+          draw: draw,
+          resize: resize
+        };
+      }
+
+      function animateAll() {
+        engines.forEach(function (engine) {
+          engine.draw();
+        });
+        section.nedBallsAnimationId = requestAnimationFrame(animateAll);
+      }
+
+      canvases.forEach(function (canvas) {
+        engines.push(setupEngine(canvas));
+      });
+
+      function resizeAll() {
+        engines.forEach(function (engine) {
+          engine.resize();
+        });
+      }
+
+      if (engines.length) {
+        animateAll();
+        window.addEventListener('resize', resizeAll);
+      }
+
+      document.addEventListener('shopify:section:unload', function (event) {
+        if (event.detail && event.detail.sectionId === '{{ section.id }}') {
+          cancelAnimationFrame(section.nedBallsAnimationId);
+          window.removeEventListener('resize', resizeAll);
+        }
+      });
+    })();
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "NED service panels",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "Services offered"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Design systems people can understand at a glance."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Intro text",
+      "default": "<p>Use visual panels to introduce each service, then let the copy, links, and anchors make the page easy to scan and navigate.</p>"
+    },
+    {
+      "type": "text",
+      "id": "script_heading",
+      "label": "Cursive heading accent",
+      "default": "Services"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_script_accents",
+      "label": "Show cursive accents",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "panel_background",
+      "label": "Panel background",
+      "default": "#f5f2ec"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary diagonal color",
+      "default": "#111d3a"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent diagonal color",
+      "default": "#f6a229"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Main heading size",
+      "min": 32,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "default": 76
+    },
+    {
+      "type": "range",
+      "id": "panel_title_size",
+      "label": "Panel title size",
+      "min": 30,
+      "max": 88,
+      "step": 2,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body text size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "script_size",
+      "label": "Cursive accent size",
+      "min": 48,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 112
+    },
+    {
+      "type": "range",
+      "id": "header_width",
+      "label": "Header text width",
+      "min": 48,
+      "max": 120,
+      "step": 4,
+      "default": 76
+    },
+    {
+      "type": "range",
+      "id": "panel_title_width",
+      "label": "Panel title line width",
+      "min": 8,
+      "max": 18,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "panel_copy_width",
+      "label": "Panel copy width",
+      "min": 28,
+      "max": 72,
+      "step": 2,
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Diagonal lines"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_diagonal_lines",
+      "label": "Show diagonal lines",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "animate_diagonal_lines",
+      "label": "Move diagonal lines on scroll",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "diagonal_motion",
+      "label": "Scroll movement",
+      "min": 20,
+      "max": 180,
+      "step": 10,
+      "unit": "px",
+      "default": 130
+    },
+    {
+      "type": "header",
+      "content": "Bouncy balls"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bouncy_balls",
+      "label": "Show bouncy balls",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "gradient_percent",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Gradient balls",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "ball_color_1",
+      "label": "Ball color 1",
+      "default": "#FCA311"
+    },
+    {
+      "type": "color",
+      "id": "ball_color_2",
+      "label": "Ball color 2",
+      "default": "#16213A"
+    },
+    {
+      "type": "color",
+      "id": "ball_color_3",
+      "label": "Ball color 3",
+      "default": "#1B2E9D"
+    },
+    {
+      "type": "color",
+      "id": "ball_color_4",
+      "label": "Ball color 4",
+      "default": "#0A1821"
+    },
+    {
+      "type": "range",
+      "id": "ball_radius_min",
+      "min": 4,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Min ball radius",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "ball_radius_max",
+      "min": 8,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Max ball radius",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "ball_count",
+      "min": 4,
+      "max": 18,
+      "step": 1,
+      "label": "Ball count",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "ball_size",
+      "label": "Ball size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "bounce_intensity",
+      "label": "Bounce intensity",
+      "options": [
+        {
+          "value": "calm",
+          "label": "Calm"
+        },
+        {
+          "value": "moderate",
+          "label": "Moderate"
+        },
+        {
+          "value": "energetic",
+          "label": "Energetic"
+        }
+      ],
+      "default": "moderate"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "service",
+      "name": "Service panel",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "layout",
+          "label": "Layout",
+          "default": "image-left",
+          "options": [
+            {
+              "value": "image-left",
+              "label": "Image left"
+            },
+            {
+              "value": "image-right",
+              "label": "Image right"
+            },
+            {
+              "value": "full-bleed",
+              "label": "Full bleed"
+            },
+            {
+              "value": "diagonal-feature",
+              "label": "Diagonal feature"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "Brand identity + visual systems"
+        },
+        {
+          "type": "text",
+          "id": "script_accent",
+          "label": "Cursive accent",
+          "default": "Design"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Build a visual system before the sign package."
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Clear brand, navigation, and environmental decisions before production begins.</p>"
+        },
+        {
+          "type": "richtext",
+          "id": "supporting_text",
+          "label": "Supporting text",
+          "default": "<p>Use this area for a more complete explanation, proof point, or next-step note without overcrowding the main headline.</p>"
+        },
+        {
+          "type": "textarea",
+          "id": "points",
+          "label": "Bullet points",
+          "default": "Identity system development\nSite communication hierarchy\nBrand-led design direction"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Panel link"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label",
+          "default": "View service"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "NED service panels",
+      "blocks": [
+        {
+          "type": "service",
+          "settings": {
+            "layout": "diagonal-feature",
+            "eyebrow": "Brand identity + visual systems",
+            "title": "Identity that holds up in real environments.",
+            "description": "<p>Build the visual language, hierarchy, and system rules before the space gets crowded.</p>",
+            "points": "Identity system development\nNaming and hierarchy\nBrand-led sign standards"
+          }
+        },
+        {
+          "type": "service",
+          "settings": {
+            "layout": "image-right",
+            "eyebrow": "Wayfinding + signage",
+            "title": "Navigation that reduces friction.",
+            "description": "<p>Plan signs around entrances, circulation, tenant visibility, and visitor decisions.</p>",
+            "points": "Signage family planning\nDirectional logic\nTenant and code coordination"
+          }
+        },
+        {
+          "type": "service",
+          "settings": {
+            "layout": "full-bleed",
+            "eyebrow": "Marketing materials + design",
+            "title": "Campaign pieces that stay aligned.",
+            "description": "<p>Promotional layouts, event graphics, and presentation assets built from one visual direction.</p>",
+            "points": "Presentation decks\nEvent graphics\nPrint and digital collateral"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
