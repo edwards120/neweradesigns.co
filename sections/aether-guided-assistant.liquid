@@ -8,6 +8,11 @@
     data-aether-assistant
     data-enable-drag="{{ section.settings.enable_drag }}"
     data-enable-flying="{{ section.settings.enable_flying_scroll }}"
+    data-start-mode="{{ section.settings.start_position_mode }}"
+    data-start-desktop-x="{{ section.settings.start_desktop_x }}"
+    data-start-desktop-y="{{ section.settings.start_desktop_y }}"
+    data-start-mobile-x="{{ section.settings.start_mobile_x }}"
+    data-start-mobile-y="{{ section.settings.start_mobile_y }}"
     style="
       --aether-navy: {{ section.settings.navy }};
       --aether-ink: {{ section.settings.ink }};
@@ -240,6 +245,60 @@
       "label": "Scroll follow sensitivity",
       "default": 0.4,
       "info": "How much Pegasus follows your scroll"
+    },
+    {
+      "type": "header",
+      "content": "📍 Start Position"
+    },
+    {
+      "type": "select",
+      "id": "start_position_mode",
+      "label": "Start position source",
+      "options": [
+        { "value": "auto", "label": "Auto (near hero heading)" },
+        { "value": "manual", "label": "Manual (use values below)" }
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "range",
+      "id": "start_desktop_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Desktop start X",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "start_desktop_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Desktop start Y",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "start_mobile_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Mobile start X",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "start_mobile_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Mobile start Y",
+      "default": 10
     },
     {
       "type": "text",
@@ -1233,6 +1292,11 @@
         this.lastBubbleMessage = '';
         this.messageCount = 0;
         this.initialized = false;
+        this.startMode = assistant.dataset.startMode || 'auto';
+        this.startDesktopX = Number(assistant.dataset.startDesktopX || 50);
+        this.startDesktopY = Number(assistant.dataset.startDesktopY || 8);
+        this.startMobileX = Number(assistant.dataset.startMobileX || 50);
+        this.startMobileY = Number(assistant.dataset.startMobileY || 10);
         
         // Bounds
         this.padding = 25;
@@ -1263,28 +1327,7 @@
         if (!this.launcher || !this.petStage) return;
         
         this.updateBounds();
-        
-        // Start near the hero/header title so Pegasus is visible immediately on page load.
-        const heroAnchor = document.querySelector(
-          '#MainContent .ned-hero-title-top, [id^="NedEditorialHero-"] .ned-editorial-hero__line--1 > span'
-        );
-
-        if (heroAnchor) {
-          const rect = heroAnchor.getBoundingClientRect();
-          const header = document.querySelector('#shopify-section-sections--header, .shopify-section-group-header-group, header');
-          const headerRect = header ? header.getBoundingClientRect() : null;
-          const headerBottom = headerRect ? Math.max(0, headerRect.bottom) : 0;
-          this.initialX = rect.left + (rect.width * 0.5) - (this.charSize * 0.5);
-          this.initialY = Math.max(this.padding + 8, headerBottom + 6, rect.top - (this.charSize * 0.18));
-        } else {
-          const panelWidth = parseInt(getComputedStyle(this.assistant).getPropertyValue('--aether-panel-width')) || 390;
-          const panelRight = 20;
-          const panelBottom = 20;
-          const panelLeft = window.innerWidth - panelWidth - panelRight - 20;
-          const panelTop = window.innerHeight - 400 - panelBottom;
-          this.initialX = Math.min(panelLeft - this.charSize - 20, window.innerWidth * 0.7);
-          this.initialY = Math.min(panelTop + 150, window.innerHeight * 0.5);
-        }
+        this.resolveStartPosition();
         
         // Clamp to bounds
         this.initialX = Math.max(this.padding, Math.min(this.bounds.maxX, this.initialX));
@@ -1306,6 +1349,39 @@
           this.updateBounds();
           if (!this.isPanelOpen && !this.isDragging) {
             this.constrainToBounds();
+          }
+
+          resolveStartPosition() {
+            const isMobile = window.innerWidth <= 989;
+            if (this.startMode === 'manual') {
+              const startX = isMobile ? this.startMobileX : this.startDesktopX;
+              const startY = isMobile ? this.startMobileY : this.startDesktopY;
+              this.initialX = (window.innerWidth - this.charSize) * (startX / 100);
+              this.initialY = (window.innerHeight - this.charSize) * (startY / 100);
+              return;
+            }
+
+            const heroAnchor = document.querySelector(
+              '#MainContent .ned-hero-title-top, [id^="NedEditorialHero-"] .ned-editorial-hero__line--1 > span'
+            );
+
+            if (heroAnchor) {
+              const rect = heroAnchor.getBoundingClientRect();
+              const header = document.querySelector('#shopify-section-sections--header, .shopify-section-group-header-group, header');
+              const headerRect = header ? header.getBoundingClientRect() : null;
+              const headerBottom = headerRect ? Math.max(0, headerRect.bottom) : 0;
+              this.initialX = rect.left + (rect.width * 0.5) - (this.charSize * 0.5);
+              this.initialY = Math.max(this.padding + 8, headerBottom + 6, rect.top - (this.charSize * 0.18));
+              return;
+            }
+
+            const panelWidth = parseInt(getComputedStyle(this.assistant).getPropertyValue('--aether-panel-width')) || 390;
+            const panelRight = 20;
+            const panelBottom = 20;
+            const panelLeft = window.innerWidth - panelWidth - panelRight - 20;
+            const panelTop = window.innerHeight - 400 - panelBottom;
+            this.initialX = Math.min(panelLeft - this.charSize - 20, window.innerWidth * 0.7);
+            this.initialY = Math.min(panelTop + 150, window.innerHeight * 0.5);
           }
         }, { passive: true });
         
