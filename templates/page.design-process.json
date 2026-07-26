@@ -1,0 +1,344 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "blocks_feJw9p": {
+      "type": "_blocks",
+      "name": "Image banner",
+      "settings": {}
+    },
+    "blocks_Yd3K9U": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_5b1cc8d_rF4LTp": {
+          "type": "ai_gen_block_5b1cc8d",
+          "settings": {
+            "image": "shopify://shop_images/Artboard_19_copy_9ab4ea5e-6cf1-4477-a1d3-1c3421ffdb91.png",
+            "image_fit": "cover",
+            "image_position": "center",
+            "max_width": 2000,
+            "banner_height": 100,
+            "mobile_height": 80,
+            "banner_link": "shopify://pages/contact",
+            "link_aria_label": "View banner content",
+            "background_color": "#f3f3f3"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_5b1cc8d_rF4LTp"
+      ],
+      "name": "Image banner",
+      "settings": {}
+    },
+    "blocks_LNMnHg": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_e946ecc_FmqNb8": {
+          "type": "ai_gen_block_e946ecc",
+          "name": "Bouncy balls",
+          "settings": {
+            "gradient_percent": 20,
+            "height_preset": "banner",
+            "desktop_height": 500,
+            "mobile_height": 150,
+            "background_fit": "cover",
+            "background_color": "#16213a",
+            "white_mode": false,
+            "overlay_opacity": 0,
+            "ball_color_1": "#fca311",
+            "ball_color_2": "#16213a",
+            "ball_color_3": "#1b2e9d",
+            "ball_color_4": "#0a1821",
+            "ball_radius_min": 10,
+            "ball_radius_max": 26,
+            "ball_count": 8,
+            "ball_size": "medium",
+            "bounce_intensity": "moderate",
+            "headline": "Campaign Archive",
+            "headline_font": "sans_serif_n7",
+            "headline_size": 58,
+            "show_subtext": true,
+            "subtext": "This archive documents past campaigns as <strong>designed systems</strong>, not one-off graphics. Each project demonstrates how visual language, hierarchy, and production constraints were used to communicate clearly across physical and digital environments. The focus is not style for style’s sake, but <strong>how design decisions supported message, audience, and scale</strong>.",
+            "subtext_size": 18,
+            "text_color": "#ffffff",
+            "show_button": true,
+            "button_text": "Explore Now",
+            "button_link": "",
+            "button_bg_color": "#fca311",
+            "button_text_color": "#ffffff"
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_16c29fe_YMAb9K": {
+          "type": "ai_gen_block_16c29fe",
+          "settings": {
+            "show_header": true,
+            "title": "Design Process",
+            "subtitle": "Clear systems, intentional decisions, long-term value.",
+            "step_1_title": "Context & Intent",
+            "step_1_description": "<p>Each project begins by understanding the message, audience, and environment—drawing from real cultural context and campaign goals to define what truly matters before design begins.<br/><br/></p>",
+            "step_2_title": "Structure & Concept",
+            "step_2_description": "<p>Ideas are shaped through hierarchy, restraint, and clarity, reducing visuals to their essential elements so the concept communicates quickly and consistently across formats.<br/><br/><br/><br/></p>",
+            "step_3_title": "System & Application",
+            "step_3_description": "<p>We select premium materials and finishes that ensure durability, elegance, and perfect integration with your space.</p>",
+            "step_4_title": "Execution & Continuity",
+            "step_4_description": "<p>Final assets are produced with longevity in mind, ensuring the work remains adaptable as materials, platforms, and needs evolve over time.</p>",
+            "background_color": "#ffffff",
+            "title_color": "#14213d",
+            "subtitle_color": "#242833",
+            "step_background": "#ffffff",
+            "step_title_color": "#14213d",
+            "step_description_color": "#242833",
+            "accent_color": "#fca311",
+            "step_border_color": "#f3f3f3",
+            "max_width": 1200,
+            "section_padding": 60,
+            "header_spacing": 40,
+            "steps_top_margin": 20,
+            "step_gap": 30,
+            "step_padding": 30,
+            "step_border_radius": 4,
+            "step_border_width": 1,
+            "title_size": 42,
+            "subtitle_size": 18,
+            "number_size": 36,
+            "step_title_size": 22,
+            "step_description_size": 15
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_d76263e_FKjYk6": {
+          "type": "ai_gen_block_d76263e",
+          "settings": {
+            "max_width": 1000,
+            "section_padding": 60,
+            "background_color": "#ffffff",
+            "columns_desktop": 2,
+            "grid_gap": 30,
+            "show_header": true,
+            "eyebrow": "Services",
+            "title": "The Business Case for Developers",
+            "subtitle": "<p>Consistency = Value</p>",
+            "text_alignment": "center",
+            "header_spacing": 50,
+            "eyebrow_color": "#999999",
+            "eyebrow_size": 12,
+            "title_color": "#121212",
+            "title_size": 60,
+            "subtitle_color": "#666666",
+            "subtitle_size": 18,
+            "show_image_1": true,
+            "image_1": "shopify://shop_images/Instagram.png",
+            "show_text_block_1": true,
+            "text_heading_1": "Crafted Excellence",
+            "text_body_1": "<p>High-performing developments are not built on trends—they are built on systems. Design principles rooted in discipline, restraint, and structure ensure that a brand remains legible, controlled, and valuable over time.</p><p>This approach draws from time-tested philosophies:<br/>Japanese design emphasizes reduction, intention, and respect for materials. Swiss design prioritizes clarity, hierarchy, and repeatable systems. Hermetic thinking reinforces cohesion—every element relates to the whole.</p><p>Together, these principles create brands that feel calm, confident, and deliberate rather than noisy or reactive.</p><h3>Front-Loaded Thinking, Long-Term Control</h3><p>The most effective brand systems do the hardest work upfront. Rules are defined early. Decisions are made intentionally. Visual elements are reduced to their essential forms.</p><p>This allows the brand to evolve over time without losing its identity. Materials can change. Applications can expand. Vendors can rotate. The core system remains intact.</p><p>For developers, this means fewer inconsistencies, fewer disputes, and fewer compromises as a project scales.</p><p></p>",
+            "show_image_2": true,
+            "image_2": "shopify://shop_images/An_evening_with_Bun_B_1_f6fc1300-3a4c-488f-9a0c-c74e156ea9a0.jpg",
+            "show_text_block_2": true,
+            "text_heading_2": "Timeless Design",
+            "text_body_2": "<h3>Radical Consistency as Asset Protection</h3><p>Consistency is not aesthetic—it is operational. A clear, principled system prevents fragmentation across signage, marketing materials, tenant applications, and future phases of development.</p><p>Rather than reacting to each new need, the brand responds predictably, preserving perception and value. The result is a development that feels managed, intentional, and enduring—qualities that attract high-caliber tenants and partners.</p>",
+            "image_height_desktop": 500,
+            "image_height_tablet": 400,
+            "image_height_mobile": 300,
+            "image_fit": "cover",
+            "text_block_padding": 20,
+            "content_spacing": 40,
+            "text_heading_color": "#121212",
+            "text_heading_size": 28,
+            "text_body_color": "#666666",
+            "text_body_size": 16,
+            "ball_color": "#fca311",
+            "ball_size": 150,
+            "ball_position_x": 50,
+            "ball_position_y": 50
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_ea928ef_p4aDtL": {
+          "type": "ai_gen_block_ea928ef",
+          "settings": {
+            "show_header": true,
+            "title": "Campaign Archive",
+            "subtitle": "Explore our latest creative work",
+            "title_size": 48,
+            "subtitle_size": 16,
+            "header_spacing": 40,
+            "desktop_width_percent": 100,
+            "section_padding": 60,
+            "item_width": 380,
+            "item_gap": 50,
+            "scroll_speed": 0.5,
+            "image_aspect_ratio": "3 / 4",
+            "border_radius": 8,
+            "card_padding": 20,
+            "shadow_opacity": 0.1,
+            "background_color": "#ffffff",
+            "title_color": "#121212",
+            "subtitle_color": "#121212",
+            "card_background": "#ffffff",
+            "campaign_title_color": "#121212",
+            "campaign_date_color": "#666666",
+            "campaign_description_color": "#121212",
+            "campaign_title_size": 21,
+            "campaign_date_size": 13,
+            "campaign_description_size": 14,
+            "campaign_1_enabled": true,
+            "campaign_1_image": "shopify://shop_images/An_evening_with_Bun_B_1_f6fc1300-3a4c-488f-9a0c-c74e156ea9a0.jpg",
+            "campaign_1_title": "An Evening With Bun B",
+            "campaign_1_date": "March 2022",
+            "campaign_1_description": "A public-facing university program centered on hip hop, social justice, and religion—requiring cultural credibility, clarity, and institutional alignment.",
+            "campaign_1_link": "",
+            "campaign_2_enabled": true,
+            "campaign_2_image": "shopify://shop_images/FRONITIER_Recovered_-01_1.jpg",
+            "campaign_2_title": "Frontier Fiesta Campaign",
+            "campaign_2_date": "March 2023",
+            "campaign_2_description": "A large-scale, multi-day student festival with performances, vendors, and events—requiring consistency across many touchpoints.",
+            "campaign_2_link": "",
+            "campaign_3_enabled": true,
+            "campaign_3_image": "shopify://shop_images/Artboard_12.png",
+            "campaign_3_title": "Martin Luther King Jr. Celebration Series",
+            "campaign_3_date": "December 2025",
+            "campaign_3_description": "Celebrate the season with our exclusive holiday collection.",
+            "campaign_3_link": "",
+            "campaign_4_enabled": true,
+            "campaign_4_image": "shopify://shop_images/UH_Digital_Screens_Master_Template_Updated_Feb_2021_Welcome_Center.jpg",
+            "campaign_4_title": "Be the M.V.P. Initiative",
+            "campaign_4_date": "August 2022",
+            "campaign_4_description": "A student engagement initiative designed to encourage participation, service, and community involvement.",
+            "campaign_4_link": "",
+            "campaign_5_enabled": true,
+            "campaign_5_image": "shopify://shop_images/Artboard_23_b1e4a109-1791-4b3f-b7ad-9440b14d9d82.png",
+            "campaign_5_title": "Who’s Got Game",
+            "campaign_5_date": "March 2022",
+            "campaign_5_description": "A collaborative esports and gaming event designed to attract students across multiple organizations, requiring high visibility, fast comprehension, and strong energy.",
+            "campaign_5_link": "",
+            "campaign_6_enabled": false,
+            "campaign_6_image": "shopify://shop_images/New_Era_Design_Services_Website_Assets_Recovered.jpg",
+            "campaign_6_title": "",
+            "campaign_6_date": "",
+            "campaign_6_description": "",
+            "campaign_6_link": "",
+            "campaign_7_enabled": false,
+            "campaign_7_title": "",
+            "campaign_7_date": "",
+            "campaign_7_description": "",
+            "campaign_7_link": "",
+            "campaign_8_enabled": false,
+            "campaign_8_title": "",
+            "campaign_8_date": "",
+            "campaign_8_description": "",
+            "campaign_8_link": "",
+            "campaign_9_enabled": false,
+            "campaign_9_title": "",
+            "campaign_9_date": "",
+            "campaign_9_description": "",
+            "campaign_9_link": "",
+            "campaign_10_enabled": false,
+            "campaign_10_title": "",
+            "campaign_10_date": "",
+            "campaign_10_description": "",
+            "campaign_10_link": "",
+            "campaign_11_enabled": false,
+            "campaign_11_title": "",
+            "campaign_11_date": "",
+            "campaign_11_description": "",
+            "campaign_11_link": "",
+            "campaign_12_enabled": false,
+            "campaign_12_title": "",
+            "campaign_12_date": "",
+            "campaign_12_description": "",
+            "campaign_12_link": ""
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_c47be21_J9A7Mz": {
+          "type": "ai_gen_block_c47be21",
+          "name": "Interactive halftones",
+          "settings": {
+            "container_height": 500,
+            "desktop_width_percent": 100,
+            "dot_size": 4,
+            "spacing": 12,
+            "primary_color": "#fca311",
+            "secondary_color": "#14213d",
+            "interaction_radius": 50,
+            "return_speed": 0.1,
+            "background_color": "#ffffff"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_e946ecc_FmqNb8",
+        "ai_gen_block_16c29fe_YMAb9K",
+        "ai_gen_block_d76263e_FKjYk6",
+        "ai_gen_block_ea928ef_p4aDtL",
+        "ai_gen_block_c47be21_J9A7Mz"
+      ],
+      "name": "Design process",
+      "settings": {}
+    },
+    "blocks_EgnFN7": {
+      "type": "_blocks",
+      "name": "Bouncy balls",
+      "settings": {}
+    },
+    "blocks_g7HW7M": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_5b1cc8d_LEHcrJ": {
+          "type": "ai_gen_block_5b1cc8d",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Master_WEBSITE_Template_Design10_4ef623c4-d572-42a3-9dbc-630d6b667ef6.jpg",
+            "image_fit": "cover",
+            "image_position": "center",
+            "max_width": 2000,
+            "banner_height": 320,
+            "mobile_height": 110,
+            "banner_link": "shopify://pages/contact",
+            "link_aria_label": "View banner content",
+            "background_color": "#f3f3f3"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_5b1cc8d_LEHcrJ"
+      ],
+      "name": "Image banner",
+      "settings": {}
+    },
+    "blocks_CKYtnT": {
+      "type": "_blocks",
+      "name": "Bouncy balls",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "blocks_feJw9p",
+    "blocks_Yd3K9U",
+    "blocks_LNMnHg",
+    "blocks_EgnFN7",
+    "blocks_g7HW7M",
+    "blocks_CKYtnT"
+  ]
+}
