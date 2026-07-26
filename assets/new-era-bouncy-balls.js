@@ -46,6 +46,8 @@
       window.removeEventListener('resize', this.handleResize);
       window.removeEventListener('scroll', this.handleScroll);
       this.field.removeEventListener('pointerdown', this.handlePointerDown);
+      this.field.removeEventListener('pointerup', this.handlePointerUp);
+      this.field.removeEventListener('pointercancel', this.handlePointerCancel);
       this.resizeObserver?.disconnect();
       this.resizeObserver = null;
     }
@@ -59,11 +61,25 @@
           this.updateBounds(false);
         });
       };
-      this.handlePointerDown = (event) => this.kick(event.clientX, event.clientY);
+      this.tapStart = null;
+      this.handlePointerDown = (event) => {
+        this.tapStart = { x: event.clientX, y: event.clientY };
+      };
+      this.handlePointerUp = (event) => {
+        if (!this.tapStart) return;
+        const distance = Math.hypot(event.clientX - this.tapStart.x, event.clientY - this.tapStart.y);
+        this.tapStart = null;
+        if (distance <= 14) this.kick(event.clientX, event.clientY);
+      };
+      this.handlePointerCancel = () => {
+        this.tapStart = null;
+      };
 
       window.addEventListener('resize', this.handleResize, { passive: true });
       window.addEventListener('scroll', this.handleScroll, { passive: true });
       this.field.addEventListener('pointerdown', this.handlePointerDown, { passive: true });
+      this.field.addEventListener('pointerup', this.handlePointerUp, { passive: true });
+      this.field.addEventListener('pointercancel', this.handlePointerCancel, { passive: true });
 
       const scope = this.getScopeElement();
       if (scope && typeof ResizeObserver !== 'undefined') {
