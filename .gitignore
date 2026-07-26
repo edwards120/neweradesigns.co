@@ -1,0 +1,31 @@
+# Recovery archives and design source files
+*.zip
+*.rar
+*.7z
+*.psd
+*.psb
+*.ai
+*.aep
+*.fig
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+.shopify/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Package and build output
+node_modules/
+dist/
+build/
+.cache/
+
+# Temporary recovery work
+_recovery/
+_codex-salvage/
+recovered-features/
