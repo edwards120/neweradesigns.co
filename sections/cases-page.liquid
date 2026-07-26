@@ -1,5 +1,7 @@
 {% comment %}
-  New Era Designs – Cases Page (Clean, Human + Metrics)
+  New Era Designs - Cases Page
+  Editable case study section for spatial systems, wayfinding concepts,
+  brand systems, campaign work, and optional 3D model viewers.
 {% endcomment %}
 
 {% liquid
@@ -10,92 +12,56 @@
 
 <section class="ned-cases ned-cases-{{ section_key }}">
   <div class="ned-cases-shell">
-    <!-- Hero -->
     <div class="ned-cases-hero">
       <div class="ned-cases-hero-copy">
         {% if section.settings.eyebrow != blank %}
           <span class="ned-cases-kicker">{{ section.settings.eyebrow }}</span>
         {% endif %}
+
         {% if section.settings.title != blank %}
           <h1>{{ section.settings.title }}</h1>
         {% endif %}
+
         {% if section.settings.intro != blank %}
           <div class="ned-cases-intro rte">{{ section.settings.intro }}</div>
         {% endif %}
       </div>
+
       <div class="ned-cases-manifesto">
         {% if section.settings.manifesto_label != blank %}
           <span>{{ section.settings.manifesto_label }}</span>
         {% endif %}
+
         {% if section.settings.manifesto_text != blank %}
           <p>{{ section.settings.manifesto_text }}</p>
         {% endif %}
       </div>
     </div>
 
-    <!-- Billboard -->
-    {% if section.settings.show_billboard %}
-      <div class="ned-cases-billboard" aria-label="{{ section.settings.billboard_alt | escape }}">
-        <div class="ned-cases-billboard__face">
-          {% if section.settings.billboard_image != blank %}
-            {{ section.settings.billboard_image | image_url: width: 1800 | image_tag: widths: '720, 1080, 1440, 1800', sizes: '(max-width: 900px) 94vw, 1180px', loading: 'lazy', alt: section.settings.billboard_alt }}
-          {% endif %}
-          <div class="ned-cases-billboard__wash"></div>
-          <span class="ned-cases-billboard__kicker">{{ section.settings.billboard_kicker }}</span>
-          <div class="ned-cases-billboard__message">
-            <strong>{{ section.settings.billboard_heading }}</strong>
-            <em>{{ section.settings.billboard_script }}</em>
-          </div>
-          <p>{{ section.settings.billboard_caption }}</p>
-          <span class="ned-cases-billboard__dimension" aria-hidden="true">← 48'-0\" / HIGH-VISIBILITY FACE →</span>
-        </div>
-        <div class="ned-cases-billboard__post ned-cases-billboard__post--left" aria-hidden="true"></div>
-        <div class="ned-cases-billboard__post ned-cases-billboard__post--right" aria-hidden="true"></div>
-      </div>
-    {% endif %}
-
-    <!-- Studio metrics – now at top -->
-    <section class="ned-studio-metrics">
-      <header>
-        <span>{{ section.settings.metrics_kicker }}</span>
-        <h2>{{ section.settings.metrics_heading }}</h2>
-        <p>{{ section.settings.metrics_intro }}</p>
-      </header>
-      <div class="ned-studio-metrics__grid">
-        <div class="ned-metric">
-          <span class="ned-metric__number">{{ section.settings.metric_1_number }}</span>
-          <span class="ned-metric__label">{{ section.settings.metric_1_label }}</span>
-        </div>
-        <div class="ned-metric">
-          <span class="ned-metric__number">{{ section.settings.metric_2_number }}</span>
-          <span class="ned-metric__label">{{ section.settings.metric_2_label }}</span>
-        </div>
-        <div class="ned-metric">
-          <span class="ned-metric__number">{{ section.settings.metric_3_number }}</span>
-          <span class="ned-metric__label">{{ section.settings.metric_3_label }}</span>
-        </div>
-        <div class="ned-metric">
-          <span class="ned-metric__number">{{ section.settings.metric_4_number }}</span>
-          <span class="ned-metric__label">{{ section.settings.metric_4_label }}</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Process steps -->
     <div class="ned-cases-process" aria-label="Design process">
-      <div><span>01</span><p>{{ section.settings.process_1 }}</p></div>
-      <div><span>02</span><p>{{ section.settings.process_2 }}</p></div>
-      <div><span>03</span><p>{{ section.settings.process_3 }}</p></div>
-      <div><span>04</span><p>{{ section.settings.process_4 }}</p></div>
+      <div>
+        <span>01</span>
+        <p>{{ section.settings.process_1 }}</p>
+      </div>
+      <div>
+        <span>02</span>
+        <p>{{ section.settings.process_2 }}</p>
+      </div>
+      <div>
+        <span>03</span>
+        <p>{{ section.settings.process_3 }}</p>
+      </div>
+      <div>
+        <span>04</span>
+        <p>{{ section.settings.process_4 }}</p>
+      </div>
     </div>
 
-    <!-- Featured Work heading -->
     <div class="ned-cases-heading">
       <span>{{ section.settings.cases_label }}</span>
       <p>{{ section.settings.cases_subtitle }}</p>
     </div>
 
-    <!-- Case grid -->
     <div class="ned-cases-grid">
       {% for block in section.blocks %}
         {% liquid
@@ -118,21 +84,7 @@
           endif
         %}
 
-        {% assign rendered_summary = block.settings.case_summary | escape %}
-        {% assign summary_highlight = block.settings.summary_highlight | strip | escape %}
-        {% if summary_highlight != blank %}
-          {% capture summary_mark %}<mark>{{ summary_highlight }}</mark>{% endcapture %}
-          {% assign rendered_summary = rendered_summary | replace_first: summary_highlight, summary_mark %}
-        {% endif %}
-
-        {% assign rendered_thinking = block.settings.thinking_text | escape %}
-        {% assign thinking_highlight = block.settings.thinking_highlight | strip | escape %}
-        {% if thinking_highlight != blank %}
-          {% capture thinking_mark %}<mark>{{ thinking_highlight }}</mark>{% endcapture %}
-          {% assign rendered_thinking = rendered_thinking | replace_first: thinking_highlight, thinking_mark %}
-        {% endif %}
-
-        <article class="ned-case-card ned-case-card--{{ block.settings.layout }}" data-aos="case-card" {{ block.shopify_attributes }}>
+        <article class="ned-case-card ned-case-card--{{ block.settings.layout }}" {{ block.shopify_attributes }}>
           <div class="ned-case-media">
             {% if block.settings.show_model and model_url != blank %}
               <model-viewer
@@ -174,26 +126,16 @@
               <span>{{ block.settings.case_year }}</span>
             </div>
 
-            {% if block.settings.case_location != blank %}
-              <span class="ned-case-location">{{ block.settings.case_location }}</span>
-            {% endif %}
-
             <h2>{{ block.settings.case_title }}</h2>
 
             {% if block.settings.case_summary != blank %}
-              <p class="ned-case-summary">{{ rendered_summary }}</p>
+              <p class="ned-case-summary">{{ block.settings.case_summary }}</p>
             {% endif %}
 
             {% if block.settings.thinking_text != blank %}
               <div class="ned-case-thinking">
                 <span>{{ block.settings.thinking_label }}</span>
-                <p>{{ rendered_thinking }}</p>
-              </div>
-            {% endif %}
-
-            {% if block.settings.case_metric != blank %}
-              <div class="ned-case-metric">
-                <span>{{ block.settings.case_metric }}</span>
+                <p>{{ block.settings.thinking_text }}</p>
               </div>
             {% endif %}
 
@@ -212,11 +154,19 @@
       {% endfor %}
     </div>
 
-    <!-- Bottom cards -->
     <div class="ned-cases-stack">
-      <div><span>{{ section.settings.stack_1_label }}</span><p>{{ section.settings.stack_1_text }}</p></div>
-      <div><span>{{ section.settings.stack_2_label }}</span><p>{{ section.settings.stack_2_text }}</p></div>
-      <div><span>{{ section.settings.stack_3_label }}</span><p>{{ section.settings.stack_3_text }}</p></div>
+      <div>
+        <span>{{ section.settings.stack_1_label }}</span>
+        <p>{{ section.settings.stack_1_text }}</p>
+      </div>
+      <div>
+        <span>{{ section.settings.stack_2_label }}</span>
+        <p>{{ section.settings.stack_2_text }}</p>
+      </div>
+      <div>
+        <span>{{ section.settings.stack_3_label }}</span>
+        <p>{{ section.settings.stack_3_text }}</p>
+      </div>
     </div>
   </div>
 </section>
@@ -224,14 +174,6 @@
 <style>
   {{ heading_font | font_face: font_display: 'swap' }}
   {{ body_font | font_face: font_display: 'swap' }}
-
-  @font-face {
-    font-family: 'EdwardianScript';
-    src: url('{{ 'edwardianscript.woff2' | asset_url }}') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-  }
 
   .ned-cases-{{ section_key }} {
     --ned-navy: {{ section.settings.background_color }};
@@ -246,23 +188,30 @@
     --ned-heading-font: {{ heading_font.family | json }}, {{ heading_font.fallback_families }};
     --ned-body-font: {{ body_font.family | json }}, {{ body_font.fallback_families }};
 
-    background: linear-gradient(180deg, var(--ned-navy), var(--ned-black));
+    background:
+      radial-gradient(circle at 18% 0%, {{ section.settings.accent_color | color_modify: 'alpha', 0.18 }}, transparent 34%),
+      linear-gradient(180deg, {{ section.settings.background_color | color_modify: 'alpha', 0.98 }}, {{ section.settings.deep_background_color }});
     color: var(--ned-white);
     font-family: var(--ned-body-font);
-    padding: clamp(40px, 6vw, 64px) 20px clamp(64px, 8vw, 96px);
+    padding: clamp(48px, 7vw, 72px) 20px clamp(64px, 8vw, 96px);
   }
 
-  .ned-cases-{{ section_key }} * { box-sizing: border-box; }
-  .ned-cases-shell { width: min(1220px, 100%); margin: 0 auto; }
+  .ned-cases-{{ section_key }} * {
+    box-sizing: border-box;
+  }
 
-  /* Hero */
+  .ned-cases-shell {
+    width: min(1220px, 100%);
+    margin: 0 auto;
+  }
+
   .ned-cases-hero {
     display: grid;
-    grid-template-columns: 1fr minmax(260px, 380px);
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 410px);
     gap: 34px;
     align-items: stretch;
-    border-bottom: 1px solid rgba(198,150,46,0.35);
-    padding-bottom: 44px;
+    border-bottom: 1px solid {{ section.settings.accent_color | color_modify: 'alpha', 0.46 }};
+    padding-bottom: 42px;
   }
 
   .ned-cases-kicker,
@@ -273,218 +222,336 @@
   .ned-cases-stack span,
   .ned-cases-process span,
   .ned-case-media-label,
-  .ned-cases-manifesto span,
-  .ned-studio-metrics header > span,
-  .ned-case-location {
+  .ned-cases-manifesto span {
     color: var(--ned-metal);
     font-size: 11px;
     font-weight: 900;
     letter-spacing: 0.16em;
+    line-height: 1.2;
     text-transform: uppercase;
   }
 
   .ned-cases-hero h1 {
+    max-width: 850px;
     margin: 16px 0 0;
     color: var(--ned-white);
     font-family: var(--ned-heading-font);
     font-size: clamp(48px, 8vw, 112px);
     font-weight: 900;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
     line-height: 0.88;
     text-transform: uppercase;
   }
 
   .ned-cases-intro {
-    max-width: 680px;
-    margin-top: 24px;
+    max-width: 720px;
+    margin-top: 26px;
     color: var(--ned-muted);
     font-size: 18px;
-    line-height: 1.6;
+    line-height: 1.65;
+  }
+
+  .ned-cases-intro p {
+    margin: 0;
   }
 
   .ned-cases-manifesto {
     display: grid;
     align-content: end;
-    min-height: 260px;
-    border: 1px solid rgba(198,150,46,0.3);
-    background: linear-gradient(135deg, rgba(198,150,46,0.08), transparent 44%);
+    min-height: 280px;
+    border: 1px solid {{ section.settings.accent_color | color_modify: 'alpha', 0.42 }};
+    background:
+      linear-gradient(135deg, {{ section.settings.accent_color | color_modify: 'alpha', 0.14 }}, transparent 44%),
+      {{ section.settings.card_background_color | color_modify: 'alpha', 0.10 }};
     padding: 26px;
   }
 
   .ned-cases-manifesto p {
     margin: 16px 0 0;
     color: var(--ned-white);
-    font-family: Georgia, serif;
-    font-size: 22px;
-    font-style: italic;
-    line-height: 1.35;
-    letter-spacing: -0.01em;
-  }
-
-  /* Billboard */
-  .ned-cases-billboard {
-    display: grid;
-    grid-template-columns: 12% 1fr 12%;
-    margin: clamp(44px, 8vw, 90px) auto clamp(36px, 6vw, 70px);
-    max-width: 1120px;
-    perspective: 1200px;
-  }
-
-  .ned-cases-billboard__face {
-    aspect-ratio: 2.55 / 1;
-    background: var(--ned-cream);
-    border: 10px solid var(--ned-black);
-    color: var(--ned-black);
-    display: grid;
-    grid-column: 1 / -1;
-    grid-row: 1;
-    overflow: hidden;
-    padding: clamp(18px, 4vw, 50px);
-    position: relative;
-    transform: rotateX(1deg) rotateY(-1.4deg);
-    transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
-  }
-
-  .ned-cases-billboard:hover .ned-cases-billboard__face { transform: rotateX(0) rotateY(0) translateY(-4px); }
-  .ned-cases-billboard__face img { height: 100%; inset: 0; object-fit: cover; opacity: .28; position: absolute; width: 100%; }
-  .ned-cases-billboard__wash { background: linear-gradient(90deg, var(--ned-cream) 0 43%, transparent 82%); inset: 0; position: absolute; }
-  .ned-cases-billboard__kicker { font-size: 10px; font-weight: 900; letter-spacing: .18em; position: relative; text-transform: uppercase; z-index: 2; }
-  .ned-cases-billboard__message { align-self: center; display: grid; position: relative; width: min(820px, 92%); z-index: 2; }
-  .ned-cases-billboard__message strong { font-family: var(--ned-heading-font); font-size: clamp(42px, 8vw, 112px); font-weight: 900; letter-spacing: -.055em; line-height: .76; text-transform: uppercase; }
-  .ned-cases-billboard__message em {
-    font-family: 'EdwardianScript', cursive;
-    font-weight: normal;
-    font-style: normal;
-    font-size: clamp(64px, 12vw, 160px);
-    line-height: 0.5;
-    color: var(--ned-gold);
-    grid-column: 1;
-    grid-row: 1;
-    align-self: end;
-    justify-self: end;
-    margin-top: -0.2em;
-    margin-right: -0.3em;
-    animation: revealScript 1.8s cubic-bezier(0.25,0.1,0.25,1) 0.5s forwards;
-    clip-path: inset(0 0 0 100%);
-  }
-
-  @keyframes revealScript { to { clip-path: inset(0 0 0 0); } }
-
-  .ned-cases-billboard__face p { align-self: end; font-size: 12px; font-weight: 800; line-height: 1.35; margin: 0; max-width: 42ch; position: relative; z-index: 2; }
-  .ned-cases-billboard__dimension { bottom: 10px; font-size: 8px; font-weight: 900; letter-spacing: .12em; position: absolute; right: 14px; z-index: 2; }
-  .ned-cases-billboard__post { background: var(--ned-black); grid-row: 2; height: clamp(70px, 10vw, 132px); justify-self: center; width: clamp(18px, 2vw, 28px); }
-  .ned-cases-billboard__post--left { grid-column: 1; }
-  .ned-cases-billboard__post--right { grid-column: 3; }
-
-  /* Metrics */
-  .ned-studio-metrics {
-    display: grid;
-    gap: clamp(34px, 8vw, 80px);
-    grid-template-columns: minmax(220px, .7fr) minmax(0, 1.3fr);
-    margin: 0 0 clamp(58px, 9vw, 100px);
-    border-bottom: 1px solid rgba(198,150,46,0.3);
-    padding-bottom: clamp(34px, 5vw, 56px);
-  }
-
-  .ned-studio-metrics h2 {
-    color: var(--ned-white);
     font-family: var(--ned-heading-font);
-    font-size: clamp(42px, 6vw, 72px);
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.15;
+  }
+
+  .ned-cases-process {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-bottom: 1px solid {{ section.settings.text_color | color_modify: 'alpha', 0.12 }};
+    margin: 0 0 46px;
+  }
+
+  .ned-cases-process div {
+    min-height: 138px;
+    border-right: 1px solid {{ section.settings.text_color | color_modify: 'alpha', 0.12 }};
+    padding: 22px 18px;
+  }
+
+  .ned-cases-process div:last-child {
+    border-right: 0;
+  }
+
+  .ned-cases-process p {
+    margin: 22px 0 0;
+    color: var(--ned-white);
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  .ned-cases-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: end;
+    margin-bottom: 22px;
+  }
+
+  .ned-cases-heading p {
+    max-width: 500px;
+    margin: 0;
+    color: var(--ned-muted);
+    font-size: 14px;
+    line-height: 1.55;
+    text-align: right;
+  }
+
+  .ned-cases-grid {
+    display: grid;
+    gap: 28px;
+  }
+
+  .ned-case-card {
+    display: grid;
+    grid-template-columns: minmax(360px, 0.95fr) minmax(0, 1.05fr);
+    min-height: 560px;
+    overflow: hidden;
+    border: 1px solid {{ section.settings.accent_color | color_modify: 'alpha', 0.3 }};
+    background: var(--ned-card);
+    box-shadow: 0 30px 90px {{ section.settings.deep_background_color | color_modify: 'alpha', 0.3 }};
+  }
+
+  .ned-case-card:nth-child(even) {
+    grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+  }
+
+  .ned-case-card:nth-child(even) .ned-case-media {
+    order: 2;
+  }
+
+  .ned-case-card:nth-child(even) .ned-case-content {
+    order: 1;
+  }
+
+  .ned-case-card--compact {
+    grid-template-columns: minmax(300px, 0.78fr) minmax(0, 1.22fr);
+    min-height: 460px;
+  }
+
+  .ned-case-media {
+    position: relative;
+    min-height: 520px;
+    background:
+      linear-gradient(135deg, {{ section.settings.accent_color | color_modify: 'alpha', 0.16 }}, transparent 46%),
+      var(--ned-media-bg);
+  }
+
+  .ned-case-media model-viewer,
+  .ned-case-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 520px;
+  }
+
+  .ned-case-media img {
+    object-fit: cover;
+  }
+
+  .ned-case-media model-viewer {
+    --progress-bar-color: var(--ned-gold);
+    --progress-bar-height: 3px;
+  }
+
+  .ned-case-media-label {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    border-left: 3px solid var(--ned-gold);
+    background: {{ section.settings.deep_background_color | color_modify: 'alpha', 0.78 }};
+    color: var(--ned-white);
+    padding: 8px 11px;
+  }
+
+  .ned-case-placeholder {
+    display: grid;
+    min-height: 520px;
+    place-items: center;
+    background:
+      linear-gradient(135deg, {{ section.settings.accent_color | color_modify: 'alpha', 0.13 }}, transparent 42%),
+      var(--ned-media-bg);
+  }
+
+  .ned-case-placeholder span {
+    border: 1px solid {{ section.settings.accent_color | color_modify: 'alpha', 0.5 }};
+    color: var(--ned-metal);
+    font-size: 12px;
     font-weight: 900;
-    letter-spacing: -.035em;
-    line-height: .88;
-    margin: 18px 0 0;
+    letter-spacing: 0.16em;
+    padding: 13px 16px;
     text-transform: uppercase;
   }
 
-  .ned-studio-metrics header p {
+  .ned-case-content {
+    display: grid;
+    align-content: center;
+    padding: clamp(30px, 5vw, 64px);
+  }
+
+  .ned-case-topline {
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    margin-bottom: 22px;
+  }
+
+  .ned-case-content h2 {
+    margin: 0;
+    color: var(--ned-white);
+    font-family: var(--ned-heading-font);
+    font-size: clamp(34px, 5vw, 64px);
+    font-weight: 900;
+    letter-spacing: 0;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+
+  .ned-case-summary {
+    margin: 22px 0 0;
+    color: var(--ned-muted);
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  .ned-case-thinking {
+    border-left: 3px solid var(--ned-gold);
+    margin-top: 30px;
+    padding-left: 18px;
+  }
+
+  .ned-case-thinking p {
+    margin: 10px 0 0;
+    color: var(--ned-white);
+    font-family: var(--ned-heading-font);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.28;
+  }
+
+  .ned-case-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 34px;
+  }
+
+  .ned-case-details div {
+    border-top: 1px solid {{ section.settings.text_color | color_modify: 'alpha', 0.18 }};
+    padding-top: 14px;
+  }
+
+  .ned-case-details p {
+    margin: 8px 0 0;
+    color: var(--ned-muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .ned-cases-stack {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    margin-top: 34px;
+    background: {{ section.settings.accent_color | color_modify: 'alpha', 0.32 }};
+    border: 1px solid {{ section.settings.accent_color | color_modify: 'alpha', 0.32 }};
+  }
+
+  .ned-cases-stack div {
+    background: {{ section.settings.deep_background_color | color_modify: 'alpha', 0.88 }};
+    padding: 24px;
+  }
+
+  .ned-cases-stack p {
+    margin: 12px 0 0;
     color: var(--ned-muted);
     font-size: 15px;
     line-height: 1.55;
-    margin: 20px 0 0;
-    max-width: 38ch;
   }
 
-  .ned-studio-metrics__grid { display: grid; gap: 32px; grid-template-columns: repeat(2, 1fr); align-content: center; }
-  .ned-metric { border-bottom: 1px solid rgba(198,150,46,0.26); padding-bottom: 14px; }
-  .ned-metric__number { font-family: var(--ned-heading-font); font-size: clamp(48px, 6vw, 84px); font-weight: 900; line-height: 0.9; color: var(--ned-white); letter-spacing: -0.02em; }
-  .ned-metric__label { font-size: 11px; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ned-metal); }
-
-  /* Process */
-  .ned-cases-process { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid rgba(255,255,255,0.1); margin: 0 0 46px; }
-  .ned-cases-process div { min-height: 120px; border-right: 1px solid rgba(255,255,255,0.1); padding: 22px 18px; }
-  .ned-cases-process div:last-child { border-right: 0; }
-  .ned-cases-process p { margin: 18px 0 0; color: var(--ned-white); font-size: 15px; font-weight: 800; line-height: 1.35; }
-
-  .ned-cases-heading { display: flex; justify-content: space-between; gap: 24px; align-items: end; margin-bottom: 22px; }
-  .ned-cases-heading p { max-width: 500px; margin: 0; color: var(--ned-muted); font-size: 14px; line-height: 1.55; text-align: right; }
-
-  /* Cards */
-  .ned-cases-grid { display: grid; gap: 28px; }
-  .ned-case-card { display: grid; grid-template-columns: minmax(360px, 0.95fr) minmax(0, 1.05fr); min-height: 540px; overflow: hidden; border: 1px solid rgba(198,150,46,0.22); background: var(--ned-card); box-shadow: 0 30px 90px rgba(5,7,13,0.3); }
-  .ned-case-card:nth-child(even) { grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr); }
-  .ned-case-card:nth-child(even) .ned-case-media { order: 2; }
-  .ned-case-card:nth-child(even) .ned-case-content { order: 1; }
-  .ned-case-card--compact { grid-template-columns: minmax(300px, 0.78fr) minmax(0, 1.22fr); min-height: 460px; }
-
-  .ned-case-media { position: relative; min-height: 520px; background: linear-gradient(135deg, rgba(198,150,46,0.08), transparent 46%), var(--ned-media-bg); }
-  .ned-case-media model-viewer,
-  .ned-case-media img { display: block; width: 100%; height: 100%; min-height: 520px; }
-  .ned-case-media img { object-fit: cover; }
-  .ned-case-media model-viewer { --progress-bar-color: var(--ned-gold); --progress-bar-height: 3px; }
-  .ned-case-media-label { position: absolute; left: 18px; top: 18px; border-left: 3px solid var(--ned-gold); background: rgba(5,7,13,0.78); color: var(--ned-white); padding: 8px 11px; }
-  .ned-case-placeholder { display: grid; min-height: 520px; place-items: center; background: linear-gradient(135deg, rgba(198,150,46,0.06), transparent 42%), var(--ned-media-bg); }
-  .ned-case-placeholder span { border: 1px solid rgba(198,150,46,0.5); color: var(--ned-metal); font-size: 12px; font-weight: 900; letter-spacing: 0.16em; padding: 13px 16px; text-transform: uppercase; }
-
-  .ned-case-content { display: grid; align-content: center; padding: clamp(30px, 5vw, 64px); }
-  .ned-case-topline { display: flex; gap: 16px; justify-content: space-between; margin-bottom: 6px; }
-  .ned-case-location { margin-bottom: 10px; display: block; }
-  .ned-case-content h2 { margin: 0; color: var(--ned-white); font-family: var(--ned-heading-font); font-size: clamp(34px, 5vw, 64px); font-weight: 900; letter-spacing: -0.015em; line-height: 0.95; text-transform: uppercase; }
-  .ned-case-summary { margin: 18px 0 0; color: var(--ned-muted); font-size: 17px; line-height: 1.65; }
-  .ned-case-summary mark { background: var(--ned-gold); color: var(--ned-black); font-weight: 900; padding: 0.02em 0.16em; }
-  .ned-case-thinking { border-left: 3px solid var(--ned-gold); margin-top: 28px; padding-left: 18px; }
-  .ned-case-thinking p { margin: 10px 0 0; color: var(--ned-white); font-family: var(--ned-heading-font); font-size: 20px; font-weight: 800; line-height: 1.28; }
-  .ned-case-thinking mark { background: var(--ned-gold); color: var(--ned-black); }
-  .ned-case-metric { margin-top: 20px; font-size: 28px; font-weight: 900; color: var(--ned-gold); font-family: var(--ned-heading-font); letter-spacing: -0.02em; }
-  .ned-case-details { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 32px; }
-  .ned-case-details div { border-top: 1px solid rgba(255,255,255,0.18); padding-top: 14px; }
-  .ned-case-details p { margin: 8px 0 0; color: var(--ned-muted); font-size: 14px; line-height: 1.5; }
-
-  /* Bottom cards */
-  .ned-cases-stack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 34px; background: rgba(198,150,46,0.22); border: 1px solid rgba(198,150,46,0.22); }
-  .ned-cases-stack div { background: rgba(5,7,13,0.88); padding: 24px; }
-  .ned-cases-stack p { margin: 12px 0 0; color: var(--ned-muted); font-size: 15px; line-height: 1.55; }
-
-  /* Responsive */
   @media (max-width: 900px) {
-    .ned-cases-{{ section_key }} { padding: 40px 14px 64px; }
-    .ned-cases-hero, .ned-case-card, .ned-case-card:nth-child(even), .ned-case-card--compact, .ned-cases-stack, .ned-studio-metrics { grid-template-columns: 1fr; }
-    .ned-cases-billboard__face { aspect-ratio: 1.55 / 1; border-width: 7px; }
-    .ned-cases-billboard__wash { background: linear-gradient(90deg, var(--ned-cream) 0 64%, transparent 100%); }
-    .ned-case-card:nth-child(even) .ned-case-media, .ned-case-card:nth-child(even) .ned-case-content { order: initial; }
-    .ned-cases-process { grid-template-columns: repeat(2, 1fr); }
-    .ned-cases-process div:nth-child(2) { border-right: 0; }
-    .ned-cases-heading { display: block; }
-    .ned-cases-heading p { margin-top: 10px; text-align: left; }
-    .ned-case-media, .ned-case-media model-viewer, .ned-case-media img, .ned-case-placeholder { min-height: 360px; }
-    .ned-case-details { grid-template-columns: 1fr; }
-    .ned-studio-metrics__grid { grid-template-columns: 1fr 1fr; }
+    .ned-cases-{{ section_key }} {
+      padding: 48px 14px 64px;
+    }
+
+    .ned-cases-hero,
+    .ned-case-card,
+    .ned-case-card:nth-child(even),
+    .ned-case-card--compact,
+    .ned-cases-stack {
+      grid-template-columns: 1fr;
+    }
+
+    .ned-case-card:nth-child(even) .ned-case-media,
+    .ned-case-card:nth-child(even) .ned-case-content {
+      order: initial;
+    }
+
+    .ned-cases-process {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ned-cases-process div:nth-child(2) {
+      border-right: 0;
+    }
+
+    .ned-cases-heading {
+      display: block;
+    }
+
+    .ned-cases-heading p {
+      margin-top: 10px;
+      text-align: left;
+    }
+
+    .ned-case-media,
+    .ned-case-media model-viewer,
+    .ned-case-media img,
+    .ned-case-placeholder {
+      min-height: 360px;
+    }
+
+    .ned-case-details {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (max-width: 560px) {
-    .ned-cases-process { grid-template-columns: 1fr; }
-    .ned-cases-process div, .ned-cases-process div:nth-child(2) { border-right: 0; border-bottom: 1px solid rgba(255,255,255,0.12); }
-    .ned-cases-process div:last-child { border-bottom: 0; }
-    .ned-cases-billboard { grid-template-columns: 18% 1fr 18%; }
-    .ned-cases-billboard__face { aspect-ratio: .9 / 1; padding: 24px 18px; }
-    .ned-cases-billboard__message em { margin-right: 0; }
-    .ned-cases-billboard__dimension { display: none; }
-    .ned-studio-metrics__grid { grid-template-columns: 1fr; }
-  }
+    .ned-cases-process {
+      grid-template-columns: 1fr;
+    }
 
-  @media (prefers-reduced-motion: reduce) {
-    .ned-cases-billboard__face { transition: none; }
-    .ned-cases-billboard__message em { animation: none; clip-path: inset(0 0 0 0); }
+    .ned-cases-process div,
+    .ned-cases-process div:nth-child(2) {
+      border-right: 0;
+      border-bottom: 1px solid {{ section.settings.text_color | color_modify: 'alpha', 0.12 }};
+    }
+
+    .ned-cases-process div:last-child {
+      border-bottom: 0;
+    }
   }
 </style>
 
@@ -492,6 +559,7 @@
   (function() {
     function loadModelViewerScript() {
       if (customElements.get('model-viewer') || document.querySelector('script[data-ned-case-model-viewer-script]')) return;
+
       var script = document.createElement('script');
       script.type = 'module';
       script.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js';
@@ -502,11 +570,16 @@
     function initNedCases() {
       var section = document.querySelector('.ned-cases-{{ section_key }}');
       if (!section) return;
+
       loadModelViewerScript();
+
       section.querySelectorAll('model-viewer').forEach(function(model) {
         if (model.dataset.nedCaseReady === 'true') return;
         model.dataset.nedCaseReady = 'true';
-        if (model.dataset.autoRotate === 'true') model.setAttribute('auto-rotate', '');
+
+        if (model.dataset.autoRotate === 'true') {
+          model.setAttribute('auto-rotate', '');
+        }
       });
     }
 
@@ -515,105 +588,481 @@
     } else {
       initNedCases();
     }
+
     document.addEventListener('shopify:section:load', initNedCases);
   })();
 </script>
 
 {% schema %}
 {
-  "name": "Cases – Clean Metrics",
+  "name": "Cases Page",
   "tag": "section",
   "class": "section",
   "settings": [
-    { "type": "header", "content": "Style" },
-    { "type": "font_picker", "id": "heading_font", "label": "Heading font", "default": "helvetica_n7" },
-    { "type": "font_picker", "id": "body_font", "label": "Body font", "default": "helvetica_n4" },
-    { "type": "color", "id": "background_color", "label": "Background color", "default": "#111d3a" },
-    { "type": "color", "id": "deep_background_color", "label": "Deep background color", "default": "#05070d" },
-    { "type": "color", "id": "card_background_color", "label": "Card background color", "default": "#ffffff" },
-    { "type": "color", "id": "media_background_color", "label": "Media background color", "default": "#0a1020" },
-    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#c8962e" },
-    { "type": "color", "id": "secondary_accent_color", "label": "Secondary accent color", "default": "#dbb65b" },
-    { "type": "color", "id": "text_color", "label": "Main text color", "default": "#ffffff" },
-    { "type": "color", "id": "muted_text_color", "label": "Muted text color", "default": "#d8dce7" },
-    { "type": "color", "id": "soft_color", "label": "Soft color", "default": "#f7f3ea" },
-    { "type": "header", "content": "Content" },
-    { "type": "text", "id": "eyebrow", "label": "Hero eyebrow", "default": "New Era Designs" },
-    { "type": "text", "id": "title", "label": "Hero title", "default": "Cases, Concepts & Spatial Systems" },
-    { "type": "richtext", "id": "intro", "label": "Hero intro", "default": "<p>A working archive of wayfinding systems, campaign environments, 3D studies, and the decision logic behind the design — supported by numbers that prove the work.</p>" },
-    { "type": "text", "id": "manifesto_label", "label": "Manifesto label", "default": "How I Think" },
-    { "type": "textarea", "id": "manifesto_text", "label": "Manifesto text", "default": "I design the system before the surface: the route, the decision, the material, the moment, and then the mark." },
-    { "type": "header", "content": "Billboard showcase" },
-    { "type": "checkbox", "id": "show_billboard", "label": "Show billboard showcase", "default": true },
-    { "type": "image_picker", "id": "billboard_image", "label": "Billboard background image" },
-    { "type": "text", "id": "billboard_alt", "label": "Billboard image alt text", "default": "New Era Designs exterior signage study" },
-    { "type": "text", "id": "billboard_kicker", "label": "Billboard eyebrow", "default": "Environmental graphics / Houston" },
-    { "type": "text", "id": "billboard_heading", "label": "Billboard main line", "default": "MAKE THE PLACE" },
-    { "type": "text", "id": "billboard_script", "label": "Billboard script line", "default": "perform" },
-    { "type": "textarea", "id": "billboard_caption", "label": "Billboard caption", "default": "Brand systems designed to read at speed, hold attention, and survive the physical world. Over 2.3 million sq ft visualized so far." },
-    { "type": "text", "id": "process_1", "label": "Process 1", "default": "Read the site like a visitor — not just a floor plan." },
-    { "type": "text", "id": "process_2", "label": "Process 2", "default": "Find where confusion starts and what decision needs support." },
-    { "type": "text", "id": "process_3", "label": "Process 3", "default": "Prototype hierarchy, placement, materials, and visibility — before fabrication." },
-    { "type": "text", "id": "process_4", "label": "Process 4", "default": "Package the idea so owners, tenants, and fabricators can align faster." },
-    { "type": "text", "id": "cases_label", "label": "Cases label", "default": "Featured Work" },
-    { "type": "textarea", "id": "cases_subtitle", "label": "Cases subtitle", "default": "Spatial systems, concept studies, and campaign work shaped around signage, wayfinding, architecture, tenant visibility, and the customer journey. Every project has a story and a number." },
-    { "type": "header", "content": "Studio metrics (top of page)" },
-    { "type": "text", "id": "metrics_kicker", "label": "Metrics eyebrow", "default": "Studio by the numbers" },
-    { "type": "text", "id": "metrics_heading", "label": "Metrics heading", "default": "DESIGN THAT WORKS HARD" },
-    { "type": "textarea", "id": "metrics_intro", "label": "Metrics introduction", "default": "A snapshot of what we’ve built: environments, sign families, and visual systems that solve real problems." },
-    { "type": "text", "id": "metric_1_number", "label": "Metric 1 number", "default": "94" },
-    { "type": "text", "id": "metric_1_label", "label": "Metric 1 label", "default": "Sign families designed" },
-    { "type": "text", "id": "metric_2_number", "label": "Metric 2 number", "default": "2.3M" },
-    { "type": "text", "id": "metric_2_label", "label": "Metric 2 label", "default": "Square feet visualized" },
-    { "type": "text", "id": "metric_3_number", "label": "Metric 3 number", "default": "16" },
-    { "type": "text", "id": "metric_3_label", "label": "Metric 3 label", "default": "Projects delivered" },
-    { "type": "text", "id": "metric_4_number", "label": "Metric 4 number", "default": "8" },
-    { "type": "text", "id": "metric_4_label", "label": "Metric 4 label", "default": "Cities" },
-    { "type": "text", "id": "stack_1_label", "label": "Bottom card 1 label", "default": "Strategy" },
-    { "type": "textarea", "id": "stack_1_text", "label": "Bottom card 1 text", "default": "Every concept starts with a reason: who needs this, where they are, and what decision the design needs to make easier." },
-    { "type": "text", "id": "stack_2_label", "label": "Bottom card 2 label", "default": "Visualization" },
-    { "type": "textarea", "id": "stack_2_text", "label": "Bottom card 2 text", "default": "3D models turn abstract signage ideas into something a client can inspect, rotate, question, and approve with confidence." },
-    { "type": "text", "id": "stack_3_label", "label": "Bottom card 3 label", "default": "Delivery" },
-    { "type": "textarea", "id": "stack_3_text", "label": "Bottom card 3 text", "default": "The final direction has to look sharp, explain itself clearly, and survive the handoff into fabrication, permitting, or presentation." }
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "helvetica_n7"
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font",
+      "label": "Body font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#111d3a"
+    },
+    {
+      "type": "color",
+      "id": "deep_background_color",
+      "label": "Deep background color",
+      "default": "#05070d"
+    },
+    {
+      "type": "color",
+      "id": "card_background_color",
+      "label": "Card background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "media_background_color",
+      "label": "Media background color",
+      "default": "#0a1020"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#f6a229"
+    },
+    {
+      "type": "color",
+      "id": "secondary_accent_color",
+      "label": "Secondary accent color",
+      "default": "#f1c16d"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Main text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Muted text color",
+      "default": "#d8dce7"
+    },
+    {
+      "type": "color",
+      "id": "soft_color",
+      "label": "Soft color",
+      "default": "#f7f3ea"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Hero eyebrow",
+      "default": "New Era Designs"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Hero title",
+      "default": "Cases, Concepts & Spatial Systems"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Hero intro",
+      "default": "<p>A working archive of wayfinding systems, campaign environments, 3D studies, and the decision logic behind the design.</p>"
+    },
+    {
+      "type": "text",
+      "id": "manifesto_label",
+      "label": "Manifesto label",
+      "default": "How I Think"
+    },
+    {
+      "type": "textarea",
+      "id": "manifesto_text",
+      "label": "Manifesto text",
+      "default": "I design the system before the surface: the route, the decision, the material, the moment, and then the mark."
+    },
+    {
+      "type": "text",
+      "id": "process_1",
+      "label": "Process 1",
+      "default": "Read the site like a visitor, not just a floor plan."
+    },
+    {
+      "type": "text",
+      "id": "process_2",
+      "label": "Process 2",
+      "default": "Find where confusion starts and what decision needs support."
+    },
+    {
+      "type": "text",
+      "id": "process_3",
+      "label": "Process 3",
+      "default": "Prototype hierarchy, placement, materials, and visibility before fabrication."
+    },
+    {
+      "type": "text",
+      "id": "process_4",
+      "label": "Process 4",
+      "default": "Package the idea so owners, tenants, and fabricators can align faster."
+    },
+    {
+      "type": "text",
+      "id": "cases_label",
+      "label": "Cases label",
+      "default": "Featured Work"
+    },
+    {
+      "type": "textarea",
+      "id": "cases_subtitle",
+      "label": "Cases subtitle",
+      "default": "Spatial systems, concept studies, and campaign work shaped around signage, wayfinding, architecture, tenant visibility, and the customer journey."
+    },
+    {
+      "type": "text",
+      "id": "stack_1_label",
+      "label": "Bottom card 1 label",
+      "default": "Strategy"
+    },
+    {
+      "type": "textarea",
+      "id": "stack_1_text",
+      "label": "Bottom card 1 text",
+      "default": "Every concept starts with a reason: who needs this, where they are, and what decision the design needs to make easier."
+    },
+    {
+      "type": "text",
+      "id": "stack_2_label",
+      "label": "Bottom card 2 label",
+      "default": "Visualization"
+    },
+    {
+      "type": "textarea",
+      "id": "stack_2_text",
+      "label": "Bottom card 2 text",
+      "default": "3D models turn abstract signage ideas into something a client can inspect, rotate, question, and approve with confidence."
+    },
+    {
+      "type": "text",
+      "id": "stack_3_label",
+      "label": "Bottom card 3 label",
+      "default": "Delivery"
+    },
+    {
+      "type": "textarea",
+      "id": "stack_3_text",
+      "label": "Bottom card 3 text",
+      "default": "The final direction has to look sharp, explain itself clearly, and survive the handoff into fabrication, permitting, or presentation."
+    }
   ],
   "blocks": [
     {
       "type": "case",
       "name": "Case project",
       "settings": [
-        { "type": "select", "id": "layout", "label": "Layout", "options": [{"value":"standard","label":"Standard"},{"value":"compact","label":"Compact"}], "default": "standard" },
-        { "type": "text", "id": "case_title", "label": "Case title", "default": "Auraria Retail Center" },
-        { "type": "text", "id": "case_type", "label": "Case type", "default": "Wayfinding System" },
-        { "type": "text", "id": "case_year", "label": "Year or status", "default": "Concept" },
-        { "type": "text", "id": "case_location", "label": "Location", "default": "Houston, TX" },
-        { "type": "text", "id": "case_metric", "label": "Key metric", "default": "24 signs placed" },
-        { "type": "textarea", "id": "case_summary", "label": "Summary", "default": "A retail wayfinding family organized around arrival, parking, amenities, tenant visibility, and exit clarity." },
-        { "type": "text", "id": "summary_highlight", "label": "Summary phrase to highlight" },
-        { "type": "text", "id": "thinking_label", "label": "Thinking label", "default": "How I Think" },
-        { "type": "textarea", "id": "thinking_text", "label": "Thinking text", "default": "Every sign earns its place by reducing hesitation, strengthening return memory, or clarifying the next decision." },
-        { "type": "text", "id": "thinking_highlight", "label": "Thinking phrase to highlight" },
-        { "type": "text", "id": "detail_1_label", "label": "Detail 1 label", "default": "Focus" },
-        { "type": "textarea", "id": "detail_1_text", "label": "Detail 1 text", "default": "Decision-point placement, repeated color cues, and tenant identification." },
-        { "type": "text", "id": "detail_2_label", "label": "Detail 2 label", "default": "Output" },
-        { "type": "textarea", "id": "detail_2_text", "label": "Detail 2 text", "default": "Sign schedule, placement renderings, and fabrication-ready files." },
-        { "type": "checkbox", "id": "show_model", "label": "Show 3D model", "default": false },
-        { "type": "text", "id": "model_url", "label": "3D model file name or URL" },
-        { "type": "text", "id": "image_url", "label": "Poster/image file name or URL" },
-        { "type": "text", "id": "image_alt", "label": "Image alt text", "default": "New Era Designs case preview" },
-        { "type": "text", "id": "model_alt", "label": "3D model alt text", "default": "Interactive 3D case model" },
-        { "type": "text", "id": "model_label", "label": "Model badge", "default": "Interactive Model" },
-        { "type": "text", "id": "placeholder_label", "label": "Placeholder label", "default": "Concept Preview" },
-        { "type": "checkbox", "id": "auto_rotate", "label": "Auto-rotate model", "default": true },
-        { "type": "range", "id": "rotation_speed", "label": "Rotation speed", "min": 0, "max": 60, "step": 1, "default": 14 },
-        { "type": "select", "id": "shadow_intensity", "label": "Shadow intensity", "options": [{"value":"0","label":"None"},{"value":"0.5","label":"Soft"},{"value":"1","label":"Standard"},{"value":"1.5","label":"Strong"},{"value":"2","label":"Dramatic"}], "default": "1" },
-        { "type": "select", "id": "exposure", "label": "Exposure", "options": [{"value":"0.5","label":"Dim"},{"value":"1","label":"Standard"},{"value":"1.5","label":"Bright"},{"value":"2","label":"High"}], "default": "1" },
-        { "type": "select", "id": "environment_image", "label": "Environment lighting", "options": [{"value":"neutral","label":"Neutral"},{"value":"legacy","label":"Legacy"},{"value":"commerce","label":"Commerce"}], "default": "neutral" },
-        { "type": "text", "id": "camera_orbit", "label": "Starting camera orbit", "default": "0deg 75deg 72%" }
+        {
+          "type": "select",
+          "id": "layout",
+          "label": "Layout",
+          "options": [
+            { "value": "standard", "label": "Standard" },
+            { "value": "compact", "label": "Compact" }
+          ],
+          "default": "standard"
+        },
+        {
+          "type": "text",
+          "id": "case_title",
+          "label": "Case title",
+          "default": "Auraria Retail Center"
+        },
+        {
+          "type": "text",
+          "id": "case_type",
+          "label": "Case type",
+          "default": "Wayfinding System"
+        },
+        {
+          "type": "text",
+          "id": "case_year",
+          "label": "Year or status",
+          "default": "Concept"
+        },
+        {
+          "type": "textarea",
+          "id": "case_summary",
+          "label": "Summary",
+          "default": "A retail wayfinding family organized around arrival, parking, amenities, tenant visibility, and exit clarity."
+        },
+        {
+          "type": "text",
+          "id": "thinking_label",
+          "label": "Thinking label",
+          "default": "How I Think"
+        },
+        {
+          "type": "textarea",
+          "id": "thinking_text",
+          "label": "Thinking text",
+          "default": "The visitor route is treated like a system: every sign earns its place by reducing hesitation, strengthening return memory, or clarifying the next decision."
+        },
+        {
+          "type": "text",
+          "id": "detail_1_label",
+          "label": "Detail 1 label",
+          "default": "Focus"
+        },
+        {
+          "type": "textarea",
+          "id": "detail_1_text",
+          "label": "Detail 1 text",
+          "default": "Decision-point placement, repeated color and number cues, sign-family hierarchy, and tenant identification."
+        },
+        {
+          "type": "text",
+          "id": "detail_2_label",
+          "label": "Detail 2 label",
+          "default": "Output"
+        },
+        {
+          "type": "textarea",
+          "id": "detail_2_text",
+          "label": "Detail 2 text",
+          "default": "Sign schedule, placement renderings, guidance annotations, and fabrication-ready direction."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_model",
+          "label": "Show 3D model",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "model_url",
+          "label": "3D model file name or URL",
+          "info": "Use the exact Shopify Files name for a GLB/GLTF, or paste the full model CDN URL."
+        },
+        {
+          "type": "text",
+          "id": "image_url",
+          "label": "Poster/image file name or URL",
+          "info": "Optional. Use a Shopify Files image name or paste a full image URL."
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text",
+          "default": "New Era Designs case preview"
+        },
+        {
+          "type": "text",
+          "id": "model_alt",
+          "label": "3D model alt text",
+          "default": "Interactive 3D case model"
+        },
+        {
+          "type": "text",
+          "id": "model_label",
+          "label": "Model badge",
+          "default": "Interactive Model"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_label",
+          "label": "Placeholder label",
+          "default": "Concept Preview"
+        },
+        {
+          "type": "checkbox",
+          "id": "auto_rotate",
+          "label": "Auto-rotate model",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "rotation_speed",
+          "label": "Rotation speed",
+          "min": 0,
+          "max": 60,
+          "step": 1,
+          "default": 14
+        },
+        {
+          "type": "select",
+          "id": "shadow_intensity",
+          "label": "Shadow intensity",
+          "options": [
+            { "value": "0", "label": "None" },
+            { "value": "0.5", "label": "Soft" },
+            { "value": "1", "label": "Standard" },
+            { "value": "1.5", "label": "Strong" },
+            { "value": "2", "label": "Dramatic" }
+          ],
+          "default": "1"
+        },
+        {
+          "type": "select",
+          "id": "exposure",
+          "label": "Exposure",
+          "options": [
+            { "value": "0.5", "label": "Dim" },
+            { "value": "1", "label": "Standard" },
+            { "value": "1.5", "label": "Bright" },
+            { "value": "2", "label": "High" }
+          ],
+          "default": "1"
+        },
+        {
+          "type": "select",
+          "id": "environment_image",
+          "label": "Environment lighting",
+          "options": [
+            { "value": "neutral", "label": "Neutral" },
+            { "value": "legacy", "label": "Legacy" },
+            { "value": "commerce", "label": "Commerce" }
+          ],
+          "default": "neutral"
+        },
+        {
+          "type": "text",
+          "id": "camera_orbit",
+          "label": "Starting camera orbit",
+          "default": "0deg 75deg 72%"
+        }
       ]
     }
   ],
   "presets": [
-    { "name": "Cases – Clean Metrics" }
+    {
+      "name": "Cases Page",
+      "blocks": [
+        {
+          "type": "case",
+          "settings": {
+            "case_title": "Auraria Retail Center",
+            "case_type": "Wayfinding System",
+            "case_year": "Concept",
+            "case_summary": "A coordinated retail wayfinding family connecting parking, arrival, amenities, tenant visibility, and exit clarity into one readable system.",
+            "thinking_text": "Instead of filling the environment with isolated signs, the concept gives each sign a role: arrival confirmation, directional guidance, level memory, amenity location, and exit confidence.",
+            "detail_1_text": "Entry identity, welcome confirmation, overhead directional blades, level markers, amenity pictograms, and exit messaging.",
+            "detail_2_text": "Sign hierarchy, placement renderings, guidance annotations, and fabrication-ready files."
+          }
+        },
+        {
+          "type": "case",
+          "settings": {
+            "case_title": "Reusable Column Wrap",
+            "case_type": "360° Wayfinding Totem",
+            "case_year": "Concept",
+            "case_summary": "A structural column at a corridor junction becomes a wrap-around wayfinding totem instead of an obstacle.",
+            "thinking_text": "The column is given a job. Each face handles a destination category, making direction visible from multiple approaches without adding walls or more clutter.",
+            "detail_1_text": "Central visibility, modular faces, eye-level bands, and update-friendly message zones.",
+            "detail_2_text": "Reusable panel system, fewer wall signs, lower replacement scope, and clearer room-to-room movement."
+          }
+        },
+        {
+          "type": "case",
+          "settings": {
+            "case_title": "Experimental Landmark Wayfinding",
+            "case_type": "Public Art + Navigation",
+            "case_year": "Concept",
+            "case_summary": "A landmark object that combines civic identity, movement cues, and photo-worthy placemaking.",
+            "thinking_text": "Wayfinding can become place memory. Visitors may forget a street name, but they remember the landmark that helped them orient themselves.",
+            "detail_1_text": "Landmark effect, narrative branding, civic pride, material contrast, and social sharing value.",
+            "detail_2_text": "Sculptural signage concept, technical fabrication logic, and location-placement strategy."
+          }
+        },
+        {
+          "type": "case",
+          "settings": {
+            "case_title": "ADA Color-Blocked Totem",
+            "case_type": "Accessible Sign Logic",
+            "case_year": "Concept",
+            "case_summary": "A wayfinding totem based on legibility, reach range, cognitive load, and fast decision-making.",
+            "thinking_text": "The system separates level, wing, and tenant information so people receive a visual breadcrumb trail instead of a wall of text.",
+            "detail_1_text": "48–60 inch tactile zone, 54 inch common reach logic, contrast, and progressive disclosure.",
+            "detail_2_text": "Accessible hierarchy, ADA-informed placement, and three-second glance-test thinking."
+          }
+        },
+        {
+          "type": "case",
+          "settings": {
+            "case_title": "An Evening With Bun B",
+            "case_type": "Campaign System",
+            "case_year": "March 2022",
+            "case_summary": "A public-facing university program centered on hip hop, social justice, and religion.",
+            "thinking_text": "The design needed cultural credibility and institutional clarity at the same time, so the visual language had to feel direct, legible, and event-ready.",
+            "detail_1_text": "Event hierarchy, cultural tone, poster clarity, and campus-facing promotion.",
+            "detail_2_text": "Campaign graphics and presentation-ready promotional assets.",
+            "show_model": false,
+            "placeholder_label": "Campaign Preview"
+          }
+        },
+        {
+          "type": "case",
+          "settings": {
+            "case_title": "Frontier Fiesta Campaign",
+            "case_type": "Campaign System",
+            "case_year": "March 2023",
+            "case_summary": "A large-scale, multi-day student festival with performances, vendors, and events.",
+            "thinking_text": "The project required consistency across many touchpoints, so the system had to stay energetic while remaining easy to repeat and recognize.",
+            "detail_1_text": "Festival hierarchy, event visibility, and multi-touchpoint consistency.",
+            "detail_2_text": "Promotional graphics, event assets, and campaign direction.",
+            "show_model": false,
+            "placeholder_label": "Campaign Preview"
+          }
+        },
+        {
+          "type": "case",
+          "settings": {
+            "case_title": "Be the M.V.P. Initiative",
+            "case_type": "Student Engagement",
+            "case_year": "August 2022",
+            "case_summary": "A student engagement initiative designed to encourage participation, service, and community involvement.",
+            "thinking_text": "The concept had to communicate quickly, create momentum, and give the initiative a memorable identity students could rally around.",
+            "detail_1_text": "Participation messaging, service-oriented tone, and campaign recognition.",
+            "detail_2_text": "Engagement graphics and initiative visual direction.",
+            "show_model": false,
+            "placeholder_label": "Campaign Preview"
+          }
+        },
+        {
+          "type": "case",
+          "settings": {
+            "case_title": "Who’s Got Game",
+            "case_type": "Collaborative Event",
+            "case_year": "March 2022",
+            "case_summary": "A collaborative esports and gaming event designed to attract students across multiple organizations.",
+            "thinking_text": "The design needed high visibility, fast comprehension, and strong energy, with enough structure to connect multiple partners under one event identity.",
+            "detail_1_text": "High-contrast messaging, event energy, and partner alignment.",
+            "detail_2_text": "Promotional graphics and fast-read campaign assets.",
+            "show_model": false,
+            "placeholder_label": "Campaign Preview"
+          }
+        }
+      ]
+    }
   ]
 }
 {% endschema %}

@@ -9,15 +9,6 @@
   <div class="ps__orb ps__orb--two" aria-hidden="true"></div>
   <div class="ps__orb ps__orb--three" aria-hidden="true"></div>
   <div class="ps__orb ps__orb--four" aria-hidden="true"></div>
-  {% if section.settings.show_whimsy %}
-    <div class="ps__charms" aria-hidden="true">
-      <span class="ps__charm ps__charm--star">✦</span>
-      <span class="ps__charm ps__charm--pearl"></span>
-      <span class="ps__charm ps__charm--scribble">≈</span>
-      <span class="ps__charm ps__charm--tag">{{ section.settings.sticker_one | escape }}</span>
-      <span class="ps__charm ps__charm--note">{{ section.settings.sticker_two | escape }}</span>
-    </div>
-  {% endif %}
 
   <div class="ps__shell">
     <header class="ps__hero">
@@ -88,12 +79,8 @@
 
     <div class="ps__marquee" aria-hidden="true">
       <div>
-        {% for repeat in (1..2) %}
-          <span>{{ section.settings.marquee_1 | escape }}</span><i>●</i>
-          <span>{{ section.settings.marquee_2 | escape }}</span><i>●</i>
-          <span>{{ section.settings.marquee_3 | escape }}</span><i>●</i>
-          <span>{{ section.settings.marquee_4 | escape }}</span><i>●</i>
-        {% endfor %}
+        <span>DESIGN</span><i>●</i><span>CULTURE</span><i>●</i><span>BUSINESS</span><i>●</i><span>PROCESS</span><i>●</i>
+        <span>DESIGN</span><i>●</i><span>CULTURE</span><i>●</i><span>BUSINESS</span><i>●</i><span>PROCESS</span><i>●</i>
       </div>
     </div>
 
@@ -173,19 +160,14 @@
     --ps-paper: {{ section.settings.paper_color }};
     --ps-accent: {{ section.settings.accent_color }};
     --ps-hot: {{ section.settings.hot_color }};
-    --ps-jade: {{ section.settings.blue_color }};
-    --ps-spin-seconds: {{ section.settings.record_spin_seconds }}s;
-    --ps-marquee-seconds: {{ section.settings.marquee_seconds }}s;
+    --ps-blue: {{ section.settings.blue_color }};
     --ps-script: "{{ section.settings.script_font | escape }}", "Edwardian Script ITC", "Snell Roundhand", cursive;
     --ps-display: "{{ section.settings.display_font | escape }}", "Mathew Rohas", Georgia, serif;
     --ps-body: "{{ section.settings.body_font | escape }}", Milo, Arial, sans-serif;
     position: relative;
     overflow: hidden;
     color: var(--ps-paper);
-    background:
-      radial-gradient(circle at 8% 12%, {{ section.settings.hot_color | color_modify: 'alpha', 0.18 }}, transparent 24%),
-      radial-gradient(circle at 92% 34%, {{ section.settings.blue_color | color_modify: 'alpha', 0.24 }}, transparent 28%),
-      var(--ps-ink);
+    background: var(--ps-ink);
     font-family: var(--ps-body);
   }
   #PodcastStudio-{{ section.id }} * { box-sizing: border-box; }
@@ -197,93 +179,75 @@
   #PodcastStudio-{{ section.id }} .ps__eyebrow { display: flex; align-items: center; gap: 12px; margin: 0 0 28px; font-size: 11px; line-height: 1; letter-spacing: .22em; text-transform: uppercase; font-weight: 700; }
   #PodcastStudio-{{ section.id }} .ps__eyebrow span { width: 38px; height: 2px; background: var(--ps-accent); }
   #PodcastStudio-{{ section.id }} .ps__title { margin: 0; line-height: .74; font-weight: 400; }
-  #PodcastStudio-{{ section.id }} .ps__title-main { color: var(--ps-paper); display: block; max-width: 9ch; font-family: var(--ps-display); font-size: clamp(68px,10vw,166px); letter-spacing: -.07em; text-transform: uppercase; }
+  #PodcastStudio-{{ section.id }} .ps__title-main { display: block; max-width: 9ch; font-family: var(--ps-display); font-size: clamp(68px,10vw,166px); letter-spacing: -.07em; text-transform: uppercase; }
   #PodcastStudio-{{ section.id }} .ps__title-script { position: relative; display: inline-block; z-index: 2; margin: -.03em 0 .16em .65em; color: var(--ps-accent); font-family: var(--ps-script); font-size: clamp(78px,11vw,184px); line-height: .72; font-weight: 400; transform: rotate(-5deg); text-shadow: 0 4px 0 rgba(0,0,0,.12); }
-  #PodcastStudio-{{ section.id }} .ps__intro { max-width: 610px; font-size: clamp(17px,1.55vw,23px); line-height: 1.55; color: {{ section.settings.paper_color | color_modify: 'alpha', 0.78 }}; }
+  #PodcastStudio-{{ section.id }} .ps__intro { max-width: 610px; font-size: clamp(17px,1.55vw,23px); line-height: 1.55; color: rgba(242,234,218,.78); }
   #PodcastStudio-{{ section.id }} .ps__intro p { margin: 0; }
-  #PodcastStudio-{{ section.id }} .ps__intro strong,
-  #PodcastStudio-{{ section.id }} .ps__episode-description strong { background: var(--ps-accent); box-decoration-break: clone; -webkit-box-decoration-break: clone; color: var(--ps-ink); font-weight: 900; padding: .02em .15em; }
   #PodcastStudio-{{ section.id }} .ps__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 38px; }
-  #PodcastStudio-{{ section.id }} .ps__button { min-height: 54px; display: inline-flex; align-items: center; justify-content: center; gap: 28px; padding: 0 24px; border: 1px solid {{ section.settings.paper_color | color_modify: 'alpha', 0.34 }}; border-radius: 0; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; transition: transform .18s cubic-bezier(.2,1.3,.3,1), background .18s ease, color .18s ease; }
+  #PodcastStudio-{{ section.id }} .ps__button { min-height: 54px; display: inline-flex; align-items: center; justify-content: center; gap: 28px; padding: 0 24px; border: 1px solid rgba(242,234,218,.32); border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; transition: transform .25s ease, background .25s ease, color .25s ease; }
   #PodcastStudio-{{ section.id }} .ps__button:hover { transform: translateY(-4px) rotate(-1deg); }
   #PodcastStudio-{{ section.id }} .ps__button--primary { color: var(--ps-ink); background: var(--ps-accent); border-color: var(--ps-accent); }
   #PodcastStudio-{{ section.id }} .ps__button--ghost:hover { color: var(--ps-ink); background: var(--ps-paper); }
   #PodcastStudio-{{ section.id }} .ps__hero-art { position: relative; min-height: 620px; display: grid; place-items: center; }
-  #PodcastStudio-{{ section.id }} .ps__record { position: relative; width: min(36vw,520px); aspect-ratio: 1; border: 7px solid var(--ps-hot); border-radius: 50%; background: repeating-radial-gradient(circle, #24151c 0 4px, var(--ps-ink) 5px 6px, #1b1015 7px 12px); box-shadow: 18px 22px 0 var(--ps-jade); animation: ps-spin-{{ section.id }} var(--ps-spin-seconds) linear infinite; }
-  #PodcastStudio-{{ section.id }} .ps__record-ring { position: absolute; inset: 8%; border: 1px solid {{ section.settings.paper_color | color_modify: 'alpha', 0.18 }}; border-radius: 50%; }
+  #PodcastStudio-{{ section.id }} .ps__record { position: relative; width: min(36vw,520px); aspect-ratio: 1; border-radius: 50%; background: repeating-radial-gradient(circle, #171713 0 4px, #25251f 5px 6px, #11110e 7px 12px); box-shadow: 0 30px 90px rgba(0,0,0,.6); animation: ps-spin-{{ section.id }} 24s linear infinite; }
+  #PodcastStudio-{{ section.id }} .ps__record-ring { position: absolute; inset: 8%; border: 1px solid rgba(255,255,255,.09); border-radius: 50%; }
   #PodcastStudio-{{ section.id }} .ps__record-label { position: absolute; inset: 27%; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; padding: 22px; border-radius: 50%; text-align: center; color: var(--ps-ink); background: var(--ps-hot); }
   #PodcastStudio-{{ section.id }} .ps__record-label img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   #PodcastStudio-{{ section.id }} .ps__record-label strong { font-family: var(--ps-script); font-size: clamp(32px,4vw,62px); font-weight: 400; line-height: .8; transform: rotate(-6deg); }
   #PodcastStudio-{{ section.id }} .ps__record-label span, #PodcastStudio-{{ section.id }} .ps__record-label small { font-size: 9px; letter-spacing: .18em; text-transform: uppercase; font-weight: 800; }
   #PodcastStudio-{{ section.id }} .ps__record-hole { position: absolute; top: 50%; left: 50%; width: 15px; aspect-ratio: 1; border-radius: 50%; background: var(--ps-paper); transform: translate(-50%,-50%); box-shadow: 0 0 0 7px var(--ps-ink); }
-  #PodcastStudio-{{ section.id }} .ps__needle { position: absolute; top: 5%; right: 0; width: 36%; height: 58%; border-top: 14px solid var(--ps-paper); transform: rotate(22deg); transform-origin: 100% 0; animation: ps-needle-{{ section.id }} 3.2s cubic-bezier(.2,.9,.3,1) infinite; }
+  #PodcastStudio-{{ section.id }} .ps__needle { position: absolute; top: 5%; right: 0; width: 36%; height: 58%; border-top: 14px solid var(--ps-paper); transform: rotate(22deg); transform-origin: 100% 0; }
   #PodcastStudio-{{ section.id }} .ps__needle:before { content: ''; position: absolute; top: -28px; right: -18px; width: 54px; aspect-ratio: 1; border: 9px solid var(--ps-paper); border-radius: 50%; background: var(--ps-ink); }
   #PodcastStudio-{{ section.id }} .ps__needle span { position: absolute; left: -4px; top: -25px; width: 30px; height: 48px; border-radius: 3px; background: var(--ps-accent); }
-  #PodcastStudio-{{ section.id }} .ps__scribble { position: absolute; left: 0; bottom: 9%; color: var(--ps-accent); font-family: var(--ps-script); font-size: clamp(32px,4vw,58px); transform: rotate(-12deg); animation: ps-scribble-{{ section.id }} 2.9s cubic-bezier(.2,1.2,.3,1) infinite; }
-  #PodcastStudio-{{ section.id }} .ps__orb { position: absolute; z-index: 3; border-radius: 50%; pointer-events: none; box-shadow: inset -14px -18px 28px {{ section.settings.ink_color | color_modify: 'alpha', 0.16 }}; transform-origin: center bottom; }
-  #PodcastStudio-{{ section.id }} .ps__orb--one { width: 92px; height: 92px; top: 7%; left: 46%; background: var(--ps-jade); animation: ps-bounce-a-{{ section.id }} 4.4s linear infinite; }
-  #PodcastStudio-{{ section.id }} .ps__orb--two { width: 42px; height: 42px; top: 21%; right: 5%; background: var(--ps-accent); animation: ps-bounce-b-{{ section.id }} 3.6s linear infinite; }
-  #PodcastStudio-{{ section.id }} .ps__orb--three { width: 128px; height: 128px; top: 650px; left: -40px; background: var(--ps-hot); animation: ps-bounce-b-{{ section.id }} 5.1s linear infinite reverse; }
-  #PodcastStudio-{{ section.id }} .ps__orb--four { width: 26px; height: 26px; top: 560px; left: 51%; background: var(--ps-paper); animation: ps-bounce-a-{{ section.id }} 3.2s linear infinite; }
-  #PodcastStudio-{{ section.id }} .ps__charms { inset: 0; pointer-events: none; position: absolute; z-index: 3; }
-  #PodcastStudio-{{ section.id }} .ps__charm { align-items: center; display: flex; justify-content: center; position: absolute; transform-origin: center bottom; }
-  #PodcastStudio-{{ section.id }} .ps__charm--star { color: var(--ps-accent); font-size: clamp(54px,7vw,110px); right: 7%; top: 4%; animation: ps-charm-pop-{{ section.id }} 3.8s linear infinite; }
-  #PodcastStudio-{{ section.id }} .ps__charm--pearl { background: var(--ps-paper); border: 8px solid var(--ps-hot); border-radius: 50%; height: 50px; left: 4%; top: 42%; width: 50px; animation: ps-charm-pop-{{ section.id }} 3.1s .3s linear infinite; }
-  #PodcastStudio-{{ section.id }} .ps__charm--scribble { color: var(--ps-hot); font-family: var(--ps-script); font-size: 112px; left: 38%; top: 38%; animation: ps-charm-swing-{{ section.id }} 4.2s ease-in-out infinite; }
-  #PodcastStudio-{{ section.id }} .ps__charm--tag { background: var(--ps-paper); border: 2px solid var(--ps-ink); color: var(--ps-ink); font-size: 9px; font-weight: 900; left: 4%; letter-spacing: .16em; padding: 12px 16px; text-transform: uppercase; top: 72%; transform: rotate(-7deg); animation: ps-charm-tag-{{ section.id }} 4.6s linear infinite; }
-  #PodcastStudio-{{ section.id }} .ps__charm--note { background: var(--ps-hot); color: var(--ps-ink); font-family: var(--ps-script); font-size: 29px; padding: 10px 18px; right: 4%; top: 78%; transform: rotate(6deg); animation: ps-charm-tag-{{ section.id }} 3.9s .2s linear infinite reverse; }
-  #PodcastStudio-{{ section.id }} .ps__platforms { display: flex; align-items: center; flex-wrap: wrap; gap: 0; margin: 0 clamp(24px,6vw,90px) 80px; border-top: 1px solid {{ section.settings.paper_color | color_modify: 'alpha', 0.18 }}; border-bottom: 1px solid {{ section.settings.paper_color | color_modify: 'alpha', 0.18 }}; }
+  #PodcastStudio-{{ section.id }} .ps__scribble { position: absolute; left: 0; bottom: 9%; font-family: var(--ps-script); font-size: clamp(32px,4vw,58px); transform: rotate(-12deg); }
+  #PodcastStudio-{{ section.id }} .ps__orb { position: absolute; z-index: 3; border-radius: 50%; pointer-events: none; box-shadow: inset -14px -18px 28px rgba(0,0,0,.18), 0 18px 40px rgba(0,0,0,.26); }
+  #PodcastStudio-{{ section.id }} .ps__orb--one { width: 92px; height: 92px; top: 7%; left: 46%; background: var(--ps-blue); animation: ps-float-a-{{ section.id }} 7s ease-in-out infinite; }
+  #PodcastStudio-{{ section.id }} .ps__orb--two { width: 42px; height: 42px; top: 21%; right: 5%; background: var(--ps-accent); animation: ps-float-b-{{ section.id }} 5.5s ease-in-out infinite; }
+  #PodcastStudio-{{ section.id }} .ps__orb--three { width: 128px; height: 128px; top: 650px; left: -40px; background: var(--ps-hot); animation: ps-float-b-{{ section.id }} 9s ease-in-out infinite reverse; }
+  #PodcastStudio-{{ section.id }} .ps__orb--four { width: 26px; height: 26px; top: 560px; left: 51%; background: var(--ps-paper); animation: ps-float-a-{{ section.id }} 4.5s ease-in-out infinite; }
+  #PodcastStudio-{{ section.id }} .ps__platforms { display: flex; align-items: center; flex-wrap: wrap; gap: 0; margin: 0 clamp(24px,6vw,90px) 80px; border-top: 1px solid rgba(242,234,218,.18); border-bottom: 1px solid rgba(242,234,218,.18); }
   #PodcastStudio-{{ section.id }} .ps__platforms > * { padding: 22px 28px; }
-  #PodcastStudio-{{ section.id }} .ps__platform-label { margin-right: auto; padding-left: 0; color: {{ section.settings.paper_color | color_modify: 'alpha', 0.58 }}; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; }
-  #PodcastStudio-{{ section.id }} .ps__platforms a { border-left: 1px solid {{ section.settings.paper_color | color_modify: 'alpha', 0.18 }}; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; transition: color .16s ease, background .16s ease, transform .16s cubic-bezier(.2,1.3,.3,1); }
-  #PodcastStudio-{{ section.id }} .ps__platforms a:hover { color: var(--ps-ink); background: var(--ps-accent); transform: translateY(-3px); }
+  #PodcastStudio-{{ section.id }} .ps__platform-label { margin-right: auto; padding-left: 0; color: rgba(242,234,218,.55); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; }
+  #PodcastStudio-{{ section.id }} .ps__platforms a { border-left: 1px solid rgba(242,234,218,.18); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; transition: color .2s ease, background .2s ease; }
+  #PodcastStudio-{{ section.id }} .ps__platforms a:hover { color: var(--ps-ink); background: var(--ps-accent); }
   #PodcastStudio-{{ section.id }} .ps__marquee { overflow: hidden; padding: 20px 0; color: var(--ps-ink); background: var(--ps-accent); transform: rotate(-1.2deg) scale(1.02); }
-  #PodcastStudio-{{ section.id }} .ps__marquee div { display: flex; width: max-content; align-items: center; gap: 28px; animation: ps-marquee-{{ section.id }} var(--ps-marquee-seconds) linear infinite; }
+  #PodcastStudio-{{ section.id }} .ps__marquee div { display: flex; width: max-content; align-items: center; gap: 28px; animation: ps-marquee-{{ section.id }} 24s linear infinite; }
   #PodcastStudio-{{ section.id }} .ps__marquee span { font-family: var(--ps-display); font-size: clamp(28px,4vw,60px); letter-spacing: -.04em; }
   #PodcastStudio-{{ section.id }} .ps__marquee i { font-size: 17px; font-style: normal; }
   #PodcastStudio-{{ section.id }} .ps__episodes { padding: clamp(100px,11vw,170px) clamp(24px,6vw,90px); }
   #PodcastStudio-{{ section.id }} .ps__section-head { display: grid; grid-template-columns: 1fr minmax(220px,390px); align-items: end; gap: 40px; margin-bottom: 55px; }
   #PodcastStudio-{{ section.id }} .ps__section-head h2, #PodcastStudio-{{ section.id }} .ps__about h2, #PodcastStudio-{{ section.id }} .ps__footer-cta h2 { margin: 0; font-family: var(--ps-display); font-size: clamp(52px,7vw,108px); font-weight: 400; letter-spacing: -.055em; line-height: .9; }
-  #PodcastStudio-{{ section.id }} .ps__section-head h2,
-  #PodcastStudio-{{ section.id }} .ps__episode h3 { color: var(--ps-paper); }
-  #PodcastStudio-{{ section.id }} .ps__section-head > p { margin: 0; color: {{ section.settings.paper_color | color_modify: 'alpha', 0.6 }}; font-size: 14px; line-height: 1.55; }
-  #PodcastStudio-{{ section.id }} .ps__episode-list { border-top: 1px solid {{ section.settings.paper_color | color_modify: 'alpha', 0.24 }}; }
-  #PodcastStudio-{{ section.id }} .ps__episode { display: grid; grid-template-columns: 90px 1fr 100px; gap: 30px; align-items: center; padding: 36px 0; border-bottom: 1px solid {{ section.settings.paper_color | color_modify: 'alpha', 0.24 }}; transition: padding .18s cubic-bezier(.2,1.3,.3,1), background .18s ease; }
-  #PodcastStudio-{{ section.id }} .ps__episode:hover { padding-left: 20px; padding-right: 20px; background: {{ section.settings.paper_color | color_modify: 'alpha', 0.06 }}; }
+  #PodcastStudio-{{ section.id }} .ps__section-head > p { margin: 0; color: rgba(242,234,218,.58); font-size: 14px; line-height: 1.55; }
+  #PodcastStudio-{{ section.id }} .ps__episode-list { border-top: 1px solid rgba(242,234,218,.22); }
+  #PodcastStudio-{{ section.id }} .ps__episode { display: grid; grid-template-columns: 90px 1fr 100px; gap: 30px; align-items: center; padding: 36px 0; border-bottom: 1px solid rgba(242,234,218,.22); transition: padding .25s ease, background .25s ease; }
+  #PodcastStudio-{{ section.id }} .ps__episode:hover { padding-left: 20px; padding-right: 20px; background: rgba(242,234,218,.045); }
   #PodcastStudio-{{ section.id }} .ps__episode-number { align-self: start; color: var(--ps-accent); font-family: var(--ps-display); font-size: 23px; }
-  #PodcastStudio-{{ section.id }} .ps__meta { display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 10px; color: {{ section.settings.paper_color | color_modify: 'alpha', 0.54 }}; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; }
+  #PodcastStudio-{{ section.id }} .ps__meta { display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 10px; color: rgba(242,234,218,.52); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; }
   #PodcastStudio-{{ section.id }} .ps__episode h3 { margin: 0; max-width: 22ch; font-family: var(--ps-display); font-size: clamp(28px,3.2vw,52px); font-weight: 400; letter-spacing: -.035em; line-height: 1; }
-  #PodcastStudio-{{ section.id }} .ps__episode-description { max-width: 720px; margin-top: 14px; color: {{ section.settings.paper_color | color_modify: 'alpha', 0.68 }}; font-size: 14px; line-height: 1.6; }
+  #PodcastStudio-{{ section.id }} .ps__episode-description { max-width: 720px; margin-top: 14px; color: rgba(242,234,218,.64); font-size: 14px; line-height: 1.6; }
   #PodcastStudio-{{ section.id }} .ps__episode-description p { margin: 0; }
   #PodcastStudio-{{ section.id }} .ps__audio { width: min(100%,620px); height: 42px; margin-top: 20px; filter: sepia(.2) saturate(.8); }
-  #PodcastStudio-{{ section.id }} .ps__play { width: 82px; aspect-ratio: 1; display: grid; place-items: center; align-content: center; gap: 4px; border: 1px solid {{ section.settings.paper_color | color_modify: 'alpha', 0.38 }}; border-radius: 50%; transition: transform .18s cubic-bezier(.2,1.3,.3,1), color .18s ease, background .18s ease; }
+  #PodcastStudio-{{ section.id }} .ps__play { width: 82px; aspect-ratio: 1; display: grid; place-items: center; align-content: center; gap: 4px; border: 1px solid rgba(242,234,218,.35); border-radius: 50%; transition: transform .25s ease, color .25s ease, background .25s ease; }
   #PodcastStudio-{{ section.id }} .ps__play span { margin-left: 3px; font-size: 18px; }
   #PodcastStudio-{{ section.id }} .ps__play small { font-size: 8px; letter-spacing: .12em; text-transform: uppercase; }
   #PodcastStudio-{{ section.id }} a.ps__play:hover { color: var(--ps-ink); background: var(--ps-accent); border-color: var(--ps-accent); transform: rotate(8deg) scale(1.07); }
   #PodcastStudio-{{ section.id }} .ps__play--decorative { opacity: .38; }
-  #PodcastStudio-{{ section.id }} .ps__about { display: grid; grid-template-columns: .35fr 1fr .9fr; gap: clamp(30px,6vw,90px); align-items: start; padding: clamp(80px,9vw,130px) clamp(24px,6vw,90px); color: var(--ps-ink); background: linear-gradient(135deg, var(--ps-paper), var(--ps-jade)); }
+  #PodcastStudio-{{ section.id }} .ps__about { display: grid; grid-template-columns: .35fr 1fr .9fr; gap: clamp(30px,6vw,90px); align-items: start; padding: clamp(80px,9vw,130px) clamp(24px,6vw,90px); color: var(--ps-ink); background: var(--ps-paper); }
   #PodcastStudio-{{ section.id }} .ps__about .ps__eyebrow span { background: var(--ps-hot); }
   #PodcastStudio-{{ section.id }} .ps__about-mark { margin-top: -.18em; color: var(--ps-hot); font-family: var(--ps-script); font-size: clamp(130px,18vw,290px); line-height: .5; transform: rotate(-8deg); }
   #PodcastStudio-{{ section.id }} .ps__about h2 { font-size: clamp(46px,5.6vw,86px); }
-  #PodcastStudio-{{ section.id }} .ps__about h2,
-  #PodcastStudio-{{ section.id }} .ps__footer-cta h2 { color: var(--ps-ink); }
   #PodcastStudio-{{ section.id }} .ps__about-copy { padding-top: 52px; font-size: 17px; line-height: 1.65; }
   #PodcastStudio-{{ section.id }} .ps__about-copy p { margin: 0 0 22px; }
   #PodcastStudio-{{ section.id }} .ps__about-copy a { display: inline-flex; gap: 20px; padding-bottom: 4px; border-bottom: 2px solid var(--ps-hot); font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
-  #PodcastStudio-{{ section.id }} .ps__footer-cta { position: relative; overflow: hidden; min-height: 560px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 90px 24px; text-align: center; color: var(--ps-ink); background: var(--ps-jade); }
+  #PodcastStudio-{{ section.id }} .ps__footer-cta { position: relative; overflow: hidden; min-height: 560px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 90px 24px; text-align: center; color: var(--ps-ink); background: var(--ps-blue); }
   #PodcastStudio-{{ section.id }} .ps__footer-cta p { margin: 0 0 20px; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; }
   #PodcastStudio-{{ section.id }} .ps__footer-cta h2 { position: relative; z-index: 2; max-width: 11ch; }
   #PodcastStudio-{{ section.id }} .ps__footer-cta .ps__button { position: relative; z-index: 2; margin-top: 38px; border-color: var(--ps-ink); }
   #PodcastStudio-{{ section.id }} .ps__button--light:hover { background: var(--ps-paper); }
-  #PodcastStudio-{{ section.id }} .ps__footer-ball { position: absolute; width: min(46vw,630px); aspect-ratio: 1; border-radius: 50%; background: var(--ps-accent); box-shadow: inset -80px -100px 120px {{ section.settings.ink_color | color_modify: 'alpha', 0.12 }}; animation: ps-footer-ball-{{ section.id }} 5.4s cubic-bezier(.2,.9,.3,1) infinite; }
+  #PodcastStudio-{{ section.id }} .ps__footer-ball { position: absolute; width: min(46vw,630px); aspect-ratio: 1; border-radius: 50%; background: var(--ps-accent); box-shadow: inset -80px -100px 120px rgba(0,0,0,.12); animation: ps-footer-ball-{{ section.id }} 8s ease-in-out infinite; }
   @keyframes ps-spin-{{ section.id }} { to { transform: rotate(360deg); } }
-  @keyframes ps-bounce-a-{{ section.id }} { 0%,100% { transform: translate3d(0,0,0) scale(1.04,.94) rotate(0); } 8% { transform: translate3d(0,-8px,0) scale(.96,1.05) rotate(2deg); } 42% { transform: translate3d(24px,-86px,0) scale(1) rotate(16deg); } 78% { transform: translate3d(8px,-18px,0) scale(1) rotate(4deg); } 90% { transform: translate3d(0,0,0) scale(1.08,.9) rotate(0); } }
-  @keyframes ps-bounce-b-{{ section.id }} { 0%,100% { transform: translate3d(0,0,0) scale(1.08,.9); } 12% { transform: translate3d(-8px,-18px,0) scale(.95,1.04); } 48% { transform: translate3d(-34px,-112px,0) scale(1) rotate(-18deg); } 82% { transform: translate3d(-10px,-16px,0) scale(1); } 92% { transform: translate3d(0,0,0) scale(1.12,.86); } }
-  @keyframes ps-charm-pop-{{ section.id }} { 0%,100% { transform: translate3d(0,0,0) scale(1.08,.9) rotate(0); } 11% { transform: translate3d(0,-10px,0) scale(.94,1.05); } 52% { transform: translate3d(-18px,-70px,0) scale(1) rotate(22deg); } 88% { transform: translate3d(0,0,0) scale(1.12,.86) rotate(0); } }
-  @keyframes ps-charm-swing-{{ section.id }} { 0%,100% { transform: rotate(-9deg) translateY(0); } 50% { transform: rotate(11deg) translateY(-22px); } }
-  @keyframes ps-charm-tag-{{ section.id }} { 0%,100% { margin-top: 0; } 44% { margin-top: -34px; } 80% { margin-top: -5px; } }
-  @keyframes ps-needle-{{ section.id }} { 0%,100% { transform: rotate(22deg); } 50% { transform: rotate(17deg); } }
-  @keyframes ps-scribble-{{ section.id }} { 0%,100% { transform: rotate(-12deg) translateY(0); } 50% { transform: rotate(-7deg) translateY(-10px); } }
+  @keyframes ps-float-a-{{ section.id }} { 0%,100% { transform: translate3d(0,0,0) rotate(0); } 50% { transform: translate3d(24px,-38px,0) rotate(18deg); } }
+  @keyframes ps-float-b-{{ section.id }} { 0%,100% { transform: translate3d(0,0,0) scale(1); } 45% { transform: translate3d(-28px,42px,0) scale(.86); } 70% { transform: translate3d(12px,10px,0) scale(1.08); } }
   @keyframes ps-marquee-{{ section.id }} { to { transform: translateX(-50%); } }
   @keyframes ps-footer-ball-{{ section.id }} { 0%,100% { transform: translate(-42%,-3%) scale(.86); } 50% { transform: translate(42%,6%) scale(1.08); } }
   @media (max-width: 989px) {
@@ -303,7 +267,7 @@
     #PodcastStudio-{{ section.id }} .ps__hero-art { min-height: 390px; }
     #PodcastStudio-{{ section.id }} .ps__needle { right: 4%; }
     #PodcastStudio-{{ section.id }} .ps__platforms { margin-left: 20px; margin-right: 20px; }
-    #PodcastStudio-{{ section.id }} .ps__platform-label { width: 100%; border-bottom: 1px solid {{ section.settings.paper_color | color_modify: 'alpha', 0.18 }}; }
+    #PodcastStudio-{{ section.id }} .ps__platform-label { width: 100%; border-bottom: 1px solid rgba(242,234,218,.18); }
     #PodcastStudio-{{ section.id }} .ps__platforms a { flex: 1 1 50%; padding: 18px 14px; }
     #PodcastStudio-{{ section.id }} .ps__episodes { padding-left: 20px; padding-right: 20px; }
     #PodcastStudio-{{ section.id }} .ps__episode { grid-template-columns: 42px 1fr; gap: 16px; }
@@ -313,16 +277,10 @@
     #PodcastStudio-{{ section.id }} .ps__about-copy { grid-column: auto; }
     #PodcastStudio-{{ section.id }} .ps__orb--one { left: auto; right: -20px; }
     #PodcastStudio-{{ section.id }} .ps__orb--three { width: 82px; height: 82px; }
-    #PodcastStudio-{{ section.id }} .ps__charm--scribble { display: none; }
-    #PodcastStudio-{{ section.id }} .ps__charm--tag { left: 12px; top: 64%; }
-    #PodcastStudio-{{ section.id }} .ps__charm--note { right: 10px; top: 86%; }
   }
   @media (prefers-reduced-motion: reduce) {
     #PodcastStudio-{{ section.id }} .ps__orb,
-    #PodcastStudio-{{ section.id }} .ps__charm,
     #PodcastStudio-{{ section.id }} .ps__record,
-    #PodcastStudio-{{ section.id }} .ps__needle,
-    #PodcastStudio-{{ section.id }} .ps__scribble,
     #PodcastStudio-{{ section.id }} .ps__marquee div,
     #PodcastStudio-{{ section.id }} .ps__footer-ball { animation: none !important; }
     #PodcastStudio-{{ section.id }} * { scroll-behavior: auto !important; }
@@ -339,7 +297,7 @@
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "New Era on air" },
     { "type": "text", "id": "title_line_1", "label": "Main title", "default": "NEW ERA" },
     { "type": "text", "id": "title_script", "label": "Script title", "default": "Podcast" },
-    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>Unfiltered conversations about fashion, luxury, culture, and whatever else is interesting enough to follow.</p>" },
+    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>Unfiltered conversations about design, culture, business, and the strange paths that turn an idea into something real.</p>" },
     { "type": "text", "id": "primary_label", "label": "Primary button label", "default": "Listen to the latest" },
     { "type": "url", "id": "primary_url", "label": "Primary button link" },
     { "type": "text", "id": "secondary_label", "label": "Secondary button label", "default": "Browse episodes" },
@@ -348,24 +306,14 @@
     { "type": "text", "id": "art_alt", "label": "Cover image alt text", "default": "New Era Podcast cover artwork" },
     { "type": "text", "id": "record_kicker", "label": "Record label kicker", "default": "Ideas in motion" },
     { "type": "text", "id": "record_footer", "label": "Record label footer", "default": "New Era Designs" },
-    { "type": "header", "content": "Whimsy and motion" },
-    { "type": "checkbox", "id": "show_whimsy", "label": "Show fashion charms and notes", "default": true },
-    { "type": "text", "id": "sticker_one", "label": "Sticker one", "default": "Dressed to talk" },
-    { "type": "text", "id": "sticker_two", "label": "Sticker two", "default": "Off the record" },
-    { "type": "text", "id": "marquee_1", "label": "Marquee topic 1", "default": "FASHION" },
-    { "type": "text", "id": "marquee_2", "label": "Marquee topic 2", "default": "LUXURY" },
-    { "type": "text", "id": "marquee_3", "label": "Marquee topic 3", "default": "CULTURE" },
-    { "type": "text", "id": "marquee_4", "label": "Marquee topic 4", "default": "WHATEVER ELSE" },
-    { "type": "range", "id": "record_spin_seconds", "label": "Record spin duration", "min": 8, "max": 36, "step": 1, "unit": "s", "default": 18 },
-    { "type": "range", "id": "marquee_seconds", "label": "Marquee duration", "min": 10, "max": 40, "step": 1, "unit": "s", "default": 18 },
     { "type": "header", "content": "Episodes" },
     { "type": "text", "id": "episodes_eyebrow", "label": "Episodes eyebrow", "default": "Now broadcasting" },
     { "type": "text", "id": "episodes_heading", "label": "Episodes heading", "default": "Latest episodes" },
-    { "type": "text", "id": "episodes_note", "label": "Episodes note", "default": "Fashion, luxury, taste, culture, and whatever else is worth talking about." },
+    { "type": "text", "id": "episodes_note", "label": "Episodes note", "default": "New conversations, creative detours, and useful provocations—released when they are ready." },
     { "type": "header", "content": "About the show" },
     { "type": "text", "id": "about_eyebrow", "label": "About eyebrow", "default": "Behind the mic" },
-    { "type": "text", "id": "about_heading", "label": "About heading", "default": "Taste is personal. The conversation can go anywhere." },
-    { "type": "richtext", "id": "about_text", "label": "About text", "default": "<p>The New Era Podcast moves between fashion, luxury, culture, desire, and the beautifully random thoughts that refuse to stay in one category.</p>" },
+    { "type": "text", "id": "about_heading", "label": "About heading", "default": "Conversations for people who make things matter." },
+    { "type": "richtext", "id": "about_text", "label": "About text", "default": "<p>The New Era Podcast makes room for the polished answer and the unfinished thought. Expect honest process, sharp opinions, and stories from the people shaping brands, spaces, products, and culture.</p>" },
     { "type": "text", "id": "about_label", "label": "About link label", "default": "About the show" },
     { "type": "url", "id": "about_url", "label": "About link" },
     { "type": "header", "content": "Closing call to action" },
@@ -377,11 +325,11 @@
     { "type": "text", "id": "script_font", "label": "Script font family", "default": "At Works Script", "info": "Uses At Works Script when installed, then falls back to Edwardian Script." },
     { "type": "text", "id": "display_font", "label": "Display font family", "default": "Mathew Rohas" },
     { "type": "text", "id": "body_font", "label": "Body font family", "default": "Milo" },
-    { "type": "color", "id": "ink_color", "label": "Plum Noir", "default": "#341F28" },
-    { "type": "color", "id": "paper_color", "label": "Cool Blue", "default": "#D8EFFD" },
-    { "type": "color", "id": "accent_color", "label": "Wasabi", "default": "#EAEF55" },
-    { "type": "color", "id": "hot_color", "label": "Persimmon", "default": "#FE5D31" },
-    { "type": "color", "id": "blue_color", "label": "Jade", "default": "#ACB8A0" }
+    { "type": "color", "id": "ink_color", "label": "Ink", "default": "#141411" },
+    { "type": "color", "id": "paper_color", "label": "Paper", "default": "#f0e8d8" },
+    { "type": "color", "id": "accent_color", "label": "Acid accent", "default": "#c9ff45" },
+    { "type": "color", "id": "hot_color", "label": "Warm accent", "default": "#ef5b36" },
+    { "type": "color", "id": "blue_color", "label": "Blue accent", "default": "#7277ff" }
   ],
   "blocks": [
     {
