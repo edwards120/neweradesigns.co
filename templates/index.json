@@ -180,7 +180,7 @@
         "rail_right": "MAKE YOUR MOVE",
         "desktop_layout": "centered",
         "mobile_layout": "center",
-        "desktop_min_height": 900,
+        "desktop_min_height": 600,
         "mobile_min_height": 740,
         "content_max_width": 1260,
         "desktop_padding": 100,
@@ -194,11 +194,11 @@
         "accent_color": "#f7e51d",
         "pink_accent": "#ff4fa3",
         "halftone_image": "shopify://shop_images/website_Background2.svg",
-        "halftone_opacity": 18,
-        "halftone_size": 80,
-        "animate_halftone": false,
-        "halftone_speed": 5,
-        "halftone_intensity": 0,
+        "halftone_opacity": 42,
+        "halftone_size": 155,
+        "animate_halftone": true,
+        "halftone_speed": 9,
+        "halftone_intensity": 40,
         "line_1_font": "funk",
         "line_1_color": "#ffffff",
         "line_1_desktop_size": 130,
@@ -503,8 +503,8 @@
         "mobile_heading_size": 54,
         "enable_motion": true,
         "enable_ambient_motion": true,
-        "motion_speed": 180,
-        "pointer_strength": 12
+        "motion_speed": 280,
+        "pointer_strength": 26
       }
     },
     "work": {

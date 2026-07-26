@@ -12,12 +12,60 @@
     "new_era_page": {
       "type": "new-era-page-system",
       "blocks": {
-        "service_work_1": { "type": "portfolio_item", "settings": { "title": "Wayfinding System Study", "classification": "Speculative Study", "discipline": "Wayfinding / sign family", "annotation": "12'-0\" / ALUMINUM CABINET", "description": "A fabrication-aware study connecting arrival, orientation, tenant visibility, and repeatable production logic.", "image": "shopify://shop_images/Custom_Signage.jpg", "image_alt": "Custom exterior signage and wayfinding project", "project_link": "/pages/cases" } },
-        "service_work_2": { "type": "portfolio_item", "settings": { "title": "Illuminated Sign Family", "classification": "Speculative Study", "discipline": "Channel letters / night read", "annotation": "5\" RETURN / LED ILLUMINATION", "description": "A high-contrast sign family exploring letter depth, night visibility, mounting logic, and coordinated storefront expression.", "image": "shopify://shop_images/Outdoor_signage.jpg", "image_alt": "Illuminated outdoor sign installation", "project_link": "/pages/cases" } },
-        "service_work_3": { "type": "portfolio_item", "settings": { "title": "ADA Decision Point", "classification": "Independent Concept", "discipline": "Accessibility / spatial logic", "annotation": "48–60\" TACTILE ZONE", "description": "A decision point designed around legibility, reach range, progressive disclosure, and fast route confirmation.", "image": "shopify://shop_images/Proposed_Graphics_Signage_Template_proposed_graphics.jpg", "image_alt": "Environmental graphics and accessible sign system", "project_link": "/pages/cases" } }
+        "service_work_1": {
+          "type": "portfolio_item",
+          "settings": {
+            "title": "Wayfinding System Study",
+            "classification": "Speculative Study",
+            "discipline": "Wayfinding / sign family",
+            "annotation": "12'-0\" / ALUMINUM CABINET",
+            "description": "A fabrication-aware study connecting arrival, orientation, tenant visibility, and repeatable production logic.",
+            "image": "shopify://shop_images/Custom_Signage.jpg",
+            "image_alt": "Custom exterior signage and wayfinding project",
+            "project_link": "/pages/cases"
+          }
+        },
+        "service_work_2": {
+          "type": "portfolio_item",
+          "settings": {
+            "title": "Illuminated Sign Family",
+            "classification": "Speculative Study",
+            "discipline": "Channel letters / night read",
+            "annotation": "5\" RETURN / LED ILLUMINATION",
+            "description": "A high-contrast sign family exploring letter depth, night visibility, mounting logic, and coordinated storefront expression.",
+            "image": "shopify://shop_images/Outdoor_signage.jpg",
+            "image_alt": "Illuminated outdoor sign installation",
+            "project_link": "/pages/cases"
+          }
+        },
+        "service_work_3": {
+          "type": "portfolio_item",
+          "settings": {
+            "title": "ADA Decision Point",
+            "classification": "Independent Concept",
+            "discipline": "Accessibility / spatial logic",
+            "annotation": "48–60\" TACTILE ZONE",
+            "description": "A decision point designed around legibility, reach range, progressive disclosure, and fast route confirmation.",
+            "image": "shopify://shop_images/Proposed_Graphics_Signage_Template_proposed_graphics.jpg",
+            "image_alt": "Environmental graphics and accessible sign system",
+            "project_link": "/pages/cases"
+          }
+        }
       },
-      "block_order": ["service_work_1", "service_work_2", "service_work_3"],
-      "settings": {}
+      "block_order": [
+        "service_work_1",
+        "service_work_2",
+        "service_work_3"
+      ],
+      "settings": {
+        "micro_label_size": 13,
+        "hero_title_line_1": "YOU NEED A",
+        "hero_title_line_2": "NEW ERA",
+        "hero_body": "We develop brand, wayfinding, and environmental systems that reduce friction and make the physical environment perform.",
+        "hero_button_label": "START A PROJECT",
+        "hero_button_link": "",
+        "hero_image": "shopify://shop_images/BE82F9ED-97F1-48FD-BC65-4D22591D5FEE.gif"
+      }
     }
   },
   "order": [
