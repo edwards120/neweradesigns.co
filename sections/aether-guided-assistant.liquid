@@ -1271,8 +1271,11 @@
 
         if (heroAnchor) {
           const rect = heroAnchor.getBoundingClientRect();
+          const header = document.querySelector('#shopify-section-sections--header, .shopify-section-group-header-group, header');
+          const headerRect = header ? header.getBoundingClientRect() : null;
+          const headerBottom = headerRect ? Math.max(0, headerRect.bottom) : 0;
           this.initialX = rect.left + (rect.width * 0.5) - (this.charSize * 0.5);
-          this.initialY = Math.max(this.padding + 8, rect.top - (this.charSize * 0.32));
+          this.initialY = Math.max(this.padding + 8, headerBottom + 6, rect.top - (this.charSize * 0.18));
         } else {
           const panelWidth = parseInt(getComputedStyle(this.assistant).getPropertyValue('--aether-panel-width')) || 390;
           const panelRight = 20;
@@ -1285,7 +1288,7 @@
         
         // Clamp to bounds
         this.initialX = Math.max(this.padding, Math.min(this.bounds.maxX, this.initialX));
-        this.initialY = Math.max(this.padding, Math.min(this.bounds.maxY, this.initialY));
+        this.initialY = Math.max(this.padding + 6, Math.min(this.bounds.maxY, this.initialY));
         
         this.setInitialPosition();
         this.setupDrag();
