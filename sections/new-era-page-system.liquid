@@ -22,7 +22,7 @@
   {% if is_home %}
     <div class="ned-panel ned-hero">
       <nav class="ned-hero-nav" aria-label="Homepage navigation">
-        <a href="/pages/design-process">ABOUT US</a>
+        <a href="/pages/info">ABOUT US</a>
         <a href="#Services-{{ section.id }}">WHAT WE DO</a>
         <a class="ned-hero-brand" href="{{ routes.root_url }}">NEW ERA DESIGNS <small>SPATIAL SYSTEMS STUDIO</small></a>
         <a href="#SelectedWork-{{ section.id }}">SELECTED WORK</a>
@@ -151,11 +151,11 @@
 @font-face{font-display:swap;font-family:'NED Edwardian';font-style:normal;font-weight:400;src:url("{{ 'edwardianscriptitc.ttf' | file_url }}") format('truetype')}
 @font-face{font-display:swap;font-family:'NED Funk Machine';font-style:normal;font-weight:400;src:url("{{ 'funkmachine.ttf' | file_url }}") format('truetype')}
 {% if is_home %}.shopify-section-group-header-group{display:none}{% endif %}
-#NewEra-{{ section.id }}{--blue:#143cff;--red:#ff271c;--ink:#070707;--paper:#f2eee5;--ned-navy:#071a3a;--ned-gold:#fca311;--ned-soft:#f5f7fa;--ned-halftone-dark:radial-gradient(circle,rgba(7,26,58,.28) 0 1.15px,transparent 1.35px);--ned-halftone-light:radial-gradient(circle,rgba(94,139,224,.42) 0 1.15px,transparent 1.35px);background-color:var(--ned-navy);background-image:var(--ned-halftone-light);background-size:8px 8px;color:var(--ink);max-width:1500px;margin:0 auto;overflow:hidden;position:relative;padding:18px;isolation:isolate}
+#NewEra-{{ section.id }}{--blue:#143cff;--red:#ff271c;--ink:#070707;--paper:#f2eee5;--ned-navy:#071a3a;--ned-gold:#fca311;--ned-soft:#f5f7fa;--ned-halftone-dark:radial-gradient(circle,rgba(7,26,58,.28) 0 1.15px,transparent 1.35px);--ned-halftone-light:radial-gradient(circle,rgba(94,139,224,.42) 0 1.15px,transparent 1.35px);--ned-eyebrow-size:{{ section.settings.micro_label_size }}px;--ned-micro-size:{{ section.settings.micro_label_size | minus: 1 }}px;background-color:var(--ned-navy);background-image:var(--ned-halftone-light);background-size:8px 8px;color:var(--ink);max-width:1500px;margin:0 auto;overflow:hidden;position:relative;padding:18px;isolation:isolate}
 #NewEra-{{ section.id }} *{box-sizing:border-box} #NewEra-{{ section.id }} .ned-panel{position:relative;z-index:2;overflow:hidden;border:1px solid rgba(0,0,0,.22);padding:clamp(32px,6vw,92px);margin-bottom:18px;background-color:var(--paper);background-image:var(--ned-halftone-dark)!important;background-size:8px 8px!important}
 #NewEra-{{ section.id }} h1,#NewEra-{{ section.id }} h2,#NewEra-{{ section.id }} p{margin-top:0} #NewEra-{{ section.id }} h1,#NewEra-{{ section.id }} h2{font-family:Arial Black,Arial,sans-serif;font-weight:900;letter-spacing:-.065em;line-height:.82;text-transform:uppercase}
 #NewEra-{{ section.id }} .ned-script{font-family:'Edwardian Script ITC','Bickham Script Pro','Snell Roundhand',cursive;font-weight:400;text-transform:none;letter-spacing:-.025em;line-height:.72}
-#NewEra-{{ section.id }} .ned-eyebrow,#NewEra-{{ section.id }} .ned-kicker{font:700 11px/1.2 Arial,sans-serif;letter-spacing:.18em;margin-bottom:34px}
+#NewEra-{{ section.id }} .ned-eyebrow,#NewEra-{{ section.id }} .ned-kicker{font:700 var(--ned-eyebrow-size)/1.2 Arial,sans-serif;letter-spacing:.14em;margin-bottom:34px}
 #NewEra-{{ section.id }} .ned-btn{display:inline-flex;align-items:center;justify-content:space-between;gap:34px;background:var(--ink);color:white;text-decoration:none;border:0;border-radius:0;padding:16px 22px;font:800 12px/1 Arial,sans-serif;letter-spacing:.08em;cursor:pointer} #NewEra-{{ section.id }} .ned-btn span{animation:nedPageButtonBounce-{{ section.id }} 1.8s linear infinite;display:inline-block;transform-origin:center bottom}#NewEra-{{ section.id }} .ned-btn:hover span,#NewEra-{{ section.id }} .ned-btn:focus-visible span{animation-duration:.72s}#NewEra-{{ section.id }} .ned-btn--light{background:white;color:var(--ink)}@keyframes nedPageButtonBounce-{{ section.id }}{0%,12%,42%,100%{transform:translateY(0) scale(1)}15%{transform:translateY(2px) scale(1.12,.88)}24%{transform:translateY(-7px) scale(.96,1.04)}34%{transform:translateY(0) scale(1.05,.95)}}
 #NewEra-{{ section.id }} .ned-orb{position:absolute;border-radius:50%;z-index:1;pointer-events:none;border:2px solid rgba(255,255,255,.65)} #NewEra-{{ section.id }} .ned-orb--1{width:180px;height:180px;background:var(--blue);top:7%;right:-50px} #NewEra-{{ section.id }} .ned-orb--2{width:90px;height:90px;background:var(--red);top:45%;left:-25px} #NewEra-{{ section.id }} .ned-orb--3{width:130px;height:130px;background:#f4e932;bottom:4%;right:7%}
 /* HERO: full-viewport navy halftone stage with working navigation and conversion paths. */
@@ -182,7 +182,7 @@
 #NewEra-{{ section.id }} .ned-hero-social--left{left:clamp(24px,3vw,42px)}
 #NewEra-{{ section.id }} .ned-hero-social--right{right:clamp(24px,3vw,42px)}
 #NewEra-{{ section.id }} .ned-hero-social a{align-items:center;border:1px solid #fff;border-radius:0;color:#fff;display:flex;font:800 11px/1 'Milo',Arial,sans-serif;height:40px;justify-content:center;text-decoration:none;width:40px}
-#NewEra-{{ section.id }} .ned-hero-foot{align-items:end;display:grid;font:800 10px/1 'Milo',Arial,sans-serif;grid-template-columns:1fr 1fr 1fr;letter-spacing:.08em;position:relative;text-transform:uppercase;z-index:3}
+#NewEra-{{ section.id }} .ned-hero-foot{align-items:end;display:grid;font:800 var(--ned-micro-size)/1 'Milo',Arial,sans-serif;grid-template-columns:1fr 1fr 1fr;letter-spacing:.08em;position:relative;text-transform:uppercase;z-index:3}
 #NewEra-{{ section.id }} .ned-hero-foot a{color:#fff;text-align:center;text-decoration:none}
 #NewEra-{{ section.id }} .ned-hero-foot span:last-child{text-align:right}
 #NewEra-{{ section.id }} .ned-services{background:var(--blue);color:white;min-height:760px} #NewEra-{{ section.id }} .ned-services h2{font-size:clamp(62px,10vw,150px);max-width:1000px} #NewEra-{{ section.id }} .ned-services h2 .ned-script{display:block} #NewEra-{{ section.id }} .ned-services>p{max-width:380px;margin-left:auto;font:500 17px/1.4 Arial,sans-serif} #NewEra-{{ section.id }} .ned-pills{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;max-width:1050px;margin:70px auto 42px} #NewEra-{{ section.id }} .ned-pills span{background:white;color:var(--ink);border:1px solid var(--ink);border-radius:100px;padding:17px 30px;font:700 clamp(14px,1.5vw,20px)/1 Arial,sans-serif;transform:rotate(var(--r,0deg))} #NewEra-{{ section.id }} .ned-pills span:nth-child(3n+1){--r:-4deg} #NewEra-{{ section.id }} .ned-pills span:nth-child(3n+2){--r:3deg}
@@ -190,7 +190,7 @@
 /* SIGN PORTFOLIO: long-form red-on-cream collage with cutouts over display type. */
 #NewEra-{{ section.id }} .ned-portfolio{--ned-editorial-red:#ed171f;--ned-editorial-cream:#efeee8;background:var(--ned-editorial-cream);border-radius:0;color:var(--ink);padding:clamp(34px,5vw,76px)}
 #NewEra-{{ section.id }} .ned-portfolio-head{margin-bottom:clamp(72px,11vw,168px)}
-#NewEra-{{ section.id }} .ned-portfolio-rail{border-bottom:1px solid var(--ink);display:flex;font:800 10px/1.3 'Milo',Arial,sans-serif;justify-content:space-between;letter-spacing:.13em;padding-bottom:13px}
+#NewEra-{{ section.id }} .ned-portfolio-rail{border-bottom:1px solid var(--ink);display:flex;font:800 var(--ned-micro-size)/1.3 'Milo',Arial,sans-serif;justify-content:space-between;letter-spacing:.11em;padding-bottom:13px}
 #NewEra-{{ section.id }} .ned-portfolio-intro{align-items:end;display:grid;gap:24px;grid-template-columns:repeat(12,minmax(0,1fr));padding-top:clamp(58px,9vw,132px)}
 #NewEra-{{ section.id }} .ned-portfolio h2{color:var(--ned-editorial-red);font-family:'Mathew Rohas','Arial Black',Arial,sans-serif;font-size:clamp(66px,12.2vw,186px);grid-column:1 / -1;letter-spacing:-.075em;line-height:.73;margin:0;position:relative;text-transform:uppercase;z-index:2}
 #NewEra-{{ section.id }} .ned-portfolio h2 span{display:block;margin-left:17%;white-space:nowrap}
@@ -222,17 +222,17 @@
 #NewEra-{{ section.id }} .ned-dimension::before,#NewEra-{{ section.id }} .ned-dimension::after{background:var(--ink);content:'';height:10px;position:absolute;top:-5px;width:1px}
 #NewEra-{{ section.id }} .ned-dimension::before{left:0}
 #NewEra-{{ section.id }} .ned-dimension::after{right:0}
-#NewEra-{{ section.id }} .ned-dimension span{background:var(--ned-editorial-cream);font:800 9px/1 'Milo',Arial,sans-serif;letter-spacing:.14em;padding:0 9px;position:relative;top:-7px}
+#NewEra-{{ section.id }} .ned-dimension span{background:var(--ned-editorial-cream);font:800 var(--ned-micro-size)/1 'Milo',Arial,sans-serif;letter-spacing:.11em;padding:0 9px;position:relative;top:-7px}
 #NewEra-{{ section.id }} .ned-project-copy{align-self:end;background:var(--ned-editorial-cream);border-top:1px solid var(--ink);grid-column:8 / -1;grid-row:1;padding:18px 0 0 24px;position:relative;z-index:4}
 #NewEra-{{ section.id }} .ned-project:nth-child(2n) .ned-project-copy{grid-column:1 / span 5;padding:18px 24px 0 0}
-#NewEra-{{ section.id }} .ned-project-index{display:flex;font:800 10px/1.3 'Milo',Arial,sans-serif;justify-content:space-between;letter-spacing:.13em;margin-bottom:clamp(44px,6vw,84px)}
+#NewEra-{{ section.id }} .ned-project-index{display:flex;font:800 var(--ned-micro-size)/1.3 'Milo',Arial,sans-serif;justify-content:space-between;letter-spacing:.11em;margin-bottom:clamp(44px,6vw,84px)}
 #NewEra-{{ section.id }} .ned-project-index::after{color:var(--ned-editorial-red);content:'✱';font-size:24px;line-height:.6}
-#NewEra-{{ section.id }} .ned-project-meta{font:800 10px/1.4 'Milo',Arial,sans-serif;letter-spacing:.12em;margin:0 0 14px;text-transform:uppercase}
+#NewEra-{{ section.id }} .ned-project-meta{font:800 var(--ned-micro-size)/1.4 'Milo',Arial,sans-serif;letter-spacing:.1em;margin:0 0 14px;text-transform:uppercase}
 #NewEra-{{ section.id }} .ned-project-meta span{color:var(--ned-editorial-red);display:block;margin-bottom:7px}
 #NewEra-{{ section.id }} .ned-project-copy h3{font:900 clamp(34px,4.2vw,66px)/.9 'Mathew Rohas','Arial Black',Arial,sans-serif;letter-spacing:-.055em;margin:0 0 18px;text-transform:uppercase}
 #NewEra-{{ section.id }} .ned-project-copy>p{font:500 15px/1.45 'Milo',Arial,sans-serif;margin:0;max-width:38ch}
 #NewEra-{{ section.id }} .ned-project-cta{border-top:1px solid var(--ink);display:flex;font:800 11px/1 'Milo',Arial,sans-serif;justify-content:space-between;margin-top:34px;padding:15px 0}
-#NewEra-{{ section.id }} .ned-portfolio-foot{align-items:center;border-top:1px solid var(--ink);display:flex;font:800 10px/1.3 'Milo',Arial,sans-serif;justify-content:space-between;letter-spacing:.14em;padding-top:18px}
+#NewEra-{{ section.id }} .ned-portfolio-foot{align-items:center;border-top:1px solid var(--ink);display:flex;font:800 var(--ned-micro-size)/1.3 'Milo',Arial,sans-serif;justify-content:space-between;letter-spacing:.11em;padding-top:18px}
 #NewEra-{{ section.id }} .ned-portfolio-foot a{color:var(--ink);font-size:12px;text-decoration:none}
 #NewEra-{{ section.id }} .ned-funk{background:var(--red);color:var(--ink);min-height:720px} #NewEra-{{ section.id }} .ned-funk-title{font-size:clamp(62px,12vw,165px);text-align:center;margin:0 auto 40px} #NewEra-{{ section.id }} .ned-funk-title svg{width:100%;height:auto;display:block} #NewEra-{{ section.id }} .ned-mask-video,#NewEra-{{ section.id }} .ned-mask-video video{width:100%;height:100%;object-fit:cover} #NewEra-{{ section.id }} .ned-image-text{display:block;background:var(--mask-image) center/cover;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:1px rgba(0,0,0,.15)} #NewEra-{{ section.id }} .ned-funk-foot{display:flex;justify-content:space-between;align-items:end;gap:30px} #NewEra-{{ section.id }} .ned-funk-foot p{max-width:390px;font:700 18px/1.35 Arial,sans-serif}
 #NewEra-{{ section.id }} .ned-page-hero{min-height:650px;display:flex;flex-direction:column;justify-content:flex-end} #NewEra-{{ section.id }} .ned-page-hero h1{font-size:clamp(72px,13vw,180px);margin-bottom:40px} #NewEra-{{ section.id }} .ned-page-hero p{max-width:500px;margin-left:auto;font:500 19px/1.4 Arial,sans-serif}
@@ -254,6 +254,7 @@
   "tag": "section",
   "class": "section-new-era",
   "settings": [
+    { "type": "range", "id": "micro_label_size", "label": "Small label size", "min": 10, "max": 18, "step": 1, "unit": "px", "default": 13 },
     { "type": "text", "id": "hero_title_line_1", "label": "Hero title line 1", "default": "YOU NEED A" },
     { "type": "text", "id": "hero_title_line_2", "label": "Hero title line 2", "default": "NEW ERA" },
     { "type": "textarea", "id": "hero_body", "label": "Hero description", "default": "We develop brand, wayfinding, and environmental systems that reduce friction and make the physical environment perform." },

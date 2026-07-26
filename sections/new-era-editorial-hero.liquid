@@ -115,7 +115,9 @@
     --ned-entry-speed: {{ section.settings.animation_speed }}s;
     --ned-entry-delay: {{ section.settings.animation_delay }}s;
   "
+  data-ned-motion-root="true"
   data-ned-reveal
+  {% if section.settings.enable_gravity %}data-ned-kinetic-field{% endif %}
   data-ned-gravity="{{ section.settings.enable_gravity }}"
   data-ned-gravity-strength="{{ section.settings.gravity_strength | divided_by: 100.0 }}"
   data-ned-gravity-damping="{{ section.settings.gravity_damping | divided_by: 100.0 }}"
@@ -181,13 +183,13 @@
     {% if section.settings.eyebrow != blank %}<p class="ned-editorial-hero__eyebrow{% unless section.settings.show_mobile_eyebrow %} is-mobile-hidden{% endunless %}">{{ section.settings.eyebrow | escape }}</p>{% endif %}
     <span class="ned-editorial-hero__crosshair" aria-hidden="true"></span>
 
-    <h1 class="ned-editorial-hero__title">
+    <h1 class="ned-editorial-hero__title" data-ned-collision-obstacle>
       <span class="ned-editorial-hero__line ned-editorial-hero__line--1 ned-case-{{ section.settings.line_1_case }} ned-align-{{ section.settings.line_1_alignment }}"><span>{{ section.settings.line_1_text | escape }}</span></span>
       <span class="ned-editorial-hero__line ned-editorial-hero__line--2 ned-case-{{ section.settings.line_2_case }} ned-align-{{ section.settings.line_2_alignment }}"><span>{{ section.settings.line_2_text | escape }}</span></span>
     </h1>
 
-    {% if section.settings.body != blank %}<div class="ned-editorial-hero__body">{{ section.settings.body }}</div>{% endif %}
-    {% if section.settings.button_label != blank %}<a class="ned-editorial-hero__button" href="{{ section.settings.button_link | default: routes.root_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">+</span></a>{% endif %}
+    {% if section.settings.body != blank %}<div class="ned-editorial-hero__body" data-ned-collision-obstacle>{{ section.settings.body }}</div>{% endif %}
+    {% if section.settings.button_label != blank %}<a class="ned-editorial-hero__button" data-ned-collision-obstacle href="{{ section.settings.button_link | default: routes.root_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">+</span></a>{% endif %}
   </div>
 
   {% if section.settings.show_social_links %}

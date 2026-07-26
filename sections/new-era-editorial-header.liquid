@@ -107,6 +107,7 @@
 </new-era-header>
 
 {% style %}
+  body.ned-header-menu-open{overflow:hidden}
   #shopify-section-{{ section.id }}{overflow:visible!important;position:relative;z-index:70}
   #shopify-section-{{ section.id }}:has(.ned-editorial-header--overlay){height:0}
   .ned-editorial-header{color:var(--ned-header-text);display:block;left:0;position:relative;top:0;width:100%;z-index:70}
@@ -130,6 +131,7 @@
   .ned-editorial-header__brand span{color:inherit;font:900 24px/.82 'NED Funk Machine','Arial Black',sans-serif;letter-spacing:-.03em;text-align:center}
   .ned-editorial-header__mobile,.ned-editorial-header__mobile-quick,.ned-editorial-header__drawer{display:none}
   .ned-editorial-header__toggle{appearance:none;background:transparent;border:0;border-radius:0;color:inherit;height:44px;padding:10px;position:relative;width:50px}
+  .ned-editorial-header__toggle:focus-visible{outline:2px solid var(--ned-header-hover);outline-offset:2px}
   .ned-editorial-header__toggle i{background:currentColor;height:2px;left:8px;position:absolute;transition:transform .25s ease,top .25s ease;width:34px}
   .ned-editorial-header__toggle i:first-of-type{top:15px}.ned-editorial-header__toggle i:last-of-type{top:27px}
   .ned-editorial-header.is-open .ned-editorial-header__toggle i:first-of-type{top:21px;transform:rotate(45deg)}
@@ -169,14 +171,49 @@
   if(!customElements.get('new-era-header')){
     customElements.define('new-era-header',class extends HTMLElement{
       connectedCallback(){
-        this.button=this.querySelector('.ned-editorial-header__toggle');
-        this.drawer=this.querySelector('.ned-editorial-header__drawer');
+        this.button = this.querySelector('.ned-editorial-header__toggle');
+        this.drawer = this.querySelector('.ned-editorial-header__drawer');
+        this.focusSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
         if(!this.button||!this.drawer)return;
+        this.boundKeydown = this.handleKeydown.bind(this);
         this.button.addEventListener('click',()=>this.setOpen(!this.classList.contains('is-open')));
-        this.addEventListener('keydown',event=>{if(event.key==='Escape')this.setOpen(false)});
         this.drawer.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>this.setOpen(false)));
       }
-      setOpen(open){this.classList.toggle('is-open',open);this.button.setAttribute('aria-expanded',String(open));this.drawer.hidden=!open}
+      handleKeydown(event){
+        if(event.key === 'Escape'){
+          event.preventDefault();
+          this.setOpen(false);
+          return;
+        }
+        if(event.key !== 'Tab') return;
+        const focusable = Array.from(this.drawer.querySelectorAll(this.focusSelector));
+        if(!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if(event.shiftKey && document.activeElement === first){
+          event.preventDefault();
+          last.focus();
+        } else if(!event.shiftKey && document.activeElement === last){
+          event.preventDefault();
+          first.focus();
+        }
+      }
+      setOpen(open){
+        this.classList.toggle('is-open',open);
+        this.button.setAttribute('aria-expanded',String(open));
+        this.drawer.hidden = !open;
+        if(open){
+          this.lastFocused = document.activeElement;
+          document.body.classList.add('ned-header-menu-open');
+          document.addEventListener('keydown', this.boundKeydown);
+          const firstLink = this.drawer.querySelector(this.focusSelector);
+          if(firstLink) firstLink.focus();
+        } else {
+          document.body.classList.remove('ned-header-menu-open');
+          document.removeEventListener('keydown', this.boundKeydown);
+          if(this.lastFocused && this.lastFocused.focus) this.lastFocused.focus();
+        }
+      }
     });
   }
 </script>

@@ -1520,6 +1520,275 @@
     ]
   },
   {
+    "name": "New Era global controls",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Typography and color accents"
+      },
+      {
+        "type": "color",
+        "id": "ned_accent_pink",
+        "label": "Primary pink accent",
+        "default": "#ff4fa3"
+      },
+      {
+        "type": "color",
+        "id": "ned_highlight_start",
+        "label": "Highlight gradient start",
+        "default": "#ffe696"
+      },
+      {
+        "type": "color",
+        "id": "ned_highlight_end",
+        "label": "Highlight gradient end",
+        "default": "#ffd278"
+      },
+      {
+        "type": "color",
+        "id": "ned_highlight_outline",
+        "label": "Highlight circle outline",
+        "default": "#ffd278"
+      },
+      {
+        "type": "header",
+        "content": "Spacing rhythm"
+      },
+      {
+        "type": "range",
+        "id": "ned_spacing_desktop",
+        "label": "Section spacing desktop",
+        "min": 0,
+        "max": 160,
+        "step": 4,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "ned_spacing_mobile",
+        "label": "Section spacing mobile",
+        "min": 0,
+        "max": 120,
+        "step": 4,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Global button controls"
+      },
+      {
+        "type": "range",
+        "id": "ned_global_button_radius",
+        "label": "Button corner radius",
+        "min": 0,
+        "max": 18,
+        "step": 1,
+        "unit": "px",
+        "default": 6
+      },
+      {
+        "type": "range",
+        "id": "ned_global_button_min_height",
+        "label": "Button min height (desktop)",
+        "min": 34,
+        "max": 56,
+        "step": 1,
+        "unit": "px",
+        "default": 40
+      },
+      {
+        "type": "range",
+        "id": "ned_global_button_padding_y",
+        "label": "Button vertical padding (desktop)",
+        "min": 6,
+        "max": 18,
+        "step": 1,
+        "unit": "px",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "ned_global_button_padding_x",
+        "label": "Button horizontal padding (desktop)",
+        "min": 12,
+        "max": 36,
+        "step": 1,
+        "unit": "px",
+        "default": 22
+      },
+      {
+        "type": "range",
+        "id": "ned_global_button_font_desktop",
+        "label": "Button text size (desktop)",
+        "min": 10,
+        "max": 18,
+        "step": 1,
+        "unit": "px",
+        "default": 13
+      },
+      {
+        "type": "range",
+        "id": "ned_global_button_min_height_mobile",
+        "label": "Button min height (mobile)",
+        "min": 30,
+        "max": 52,
+        "step": 1,
+        "unit": "px",
+        "default": 38
+      },
+      {
+        "type": "range",
+        "id": "ned_global_button_padding_y_mobile",
+        "label": "Button vertical padding (mobile)",
+        "min": 4,
+        "max": 16,
+        "step": 1,
+        "unit": "px",
+        "default": 9
+      },
+      {
+        "type": "range",
+        "id": "ned_global_button_padding_x_mobile",
+        "label": "Button horizontal padding (mobile)",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "default": 18
+      },
+      {
+        "type": "range",
+        "id": "ned_global_button_font_mobile",
+        "label": "Button text size (mobile)",
+        "min": 9,
+        "max": 16,
+        "step": 1,
+        "unit": "px",
+        "default": 12
+      },
+      {
+        "type": "header",
+        "content": "Motion controls"
+      },
+      {
+        "type": "select",
+        "id": "ned_motion_preset",
+        "label": "Global motion preset",
+        "options": [
+          { "value": "off", "label": "Off" },
+          { "value": "subtle", "label": "Subtle" },
+          { "value": "medium", "label": "Medium" },
+          { "value": "expressive", "label": "Expressive" }
+        ],
+        "default": "subtle"
+      },
+      {
+        "type": "range",
+        "id": "ned_motion_multiplier",
+        "label": "Motion intensity multiplier",
+        "min": 0,
+        "max": 200,
+        "step": 5,
+        "unit": "%",
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "ned_pointer_strength",
+        "label": "Pointer parallax strength",
+        "min": 0,
+        "max": 200,
+        "step": 5,
+        "unit": "%",
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "ned_motion_duration",
+        "label": "Entrance duration",
+        "min": 200,
+        "max": 1200,
+        "step": 20,
+        "unit": "ms",
+        "default": 520
+      },
+      {
+        "type": "range",
+        "id": "ned_motion_distance",
+        "label": "Entrance travel distance",
+        "min": 0,
+        "max": 96,
+        "step": 2,
+        "unit": "px",
+        "default": 26
+      },
+      {
+        "type": "range",
+        "id": "ned_motion_scale_start",
+        "label": "Entrance starting scale",
+        "min": 80,
+        "max": 100,
+        "step": 1,
+        "unit": "%",
+        "default": 98
+      },
+      {
+        "type": "range",
+        "id": "ned_motion_blur_start",
+        "label": "Entrance starting blur",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "ned_motion_stagger_step",
+        "label": "Stagger cadence",
+        "min": 20,
+        "max": 240,
+        "step": 5,
+        "unit": "ms",
+        "default": 65
+      },
+      {
+        "type": "range",
+        "id": "ned_motion_viewport_threshold",
+        "label": "Reveal viewport threshold",
+        "min": 5,
+        "max": 65,
+        "step": 1,
+        "unit": "%",
+        "default": 12
+      },
+      {
+        "type": "checkbox",
+        "id": "ned_motion_kinetic_collision",
+        "label": "Enable kinetic object collision",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "ned_motion_obstacle_collision",
+        "label": "Enable kinetic obstacle avoidance",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "ned_highlight_duration",
+        "label": "Highlight animation duration",
+        "min": 0,
+        "max": 1400,
+        "step": 50,
+        "unit": "ms",
+        "default": 700
+      }
+    ]
+  },
+  {
     "name": "Studio Status",
     "settings": [
       {

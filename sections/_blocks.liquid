@@ -1,0 +1,28 @@
+{% comment %}
+  PURPOSE: Hosts reusable theme blocks declared in /blocks so JSON templates can compose modular pages.
+  USED BY: Any template section entry with `"type": "_blocks"` (for example, multiple page.*.json templates).
+  EDIT SAFELY: Keep the `content_for 'blocks'` call and `@theme` block support intact or existing template block trees will fail to render.
+{% endcomment %}
+
+<div class="ned-theme-block-host" data-ned-theme-block-host="{{ section.id }}" data-ned-motion-root="true">
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Theme block host",
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Theme block host"
+    }
+  ]
+}
+{% endschema %}

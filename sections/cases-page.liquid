@@ -6,13 +6,19 @@
   assign section_key = section.id | replace: '_', '' | downcase
   assign heading_font = section.settings.heading_font
   assign body_font = section.settings.body_font
+  assign script_font_stack = '"NED Edwardian", "Snell Roundhand", "Brush Script MT", cursive'
+  if section.settings.billboard_script_font_mode == 'heading'
+    assign script_font_stack = 'var(--ned-heading-font)'
+  elsif section.settings.billboard_script_font_mode == 'body'
+    assign script_font_stack = 'var(--ned-body-font)'
+  endif
 %}
 
-<section class="ned-cases ned-cases-{{ section_key }}">
+<section class="ned-cases ned-cases-{{ section_key }}" data-ned-motion-root="true">
   <div class="ned-cases-shell">
     <!-- Hero -->
-    <div class="ned-cases-hero">
-      <div class="ned-cases-hero-copy">
+    <div class="ned-cases-hero" data-ned-animate="true" data-ned-animation="clip-up">
+      <div class="ned-cases-hero-copy" data-ned-animate="true">
         {% if section.settings.eyebrow != blank %}
           <span class="ned-cases-kicker">{{ section.settings.eyebrow }}</span>
         {% endif %}
@@ -23,7 +29,7 @@
           <div class="ned-cases-intro rte">{{ section.settings.intro }}</div>
         {% endif %}
       </div>
-      <div class="ned-cases-manifesto">
+      <div class="ned-cases-manifesto" data-ned-animate="true" data-ned-animation="fade-right">
         {% if section.settings.manifesto_label != blank %}
           <span>{{ section.settings.manifesto_label }}</span>
         {% endif %}
@@ -55,7 +61,7 @@
     {% endif %}
 
     <!-- Studio metrics – now at top -->
-    <section class="ned-studio-metrics">
+    <section class="ned-studio-metrics" data-ned-animate="true">
       <header>
         <span>{{ section.settings.metrics_kicker }}</span>
         <h2>{{ section.settings.metrics_heading }}</h2>
@@ -82,7 +88,7 @@
     </section>
 
     <!-- Process steps -->
-    <div class="ned-cases-process" aria-label="Design process">
+    <div class="ned-cases-process" aria-label="Design process" data-ned-animate="true">
       <div><span>01</span><p>{{ section.settings.process_1 }}</p></div>
       <div><span>02</span><p>{{ section.settings.process_2 }}</p></div>
       <div><span>03</span><p>{{ section.settings.process_3 }}</p></div>
@@ -90,20 +96,23 @@
     </div>
 
     <!-- Featured Work heading -->
-    <div class="ned-cases-heading">
+    <div class="ned-cases-heading" data-ned-animate="true">
       <span>{{ section.settings.cases_label }}</span>
       <p>{{ section.settings.cases_subtitle }}</p>
     </div>
 
     <!-- Case grid -->
-    <div class="ned-cases-grid">
+    <div class="ned-cases-grid" data-ned-stagger-group="true">
       {% for block in section.blocks %}
         {% liquid
           assign case_key = block.id | replace: '_', '' | downcase
+          assign case_animation_mod = forloop.index0 | modulo: 2
           assign model_source = block.settings.model_url | strip
           assign image_source = block.settings.image_url | strip
+          assign image_asset = block.settings.image
           assign model_url = ''
           assign image_url = ''
+          assign poster_url = ''
 
           if model_source contains '://'
             assign model_url = model_source
@@ -115,6 +124,12 @@
             assign image_url = image_source
           elsif image_source != blank
             assign image_url = image_source | file_url
+          endif
+
+          if image_asset != blank
+            assign poster_url = image_asset | image_url: width: 1800
+          elsif image_url != blank
+            assign poster_url = image_url
           endif
         %}
 
@@ -132,14 +147,14 @@
           {% assign rendered_thinking = rendered_thinking | replace_first: thinking_highlight, thinking_mark %}
         {% endif %}
 
-        <article class="ned-case-card ned-case-card--{{ block.settings.layout }}" data-aos="case-card" {{ block.shopify_attributes }}>
+        <article class="ned-case-card ned-case-card--{{ block.settings.layout }}" data-aos="case-card" data-ned-animate="true" {% if case_animation_mod == 0 %}data-ned-animation="fade-left"{% else %}data-ned-animation="fade-right"{% endif %} {{ block.shopify_attributes }}>
           <div class="ned-case-media">
             {% if block.settings.show_model and model_url != blank %}
               <model-viewer
                 id="ned-case-model-{{ section_key }}-{{ case_key }}"
                 src="{{ model_url }}"
                 alt="{{ block.settings.model_alt | escape }}"
-                {% if image_url != blank %}poster="{{ image_url }}"{% endif %}
+                {% if poster_url != blank %}poster="{{ poster_url }}"{% endif %}
                 data-auto-rotate="{{ block.settings.auto_rotate }}"
                 auto-rotate-delay="500"
                 rotation-per-second="{{ block.settings.rotation_speed }}deg"
@@ -152,6 +167,16 @@
                 camera-orbit="{{ block.settings.camera_orbit }}">
               </model-viewer>
               <span class="ned-case-media-label">{{ block.settings.model_label }}</span>
+            {% elsif image_asset != blank %}
+              {{
+                image_asset
+                | image_url: width: 1800
+                | image_tag:
+                  alt: block.settings.image_alt,
+                  widths: '720, 1080, 1440, 1800',
+                  sizes: '(max-width: 900px) 100vw, 50vw',
+                  loading: 'lazy'
+              }}
             {% elsif image_url != blank %}
               <img
                 src="{{ image_url }}"
@@ -213,7 +238,7 @@
     </div>
 
     <!-- Bottom cards -->
-    <div class="ned-cases-stack">
+    <div class="ned-cases-stack" data-ned-animate="true">
       <div><span>{{ section.settings.stack_1_label }}</span><p>{{ section.settings.stack_1_text }}</p></div>
       <div><span>{{ section.settings.stack_2_label }}</span><p>{{ section.settings.stack_2_text }}</p></div>
       <div><span>{{ section.settings.stack_3_label }}</span><p>{{ section.settings.stack_3_text }}</p></div>
@@ -226,8 +251,8 @@
   {{ body_font | font_face: font_display: 'swap' }}
 
   @font-face {
-    font-family: 'EdwardianScript';
-    src: url('{{ 'edwardianscript.woff2' | asset_url }}') format('woff2');
+    font-family: 'NED Edwardian';
+    src: url("{{ 'edwardianscriptitc.ttf' | file_url }}") format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -245,6 +270,7 @@
     --ned-media-bg: {{ section.settings.media_background_color }};
     --ned-heading-font: {{ heading_font.family | json }}, {{ heading_font.fallback_families }};
     --ned-body-font: {{ body_font.family | json }}, {{ body_font.fallback_families }};
+    --ned-script-font: {{ script_font_stack }};
 
     background: linear-gradient(180deg, var(--ned-navy), var(--ned-black));
     color: var(--ned-white);
@@ -352,7 +378,7 @@
   .ned-cases-billboard__message { align-self: center; display: grid; position: relative; width: min(820px, 92%); z-index: 2; }
   .ned-cases-billboard__message strong { font-family: var(--ned-heading-font); font-size: clamp(42px, 8vw, 112px); font-weight: 900; letter-spacing: -.055em; line-height: .76; text-transform: uppercase; }
   .ned-cases-billboard__message em {
-    font-family: 'EdwardianScript', cursive;
+    font-family: var(--ned-script-font);
     font-weight: normal;
     font-style: normal;
     font-size: clamp(64px, 12vw, 160px);
@@ -550,6 +576,7 @@
     { "type": "text", "id": "billboard_kicker", "label": "Billboard eyebrow", "default": "Environmental graphics / Houston" },
     { "type": "text", "id": "billboard_heading", "label": "Billboard main line", "default": "MAKE THE PLACE" },
     { "type": "text", "id": "billboard_script", "label": "Billboard script line", "default": "perform" },
+    { "type": "select", "id": "billboard_script_font_mode", "label": "Billboard script font source", "options": [{"value":"custom","label":"Edwardian script file"},{"value":"heading","label":"Heading font setting"},{"value":"body","label":"Body font setting"}], "default": "custom" },
     { "type": "textarea", "id": "billboard_caption", "label": "Billboard caption", "default": "Brand systems designed to read at speed, hold attention, and survive the physical world. Over 2.3 million sq ft visualized so far." },
     { "type": "text", "id": "process_1", "label": "Process 1", "default": "Read the site like a visitor — not just a floor plan." },
     { "type": "text", "id": "process_2", "label": "Process 2", "default": "Find where confusion starts and what decision needs support." },
@@ -598,6 +625,7 @@
         { "type": "textarea", "id": "detail_2_text", "label": "Detail 2 text", "default": "Sign schedule, placement renderings, and fabrication-ready files." },
         { "type": "checkbox", "id": "show_model", "label": "Show 3D model", "default": false },
         { "type": "text", "id": "model_url", "label": "3D model file name or URL" },
+        { "type": "image_picker", "id": "image", "label": "Poster or static image" },
         { "type": "text", "id": "image_url", "label": "Poster/image file name or URL" },
         { "type": "text", "id": "image_alt", "label": "Image alt text", "default": "New Era Designs case preview" },
         { "type": "text", "id": "model_alt", "label": "3D model alt text", "default": "Interactive 3D case model" },

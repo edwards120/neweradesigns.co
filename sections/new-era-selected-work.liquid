@@ -12,8 +12,8 @@
     assign project_font = "'NED Edwardian','Snell Roundhand',cursive"
   endif
 %}
-<section class="ned-work{% if section.settings.enable_motion %} has-ned-motion{% endif %}" id="NedWork-{{ section.id }}" style="--work-bg:{{ section.settings.background }};--work-ink:{{ section.settings.text_color }};--work-accent:{{ section.settings.accent }};--work-speed:{{ section.settings.motion_speed }}ms;--work-heading-font:{{ heading_font }};--work-project-font:{{ project_font }};--work-heading-tracking:{{ section.settings.heading_tracking }}px;--work-project-tracking:{{ section.settings.project_tracking }}px;--work-mobile-heading:{{ section.settings.mobile_heading_size }}px;--work-mobile-project:{{ section.settings.mobile_project_size }}px" {% if section.settings.enable_motion %}data-ned-reveal{% endif %}>
-  <header><p>{{ section.settings.eyebrow | escape }}</p><h2>{{ section.settings.heading | escape }}</h2><span>{{ section.settings.annotation | escape }}</span></header>
+<section class="ned-work{% if section.settings.enable_motion %} has-ned-motion{% endif %}" id="NedWork-{{ section.id }}" style="--work-bg:{{ section.settings.background }};--work-ink:{{ section.settings.text_color }};--work-accent:{{ section.settings.accent }};--work-speed:{{ section.settings.motion_speed }}ms;--work-heading-font:{{ heading_font }};--work-project-font:{{ project_font }};--work-heading-tracking:{{ section.settings.heading_tracking }}px;--work-project-tracking:{{ section.settings.project_tracking }}px;--work-mobile-heading:{{ section.settings.mobile_heading_size }}px;--work-mobile-project:{{ section.settings.mobile_project_size }}px" data-ned-motion-root="true" {% if section.settings.enable_motion %}data-ned-reveal{% endif %}>
+  <header><p>{{ section.settings.eyebrow | escape }}</p><h2 data-ned-text-reveal="word">{{ section.settings.heading | escape }}</h2><span>{{ section.settings.annotation | escape }}</span></header>
   <div class="ned-work__list">
     {% for block in section.blocks %}
       {% assign project_alt = block.settings.image_alt | default: block.settings.title %}

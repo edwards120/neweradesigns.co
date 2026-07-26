@@ -2,11 +2,12 @@
   class="ned-capabilities{% if section.settings.enable_motion %} has-ned-motion{% endif %}{% if section.settings.enable_ambient_motion %} has-ambient-motion{% endif %}"
   id="NedCapabilities-{{ section.id }}"
   style="--field-bg:{{ section.settings.background }};--field-ink:{{ section.settings.text_color }};--field-accent:{{ section.settings.accent }};--field-min:{{ section.settings.min_height }}px;--field-speed:{{ section.settings.motion_speed }}ms;--field-pointer:{{ section.settings.pointer_strength }}px;--field-heading-tracking:{{ section.settings.heading_tracking }}px;--field-mobile-heading:{{ section.settings.mobile_heading_size }}px"
+  data-ned-motion-root="true"
   {% if section.settings.enable_motion %}data-ned-reveal data-ned-pointer-field{% endif %}
 >
   <header class="ned-capabilities__header">
     <p>{{ section.settings.eyebrow | escape }}</p>
-    <h2>{{ section.settings.heading | escape }}</h2>
+    <h2 data-ned-text-reveal="word">{{ section.settings.heading | escape }}</h2>
   </header>
   <div class="ned-capabilities__field" aria-label="Capabilities">
     <span class="ned-capabilities__axis" aria-hidden="true"></span>

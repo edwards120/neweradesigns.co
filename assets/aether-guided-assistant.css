@@ -13,9 +13,9 @@
   --aether-speed: 180ms;
   position: fixed !important;
   right: auto !important;
-  bottom: auto !important;
-  left: 0 !important;
-  top: 0 !important;
+  bottom: 24px !important;
+  left: 50% !important;
+  top: auto !important;
   z-index: 9999 !important;
   margin: 0 !important;
   padding: 0 !important;
@@ -45,7 +45,7 @@
   pointer-events: auto !important;
   left: 0 !important;
   top: 0 !important;
-  transform: none !important;
+  transform: translateX(-50%) !important;
   transition: none !important;
   will-change: transform, left, top !important;
   z-index: 10 !important;
@@ -76,7 +76,7 @@
   position: absolute !important;
   right: auto !important;
   bottom: calc(100% + 20px) !important;
-  left: calc(100% + 20px) !important;
+  left: 0 !important;
   top: auto !important;
   width: min(var(--aether-panel-width, 390px), calc(100vw - 40px)) !important;
   max-height: min(600px, calc(100dvh - 120px)) !important;
@@ -87,8 +87,8 @@
   display: none !important;
   grid-template-rows: auto 1fr auto auto auto !important;
   overflow: hidden !important;
-  transform-origin: bottom left !important;
-  transform: scale(0.92) translateY(8px) !important;
+  transform-origin: bottom center !important;
+  transform: translateX(-50%) scale(0.92) translateY(8px) !important;
   opacity: 0 !important;
   visibility: hidden !important;
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), 
@@ -99,7 +99,7 @@
 }
 
 .aether-assistant.is-open .aether-assistant__panel {
-  transform: scale(1) translateY(0) !important;
+  transform: translateX(-50%) scale(1) translateY(0) !important;
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: auto !important;
@@ -332,7 +332,7 @@
 .aether-assistant__bubble {
   position: absolute !important;
   bottom: calc(100% + 14px) !important;
-  right: -6px !important;
+  left: 0 !important;
   background: var(--aether-ink) !important;
   color: var(--aether-ivory) !important;
   padding: 0.6rem 1rem !important;
@@ -345,7 +345,7 @@
   opacity: 0 !important;
   visibility: hidden !important;
   transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-  transform: translateY(-0.5rem) scale(0.92) !important;
+  transform: translateX(-50%) translateY(-0.5rem) scale(0.92) !important;
   pointer-events: none !important;
   z-index: 10 !important;
 }
@@ -353,14 +353,14 @@
 .aether-assistant__bubble.is-visible {
   opacity: 1 !important;
   visibility: visible !important;
-  transform: translateY(0) scale(1) !important;
+  transform: translateX(-50%) translateY(0) scale(1) !important;
 }
 
 .aether-assistant__bubble::after {
   content: '' !important;
   position: absolute !important;
   bottom: -8px !important;
-  right: 24px !important;
+  left: calc(50% - 8px) !important;
   border-left: 8px solid transparent !important;
   border-right: 8px solid transparent !important;
   border-top: 8px solid var(--aether-ink) !important;
@@ -370,7 +370,7 @@
 .aether-assistant__status-badge {
   position: absolute !important;
   top: -10px !important;
-  right: -6px !important;
+  left: 0 !important;
   display: inline-flex !important;
   align-items: center !important;
   gap: 5px !important;
@@ -386,6 +386,7 @@
   z-index: 5 !important;
   white-space: nowrap !important;
   border-radius: 4px !important;
+  transform: translateX(-50%) !important;
 }
 
 .aether-assistant__status-dot {
@@ -412,19 +413,20 @@
 }
 
 /* ===== MOBILE ===== */
-@media (max-width: 749px) {
+@media (max-width: 560px) {
   .aether-assistant__pet-stage {
     width: 70px !important;
     height: 70px !important;
   }
   
   .aether-assistant__panel {
-    left: 10px !important;
-    bottom: 80px !important;
-    right: 10px !important;
+    left: 0 !important;
+    bottom: calc(100% + 14px) !important;
+    right: auto !important;
     top: auto !important;
-    width: auto !important;
+    width: min(var(--aether-panel-width, 390px), calc(100vw - 20px)) !important;
     max-height: calc(100dvh - 100px) !important;
+    transform: translateX(-50%) scale(0.92) translateY(8px) !important;
   }
   
   .aether-assistant__header {

@@ -222,6 +222,17 @@
         --variant-pills-shadow-horizontal-offset: {{ settings.variant_pills_shadow_horizontal_offset }}px;
         --variant-pills-shadow-vertical-offset: {{ settings.variant_pills_shadow_vertical_offset }}px;
         --variant-pills-shadow-blur-radius: {{ settings.variant_pills_shadow_blur }}px;
+
+        --ned-accent-pink: {{ settings.ned_accent_pink }};
+        --ned-highlight-start: {{ settings.ned_highlight_start }};
+        --ned-highlight-end: {{ settings.ned_highlight_end }};
+        --ned-highlight-outline: {{ settings.ned_highlight_outline }};
+        --ned-global-motion-multiplier: {{ settings.ned_motion_multiplier | divided_by: 100.0 }};
+        --ned-motion-duration: {{ settings.ned_motion_duration }}ms;
+        --ned-motion-distance: {{ settings.ned_motion_distance }}px;
+        --ned-motion-scale-start: {{ settings.ned_motion_scale_start | divided_by: 100.0 }};
+        --ned-motion-blur-start: {{ settings.ned_motion_blur_start }}px;
+        --ned-motion-stagger-step: {{ settings.ned_motion_stagger_step | divided_by: 1000.0 }}s;
       }
 
       *,
@@ -259,6 +270,7 @@
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'new-era-halftone.css' | asset_url | stylesheet_tag }}
+    {{ 'new-era-editorial-motion.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
     {%- if settings.cart_type == 'drawer' -%}
@@ -302,8 +314,10 @@
 
     <style id="ned-global-button-system">
       :root {
-        --buttons-radius: 6px;
-        --buttons-radius-outset: 6px;
+        --buttons-radius: {{ settings.ned_global_button_radius }}px;
+        --buttons-radius-outset: {{ settings.ned_global_button_radius }}px;
+        --spacing-sections-desktop: {{ settings.ned_spacing_desktop }}px;
+        --spacing-sections-mobile: {{ settings.ned_spacing_mobile }}px;
       }
 
       .button,
@@ -313,11 +327,11 @@
       a[class*="-button-"],
       button[class*="-button-"] {
         min-width: 0 !important;
-        min-height: 40px !important;
-        padding: 10px 22px !important;
-        border-radius: 6px !important;
+        min-height: {{ settings.ned_global_button_min_height }}px !important;
+        padding: {{ settings.ned_global_button_padding_y }}px {{ settings.ned_global_button_padding_x }}px !important;
+        border-radius: {{ settings.ned_global_button_radius }}px !important;
         font-family: "Helvetica Neue", "Arial Narrow", Arial, sans-serif !important;
-        font-size: 13px !important;
+        font-size: {{ settings.ned_global_button_font_desktop }}px !important;
         font-weight: 500 !important;
         line-height: 1.2 !important;
         letter-spacing: 0 !important;
@@ -331,7 +345,7 @@
       .customer button::after,
       button.shopify-payment-button__button--unbranded::before,
       button.shopify-payment-button__button--unbranded::after {
-        border-radius: 6px !important;
+        border-radius: {{ settings.ned_global_button_radius }}px !important;
       }
 
       @media screen and (max-width: 749px) {
@@ -341,9 +355,9 @@
         button.shopify-payment-button__button--unbranded,
         a[class*="-button-"],
         button[class*="-button-"] {
-          min-height: 38px !important;
-          padding: 9px 18px !important;
-          font-size: 12px !important;
+          min-height: {{ settings.ned_global_button_min_height_mobile }}px !important;
+          padding: {{ settings.ned_global_button_padding_y_mobile }}px {{ settings.ned_global_button_padding_x_mobile }}px !important;
+          font-size: {{ settings.ned_global_button_font_mobile }}px !important;
         }
       }
     </style>
@@ -351,7 +365,11 @@
 
   <body
     class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}{% if settings.ned_site_halftone_enabled %} has-ned-site-halftone{% endif %}{% if settings.ned_site_halftone_enabled and settings.ned_site_halftone_motion %} has-ned-site-halftone-motion{% endif %}"
-    style="--ned-site-halftone-opacity:{{ settings.ned_site_halftone_opacity | divided_by: 100.0 }};--ned-site-halftone-size:{{ settings.ned_site_halftone_size }}px;--ned-site-halftone-speed:{{ settings.ned_site_halftone_speed }}s;--ned-site-halftone-shift:{{ settings.ned_site_halftone_distance }}px"
+    data-ned-motion="{{ settings.ned_motion_preset }}"
+    data-ned-motion-threshold="{{ settings.ned_motion_viewport_threshold | divided_by: 100.0 }}"
+    data-ned-motion-kinetic-collision="{{ settings.ned_motion_kinetic_collision }}"
+    data-ned-motion-obstacle-collision="{{ settings.ned_motion_obstacle_collision }}"
+    style="--ned-site-halftone-opacity:{{ settings.ned_site_halftone_opacity | divided_by: 100.0 }};--ned-site-halftone-size:{{ settings.ned_site_halftone_size }}px;--ned-site-halftone-speed:{{ settings.ned_site_halftone_speed }}s;--ned-site-halftone-shift:{{ settings.ned_site_halftone_distance }}px;--ned-pointer-strength:{{ settings.ned_pointer_strength | divided_by: 100.0 }};--ned-highlight-duration:{{ settings.ned_highlight_duration }}ms;--ned-motion-duration:{{ settings.ned_motion_duration }}ms;--ned-motion-distance:{{ settings.ned_motion_distance }}px;--ned-motion-scale-start:{{ settings.ned_motion_scale_start | divided_by: 100.0 }};--ned-motion-blur-start:{{ settings.ned_motion_blur_start }}px;--ned-motion-stagger-step:{{ settings.ned_motion_stagger_step | divided_by: 1000.0 }}s"
   >
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
@@ -436,11 +454,11 @@
               line-height: inherit !important;
                 letter-spacing: inherit !important;
                   text-transform: inherit !important;
-        background-image: linear-gradient(120deg, rgba(255,230,150,0.8), rgba(255,210,120,0.95));
+        background-image: linear-gradient(120deg, {{ settings.ned_highlight_start | color_modify: 'alpha', 0.82 }}, {{ settings.ned_highlight_end | color_modify: 'alpha', 0.95 }});
           background-size: 0% 55%;
             background-repeat: no-repeat;
               background-position: 0 90%;
-                transition: background-size 0.7s ease-out;
+                transition: background-size var(--ned-highlight-duration, 700ms) ease-out;
                 }
                 .ned-highlight.active {
                     background-size: 100% 55%;
@@ -451,25 +469,32 @@
                           position: absolute;
                             inset: -5px -8px;
                               border-radius: 50%;
-                                border: 2px solid rgba(255,210,120,0);
+                                border: 2px solid transparent;
                                   transform: scale(0.85);
                                     opacity: 0;
                                       pointer-events: none;
-                                        transition: transform 0.6s ease-out, opacity 0.5s ease-out, border-color 0.5s ease-out;
+                                        transition: transform var(--ned-highlight-duration, 700ms) ease-out, opacity var(--ned-highlight-duration, 700ms) ease-out, border-color var(--ned-highlight-duration, 700ms) ease-out;
                                         }
                                         .ned-highlight-circle.active::before {
                                             transform: scale(1);
                                               opacity: 1;
-                                                border-color: rgba(255,210,120,1);
+                                               border-color: {{ settings.ned_highlight_outline }};
                                                 }
+                    body[data-ned-motion="off"] .ned-highlight,
+                    body[data-ned-motion="off"] .ned-highlight-circle::before { transition: none; }
                                                 </style>
 <script>
-// NED Animated Highlights - Auto-wrap headings & observe highlight elements
+// NED Animated Highlights - wraps target words/headings and delegates reveal timing to the shared motion runtime.
 document.addEventListener('DOMContentLoaded', function() {
   var aiHeadings = document.querySelectorAll('[class*="ai-"] h2, [class*="ai-editorial-heading"], [class*="ned-services"] h2, .ai-sketchup-title');
   aiHeadings.forEach(function(el) {
     if (!el.querySelector('.ned-highlight-circle')) {
       el.innerHTML = '<span class="ned-highlight-circle">' + el.innerHTML + '</span>';
+      var ring = el.querySelector('.ned-highlight-circle');
+      if (ring) {
+        ring.setAttribute('data-ned-animate', 'true');
+        ring.setAttribute('data-ned-animation', 'clip-up');
+      }
     }
   });
 
@@ -482,22 +507,12 @@ document.addEventListener('DOMContentLoaded', function() {
           el.innerHTML = el.innerHTML.replace(new RegExp('(' + kw + ')', 'g'), '<span class="ned-highlight">$1</span>');
         }
       });
+      el.querySelectorAll('.ned-highlight').forEach(function(highlight) {
+        highlight.setAttribute('data-ned-animate', 'true');
+        highlight.setAttribute('data-ned-animation', 'clip-up');
+      });
     }
   });
-
-  var highlightElements = document.querySelectorAll('.ned-highlight, .ned-highlight-circle');
-  if (!highlightElements.length) return;
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('active');
-      } else {
-        entry.target.classList.remove('active');
-      }
-    });
-  }, { threshold: 0.4 });
-
-  highlightElements.forEach(function(el) { observer.observe(el); });
 });
 </script>
 <script src="{{ 'new-era-editorial-motion.js' | asset_url }}" defer="defer"></script>

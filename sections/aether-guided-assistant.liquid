@@ -42,12 +42,7 @@
           {%- capture aether_core_knowledge -%}
             {%- render 'aether-knowledge-items' -%}
           {%- endcapture -%}
-          {{- aether_core_knowledge
-            | replace: '/pages/services-page', '/pages/marketing-materials'
-            | replace: '/pages/design-process', '/pages/info'
-            | replace: '/pages/retainer', '/pages/retainer-services'
-            | replace: '"url":"/pages/podcast","linkLabel":"Visit the podcast"', '"url":"/pages/contact","linkLabel":"Ask about the podcast"'
-          -}}
+          {{- aether_core_knowledge -}}
           {%- for block in section.blocks -%}
             {%- unless forloop.first -%},{%- endunless -%}
             {

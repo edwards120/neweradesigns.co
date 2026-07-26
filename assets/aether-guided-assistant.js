@@ -76,6 +76,7 @@
 
       if (!this.launcher || !this.panel || !this.knowledge) return;
       this.bind();
+      this.applyStartingPosition();
       this.seedConversation();
       this.scheduleNudge();
       if (this.knowledge.bubbleEnabled !== false) {
@@ -123,6 +124,30 @@
       if (this.root.dataset.enableFlying !== 'false') {
         this.initFlyingScroll();
       }
+
+      this.handleResize = () => this.applyStartingPosition();
+      window.addEventListener('resize', this.handleResize, { passive: true });
+    }
+
+    applyStartingPosition() {
+      if (this.currentOffsetX || this.currentOffsetY) return;
+      if (window.innerWidth <= 560) {
+        this.root.style.left = '50%';
+        this.root.style.bottom = '24px';
+        this.root.style.top = 'auto';
+        return;
+      }
+
+      const anchor = document.querySelector(
+        '[id^="NedEditorialHero-"] .ned-editorial-hero__line--1 span, .ned-hero-title-top'
+      );
+      if (!anchor) return;
+      const rect = anchor.getBoundingClientRect();
+      const left = rect.left + (rect.width * 0.52);
+      const top = rect.top + (rect.height * 0.85);
+      this.root.style.left = `${Math.max(28, left)}px`;
+      this.root.style.top = `${Math.max(28, top)}px`;
+      this.root.style.bottom = 'auto';
     }
 
     initDrag() {

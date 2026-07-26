@@ -11,13 +11,14 @@
   class="ned-panel ned-panel--{{ section.settings.layout }}{% if section.settings.enable_motion %} has-ned-motion{% endif %}"
   id="NedPanel-{{ section.id }}"
   style="--panel-bg:{{ section.settings.background }};--panel-ink:{{ section.settings.text_color }};--panel-accent:{{ section.settings.accent }};--panel-pad:{{ section.settings.padding }}px;--panel-mobile-pad:{{ section.settings.mobile_padding }}px;--panel-min:{{ section.settings.min_height }}px;--panel-heading:{{ heading_font }};--panel-heading-min:{{ section.settings.mobile_heading_size }}px;--panel-heading-fluid:{{ section.settings.fluid_heading_size }}vw;--panel-heading-max:{{ section.settings.heading_size }}px;--panel-tracking:{{ section.settings.heading_tracking }}px;--panel-mobile-tracking:{{ section.settings.mobile_heading_tracking }}px;--panel-leading:{{ section.settings.heading_line_height }};--panel-heading-x:{{ section.settings.heading_x }}px;--panel-heading-y:{{ section.settings.heading_y }}px;--panel-body-size:{{ section.settings.body_size }}px;--panel-mobile-body-size:{{ section.settings.mobile_body_size }}px;--panel-body-width:{{ section.settings.body_width }}px;--panel-rule:{{ section.settings.rule_width }}px;--panel-motion:{{ section.settings.motion_speed }}ms;--panel-shift:{{ section.settings.motion_distance }}px"
+  data-ned-motion-root="true"
   {% if section.settings.enable_motion %}data-ned-reveal{% endif %}
 >
   <span class="ned-panel__frame" aria-hidden="true"></span>
   <div class="ned-panel__index" aria-hidden="true">{{ section.settings.index | escape }}</div>
   <div class="ned-panel__copy">
     {% if section.settings.eyebrow != blank %}<p class="ned-panel__eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}
-    <h2>{{ section.settings.heading | escape }}</h2>
+    <h2 data-ned-text-reveal="word">{{ section.settings.heading | escape }}</h2>
     {% if section.settings.body != blank %}<div class="ned-panel__body">{{ section.settings.body }}</div>{% endif %}
     {% if section.settings.button_label != blank %}<a href="{{ section.settings.button_link | default: routes.root_url }}" class="ned-panel__link">{{ section.settings.button_label | escape }} <span aria-hidden="true">→</span></a>{% endif %}
   </div>
