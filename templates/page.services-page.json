@@ -64,7 +64,11 @@
         "hero_body": "We develop brand, wayfinding, and environmental systems that reduce friction and make the physical environment perform.",
         "hero_button_label": "START A PROJECT",
         "hero_button_link": "",
-        "hero_image": "shopify://shop_images/IMG_0713.heic"
+        "hero_image": "shopify://shop_images/IMG_0713.heic",
+        "service_1_image": "shopify://shop_images/IMG_0713.heic",
+        "service_2_image": "shopify://shop_images/IMG_0374.heic",
+        "service_3_image": "shopify://shop_images/IMG_0953.heic",
+        "service_4_image": "shopify://shop_images/IMG_0951.heic"
       }
     }
   },
