@@ -132,7 +132,7 @@
         "header_mode": "overlay",
         "enable_sticky": true,
         "show_frame": false,
-        "background_color": "",
+        "background_color": "linear-gradient(180deg, rgba(255, 145, 129, 1), rgba(254, 91, 124, 1) 49%, rgba(255, 140, 162, 1) 100%)",
         "text_color": "#ffffff",
         "mobile_background_color": "#071a3a",
         "mobile_text_color": "#ffffff",
