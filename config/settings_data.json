@@ -150,13 +150,13 @@
       "aether-guided-assistant": {
         "type": "aether-guided-assistant",
         "settings": {
-          "enabled": false,
+          "enabled": true,
           "enable_drag": true,
           "character_size": 165,
-          "launcher_label": "Ask Aether",
+          "launcher_label": "Ask Pegasus",
           "eyebrow": "New Era studio guide",
           "title": "What can we build?",
-          "greeting": "Hey - I'm Aether. Ask me about Chris, New Era Designs, services, process, project fit, or what you are trying to build.",
+          "greeting": "Hey - I'm Pegasus. Ask me about Chris, New Era Designs, services, process, project fit, or what you are trying to build.",
           "placeholder": "Branding, signs, wayfinding...",
           "fallback": "That needs a human answer. Send the studio a short note and Chris will point you in the right direction.",
           "contact_url": "",
