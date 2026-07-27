@@ -1433,18 +1433,25 @@
       }
 
       setInitialPosition() {
-        const x = Math.min(this.initialX, this.bounds.maxX);
-        const y = Math.min(this.initialY, this.bounds.maxY);
-        this.flyX = x;
-        this.flyY = y;
-        this.launcher.style.left = x + 'px';
-        this.launcher.style.top = y + 'px';
-        this.targetX = x;
-        this.targetY = y;
-        this.scrollOffset = 0;
-        this.targetScrollOffset = 0;
-        this.isPositionedNearPanel = false;
-      }
+  // Ensure we have bounds
+  this.updateBounds();
+  
+  const x = Math.max(this.padding, Math.min(this.bounds.maxX, this.initialX));
+  const y = Math.max(this.padding + 20, Math.min(this.bounds.maxY, this.initialY));
+  
+  this.flyX = x;
+  this.flyY = y;
+  this.launcher.style.left = x + 'px';
+  this.launcher.style.top = y + 'px';
+  this.targetX = x;
+  this.targetY = y;
+  this.scrollOffset = 0;
+  this.targetScrollOffset = 0;
+  this.isPositionedNearPanel = false;
+  
+  // Log position for debugging
+  console.log('Pegasus positioned at:', x, y);
+}
 
       constrainToBounds() {
         const x = Math.max(this.bounds.minX, Math.min(this.bounds.maxX, this.flyX));
