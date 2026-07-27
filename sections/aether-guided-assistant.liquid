@@ -1945,27 +1945,38 @@
     }
 
     function initializePegasus(sectionRoot = document) {
-      const assistant = sectionRoot.querySelector
-        ? sectionRoot.querySelector(`#AetherAssistant-${CSS.escape(String(sectionId))}`)
-        : null;
+  const assistant = sectionRoot.querySelector
+    ? sectionRoot.querySelector(`#AetherAssistant-${CSS.escape(String(sectionId))}`)
+    : null;
 
-      if (!assistant || assistant.dataset.flyReady === 'true') return;
+  if (!assistant || assistant.dataset.flyReady === 'true') return;
 
-      assistant.dataset.flyReady = 'true';
-      
-      requestAnimationFrame(() => {
+  assistant.dataset.flyReady = 'true';
+  
+  // Wait for page to be fully loaded before positioning
+  if (document.readyState === 'complete') {
+    setTimeout(() => {
+      new PegasusFlyingAssistant(assistant);
+    }, 300);
+  } else {
+    window.addEventListener('load', () => {
+      setTimeout(() => {
         new PegasusFlyingAssistant(assistant);
-      });
-    }
+      }, 300);
+    }, { once: true });
+  }
+}
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => initializePegasus(), { once: true });
-    } else {
-      initializePegasus();
-    }
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => initializePegasus(), { once: true });
+} else {
+  initializePegasus();
+}
 
-    document.addEventListener('shopify:section:load', (event) => {
-      initializePegasus(event.target);
-    });
+// Handle Shopify section loads
+document.addEventListener('shopify:section:load', (event) => {
+  initializePegasus(event.target);
+});
   })();
 </script>
