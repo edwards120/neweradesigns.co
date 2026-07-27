@@ -132,7 +132,7 @@
         "header_mode": "solid",
         "enable_sticky": true,
         "show_frame": true,
-        "background_color": "#071a3a",
+        "background_color": "",
         "text_color": "#ffffff",
         "mobile_background_color": "#071a3a",
         "mobile_text_color": "#ffffff",
@@ -239,11 +239,11 @@
             "desktop_width_percent": 100,
             "dot_size": 4,
             "spacing": 12,
-            "primary_color": "#FCA311",
-            "secondary_color": "#14213D",
+            "primary_color": "#fca311",
+            "secondary_color": "#14213d",
             "interaction_radius": 50,
             "return_speed": 0.1,
-            "background_color": "#0C1A39"
+            "background_color": "#0c1a39"
           },
           "blocks": {}
         }
@@ -268,7 +268,7 @@
             "text_color": "#ffffff",
             "button_label": "",
             "button_link": "",
-            "button_bg_color": "#FCA311",
+            "button_bg_color": "#fca311",
             "button_text_color": "#000000",
             "background_white_mode": "transparent",
             "overlay_opacity": 40,
