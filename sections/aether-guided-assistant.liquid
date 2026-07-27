@@ -3,32 +3,9 @@
 {%- if section.settings.enabled -%}
   <aside
     id="AetherAssistant-{{ section.id }}"
-    class="aether-assistant{% if request.page_type == 'index' %} is-homepage{% endif %}{% if section.settings.enable_drag %} is-draggable{% endif %}"
+    class="aether-assistant"
     data-aether-assistant
     data-enable-drag="{{ section.settings.enable_drag }}"
-    data-enable-flying="{{ section.settings.enable_flying_scroll }}"
-    data-start-mode="{{ section.settings.start_position_mode }}"
-    data-start-x="{{ section.settings.start_x }}"
-    data-start-y="{{ section.settings.start_y }}"
-    data-start-mobile-x="{{ section.settings.start_mobile_x }}"
-    data-start-mobile-y="{{ section.settings.start_mobile_y }}"
-    style="
-      --aether-navy: {{ section.settings.navy }};
-      --aether-ink: {{ section.settings.ink }};
-      --aether-ivory: {{ section.settings.ivory }};
-      --aether-blue: {{ section.settings.blue }};
-      --aether-yellow: {{ section.settings.yellow }};
-      --aether-coral: {{ section.settings.coral }};
-      --aether-panel-width: {{ section.settings.panel_width }}px;
-      --aether-speed: {{ section.settings.motion_speed }}ms;
-      --aether-character-size: {{ section.settings.character_size }}px;
-      --aether-character-size-mobile: {{ section.settings.character_size_mobile }}px;
-      --aether-fly-speed: {{ section.settings.fly_speed }};
-      --aether-scroll-sensitivity: {{ section.settings.scroll_sensitivity }};
-      --aether-bubble-color: {{ section.settings.bubble_bg_color }};
-      --aether-bubble-text-color: {{ section.settings.bubble_text_color }};
-      --aether-panel-radius: {{ section.settings.panel_border_radius }}px;
-    "
   >
     <script type="application/json" data-aether-knowledge>
       {
@@ -61,19 +38,6 @@
       }
     </script>
 
-    <!-- Status Badge -->
-    {%- if section.settings.show_status_badge and section.settings.status_badge_text != blank -%}
-      <span class="aether-assistant__status-badge">
-        <span class="aether-assistant__status-dot"></span>
-        {{ section.settings.status_badge_text | escape }}
-      </span>
-    {%- endif -%}
-
-    <!-- Speech Bubble -->
-    <div class="aether-assistant__bubble" data-aether-bubble aria-hidden="true">
-      <span class="aether-assistant__bubble-text">{{ section.settings.launcher_label | escape }}</span>
-    </div>
-
     <!-- Launcher Button -->
     <button
       class="aether-assistant__launcher"
@@ -81,7 +45,6 @@
       data-aether-launcher
       aria-controls="AetherPanel-{{ section.id }}"
       aria-expanded="false"
-      aria-haspopup="dialog"
       aria-label="{{ section.settings.launcher_label | escape }}"
     >
       <span class="aether-assistant__pet-stage" aria-hidden="true">
@@ -185,14 +148,6 @@
       "type": "checkbox",
       "id": "enable_drag",
       "label": "Enable dragging",
-      "info": "Users can click and drag Pegasus anywhere",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_flying_scroll",
-      "label": "Enable flying animation",
-      "info": "Pegasus will gently float and follow scroll",
       "default": true
     },
     {
@@ -202,8 +157,7 @@
     {
       "type": "image_picker",
       "id": "character_image",
-      "label": "Custom character image",
-      "info": "Upload your own Pegasus image (PNG or animated WebP)"
+      "label": "Custom character image"
     },
     {
       "type": "range",
@@ -212,189 +166,14 @@
       "max": 200,
       "step": 5,
       "unit": "px",
-      "label": "Character size (desktop)",
+      "label": "Character size",
       "default": 110
-    },
-    {
-      "type": "range",
-      "id": "character_size_mobile",
-      "min": 40,
-      "max": 120,
-      "step": 5,
-      "unit": "px",
-      "label": "Character size (mobile)",
-      "default": 75
-    },
-    {
-      "type": "range",
-      "id": "fly_speed",
-      "min": 0.1,
-      "max": 1.5,
-      "step": 0.1,
-      "label": "Flight speed",
-      "default": 0.5,
-      "info": "How fast Pegasus moves around"
-    },
-    {
-      "type": "range",
-      "id": "scroll_sensitivity",
-      "min": 0.1,
-      "max": 1.0,
-      "step": 0.1,
-      "label": "Scroll follow sensitivity",
-      "default": 0.4,
-      "info": "How much Pegasus follows your scroll"
-    },
-    {
-      "type": "header",
-      "content": "📍 Pegasus Screen Controls"
-    },
-    {
-      "type": "select",
-      "id": "start_position_mode",
-      "label": "Start position source",
-      "options": [
-        { "value": "auto", "label": "Auto (near hero heading)" },
-        { "value": "manual", "label": "Manual (use values below)" }
-      ],
-      "default": "manual"
-    },
-    {
-      "type": "range",
-      "id": "start_desktop_x",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "%",
-      "label": "Desktop start X",
-      "default": 50
-    },
-    {
-  "type": "header",
-  "content": "📍 Start Position",
-  "info": "Set where Pegasus appears initially"
-},
-{
-  "type": "range",
-  "id": "start_x",
-  "min": 0,
-  "max": 100,
-  "step": 1,
-  "unit": "%",
-  "label": "Horizontal position",
-  "default": 50
-},
-{
-  "type": "range",
-  "id": "start_y",
-  "min": 0,
-  "max": 100,
-  "step": 1,
-  "unit": "%",
-  "label": "Vertical position",
-  "default": 30
-},
-    {
-      "type": "range",
-      "id": "start_desktop_y",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "%",
-      "label": "Desktop start Y",
-      "default": 8
-    },
-    {
-      "type": "range",
-      "id": "start_mobile_x",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "%",
-      "label": "Mobile start X",
-      "default": 50
-    },
-    {
-      "type": "range",
-      "id": "start_mobile_y",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "%",
-      "label": "Mobile start Y",
-      "default": 10
     },
     {
       "type": "text",
       "id": "launcher_label",
-      "label": "Speech bubble text",
+      "label": "Launcher label",
       "default": "Ask Pegasus"
-    },
-    {
-      "type": "header",
-      "content": "🟢 Status Badge"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_status_badge",
-      "label": "Show status badge",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "status_badge_text",
-      "label": "Status badge text",
-      "default": "STUDIO OPEN • READY WHEN YOU ARE"
-    },
-    {
-      "type": "header",
-      "content": "💬 Speech Bubbles"
-    },
-    {
-      "type": "checkbox",
-      "id": "bubble_enabled",
-      "label": "Show random speech bubbles",
-      "default": true
-    },
-    {
-      "type": "textarea",
-      "id": "bubble_messages",
-      "label": "Bubble messages",
-      "info": "One per line - these appear next to Pegasus",
-      "default": "👋 HEY - NEED A HAND?\n✨ TALK TO ME.\n🦄 TELL ME WHAT YOU'RE BUILDING.\n🚀 WE'RE OPEN - ASK ME ANYTHING.\n💡 LET ME HELP YOU FIND THE RIGHT SERVICE.\n🌟 CURIOUS ABOUT NEW ERA?\n💰 NEED A QUOTE? START HERE.\n🎯 ASK ME ABOUT CHRIS OR THE STUDIO.\n🏆 I KNOW EVERYTHING ABOUT NEW ERA.\n🔥 WHAT BRAND PROBLEM CAN I SOLVE?"
-    },
-    {
-      "type": "range",
-      "id": "bubble_delay",
-      "min": 3,
-      "max": 30,
-      "step": 1,
-      "unit": "s",
-      "label": "Bubble interval",
-      "default": 8,
-      "info": "How often a new bubble appears"
-    },
-    {
-      "type": "range",
-      "id": "bubble_duration",
-      "min": 3,
-      "max": 12,
-      "step": 1,
-      "unit": "s",
-      "label": "Bubble display duration",
-      "default": 5
-    },
-    {
-      "type": "color",
-      "id": "bubble_bg_color",
-      "label": "Bubble background",
-      "default": "#030a18"
-    },
-    {
-      "type": "color",
-      "id": "bubble_text_color",
-      "label": "Bubble text color",
-      "default": "#f6f0df"
     },
     {
       "type": "header",
@@ -445,8 +224,7 @@
       "type": "text",
       "id": "footer_text",
       "label": "Footer text",
-      "default": "Powered by New Era Designs",
-      "info": "Shown at the bottom of the panel"
+      "default": "Powered by New Era Designs"
     },
     {
       "type": "range",
@@ -455,28 +233,44 @@
       "max": 520,
       "step": 10,
       "unit": "px",
-      "label": "Desktop panel width",
+      "label": "Panel width",
       "default": 390
     },
     {
-      "type": "range",
-      "id": "panel_border_radius",
-      "min": 0,
-      "max": 30,
-      "step": 2,
-      "unit": "px",
-      "label": "Panel border radius",
-      "default": 12
+      "type": "header",
+      "content": "💬 Speech Bubbles"
+    },
+    {
+      "type": "checkbox",
+      "id": "bubble_enabled",
+      "label": "Show random speech bubbles",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "bubble_messages",
+      "label": "Bubble messages",
+      "default": "👋 HEY - NEED A HAND?\n✨ TALK TO ME.\n🦄 TELL ME WHAT YOU'RE BUILDING."
     },
     {
       "type": "range",
-      "id": "motion_speed",
-      "min": 100,
-      "max": 320,
-      "step": 20,
-      "unit": "ms",
-      "label": "Animation speed",
-      "default": 180
+      "id": "bubble_delay",
+      "min": 3,
+      "max": 30,
+      "step": 1,
+      "unit": "s",
+      "label": "Bubble interval",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "bubble_duration",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "label": "Bubble display duration",
+      "default": 5
     },
     {
       "type": "header",
@@ -541,8 +335,7 @@
           "type": "textarea",
           "id": "keywords",
           "label": "Matching keywords",
-          "info": "Separate with spaces or commas",
-          "default": "services branding signs signage wayfinding environmental graphics design"
+          "default": "services branding signs signage wayfinding"
         },
         {
           "type": "url",
@@ -560,725 +353,399 @@
   ],
   "presets": [
     {
-      "name": "Pegasus AI Assistant",
-      "blocks": [
-        {
-          "type": "question",
-          "settings": {
-            "question": "What can New Era Designs do for me?",
-            "answer": "We create brand, wayfinding, signage, environmental graphics, and visual systems that connect identity to physical space.",
-            "keywords": "services branding signs signage wayfinding environmental graphics design",
-            "url": "/pages/marketing-materials",
-            "link_label": "Explore services"
-          }
-        },
-        {
-          "type": "question",
-          "settings": {
-            "question": "Do you design signage and wayfinding?",
-            "answer": "Yes. Projects can include strategy, sign families, location planning, visual standards, environmental graphics, and presentation-ready concepts.",
-            "keywords": "sign signage signs wayfinding directions environmental retail office campus",
-            "url": "/pages/marketing-materials",
-            "link_label": "See the service"
-          }
-        },
-        {
-          "type": "question",
-          "settings": {
-            "question": "Can you build a complete brand system?",
-            "answer": "Yes. New Era can shape the identity, typography, color, graphic language, marketing materials, and the system that keeps it consistent.",
-            "keywords": "brand branding identity logo typography colors marketing system strategy",
-            "url": "/pages/cases",
-            "link_label": "View selected work"
-          }
-        },
-        {
-          "type": "question",
-          "settings": {
-            "question": "How does a project start?",
-            "answer": "Start with a short conversation about the goal, audience, space, timing, and budget.",
-            "keywords": "start process price pricing budget quote proposal timeline consultation",
-            "url": "/pages/contact",
-            "link_label": "Start a project"
-          }
-        },
-        {
-          "type": "question",
-          "settings": {
-            "question": "Do you work outside Houston?",
-            "answer": "Yes. New Era is Houston-based and can collaborate remotely with clients in other cities.",
-            "keywords": "houston location remote national travel outside city",
-            "url": "/pages/contact",
-            "link_label": "Ask about your location"
-          }
-        }
-      ]
+      "name": "Pegasus AI Assistant"
     }
   ]
 }
 {% endschema %}
 
 <style>
- /* ========================================
-   COMPLETE STYLES - FIXED BOUNDARIES
-   ======================================== */
+  /* ============================================
+     FIXED POSITIONING - PEGASUS STARTS AT TOP
+     ============================================ */
 
-#AetherAssistant-{{ section.id }} {
-  position: fixed !important;
-  right: auto !important;
-  bottom: auto !important;
-  left: 50% !important;
-  top: 50% !important;
-  z-index: 60;
-  margin: 0;
-  padding: 0;
-  isolation: isolate;
-  pointer-events: none;
-  width: 0;
-  height: 0;
-  overflow: visible;
-  font-family: system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
-  transform: translate(-50%, -50%) !important;
-}
-
-/* ===== LAUNCHER ===== */
-#AetherAssistant-{{ section.id }} .aether-assistant__launcher {
-  position: absolute !important;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  width: auto !important;
-  height: auto !important;
-  display: inline-block !important;
-  cursor: pointer !important;
-  border-radius: 50% !important;
-  pointer-events: auto !important;
-  left: 0 !important;
-  top: 0 !important;
-  transform: translate(-50%, -50%) !important;
-  transition: none !important;
-  will-change: transform, left, top;
-  z-index: 10;
-}
-
-  #AetherAssistant-{{ section.id }} .aether-assistant__launcher:focus-visible {
-    outline: 2px solid var(--aether-blue);
-    outline-offset: 4px;
-    border-radius: 50%;
+  #AetherAssistant-{{ section.id }} {
+    position: fixed !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: 50% !important;
+    top: 80px !important;
+    z-index: 9999 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    isolation: isolate !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: visible !important;
+    font-family: system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    transform: translateX(-50%) !important;
   }
 
-  /* ===== CHARACTER - SHADOW REMOVED ===== */
+  /* ===== LAUNCHER ===== */
+  #AetherAssistant-{{ section.id }} .aether-assistant__launcher {
+    position: absolute !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    display: inline-block !important;
+    cursor: pointer !important;
+    border-radius: 50% !important;
+    pointer-events: auto !important;
+    left: 0 !important;
+    top: 0 !important;
+    transform: translateX(-50%) !important;
+    transition: none !important;
+    z-index: 10 !important;
+  }
+
   #AetherAssistant-{{ section.id }} .aether-assistant__pet-stage {
-    display: block;
-    width: var(--aether-character-size, 110px);
-    height: var(--aether-character-size, 110px);
-    transform-origin: 50% 50%;
-    /* filter: drop-shadow(0 4px 12px rgba(3, 10, 24, 0.15)); */  /* <-- SHADOW REMOVED */
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    animation: aether-float-breathe 3.6s ease-in-out infinite;
-    will-change: transform;
-    border-radius: 50%;
+    display: block !important;
+    width: {{ section.settings.character_size }}px !important;
+    height: {{ section.settings.character_size }}px !important;
+    transform-origin: 50% 50% !important;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    animation: aether-float-breathe 3.6s ease-in-out infinite !important;
+    border-radius: 50% !important;
     background: transparent !important;
   }
 
-  #AetherAssistant-{{ section.id }} .aether-assistant__pet-stage:hover {
-    transform: scale(1.08) !important;
-  }
-
   #AetherAssistant-{{ section.id }} .aether-assistant__pet {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: contain;
-    border-radius: 50%;
-    image-rendering: auto;
-    -webkit-user-drag: none;
-    user-drag: none;
-  }
-
-  /* ===== DRAGGING ===== */
-  #AetherAssistant-{{ section.id }}.is-dragging .aether-assistant__pet-stage {
-    animation: none !important;
-    transform: scale(1.06) !important;
-    cursor: grabbing !important;
-  }
-
-  #AetherAssistant-{{ section.id }}.is-dragging {
-    cursor: grabbing !important;
-  }
-
-  /* ===== FLYING ===== */
-  #AetherAssistant-{{ section.id }}.is-flying .aether-assistant__pet-stage {
-    animation: aether-flying-bounce 1.8s ease-in-out infinite;
-  }
-
-  /* ===== STATUS BADGE ===== */
-  #AetherAssistant-{{ section.id }} .aether-assistant__status-badge {
-    position: absolute;
-    top: -10px;
-    right: -6px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 3px 10px;
-    background: var(--aether-ink);
-    color: #55f396;
-    font: 800 7px/1 'Helvetica Neue', Arial, sans-serif;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border: 1px solid var(--aether-ivory);
-    box-shadow: 2px 2px 0 rgba(3, 10, 24, 0.2);
-    pointer-events: none;
-    z-index: 5;
-    white-space: nowrap;
-    border-radius: 4px;
-  }
-
-  #AetherAssistant-{{ section.id }} .aether-assistant__status-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: #55f396;
-    box-shadow: 0 0 6px #55f396;
-    animation: aether-dot-pulse 1.8s ease-in-out infinite;
-    flex-shrink: 0;
-  }
-
-  @keyframes aether-dot-pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.3; transform: scale(0.7); }
-  }
-
-  /* ===== SPEECH BUBBLE ===== */
-  #AetherAssistant-{{ section.id }} .aether-assistant__bubble {
-    position: absolute;
-    bottom: calc(100% + 14px);
-    right: -6px;
-    background: var(--aether-bubble-bg-color, var(--aether-ink));
-    color: var(--aether-bubble-text-color, var(--aether-ivory));
-    padding: 0.6rem 1rem;
-    border-radius: 14px 14px 4px 14px;
-    max-width: min(18rem, calc(100vw - 2rem));
-    font-size: 0.8rem;
-    font-weight: 700;
-    line-height: 1.3;
-    box-shadow: 0 4px 16px rgba(3, 10, 24, 0.2);
-    border: 1.5px solid var(--aether-ivory);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    transform: translateY(-0.5rem) scale(0.92);
-    pointer-events: none;
-    text-wrap: balance;
-    z-index: 10;
-  }
-
-  #AetherAssistant-{{ section.id }} .aether-assistant__bubble::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    right: 24px;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 8px solid var(--aether-bubble-bg-color, var(--aether-ink));
-  }
-
-  #AetherAssistant-{{ section.id }} .aether-assistant__bubble.is-visible {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0) scale(1);
-  }
-
-  #AetherAssistant-{{ section.id }}.is-open .aether-assistant__bubble {
-    opacity: 0 !important;
-    visibility: hidden !important;
-  }
-
-  #AetherAssistant-{{ section.id }}.is-open {
-    z-index: 80;
-  }
-
-  /* ===== ANIMATIONS ===== */
-  @keyframes aether-float-breathe {
-    0%, 100% {
-      transform: translate3d(0, 0, 0) rotate(-0.5deg) scale(1);
-    }
-    25% {
-      transform: translate3d(2px, -6px, 0) rotate(1deg) scale(1.01);
-    }
-    50% {
-      transform: translate3d(-2px, -10px, 0) rotate(-1deg) scale(0.99);
-    }
-    75% {
-      transform: translate3d(1px, -5px, 0) rotate(0.5deg) scale(1.01);
-    }
-  }
-
-  @keyframes aether-flying-bounce {
-    0%, 100% {
-      transform: translate3d(0, 0, 0) rotate(-2.5deg) scale(1);
-    }
-    25% {
-      transform: translate3d(5px, -14px, 0) rotate(3.5deg) scale(1.05);
-    }
-    50% {
-      transform: translate3d(-4px, -20px, 0) rotate(-3.5deg) scale(0.96);
-    }
-    75% {
-      transform: translate3d(4px, -10px, 0) rotate(2.5deg) scale(1.04);
-    }
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    object-fit: contain !important;
+    border-radius: 50% !important;
   }
 
   /* ===== PANEL ===== */
   #AetherAssistant-{{ section.id }} .aether-assistant__panel {
-    position: fixed;
-    right: clamp(1rem, 2.5vw, 2.5rem);
-    bottom: clamp(1rem, 2.5vw, 2.5rem);
-    width: min(var(--aether-panel-width, 390px), calc(100vw - 2rem));
-    max-height: min(640px, calc(100dvh - 120px));
-    background: var(--aether-navy);
-    border: 2px solid var(--aether-ivory);
-    border-radius: var(--aether-panel-radius, 12px);
-    box-shadow: 12px 12px 0 var(--aether-ink), 0 12px 40px rgba(3, 10, 24, 0.25);
-    display: grid;
-    grid-template-rows: auto minmax(120px, 1fr) auto auto auto;
-    overflow: hidden;
-    transform-origin: bottom right;
-    transform: scale(0.92) translateY(12px);
-    opacity: 0;
-    visibility: hidden;
+    position: fixed !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: 50% !important;
+    top: 50% !important;
+    width: min({{ section.settings.panel_width }}px, calc(100vw - 40px)) !important;
+    max-height: min(600px, calc(100dvh - 120px)) !important;
+    background: var(--aether-navy, #071c3f) !important;
+    border: 2px solid var(--aether-ivory, #f6f0df) !important;
+    border-radius: 12px !important;
+    box-shadow: 12px 12px 0 var(--aether-ink, #030a18), 0 12px 40px rgba(0,0,0,0.25) !important;
+    display: none !important;
+    grid-template-rows: auto 1fr auto auto auto !important;
+    overflow: hidden !important;
+    transform: translate(-50%, -50%) scale(0.92) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
     transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), 
                 opacity 0.3s ease, 
-                visibility 0.3s ease;
-    pointer-events: none;
-    z-index: 100;
-  }
-
-  #AetherAssistant-{{ section.id }} .aether-assistant__panel:not([hidden]) {
-    display: grid;
+                visibility 0.3s ease !important;
+    pointer-events: none !important;
+    z-index: 100 !important;
   }
 
   #AetherAssistant-{{ section.id }}.is-open .aether-assistant__panel {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    display: grid !important;
   }
 
-  /* Panel Header */
+  /* ===== PANEL HEADER ===== */
   #AetherAssistant-{{ section.id }} .aether-assistant__header {
-    display: grid;
-    grid-template-columns: 48px 1fr auto;
-    gap: 12px;
-    align-items: center;
-    padding: 16px 18px 14px;
-    background: rgba(3, 10, 24, 0.85);
-    border-bottom: 1px solid rgba(246, 240, 223, 0.2);
+    display: grid !important;
+    grid-template-columns: 42px 1fr auto !important;
+    gap: 10px !important;
+    align-items: center !important;
+    padding: 14px 16px !important;
+    background: rgba(3,10,24,0.85) !important;
+    border-bottom: 1px solid rgba(246,240,223,0.2) !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__header-pet {
-    width: 48px;
-    height: 48px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 2px solid var(--aether-yellow);
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    border: 2px solid var(--aether-yellow, #ffe711) !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__header-pet img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 50%;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__eyebrow {
-    margin: 0 0 2px;
-    color: var(--aether-yellow);
-    font-size: 9px;
-    font-weight: 900;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
+    margin: 0 0 2px !important;
+    color: var(--aether-yellow, #ffe711) !important;
+    font-size: 8px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.15em !important;
+    text-transform: uppercase !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__title {
-    margin: 0;
-    color: var(--aether-ivory);
-    font-size: clamp(18px, 3.5vw, 26px);
-    font-weight: 950;
-    letter-spacing: -0.03em;
-    line-height: 1;
-    text-transform: uppercase;
+    margin: 0 !important;
+    color: var(--aether-ivory, #f6f0df) !important;
+    font-size: 20px !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1 !important;
+    text-transform: uppercase !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__close {
-    display: grid;
-    width: 34px;
-    height: 34px;
-    place-items: center;
-    border: 1.5px solid var(--aether-ivory);
-    border-radius: 8px;
-    background: transparent;
-    color: var(--aether-ivory);
-    cursor: pointer;
-    font-size: 20px;
-    line-height: 1;
-    transition: background 0.2s, color 0.2s, transform 0.2s;
-    flex-shrink: 0;
+    display: grid !important;
+    width: 32px !important;
+    height: 32px !important;
+    place-items: center !important;
+    border: 1.5px solid var(--aether-ivory, #f6f0df) !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    color: var(--aether-ivory, #f6f0df) !important;
+    cursor: pointer !important;
+    font-size: 18px !important;
+    transition: background 0.2s, color 0.2s, transform 0.2s !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__close:hover {
-    background: var(--aether-coral);
-    color: var(--aether-ink);
-    transform: rotate(90deg);
+    background: var(--aether-coral, #ff7064) !important;
+    color: var(--aether-ink, #030a18) !important;
+    transform: rotate(90deg) !important;
   }
 
-  /* Messages */
+  /* ===== MESSAGES ===== */
   #AetherAssistant-{{ section.id }} .aether-assistant__messages {
-    padding: 14px 16px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-height: 120px;
-    max-height: 340px;
-    background: radial-gradient(circle at center, rgba(246, 240, 223, 0.04) 0 1px, transparent 1.4px) 0 0 / 12px 12px, var(--aether-navy);
-    scroll-behavior: smooth;
+    padding: 12px 14px !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    min-height: 100px !important;
+    max-height: 300px !important;
+    background: radial-gradient(circle at center, rgba(246,240,223,0.03) 0 1px, transparent 1.4px) 0 0 / 12px 12px, var(--aether-navy, #071c3f) !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__messages::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  #AetherAssistant-{{ section.id }} .aether-assistant__messages::-webkit-scrollbar-track {
-    background: rgba(246, 240, 223, 0.08);
+    width: 3px !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__messages::-webkit-scrollbar-thumb {
-    background: var(--aether-yellow);
-    border-radius: 4px;
+    background: var(--aether-yellow, #ffe711) !important;
+    border-radius: 4px !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__message {
-    max-width: 88%;
-    padding: 10px 14px;
-    background: rgba(3, 10, 24, 0.85);
-    border: 1px solid rgba(246, 240, 223, 0.35);
-    border-radius: 12px;
-    color: var(--aether-ivory);
-    font-size: 13px;
-    line-height: 1.5;
-    animation: aether-message-in 0.25s cubic-bezier(0.2, 0.85, 0.3, 1.15) both;
-    word-wrap: break-word;
+    max-width: 88% !important;
+    padding: 8px 12px !important;
+    background: rgba(3,10,24,0.85) !important;
+    border: 1px solid rgba(246,240,223,0.3) !important;
+    border-radius: 10px !important;
+    color: var(--aether-ivory, #f6f0df) !important;
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
+    animation: aether-message-in 0.25s cubic-bezier(0.2,0.85,0.3,1.15) both !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__message--visitor {
-    align-self: flex-end;
-    background: var(--aether-yellow);
-    border-color: var(--aether-yellow);
-    color: var(--aether-ink);
-    font-weight: 700;
-    border-radius: 12px 12px 4px 12px;
+    align-self: flex-end !important;
+    background: var(--aether-yellow, #ffe711) !important;
+    border-color: var(--aether-yellow, #ffe711) !important;
+    color: var(--aether-ink, #030a18) !important;
+    font-weight: 700 !important;
+    border-radius: 10px 10px 4px 10px !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__message--assistant {
-    border-radius: 12px 12px 12px 4px;
+    border-radius: 10px 10px 10px 4px !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__message a {
-    display: inline-block;
-    margin-top: 6px;
-    color: var(--aether-yellow);
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border-bottom: 2px solid currentColor;
-    transition: opacity 0.2s;
-  }
-
-  #AetherAssistant-{{ section.id }} .aether-assistant__message a:hover {
-    opacity: 0.7;
-  }
-
-  #AetherAssistant-{{ section.id }} .aether-assistant__message--visitor a {
-    color: var(--aether-blue);
+    display: inline-block !important;
+    margin-top: 4px !important;
+    color: var(--aether-yellow, #ffe711) !important;
+    font-size: 10px !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    text-decoration: none !important;
+    border-bottom: 2px solid currentColor !important;
   }
 
   @keyframes aether-message-in {
-    from { opacity: 0; transform: translateY(8px) scale(0.96); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    from { opacity:0; transform:translateY(6px) scale(0.96); }
+    to { opacity:1; transform:translateY(0) scale(1); }
   }
 
-  /* Quick Questions */
+  /* ===== QUICK QUESTIONS ===== */
   #AetherAssistant-{{ section.id }} .aether-assistant__questions {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    padding: 10px 14px;
-    border-top: 1px solid rgba(246, 240, 223, 0.1);
-    scrollbar-width: none;
+    display: flex !important;
+    gap: 5px !important;
+    overflow-x: auto !important;
+    padding: 8px 12px !important;
+    border-top: 1px solid rgba(246,240,223,0.08) !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__questions::-webkit-scrollbar {
-    display: none;
+    display: none !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__question {
-    flex: 0 0 auto;
-    max-width: 220px;
-    padding: 7px 12px;
-    background: rgba(7, 28, 63, 0.9);
-    border: 1px solid var(--aether-ivory);
-    border-radius: 20px;
-    color: var(--aether-ivory);
-    font: 700 10px/1.2 'Helvetica Neue', Arial, sans-serif;
-    cursor: pointer;
-    text-align: left;
-    transition: background 0.25s, color 0.25s, transform 0.25s, box-shadow 0.25s;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    flex: 0 0 auto !important;
+    max-width: 180px !important;
+    padding: 5px 10px !important;
+    background: rgba(7,28,63,0.9) !important;
+    border: 1px solid var(--aether-ivory, #f6f0df) !important;
+    border-radius: 16px !important;
+    color: var(--aether-ivory, #f6f0df) !important;
+    font: 700 9px/1.2 Arial, sans-serif !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    transition: background 0.2s, color 0.2s, transform 0.2s !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__question:hover {
-    background: var(--aether-yellow);
-    color: var(--aether-ink);
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 4px 12px rgba(255, 231, 17, 0.15);
+    background: var(--aether-yellow, #ffe711) !important;
+    color: var(--aether-ink, #030a18) !important;
+    transform: translateY(-2px) scale(1.02) !important;
   }
 
-  #AetherAssistant-{{ section.id }} .aether-assistant__question:active {
-    transform: scale(0.96);
-  }
-
-  /* Form */
+  /* ===== FORM ===== */
   #AetherAssistant-{{ section.id }} .aether-assistant__form {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    border-top: 1px solid var(--aether-ivory);
-    background: rgba(3, 10, 24, 0.3);
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    border-top: 1px solid var(--aether-ivory, #f6f0df) !important;
+    background: rgba(3,10,24,0.3) !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__input {
-    padding: 12px 16px;
-    background: transparent;
-    border: 0;
-    color: var(--aether-ivory);
-    font: 600 13px/1.2 'Helvetica Neue', Arial, sans-serif;
-    outline: none;
-    min-width: 0;
+    padding: 10px 14px !important;
+    background: transparent !important;
+    border: 0 !important;
+    color: var(--aether-ivory, #f6f0df) !important;
+    font: 600 12px/1.2 Arial, sans-serif !important;
+    outline: none !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__input::placeholder {
-    color: rgba(246, 240, 223, 0.4);
+    color: rgba(246,240,223,0.4) !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__input:focus {
-    box-shadow: inset 0 -2.5px 0 var(--aether-blue);
+    box-shadow: inset 0 -2px 0 var(--aether-blue, #265dff) !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__submit {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 18px;
-    background: var(--aether-yellow);
-    border: 0;
-    border-left: 1px solid var(--aether-ivory);
-    color: var(--aether-ink);
-    font: 900 10px/1 'Helvetica Neue', Arial, sans-serif;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.25s, color 0.25s, transform 0.15s;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 10px 14px !important;
+    background: var(--aether-yellow, #ffe711) !important;
+    border: 0 !important;
+    border-left: 1px solid var(--aether-ivory, #f6f0df) !important;
+    color: var(--aether-ink, #030a18) !important;
+    font: 900 9px/1 Arial, sans-serif !important;
+    text-transform: uppercase !important;
+    cursor: pointer !important;
+    transition: background 0.2s, color 0.2s !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__submit:hover {
-    background: var(--aether-blue);
-    color: var(--aether-ivory);
+    background: var(--aether-blue, #265dff) !important;
+    color: var(--aether-ivory, #f6f0df) !important;
   }
 
-  #AetherAssistant-{{ section.id }} .aether-assistant__submit:active {
-    transform: scale(0.96);
-  }
-
-  #AetherAssistant-{{ section.id }} .aether-assistant__submit-icon {
-    flex-shrink: 0;
-    transition: transform 0.25s;
-  }
-
-  #AetherAssistant-{{ section.id }} .aether-assistant__submit:hover .aether-assistant__submit-icon {
-    transform: translateX(2px);
-  }
-
-  /* Footer */
+  /* ===== FOOTER ===== */
   #AetherAssistant-{{ section.id }} .aether-assistant__footer {
-    padding: 8px 16px;
-    text-align: center;
-    border-top: 1px solid rgba(246, 240, 223, 0.06);
-    background: rgba(3, 10, 24, 0.2);
+    padding: 6px 14px !important;
+    text-align: center !important;
+    border-top: 1px solid rgba(246,240,223,0.05) !important;
+    background: rgba(3,10,24,0.15) !important;
   }
 
   #AetherAssistant-{{ section.id }} .aether-assistant__footer-text {
-    font-size: 8px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(246, 240, 223, 0.3);
+    font-size: 7px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.15em !important;
+    text-transform: uppercase !important;
+    color: rgba(246,240,223,0.25) !important;
   }
 
-  /* ===== RESPONSIVE - FULL SCREEN ON MOBILE ===== */
-  @media screen and (max-width: 560px) {
+  /* ===== BUBBLE ===== */
+  #AetherAssistant-{{ section.id }} .aether-assistant__bubble {
+    position: absolute !important;
+    bottom: calc(100% + 14px) !important;
+    left: 50% !important;
+    background: var(--aether-ink, #030a18) !important;
+    color: var(--aether-ivory, #f6f0df) !important;
+    padding: 0.6rem 1rem !important;
+    border-radius: 14px 14px 4px 14px !important;
+    max-width: 18rem !important;
+    font-size: 0.8rem !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+    border: 1.5px solid var(--aether-ivory, #f6f0df) !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    transform: translateX(-50%) translateY(-0.5rem) scale(0.92) !important;
+    pointer-events: none !important;
+    z-index: 10 !important;
+  }
+
+  #AetherAssistant-{{ section.id }} .aether-assistant__bubble.is-visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateX(-50%) translateY(0) scale(1) !important;
+  }
+
+  #AetherAssistant-{{ section.id }} .aether-assistant__bubble::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: -8px !important;
+    left: calc(50% - 8px) !important;
+    border-left: 8px solid transparent !important;
+    border-right: 8px solid transparent !important;
+    border-top: 8px solid var(--aether-ink, #030a18) !important;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes aether-float-breathe {
+    0%,100% { transform: translate3d(0,0,0) rotate(-0.5deg) scale(1); }
+    25% { transform: translate3d(2px,-6px,0) rotate(1deg) scale(1.01); }
+    50% { transform: translate3d(-2px,-10px,0) rotate(-1deg) scale(0.99); }
+    75% { transform: translate3d(1px,-5px,0) rotate(0.5deg) scale(1.01); }
+  }
+
+  /* ===== MOBILE ===== */
+  @media (max-width: 560px) {
+    #AetherAssistant-{{ section.id }} {
+      top: 40px !important;
+    }
+
     #AetherAssistant-{{ section.id }} .aether-assistant__pet-stage {
-      width: var(--aether-character-size-mobile, 75px);
-      height: var(--aether-character-size-mobile, 75px);
+      width: 70px !important;
+      height: 70px !important;
     }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__bubble {
-      font-size: 0.65rem;
-      padding: 0.4rem 0.8rem;
-      max-width: 12rem;
-      right: -4px;
-      bottom: calc(100% + 8px);
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__bubble::after {
-      right: 16px;
-      border-width: 6px;
-      bottom: -7px;
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__status-badge {
-      font-size: 6px;
-      padding: 2px 8px;
-      top: -8px;
-      right: -4px;
-    }
-
-    /* ─── FULL‑SCREEN PANEL ─── */
+    
     #AetherAssistant-{{ section.id }} .aether-assistant__panel {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      max-width: 100vw;
-      height: 100dvh;
-      max-height: 100dvh;
-      border-radius: 0;
-      border-width: 0;
-      box-shadow: none;
-      transform: translateY(100%) scale(1);
-      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  opacity 0.3s ease,
-                  visibility 0.3s ease;
-      padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
-      background: var(--aether-navy);
+      left: 50% !important;
+      top: 50% !important;
+      width: calc(100vw - 20px) !important;
+      max-height: calc(100dvh - 100px) !important;
+      transform: translate(-50%, -50%) scale(0.92) !important;
     }
-
+    
     #AetherAssistant-{{ section.id }}.is-open .aether-assistant__panel {
-      transform: translateY(0) scale(1);
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__header {
-      padding: 14px 16px 12px;
-      grid-template-columns: 40px 1fr auto;
-      gap: 10px;
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__header-pet {
-      width: 40px;
-      height: 40px;
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__title {
-      font-size: clamp(18px, 5vw, 24px);
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__messages {
-      max-height: none;
-      flex: 1;
-      min-height: 100px;
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__questions {
-      padding: 8px 12px;
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__question {
-      font-size: 9px;
-      padding: 5px 10px;
-      max-width: 160px;
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__input {
-      font-size: 14px;
-      padding: 14px 16px;
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__submit {
-      padding: 14px 18px;
-      font-size: 10px;
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__submit-text {
-      display: none;
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__footer {
-      padding: 10px 16px;
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__footer-text {
-      font-size: 8px;
-    }
-  }
-
-  /* ===== REDUCED MOTION ===== */
-  @media (prefers-reduced-motion: reduce) {
-    #AetherAssistant-{{ section.id }} .aether-assistant__pet-stage,
-    #AetherAssistant-{{ section.id }}.is-flying .aether-assistant__pet-stage,
-    #AetherAssistant-{{ section.id }} .aether-assistant__status-dot {
-      animation: none !important;
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__pet-stage:hover {
-      transform: scale(1.04) !important;
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__panel {
-      transition: opacity 0.15s ease, visibility 0.15s ease;
-      transform: none;
-    }
-
-    #AetherAssistant-{{ section.id }}.is-open .aether-assistant__panel {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__bubble {
-      transition: opacity 0.15s ease, visibility 0.15s ease;
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__question {
-      transition: background 0.15s, color 0.15s;
-    }
-
-    #AetherAssistant-{{ section.id }} .aether-assistant__question:hover {
-      transform: none;
-    }
-
-    @media screen and (max-width: 560px) {
-      #AetherAssistant-{{ section.id }} .aether-assistant__panel {
-        transition: opacity 0.15s ease, visibility 0.15s ease;
-        transform: none;
-      }
-      #AetherAssistant-{{ section.id }}.is-open .aether-assistant__panel {
-        transform: scale(1);
-      }
+      transform: translate(-50%, -50%) scale(1) !important;
     }
   }
 </style>
@@ -1287,52 +754,27 @@
   (() => {
     const sectionId = {{ section.id | json }};
 
-    class PegasusFlyingAssistant {
+    class PegasusAssistant {
       constructor(assistant) {
         this.assistant = assistant;
         this.launcher = assistant.querySelector('[data-aether-launcher]');
-        this.petStage = assistant.querySelector('.aether-assistant__pet-stage');
         this.panel = assistant.querySelector('[data-aether-panel]');
-        this.isPanelOpen = false;
-        this.isPositionedNearPanel = false;
+        this.closeBtn = assistant.querySelector('[data-aether-close]');
+        this.messages = assistant.querySelector('[data-aether-messages]');
+        this.questions = assistant.querySelector('[data-aether-questions]');
+        this.form = assistant.querySelector('[data-aether-form]');
+        this.input = assistant.querySelector('[data-aether-input]');
+        this.bubble = assistant.querySelector('[data-aether-bubble]');
         
-        // Get settings
-        const styles = getComputedStyle(assistant);
-        this.charSize = parseInt(styles.getPropertyValue('--aether-character-size')) || 110;
-        this.flySpeed = parseFloat(styles.getPropertyValue('--aether-fly-speed')) || 0.5;
-        this.scrollSensitivity = parseFloat(styles.getPropertyValue('--aether-scroll-sensitivity')) || 0.4;
-        
-        // State
-        this.isFlying = false;
+        this.isOpen = false;
         this.isDragging = false;
-        this.flyX = 0;
-        this.flyY = 0;
-        this.targetX = 0;
-        this.targetY = 0;
-        this.flyTime = 0;
-        this.flyFrame = null;
-        this.scrollOffset = 0;
-        this.targetScrollOffset = 0;
-        this.bubbleTimer = null;
-        this.lastBubbleMessage = '';
-        this.messageCount = 0;
-        this.initialized = false;
-        this.startMode = assistant.dataset.startMode || 'auto';
-        this.startDesktopX = Number(assistant.dataset.startDesktopX || 50);
-        this.startDesktopY = Number(assistant.dataset.startDesktopY || 8);
-        this.startMobileX = Number(assistant.dataset.startMobileX || 50);
-        this.startMobileY = Number(assistant.dataset.startMobileY || 10);
+        this.dragOffsetX = 0;
+        this.dragOffsetY = 0;
+        this.wasDragged = false;
         
-        // Bounds
-        this.padding = 25;
-        this.bounds = { minX: 0, maxX: 0, minY: 0, maxY: 0 };
-        
-        // Start position - center-right area, NOT at bottom
-        this.initialX = window.innerWidth * 0.72;
-        this.initialY = window.innerHeight * 0.5;
-        
-        // Knowledge
         this.knowledge = this.readKnowledge();
+        
+        if (!this.launcher || !this.panel) return;
         
         this.init();
       }
@@ -1343,511 +785,163 @@
         try {
           return JSON.parse(source.textContent);
         } catch (error) {
-          console.warn('Pegasus: Could not read knowledge', error);
+          console.warn('Could not read knowledge', error);
           return null;
         }
       }
 
       init() {
-        if (!this.launcher || !this.petStage) return;
-        
-        this.updateBounds();
-        this.resolveStartPosition();
-        
-        // Clamp to bounds
-        this.initialX = Math.max(this.padding, Math.min(this.bounds.maxX, this.initialX));
-        this.initialY = Math.max(this.padding + 6, Math.min(this.bounds.maxY, this.initialY));
-        
-        this.setInitialPosition();
-        this.setupDrag();
-        this.setupPanelToggle();
-        this.setupScrollFollow();
-        this.setupBubbleRotation();
-        
-        this.initialized = true;
-        
-        setTimeout(() => {
-          this.startFlying();
-        }, 600);
-        
-        window.addEventListener('resize', () => {
-          this.updateBounds();
-          this.resolveStartPosition();
-          if (!this.isPanelOpen && !this.isDragging) {
-            this.setInitialPosition();
-          }
-        }, { passive: true });
-        
-        window.addEventListener('orientationchange', () => {
-          setTimeout(() => {
-            this.updateBounds();
-            if (!this.isPanelOpen && !this.isDragging) {
-              this.constrainToBounds();
-            }
-          }, 400);
-        });
-      }
-
-      resolveStartPosition() {
-  const isMobile = window.innerWidth <= 989;
-  
-  // Use manual positioning if set
-  if (this.assistant.dataset.startMode === 'manual') {
-    const startX = Number(this.assistant.dataset.startX || 50);
-    const startY = Number(this.assistant.dataset.startY || 30);
-    this.initialX = (window.innerWidth - this.charSize) * (startX / 100);
-    this.initialY = (window.innerHeight - this.charSize) * (startY / 100);
-    return;
-  }
-  
-  // Auto-position: try to find hero section
-  const heroSection = document.querySelector('#MainContent [class*="hero"], #MainContent .ned-editorial-hero, #MainContent .ned-hero-title-top');
-  const header = document.querySelector('#shopify-section-sections--header, header');
-  
-  if (heroSection) {
-    const rect = heroSection.getBoundingClientRect();
-    const headerRect = header ? header.getBoundingClientRect() : { bottom: 0 };
-    const headerBottom = headerRect.bottom || 0;
-    
-    this.initialX = rect.left + (rect.width * 0.5) - (this.charSize * 0.5);
-    this.initialY = Math.max(headerBottom + 20, rect.top + 20);
-    
-    // Ensure it's within bounds
-    this.initialX = Math.max(this.padding, Math.min(this.bounds.maxX, this.initialX));
-    this.initialY = Math.max(this.padding + 20, Math.min(this.bounds.maxY, this.initialY));
-    
-    return;
-  }
-  
-  // Fallback: center of screen
-  this.initialX = (window.innerWidth - this.charSize) * 0.5;
-  this.initialY = (window.innerHeight - this.charSize) * 0.3;
-}
-
-        const heroAnchor = document.querySelector(
-          '#MainContent .ned-hero-title-top, [id^="NedEditorialHero-"] .ned-editorial-hero__line--1 > span'
-        );
-
-        if (heroAnchor) {
-          const rect = heroAnchor.getBoundingClientRect();
-          const header = document.querySelector('#shopify-section-sections--header, .shopify-section-group-header-group, header');
-          const headerRect = header ? header.getBoundingClientRect() : null;
-          const headerBottom = headerRect ? Math.max(0, headerRect.bottom) : 0;
-          this.initialX = rect.left + (rect.width * 0.5) - (this.charSize * 0.5);
-          this.initialY = Math.max(this.padding + 8, headerBottom + 6, rect.top - (this.charSize * 0.18));
-          return;
+        // Setup drag
+        if (this.assistant.dataset.enableDrag !== 'false') {
+          this.setupDrag();
         }
 
-        const panelWidth = parseInt(getComputedStyle(this.assistant).getPropertyValue('--aether-panel-width')) || 390;
-        const panelRight = 20;
-        const panelBottom = 20;
-        const panelLeft = window.innerWidth - panelWidth - panelRight - 20;
-        const panelTop = window.innerHeight - 400 - panelBottom;
-        this.initialX = Math.min(panelLeft - this.charSize - 20, window.innerWidth * 0.7);
-        this.initialY = Math.min(panelTop + 150, window.innerHeight * 0.5);
-      }
-
-      updateBounds() {
-        const size = this.charSize;
-        this.padding = Math.max(20, Math.min(35, window.innerWidth * 0.025));
-        this.bounds.minX = this.padding;
-        this.bounds.maxX = window.innerWidth - size - this.padding;
-        this.bounds.minY = this.padding;
-        this.bounds.maxY = window.innerHeight - size - this.padding;
-      }
-
-      setInitialPosition() {
-  // Ensure we have bounds
-  this.updateBounds();
-  
-  const x = Math.max(this.padding, Math.min(this.bounds.maxX, this.initialX));
-  const y = Math.max(this.padding + 20, Math.min(this.bounds.maxY, this.initialY));
-  
-  this.flyX = x;
-  this.flyY = y;
-  this.launcher.style.left = x + 'px';
-  this.launcher.style.top = y + 'px';
-  this.targetX = x;
-  this.targetY = y;
-  this.scrollOffset = 0;
-  this.targetScrollOffset = 0;
-  this.isPositionedNearPanel = false;
-  
-  // Log position for debugging
-  console.log('Pegasus positioned at:', x, y);
-}
-
-      constrainToBounds() {
-        const x = Math.max(this.bounds.minX, Math.min(this.bounds.maxX, this.flyX));
-        const y = Math.max(this.bounds.minY, Math.min(this.bounds.maxY, this.flyY));
-        if (x !== this.flyX || y !== this.flyY) {
-          this.flyX = x;
-          this.flyY = y;
-          this.launcher.style.left = x + 'px';
-          this.launcher.style.top = y + 'px';
-          this.targetX = x;
-          this.targetY = y;
-        }
-      }
-
-      startFlying() {
-        if (this.isDragging || this.isPanelOpen || this.isPositionedNearPanel) return;
-        
-        if (!this.launcher.style.left || this.launcher.style.left === '0px') {
-          this.setInitialPosition();
-        }
-        
-        this.isFlying = true;
-        this.flyTime = 0;
-        this.pickNewTarget();
-        this.animateFly();
-      }
-
-      pickNewTarget() {
-        const pad = this.padding + 40;
-        const rangeX = this.bounds.maxX - pad;
-        const rangeY = this.bounds.maxY - pad;
-        const minX = this.bounds.minX + pad;
-        const minY = this.bounds.minY + pad;
-        
-        const maxMove = Math.min(300, Math.max(100, window.innerWidth * 0.2));
-        const currentX = this.flyX;
-        const currentY = this.flyY;
-        
-        let newX = currentX + (Math.random() - 0.5) * maxMove * 2;
-        let newY = currentY + (Math.random() - 0.5) * maxMove * 1.6;
-        
-        newX = Math.max(minX, Math.min(rangeX, newX));
-        newY = Math.max(minY, Math.min(rangeY, newY));
-        
-        if (Math.abs(newX - currentX) < 50 && Math.abs(newY - currentY) < 50) {
-          newX = currentX + (Math.random() > 0.5 ? 1 : -1) * (70 + Math.random() * 100);
-          newY = currentY + (Math.random() > 0.5 ? 1 : -1) * (70 + Math.random() * 100);
-          newX = Math.max(minX, Math.min(rangeX, newX));
-          newY = Math.max(minY, Math.min(rangeY, newY));
-        }
-        
-        this.targetX = newX;
-        this.targetY = newY;
-      }
-
-      animateFly() {
-        if (this.isDragging || this.isPanelOpen || this.isPositionedNearPanel) {
-          this.isFlying = false;
-          if (this.flyFrame) {
-            cancelAnimationFrame(this.flyFrame);
-            this.flyFrame = null;
-          }
-          return;
-        }
-
-        this.flyTime += 0.025;
-        
-        const dx = this.targetX - this.flyX;
-        const dy = (this.targetY + this.scrollOffset) - this.flyY;
-        const dist = Math.hypot(dx, dy);
-        
-        if (dist < 3) {
-          setTimeout(() => {
-            if (!this.isDragging && !this.isPanelOpen && !this.isPositionedNearPanel) {
-              this.pickNewTarget();
-            }
-          }, 400 + Math.random() * 800);
-        } else {
-          const speed = Math.min(this.flySpeed, dist * 0.04);
-          const angle = Math.atan2(dy, dx) + Math.sin(this.flyTime * 0.5) * 0.1;
-          
-          const waveX = Math.sin(this.flyTime * 1.1) * 0.5;
-          const waveY = Math.cos(this.flyTime * 0.7) * 0.5;
-          
-          this.flyX += Math.cos(angle) * speed + waveX * 0.25;
-          this.flyY += Math.sin(angle) * speed + waveY * 0.25;
-          
-          this.scrollOffset += (this.targetScrollOffset - this.scrollOffset) * 0.08;
-          this.flyY += this.scrollOffset * 0.02;
-          
-          this.flyX = Math.max(this.bounds.minX, Math.min(this.bounds.maxX, this.flyX));
-          this.flyY = Math.max(this.bounds.minY, Math.min(this.bounds.maxY, this.flyY));
-        }
-
-        this.launcher.style.left = this.flyX + 'px';
-        this.launcher.style.top = this.flyY + 'px';
-        
-        const tiltAngle = Math.atan2(
-          (this.targetY + this.scrollOffset) - this.flyY,
-          this.targetX - this.flyX
-        ) * (180 / Math.PI);
-        const tiltAmount = Math.max(-5, Math.min(5, tiltAngle * 0.1));
-        
-        if (!this.petStage.matches(':hover')) {
-          this.petStage.style.transform = `rotate(${tiltAmount}deg) scale(1)`;
-        }
-
-        this.flyFrame = requestAnimationFrame(() => this.animateFly());
-      }
-
-      setupScrollFollow() {
-        let lastScrollY = window.scrollY;
-        
-        window.addEventListener('scroll', () => {
-          const currentScrollY = window.scrollY;
-          const delta = currentScrollY - lastScrollY;
-          const velocity = delta * 0.3 * this.scrollSensitivity;
-          this.targetScrollOffset += velocity * 0.5;
-          
-          const maxOffset = window.innerHeight * 0.35;
-          this.targetScrollOffset = Math.max(-maxOffset, Math.min(maxOffset, this.targetScrollOffset));
-          
-          if (Math.abs(delta) > 5 && !this.isPanelOpen && !this.isDragging) {
-            this.assistant.classList.add('is-flying');
-            clearTimeout(this._scrollTimeout);
-            this._scrollTimeout = setTimeout(() => {
-              this.assistant.classList.remove('is-flying');
-            }, 300);
-          }
-          
-          lastScrollY = currentScrollY;
-        }, { passive: true });
-      }
-
-      setupBubbleRotation() {
-        if (!this.knowledge?.bubbleEnabled) return;
-        
-        const messages = this.knowledge.bubbleMessages || [];
-        if (!messages.length) return;
-        
-        const showBubble = () => {
-          if (this.isPanelOpen) {
-            this.scheduleNextBubble();
+        // Setup launcher click
+        this.launcher.addEventListener('click', (e) => {
+          if (this.wasDragged) {
+            this.wasDragged = false;
             return;
           }
-          
-          const available = messages.filter(m => m !== this.lastBubbleMessage);
-          const pool = available.length ? available : messages;
-          const message = pool[Math.floor(Math.random() * pool.length)];
-          this.lastBubbleMessage = message;
-          
-          const bubble = this.assistant.querySelector('[data-aether-bubble]');
-          if (bubble) {
-            const textEl = bubble.querySelector('.aether-assistant__bubble-text');
-            if (textEl) textEl.textContent = message;
-            bubble.classList.add('is-visible');
-            
-            const duration = Number(this.knowledge.bubbleDuration) * 1000 || 5000;
-            setTimeout(() => {
-              bubble.classList.remove('is-visible');
-              this.scheduleNextBubble();
-            }, duration);
-          }
-        };
-        
-        const scheduleNextBubble = () => {
-          const delay = Number(this.knowledge.bubbleDelay) * 1000 || 8000;
-          const extra = Math.random() * 3000;
-          clearTimeout(this.bubbleTimer);
-          this.bubbleTimer = setTimeout(showBubble, delay + extra);
-        };
-        
-        this.scheduleNextBubble = scheduleNextBubble;
-        setTimeout(showBubble, 2000);
-      }
-
-      setupDrag() {
-        const launcher = this.launcher;
-        const dragEnabled = this.assistant.dataset.enableDrag === 'true';
-
-        if (!launcher || !dragEnabled) return;
-
-        let activePointerId = null;
-        let originPointerX = 0;
-        let originPointerY = 0;
-        let originLeft = 0;
-        let originTop = 0;
-        let didDrag = false;
-        const dragThreshold = 5;
-
-        const placeWithinViewport = (left, top) => {
-          const pad = this.padding;
-          const maxX = this.bounds.maxX;
-          const maxY = this.bounds.maxY;
-          
-          left = Math.max(pad, Math.min(maxX, left));
-          top = Math.max(pad, Math.min(maxY, top));
-          
-          this.launcher.style.left = left + 'px';
-          this.launcher.style.top = top + 'px';
-          this.flyX = left;
-          this.flyY = top;
-          this.targetX = left;
-          this.targetY = top;
-        };
-
-        const finishDrag = (event) => {
-          if (activePointerId === null || event.pointerId !== activePointerId) return;
-          
-          if (launcher.hasPointerCapture?.(activePointerId)) {
-            launcher.releasePointerCapture(activePointerId);
-          }
-          
-          activePointerId = null;
-          this.isDragging = false;
-          this.assistant.classList.remove('is-dragging');
-          
-          if (!this.isPanelOpen && !this.isPositionedNearPanel) {
-            setTimeout(() => this.startFlying(), 300);
-          }
-        };
-
-        launcher.addEventListener('pointerdown', (event) => {
-          if (event.button !== 0) return;
-
-          if (this.flyFrame) {
-            cancelAnimationFrame(this.flyFrame);
-            this.flyFrame = null;
-          }
-          
-          this.isDragging = true;
-          this.assistant.classList.add('is-dragging');
-          
-          const launcherBounds = launcher.getBoundingClientRect();
-          
-          activePointerId = event.pointerId;
-          originPointerX = event.clientX;
-          originPointerY = event.clientY;
-          originLeft = launcherBounds.left;
-          originTop = launcherBounds.top;
-          didDrag = false;
-
-          launcher.setPointerCapture?.(event.pointerId);
+          this.togglePanel();
         });
 
-        launcher.addEventListener('pointermove', (event) => {
-          if (activePointerId === null || event.pointerId !== activePointerId) return;
-
-          const deltaX = event.clientX - originPointerX;
-          const deltaY = event.clientY - originPointerY;
-
-          if (!didDrag && Math.hypot(deltaX, deltaY) < dragThreshold) return;
-
-          didDrag = true;
-          event.preventDefault();
-          placeWithinViewport(originLeft + deltaX, originTop + deltaY);
-        });
-
-        launcher.addEventListener('pointerup', finishDrag);
-        launcher.addEventListener('pointercancel', finishDrag);
-        launcher.addEventListener('lostpointercapture', () => {
-          activePointerId = null;
-          this.isDragging = false;
-          this.assistant.classList.remove('is-dragging');
-          if (!this.isPanelOpen && !this.isPositionedNearPanel) {
-            setTimeout(() => this.startFlying(), 300);
-          }
-        });
-
-        launcher.addEventListener('click', (event) => {
-          if (didDrag) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            didDrag = false;
-          }
-        }, true);
-      }
-
-      setupPanelToggle() {
-        const launcher = this.launcher;
-        const closeBtn = this.assistant.querySelector('[data-aether-close]');
-        const panel = this.panel;
-        const input = this.assistant.querySelector('[data-aether-input]');
-
-        if (!launcher || !panel) return;
-
-        // OPEN PANEL
-        launcher.addEventListener('click', (event) => {
-          if (this.isDragging) return;
-
-          // Reposition Pegasus: on mobile, move to top-left; on desktop, left of panel
-          const isMobile = window.innerWidth < 560;
-          let targetX, targetY;
-          if (isMobile) {
-            targetX = this.padding + 10;
-            targetY = this.padding + 30;
-          } else {
-            const panelWidth = parseInt(getComputedStyle(this.assistant).getPropertyValue('--aether-panel-width')) || 390;
-            const panelRight = 20;
-            const panelLeft = window.innerWidth - panelWidth - panelRight;
-            targetX = Math.max(this.padding, panelLeft - this.charSize - 20);
-            targetY = window.innerHeight * 0.35;
-          }
-
-          this.flyX = targetX;
-          this.flyY = targetY;
-          this.launcher.style.left = targetX + 'px';
-          this.launcher.style.top = targetY + 'px';
-
-          this.togglePanel(true);
-        });
-
-        // CLOSE PANEL - close button
-        if (closeBtn) {
-          closeBtn.addEventListener('click', (event) => {
-            event.stopPropagation();
-            this.togglePanel(false);
-            setTimeout(() => {
-              this.isPositionedNearPanel = false;
-              this.startFlying();
-            }, 400);
-          });
+        // Setup close button
+        if (this.closeBtn) {
+          this.closeBtn.addEventListener('click', () => this.togglePanel(false));
         }
 
-        // CLOSE PANEL - Escape key
-        document.addEventListener('keydown', (event) => {
-          if (event.key === 'Escape' && this.isPanelOpen) {
-            this.togglePanel(false);
-            setTimeout(() => {
-              this.isPositionedNearPanel = false;
-              this.startFlying();
-            }, 400);
-          }
-        });
-
-        // ─── CLICK OUTSIDE: NO CLOSE (removed) ───
-
-        // FORM SUBMISSION
-        const form = this.assistant.querySelector('[data-aether-form]');
-        if (form) {
-          form.addEventListener('submit', (event) => {
-            event.preventDefault();
+        // Setup form
+        if (this.form) {
+          this.form.addEventListener('submit', (e) => {
+            e.preventDefault();
             this.handleSubmit();
           });
         }
+
+        // Setup questions
+        if (this.questions) {
+          this.questions.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-aether-question]');
+            if (!btn) return;
+            const index = parseInt(btn.dataset.index);
+            const items = this.knowledge?.items || [];
+            if (items[index]) {
+              this.askQuestion(items[index].question);
+            }
+          });
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.isOpen) {
+            this.togglePanel(false);
+          }
+        });
+
+        // Seed conversation
+        this.seedConversation();
+
+        // Show initial bubble
+        this.showBubble();
       }
 
-      positionNearPanel() {
-        // (No longer called; leaving empty to avoid errors if referenced elsewhere)
+      setupDrag() {
+        let startX = 0, startY = 0;
+        let offsetX = 0, offsetY = 0;
+        let isDragging = false;
+
+        this.launcher.addEventListener('pointerdown', (e) => {
+          if (e.target.closest('[data-aether-close]')) return;
+          
+          isDragging = true;
+          this.wasDragged = false;
+          startX = e.clientX;
+          startY = e.clientY;
+          
+          const rect = this.launcher.getBoundingClientRect();
+          offsetX = rect.left;
+          offsetY = rect.top;
+          
+          this.launcher.setPointerCapture(e.pointerId);
+        });
+
+        this.launcher.addEventListener('pointermove', (e) => {
+          if (!isDragging) return;
+          
+          const dx = e.clientX - startX;
+          const dy = e.clientY - startY;
+          
+          if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+            this.wasDragged = true;
+          }
+          
+          const newX = offsetX + dx;
+          const newY = offsetY + dy;
+          
+          // Keep within viewport
+          const size = this.launcher.offsetWidth || 100;
+          const maxX = window.innerWidth - size;
+          const maxY = window.innerHeight - size;
+          
+          this.launcher.style.left = Math.max(0, Math.min(maxX, newX)) + 'px';
+          this.launcher.style.top = Math.max(0, Math.min(maxY, newY)) + 'px';
+          
+          // Update the container position too
+          this.assistant.style.left = 'auto';
+          this.assistant.style.right = 'auto';
+          this.assistant.style.top = 'auto';
+          this.assistant.style.bottom = 'auto';
+          this.assistant.style.transform = 'none';
+        });
+
+        this.launcher.addEventListener('pointerup', (e) => {
+          isDragging = false;
+          this.launcher.releasePointerCapture(e.pointerId);
+        });
+
+        this.launcher.addEventListener('pointercancel', (e) => {
+          isDragging = false;
+        });
       }
 
-      handleSubmit() {
-        const input = this.assistant.querySelector('[data-aether-input]');
-        const question = input?.value.trim();
+      togglePanel(forceState) {
+        const shouldOpen = forceState !== undefined ? forceState : !this.isOpen;
+        this.isOpen = shouldOpen;
+        
+        this.assistant.classList.toggle('is-open', shouldOpen);
+        this.launcher.setAttribute('aria-expanded', String(shouldOpen));
+        
+        if (shouldOpen) {
+          this.panel.hidden = false;
+          setTimeout(() => this.input?.focus(), 300);
+        } else {
+          this.panel.hidden = true;
+        }
+      }
+
+      askQuestion(question) {
         if (!question) return;
+        this.addMessage(question, 'visitor');
         
         const entry = this.findBestMatch(question);
-        input.value = '';
-        this.addMessage(question, 'visitor');
-        this.assistant.classList.add('is-thinking');
         
         setTimeout(() => {
-          this.assistant.classList.remove('is-thinking');
           if (entry) {
             this.addMessage(entry.answer, 'assistant', entry);
             this.renderQuestions(this.getRelatedQuestions(entry));
           } else {
-            const fallback = this.knowledge?.fallback || "That needs a human answer. Send the studio a short note and Chris will point you in the right direction.";
+            const fallback = this.knowledge?.fallback || "That needs a human answer. Contact the studio and Chris will point you in the right direction.";
             this.addMessage(fallback, 'assistant', this.knowledge?.contact);
             this.renderQuestions(this.getContextualQuestions());
           }
-        }, 400 + Math.random() * 200);
+        }, 400);
+      }
+
+      handleSubmit() {
+        const question = this.input?.value.trim();
+        if (!question) return;
+        this.input.value = '';
+        this.askQuestion(question);
       }
 
       findBestMatch(question) {
@@ -1876,8 +970,7 @@
       }
 
       getContextualQuestions() {
-        if (!this.knowledge?.items) return [];
-        return this.knowledge.items.slice(0, 4);
+        return this.knowledge?.items?.slice(0, 4) || [];
       }
 
       getRelatedQuestions(entry) {
@@ -1894,8 +987,7 @@
       }
 
       addMessage(text, speaker, entry = null) {
-        const container = this.assistant.querySelector('[data-aether-messages]');
-        if (!container) return;
+        if (!this.messages) return;
         
         const message = document.createElement('div');
         message.className = `aether-assistant__message aether-assistant__message--${speaker}`;
@@ -1910,97 +1002,105 @@
           message.appendChild(link);
         }
         
-        container.appendChild(message);
-        container.scrollTop = container.scrollHeight;
-        this.messageCount++;
+        this.messages.appendChild(message);
+        this.messages.scrollTop = this.messages.scrollHeight;
       }
 
       renderQuestions(entries) {
-        const container = this.assistant.querySelector('[data-aether-questions]');
-        if (!container) return;
+        if (!this.questions) return;
         
-        container.replaceChildren();
+        this.questions.replaceChildren();
+        const items = this.knowledge?.items || [];
         entries.forEach(entry => {
+          const index = items.indexOf(entry);
           const button = document.createElement('button');
           button.type = 'button';
           button.className = 'aether-assistant__question';
           button.dataset.aetherQuestion = '';
+          button.dataset.index = String(index);
           button.textContent = entry.question;
-          button.addEventListener('click', () => {
-            const input = this.assistant.querySelector('[data-aether-input]');
-            if (input) {
-              input.value = entry.question;
-              this.handleSubmit();
-            }
-          });
-          container.appendChild(button);
+          this.questions.appendChild(button);
         });
       }
 
-      togglePanel(open) {
-        this.isPanelOpen = open;
-        this.assistant.classList.toggle('is-open', open);
-        
-        if (open) {
-          // Stop flying
-          if (this.flyFrame) {
-            cancelAnimationFrame(this.flyFrame);
-            this.flyFrame = null;
-          }
-          this.isFlying = false;
-          this.panel.hidden = false;
-          
-          // Show greeting if first time
-          const messages = this.assistant.querySelector('[data-aether-messages]');
-          if (messages && messages.children.length === 0) {
-            this.addMessage(this.knowledge?.greeting || "Hey — I'm Pegasus. Ask me about anything!", 'assistant');
-            this.renderQuestions(this.getContextualQuestions());
-          }
-          
-          // Focus input without scrolling
-          const input = this.assistant.querySelector('[data-aether-input]');
-          if (input) {
-            setTimeout(() => input.focus({ preventScroll: true }), 350);
-          }
-        } else {
-          this.panel.hidden = true;
+      seedConversation() {
+        if (this.knowledge?.greeting) {
+          this.addMessage(this.knowledge.greeting, 'assistant');
         }
+        this.renderQuestions(this.getContextualQuestions());
+      }
+
+      showBubble() {
+        if (!this.bubble || !this.knowledge?.bubbleMessages?.length) return;
+        
+        let bubbleTimer = null;
+        let bubbleTimeout = null;
+        let lastMessage = '';
+
+        const showNextBubble = () => {
+          if (this.isOpen) {
+            scheduleNext();
+            return;
+          }
+          
+          const messages = this.knowledge.bubbleMessages;
+          const available = messages.filter(m => m !== lastMessage);
+          const pool = available.length ? available : messages;
+          const message = pool[Math.floor(Math.random() * pool.length)];
+          lastMessage = message;
+          
+          const textEl = this.bubble.querySelector('.aether-assistant__bubble-text');
+          if (textEl) textEl.textContent = message;
+          
+          this.bubble.classList.add('is-visible');
+          
+          const duration = Number(this.knowledge.bubbleDuration) * 1000 || 5000;
+          clearTimeout(bubbleTimeout);
+          bubbleTimeout = setTimeout(() => {
+            this.bubble.classList.remove('is-visible');
+            scheduleNext();
+          }, duration);
+        };
+
+        const scheduleNext = () => {
+          const delay = Number(this.knowledge.bubbleDelay) * 1000 || 8000;
+          clearTimeout(bubbleTimer);
+          bubbleTimer = setTimeout(showNextBubble, delay + Math.random() * 3000);
+        };
+
+        // Start after a delay
+        setTimeout(showNextBubble, 2000);
       }
     }
 
-    function initializePegasus(sectionRoot = document) {
-  const assistant = sectionRoot.querySelector
-    ? sectionRoot.querySelector(`#AetherAssistant-${CSS.escape(String(sectionId))}`)
-    : null;
+    // Initialize
+    function initAssistant(sectionRoot = document) {
+      const assistant = sectionRoot.querySelector
+        ? sectionRoot.querySelector(`#AetherAssistant-${CSS.escape(String(sectionId))}`)
+        : null;
 
-  if (!assistant || assistant.dataset.flyReady === 'true') return;
+      if (!assistant || assistant.dataset.initialized === 'true') return;
 
-  assistant.dataset.flyReady = 'true';
-  
-  // Wait for page to be fully loaded before positioning
-  if (document.readyState === 'complete') {
-    setTimeout(() => {
-      new PegasusFlyingAssistant(assistant);
-    }, 300);
-  } else {
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        new PegasusFlyingAssistant(assistant);
-      }, 300);
-    }, { once: true });
-  }
-}
+      assistant.dataset.initialized = 'true';
+      
+      // Wait for DOM
+      if (document.readyState === 'complete') {
+        setTimeout(() => new PegasusAssistant(assistant), 100);
+      } else {
+        window.addEventListener('load', () => {
+          setTimeout(() => new PegasusAssistant(assistant), 100);
+        }, { once: true });
+      }
+    }
 
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => initializePegasus(), { once: true });
-} else {
-  initializePegasus();
-}
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => initAssistant(), { once: true });
+    } else {
+      initAssistant();
+    }
 
-// Handle Shopify section loads
-document.addEventListener('shopify:section:load', (event) => {
-  initializePegasus(event.target);
-});
+    document.addEventListener('shopify:section:load', (event) => {
+      initAssistant(event.target);
+    });
   })();
 </script>
