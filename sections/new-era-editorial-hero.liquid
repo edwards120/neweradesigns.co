@@ -41,7 +41,7 @@
 %}
 
 <section
-  class="ned-editorial-hero ned-editorial-hero--{{ section.settings.desktop_layout }} ned-editorial-hero--frame-{{ section.settings.frame_position }}{% if section.settings.animate_content %} has-entry-motion{% endif %}{% if section.settings.animate_halftone %} has-halftone-motion{% endif %}{% if section.settings.animate_kinetic_labels and section.settings.enable_gravity == false %} has-kinetic-motion{% endif %}"
+  class="ned-editorial-hero ned-editorial-hero--{{ section.settings.desktop_layout }} ned-editorial-hero--frame-{{ section.settings.frame_position }}{% if section.settings.animate_content %} has-entry-motion{% endif %}{% if section.settings.animate_halftone %} has-halftone-motion{% endif %}"
   id="NedEditorialHero-{{ section.id }}"
   style="
     --ned-hero-bg: {{ section.settings.background_color }};
@@ -59,6 +59,11 @@
     --ned-halftone-size: {{ section.settings.halftone_size }}%;
     --ned-halftone-speed: {{ section.settings.halftone_speed }}s;
     --ned-halftone-shift: {{ halftone_shift }}px;
+    --ned-bg-image: {{ section.settings.background_image | image_url: width: 4000 }};
+    --ned-bg-image-opacity: {{ section.settings.background_image_opacity | divided_by: 100.0 }};
+    --ned-bg-image-size: {{ section.settings.background_image_size }};
+    --ned-bg-image-position: {{ section.settings.background_image_position }};
+    --ned-bg-image-repeat: {{ section.settings.background_image_repeat }};
     --ned-line-1-font: {{ line_1_font }};
     --ned-line-1-color: {{ section.settings.line_1_color }};
     --ned-line-1-min: {{ section.settings.line_1_mobile_size }}px;
@@ -114,33 +119,29 @@
     --ned-highlight-b-tracking: {{ section.settings.highlight_b_tracking }}px;
     --ned-entry-speed: {{ section.settings.animation_speed }}s;
     --ned-entry-delay: {{ section.settings.animation_delay }}s;
-    /* Layer control variables */
-    --ned-layer-background: {{ section.settings.layer_background }};
+    --ned-layer-bg: {{ section.settings.layer_background }};
+    --ned-layer-bg-image: {{ section.settings.layer_background_image }};
     --ned-layer-halftone: {{ section.settings.layer_halftone }};
-    --ned-layer-frame: {{ section.settings.layer_frame }};
     --ned-layer-kinetics: {{ section.settings.layer_kinetics }};
     --ned-layer-content: {{ section.settings.layer_content }};
     --ned-layer-social: {{ section.settings.layer_social }};
     --ned-layer-rail: {{ section.settings.layer_rail }};
+    --ned-layer-frame: {{ section.settings.layer_frame }};
   "
-  data-ned-motion-root="true"
-  data-ned-reveal
-  {% if section.settings.enable_gravity %}data-ned-kinetic-field{% endif %}
-  data-ned-gravity="{{ section.settings.enable_gravity }}"
-  data-ned-gravity-strength="{{ section.settings.gravity_strength | divided_by: 100.0 }}"
-  data-ned-gravity-damping="{{ section.settings.gravity_damping | divided_by: 100.0 }}"
+  data-ned-gravity="true"
 >
   {% if section.settings.show_frame %}<span class="ned-editorial-hero__frame" aria-hidden="true"></span>{% endif %}
-  <div
-    class="ned-editorial-hero__halftone"
-    aria-hidden="true"
-    style="background-image:url('{% if section.settings.halftone_image != blank %}{{ section.settings.halftone_image | image_url: width: 4000 }}{% else %}https://cdn.shopify.com/s/files/1/0914/0138/8337/files/website_Background.svg?v=1784631913{% endif %}')"
-  ></div>
+  
+  {% if section.settings.background_image != blank %}
+    <div class="ned-editorial-hero__bg-image" aria-hidden="true" style="background-image:url('{{ section.settings.background_image | image_url: width: 4000 }}')"></div>
+  {% endif %}
+  
+  <div class="ned-editorial-hero__halftone" aria-hidden="true" style="background-image:url('{% if section.settings.halftone_image != blank %}{{ section.settings.halftone_image | image_url: width: 4000 }}{% else %}https://cdn.shopify.com/s/files/1/0914/0138/8337/files/website_Background.svg?v=1784631913{% endif %}')"></div>
 
   {% if section.blocks.size > 0 %}
-    <div class="ned-editorial-hero__kinetics" aria-label="Explore our capabilities">
+    <div class="ned-editorial-hero__kinetics">
       {% for block in section.blocks %}
-        {% if block.type == 'kinetic_label' and section.settings.show_kinetic_labels %}
+        {% if block.type == 'kinetic_label' %}
           <a
             class="ned-editorial-hero__kinetic{% if block.settings.hide_mobile %} is-mobile-hidden{% endif %}"
             href="{{ block.settings.link | default: routes.root_url }}"
@@ -150,32 +151,18 @@
             data-mobile-x="{{ block.settings.mobile_x }}"
             data-mobile-y="{{ block.settings.mobile_y }}"
             data-rotation="{{ block.settings.rotation }}"
-            style="--node-x:{{ block.settings.x }}%;--node-y:{{ block.settings.y }}%;--node-mobile-x:{{ block.settings.mobile_x }}%;--node-mobile-y:{{ block.settings.mobile_y }}%;--node-width:{{ block.settings.width }}px;--node-mobile-width:{{ block.settings.mobile_width }}px;--node-bg:{{ block.settings.background }};--node-ink:{{ block.settings.text_color }};--node-speed:{{ block.settings.speed }}s;--node-delay:-{{ block.settings.delay }}s;--node-drift-x:{{ block.settings.drift_x }}px;--node-drift-y:{{ block.settings.drift_y }}px;--node-rotate:{{ block.settings.rotation }}deg"
+            style="--node-x:{{ block.settings.x }}%;--node-y:{{ block.settings.y }}%;--node-mobile-x:{{ block.settings.mobile_x }}%;--node-mobile-y:{{ block.settings.mobile_y }}%;--node-width:{{ block.settings.width }}px;--node-mobile-width:{{ block.settings.mobile_width }}px;--node-bg:{{ block.settings.background }};--node-ink:{{ block.settings.text_color }};--node-rotate:{{ block.settings.rotation }}deg"
             {{ block.shopify_attributes }}
           ><span>{{ block.settings.label | escape }}</span></a>
-        {% elsif block.type == 'hero_icon' and section.settings.show_hero_icons %}
+        {% elsif block.type == 'hero_icon' %}
           {% liquid
             assign icon_markup = ''
-            assign icon_asset = block.settings.icon | default: 'icon-star.svg'
             if block.settings.custom_icon_image != blank
               capture icon_markup
                 echo block.settings.custom_icon_image | image_url: width: 240 | image_tag: widths: '80,120,160,240', sizes: '(max-width: 989px) 42px, 56px', loading: 'lazy', alt: block.settings.label
               endcapture
             else
-              case block.settings.icon
-                when 'spark'
-                  assign icon_asset = 'icon-star.svg'
-                when 'crosshair'
-                  assign icon_asset = 'icon-plus.svg'
-                when 'arrow'
-                  assign icon_asset = 'icon-arrow.svg'
-                when 'plus'
-                  assign icon_asset = 'icon-plus.svg'
-                when 'ring'
-                  assign icon_asset = 'icon-map-pin.svg'
-                when 'asterisk'
-                  assign icon_asset = 'icon-star.svg'
-              endcase
+              assign icon_asset = block.settings.icon | default: 'icon-star.svg'
               unless icon_asset contains '.svg'
                 assign icon_asset = 'icon-star.svg'
               endunless
@@ -192,7 +179,7 @@
             data-mobile-x="{{ block.settings.mobile_x }}"
             data-mobile-y="{{ block.settings.mobile_y }}"
             data-rotation="{{ block.settings.rotation }}"
-            style="--icon-x:{{ block.settings.x }}%;--icon-y:{{ block.settings.y }}%;--icon-mobile-x:{{ block.settings.mobile_x }}%;--icon-mobile-y:{{ block.settings.mobile_y }}%;--icon-size:{{ block.settings.size }}px;--icon-mobile-size:{{ block.settings.mobile_size }}px;--icon-color:{{ block.settings.color }};--icon-rotate:{{ block.settings.rotation }}deg;--icon-bounce:{{ block.settings.bounce_height }}px;--icon-speed:{{ block.settings.speed }}s;--icon-delay:-{{ block.settings.delay }}s"
+            style="--icon-x:{{ block.settings.x }}%;--icon-y:{{ block.settings.y }}%;--icon-mobile-x:{{ block.settings.mobile_x }}%;--icon-mobile-y:{{ block.settings.mobile_y }}%;--icon-size:{{ block.settings.size }}px;--icon-mobile-size:{{ block.settings.mobile_size }}px;--icon-color:{{ block.settings.color }};--icon-rotate:{{ block.settings.rotation }}deg"
             {{ block.shopify_attributes }}
           ><span class="ned-editorial-hero__icon-svg" aria-hidden="true">{{ icon_markup }}</span></a>
         {% endif %}
@@ -204,13 +191,13 @@
     {% if section.settings.eyebrow != blank %}<p class="ned-editorial-hero__eyebrow{% unless section.settings.show_mobile_eyebrow %} is-mobile-hidden{% endunless %}">{{ section.settings.eyebrow | escape }}</p>{% endif %}
     <span class="ned-editorial-hero__crosshair" aria-hidden="true"></span>
 
-    <h1 class="ned-editorial-hero__title" data-ned-collision-obstacle>
+    <h1 class="ned-editorial-hero__title">
       <span class="ned-editorial-hero__line ned-editorial-hero__line--1 ned-case-{{ section.settings.line_1_case }} ned-align-{{ section.settings.line_1_alignment }}"><span>{{ section.settings.line_1_text | escape }}</span></span>
       <span class="ned-editorial-hero__line ned-editorial-hero__line--2 ned-case-{{ section.settings.line_2_case }} ned-align-{{ section.settings.line_2_alignment }}"><span>{{ section.settings.line_2_text | escape }}</span></span>
     </h1>
 
-    {% if section.settings.body != blank %}<div class="ned-editorial-hero__body" data-ned-collision-obstacle>{{ section.settings.body }}</div>{% endif %}
-    {% if section.settings.button_label != blank %}<a class="ned-editorial-hero__button" data-ned-collision-obstacle href="{{ section.settings.button_link | default: routes.root_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">+</span></a>{% endif %}
+    {% if section.settings.body != blank %}<div class="ned-editorial-hero__body">{{ section.settings.body }}</div>{% endif %}
+    {% if section.settings.button_label != blank %}<a class="ned-editorial-hero__button" href="{{ section.settings.button_link | default: routes.root_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">+</span></a>{% endif %}
   </div>
 
   {% if section.settings.show_social_links %}
@@ -229,7 +216,7 @@
   </div>
 </section>
 
-{% style %}
+<style>
   @font-face{font-display:swap;font-family:'NED Milo';font-style:normal;font-weight:300 600;src:url("{{ 'MiloOT.otf' | file_url }}") format('opentype')}
   @font-face{font-display:swap;font-family:'NED Milo';font-style:normal;font-weight:700;src:url("{{ 'MiloOT-Bold.otf' | file_url }}") format('opentype')}
   @font-face{font-display:swap;font-family:'NED Milo';font-style:normal;font-weight:900;src:url("{{ 'MiloOT-Black.otf' | file_url }}") format('opentype')}
@@ -237,7 +224,7 @@
   @font-face{font-display:swap;font-family:'NED Edwardian';font-style:normal;font-weight:400;src:url("{{ 'edwardianscriptitc.ttf' | file_url }}") format('truetype')}
   @font-face{font-display:swap;font-family:'NED Funk Machine';font-style:normal;font-weight:400;src:url("{{ 'funkmachine.ttf' | file_url }}") format('truetype')}
   
-  #NedEditorialHero-{{ section.id }}{
+  #NedEditorialHero-{{ section.id }} {
     align-items:center;
     background:var(--ned-hero-bg);
     color:var(--ned-hero-text);
@@ -248,27 +235,39 @@
     overflow:hidden;
     padding:calc(var(--ned-hero-padding) + 90px) var(--ned-hero-padding) var(--ned-hero-padding);
     position:relative;
-    z-index:var(--ned-layer-background, 1);
+    z-index:var(--ned-layer-bg, 1);
   }
+  
   #NedEditorialHero-{{ section.id }} *{box-sizing:border-box}
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__frame{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__bg-image {
+    background-image:var(--ned-bg-image);
+    background-size:var(--ned-bg-image-size);
+    background-position:var(--ned-bg-image-position);
+    background-repeat:var(--ned-bg-image-repeat);
+    inset:0;
+    opacity:var(--ned-bg-image-opacity);
+    position:absolute;
+    z-index:var(--ned-layer-bg-image, 1);
+  }
+  
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__frame {
     border:var(--ned-frame-width) solid var(--ned-frame-color);
     inset:18px;
     pointer-events:none;
     position:absolute;
     z-index:var(--ned-layer-frame, 12);
   }
+  
   #NedEditorialHero-{{ section.id }}.ned-editorial-hero--frame-outside .ned-editorial-hero__frame{inset:0}
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__halftone{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__halftone {
     animation-duration:var(--ned-halftone-speed);
     animation-iteration-count:infinite;
     animation-timing-function:ease-in-out;
     background-position:center;
     background-repeat:repeat;
     background-size:var(--ned-halftone-size) auto;
-    filter:invert(1) sepia(.35) saturate(2.3) hue-rotate(178deg);
     inset:-4%;
     mix-blend-mode:normal;
     opacity:var(--ned-halftone-opacity);
@@ -276,27 +275,29 @@
     position:absolute;
     z-index:var(--ned-layer-halftone, 2);
   }
-  #NedEditorialHero-{{ section.id }}.has-halftone-motion .ned-editorial-hero__halftone{animation-name:nedHeroHalftone-{{ section.id }}}
   
-  @keyframes nedHeroHalftone-{{ section.id }}{
+  #NedEditorialHero-{{ section.id }}.has-halftone-motion .ned-editorial-hero__halftone {
+    animation-name:nedHeroHalftone-{{ section.id }};
+  }
+  
+  @keyframes nedHeroHalftone-{{ section.id }} {
     0%,100%{background-position:50% 50%;transform:scale(1)}
     50%{background-position:calc(50% + var(--ned-halftone-shift)) calc(50% - var(--ned-halftone-shift));transform:scale(1.018)}
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetics{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetics {
     inset:0;
     pointer-events:none;
     position:absolute;
     z-index:var(--ned-layer-kinetics, 3);
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic {
     align-items:center;
     aspect-ratio:1;
     background:var(--node-bg);
     border-radius:50%;
     box-shadow:inset -10px -12px 20px rgba(12,29,67,.16),0 12px 24px rgba(12,29,67,.16);
-    clip-path:none;
     color:var(--node-ink);
     display:flex;
     font:900 clamp(9px,1vw,13px)/1 'NED Milo',Arial,sans-serif;
@@ -317,44 +318,13 @@
     z-index:5;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:nth-child(2),
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:nth-child(3){
-    aspect-ratio:1;
-    border-radius:50%;
-    clip-path:none;
-  }
-  
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic span{
-    transition:letter-spacing .18s ease,transform .18s cubic-bezier(.2,1.4,.3,1);
-  }
-  
-  #NedEditorialHero-{{ section.id }}.has-kinetic-motion .ned-editorial-hero__kinetic{
-    animation:nedHeroBounce-{{ section.id }} var(--node-speed) linear var(--node-delay) infinite;
-    transform-origin:center bottom;
-  }
-  
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:hover,
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:focus-visible{
-    animation-play-state:paused;
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:focus-visible {
     filter:saturate(1.3) brightness(1.08);
     z-index:6;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:hover span,
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:focus-visible span{
-    letter-spacing:.2em;
-    transform:scale(1.04);
-  }
-  
-  @keyframes nedHeroBounce-{{ section.id }}{
-    0%,8%,28%,42%,100%{transform:translate(-50%,-50%) translate3d(0,0,0) rotate(var(--node-rotate)) scale(1)}
-    10%{transform:translate(-50%,-50%) translate3d(0,2px,0) rotate(var(--node-rotate)) scale(1.04,.94)}
-    18%{transform:translate(-50%,-50%) translate3d(var(--node-drift-x),calc(0px - var(--node-drift-y)),0) rotate(calc(var(--node-rotate) + 1deg)) scale(.98,1.02)}
-    30%{transform:translate(-50%,-50%) translate3d(0,1px,0) rotate(var(--node-rotate)) scale(1.02,.97)}
-    35%{transform:translate(-50%,-50%) translate3d(calc(var(--node-drift-x) * -.25),calc(var(--node-drift-y) * -.25),0) rotate(var(--node-rotate)) scale(.99,1.01)}
-  }
-  
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon {
     align-items:center;
     background:none;
     border-radius:0;
@@ -373,54 +343,27 @@
     z-index:4;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg {
     display:flex;
-    filter:drop-shadow(0 1px 0 rgba(7,26,58,.35));
     height:100%;
     width:100%;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg svg{
-    display:block;
-    height:100%;
-    width:100%;
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg svg,
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg svg * {
+    fill:currentColor;
+    stroke:currentColor;
+    stroke-width:.8;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg img{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg img {
     display:block;
     height:100%;
     object-fit:contain;
     width:100%;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg svg,
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg svg *{
-    fill:currentColor;
-    stroke:currentColor;
-    stroke-width:.8;
-  }
-  
-  #NedEditorialHero-{{ section.id }}.has-kinetic-motion .ned-editorial-hero__icon{
-    animation:nedHeroIconBounce-{{ section.id }} var(--icon-speed) linear var(--icon-delay) infinite;
-    transform-origin:center bottom;
-  }
-  
-  #NedEditorialHero-{{ section.id }}.is-gravity-active [data-ned-gravity-object]{
-    animation:none!important;
-    left:0;
-    top:0;
-    will-change:transform;
-  }
-  
-  @keyframes nedHeroIconBounce-{{ section.id }}{
-    0%,10%,30%,43%,100%{transform:translate(-50%,-50%) translateY(0) rotate(var(--icon-rotate)) scale(1)}
-    12%{transform:translate(-50%,-50%) translateY(2px) rotate(var(--icon-rotate)) scale(1.08,.9)}
-    20%{transform:translate(-50%,-50%) translateY(calc(0px - var(--icon-bounce))) rotate(calc(var(--icon-rotate) + 5deg)) scale(.96,1.04)}
-    32%{transform:translate(-50%,-50%) translateY(1px) rotate(var(--icon-rotate)) scale(1.04,.96)}
-    37%{transform:translate(-50%,-50%) translateY(calc(var(--icon-bounce) * -.24)) rotate(calc(var(--icon-rotate) - 2deg))}
-  }
-  
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__content{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__content {
     align-items:center;
     display:flex;
     flex-direction:column;
@@ -434,14 +377,14 @@
   #NedEditorialHero-{{ section.id }}.ned-editorial-hero--asymmetric-left .ned-editorial-hero__content{align-items:flex-start;text-align:left}
   #NedEditorialHero-{{ section.id }}.ned-editorial-hero--asymmetric-right .ned-editorial-hero__content{align-items:flex-end;text-align:right}
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__eyebrow{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__eyebrow {
     font:800 10px/1 'NED Milo',Arial,sans-serif;
     letter-spacing:.18em;
     margin:0 0 44px;
     text-transform:uppercase;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__crosshair{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__crosshair {
     height:34px;
     margin-bottom:42px;
     position:relative;
@@ -449,7 +392,7 @@
   }
   
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__crosshair::before,
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__crosshair::after{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__crosshair::after {
     background:currentColor;
     content:'';
     left:50%;
@@ -458,16 +401,17 @@
     transform:translate(-50%,-50%);
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__crosshair::before{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__crosshair::before {
     height:34px;
     width:1px;
   }
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__crosshair::after{
+  
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__crosshair::after {
     height:1px;
     width:34px;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__title{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__title {
     align-items:inherit;
     display:flex;
     flex-direction:column;
@@ -476,17 +420,17 @@
     width:100%;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__line{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__line {
     display:block;
     position:relative;
     width:100%;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__line>span{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__line>span {
     display:inline-block;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__line--1{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__line--1 {
     color:var(--ned-line-1-color);
     font-family:var(--ned-line-1-font);
     font-size:clamp(var(--ned-line-1-min),var(--ned-line-1-fluid),var(--ned-line-1-max));
@@ -497,11 +441,11 @@
     transform:translate3d(var(--ned-line-1-x),var(--ned-line-1-y),0) rotate(var(--ned-line-1-rotation));
     word-spacing:var(--ned-line-1-word-spacing);
     z-index:var(--ned-line-1-z);
-    -webkit-text-stroke:var(--ned-line-1-stroke-width) var(--ned-line-1-stroke-color);
-    text-shadow:var(--ned-line-1-shadow);
+    {% if section.settings.line_1_stroke %}-webkit-text-stroke:var(--ned-line-1-stroke-width) var(--ned-line-1-stroke-color);{% endif %}
+    {% if section.settings.line_1_shadow %}text-shadow:var(--ned-line-1-shadow);{% endif %}
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__line--2{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__line--2 {
     color:var(--ned-line-2-color);
     font-family:var(--ned-line-2-font);
     font-size:clamp(var(--ned-line-2-min),var(--ned-line-2-fluid),var(--ned-line-2-max));
@@ -512,8 +456,8 @@
     transform:translate3d(var(--ned-line-2-x),var(--ned-line-2-y),0) rotate(var(--ned-line-2-rotation));
     word-spacing:var(--ned-line-2-word-spacing);
     z-index:var(--ned-line-2-z);
-    -webkit-text-stroke:var(--ned-line-2-stroke-width) var(--ned-line-2-stroke-color);
-    text-shadow:var(--ned-line-2-shadow);
+    {% if section.settings.line_2_stroke %}-webkit-text-stroke:var(--ned-line-2-stroke-width) var(--ned-line-2-stroke-color);{% endif %}
+    {% if section.settings.line_2_shadow %}text-shadow:var(--ned-line-2-shadow);{% endif %}
   }
   
   #NedEditorialHero-{{ section.id }} .ned-align-left{text-align:left}
@@ -525,7 +469,7 @@
   #NedEditorialHero-{{ section.id }} .ned-case-capitalize{text-transform:capitalize}
   #NedEditorialHero-{{ section.id }} .ned-case-preserve{text-transform:none}
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__body{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__body {
     font:500 var(--ned-body-size)/var(--ned-body-leading) 'NED Milo',Arial,sans-serif;
     letter-spacing:var(--ned-body-tracking);
     margin:clamp(36px,6vh,70px) auto 30px;
@@ -533,7 +477,8 @@
   }
   
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__body p{margin:0}
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__body strong{
+  
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__body strong {
     background:var(--ned-highlight-a-bg);
     color:var(--ned-highlight-a-text);
     font-family:var(--ned-highlight-a-font);
@@ -542,7 +487,8 @@
     letter-spacing:var(--ned-highlight-a-tracking);
     padding:0 .12em;
   }
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__body em{
+  
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__body em {
     background:var(--ned-highlight-b-bg);
     color:var(--ned-highlight-b-text);
     display:inline-block;
@@ -555,7 +501,7 @@
     transform:translateY(.1em);
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__button{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__button {
     align-items:center;
     background:var(--ned-hero-accent);
     border:1px solid var(--ned-hero-text);
@@ -574,13 +520,13 @@
   }
   
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__button:hover,
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__button:focus-visible{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__button:focus-visible {
     background:var(--ned-hero-pink);
     color:#fff;
     transform:translateY(-4px);
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__button span{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__button span {
     animation:nedHeroButtonBounce-{{ section.id }} 1.8s linear infinite;
     display:inline-block;
     font-size:20px;
@@ -588,32 +534,28 @@
     transform-origin:center bottom;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__button:hover span,
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__button:focus-visible span{
-    animation-duration:.72s;
-  }
-  
-  @keyframes nedHeroButtonBounce-{{ section.id }}{
+  @keyframes nedHeroButtonBounce-{{ section.id }} {
     0%,12%,42%,100%{transform:translateY(0) scale(1)}
     15%{transform:translateY(2px) scale(1.12,.88)}
     24%{transform:translateY(-7px) scale(.96,1.04)}
     34%{transform:translateY(0) scale(1.05,.95)}
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social {
     bottom:17%;
     position:absolute;
     z-index:var(--ned-layer-social, 5);
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social--left{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social--left {
     left:calc(var(--ned-hero-padding) + 8px);
   }
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social--right{
+  
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social--right {
     right:calc(var(--ned-hero-padding) + 8px);
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social a{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social a {
     align-items:center;
     border:1px solid currentColor;
     color:inherit;
@@ -624,17 +566,17 @@
     width:42px;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social a:hover{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social a:hover {
     background:var(--ned-hero-pink);
     color:#fff;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social svg{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social svg {
     height:17px;
     width:17px;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__rail{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__rail {
     align-items:end;
     bottom:38px;
     display:grid;
@@ -648,120 +590,126 @@
     z-index:var(--ned-layer-rail, 6);
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__rail a{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__rail a {
     color:inherit;
     text-align:center;
     text-decoration:none;
   }
   
-  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__rail span:last-child{
+  #NedEditorialHero-{{ section.id }} .ned-editorial-hero__rail span:last-child {
     text-align:right;
   }
   
   #NedEditorialHero-{{ section.id }}.has-entry-motion:not(.is-visible) .ned-editorial-hero__line>span,
   #NedEditorialHero-{{ section.id }}.has-entry-motion:not(.is-visible) .ned-editorial-hero__body,
-  #NedEditorialHero-{{ section.id }}.has-entry-motion:not(.is-visible) .ned-editorial-hero__button{
+  #NedEditorialHero-{{ section.id }}.has-entry-motion:not(.is-visible) .ned-editorial-hero__button {
     opacity:0;
     transform:translateY(34px);
   }
   
   #NedEditorialHero-{{ section.id }}.has-entry-motion .ned-editorial-hero__line>span,
   #NedEditorialHero-{{ section.id }}.has-entry-motion .ned-editorial-hero__body,
-  #NedEditorialHero-{{ section.id }}.has-entry-motion .ned-editorial-hero__button{
+  #NedEditorialHero-{{ section.id }}.has-entry-motion .ned-editorial-hero__button {
     transition:opacity var(--ned-entry-speed) cubic-bezier(.16,1,.3,1),transform var(--ned-entry-speed) cubic-bezier(.16,1,.3,1);
   }
   
-  #NedEditorialHero-{{ section.id }}.has-entry-motion .ned-editorial-hero__line--2>span{
+  #NedEditorialHero-{{ section.id }}.has-entry-motion .ned-editorial-hero__line--2>span {
     transition-delay:calc(var(--ned-entry-delay) + .12s);
   }
-  #NedEditorialHero-{{ section.id }}.has-entry-motion .ned-editorial-hero__body{
+  
+  #NedEditorialHero-{{ section.id }}.has-entry-motion .ned-editorial-hero__body {
     transition-delay:calc(var(--ned-entry-delay) + .22s);
   }
-  #NedEditorialHero-{{ section.id }}.has-entry-motion .ned-editorial-hero__button{
+  
+  #NedEditorialHero-{{ section.id }}.has-entry-motion .ned-editorial-hero__button {
     transition-delay:calc(var(--ned-entry-delay) + .3s);
   }
   
   @media(max-width:989px){
-    #NedEditorialHero-{{ section.id }}{
+    #NedEditorialHero-{{ section.id }} {
       min-height:max(var(--ned-hero-mobile-height),100svh);
       padding:clamp(82px,12svh,112px) var(--ned-hero-mobile-padding) 108px;
     }
     
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__frame{inset:8px}
     
-    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__content{
+    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__content {
       align-items:{% if section.settings.mobile_layout == 'left' %}flex-start{% elsif section.settings.mobile_layout == 'right' %}flex-end{% else %}center{% endif %};
       justify-content:center;
       max-width:min(92vw,680px);
       text-align:{{ section.settings.mobile_layout }};
     }
     
-    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__eyebrow{
+    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__eyebrow {
       font-size:9px;
       letter-spacing:.22em;
       margin-bottom:32px;
       max-width:78vw;
     }
+    
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__eyebrow.is-mobile-hidden{display:none}
     
-    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__crosshair{
+    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__crosshair {
       margin-bottom:clamp(34px,6svh,58px);
     }
     
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__crosshair{margin-bottom:34px}
     
-    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__line--1{
+    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__line--1 {
       font-size:clamp(calc(var(--ned-line-1-min) * .75),11vw,min(var(--ned-line-1-max),calc(var(--ned-line-1-min) * 1.75)));
       letter-spacing:var(--ned-line-1-mobile-tracking);
       transform:translate3d(var(--ned-line-1-mobile-x),var(--ned-line-1-mobile-y),0) rotate(var(--ned-line-1-rotation));
     }
     
-    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__line--2{
+    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__line--2 {
       font-size:clamp(calc(var(--ned-line-2-min) * .7),18vw,min(var(--ned-line-2-max),calc(var(--ned-line-2-min) * 1.4)));
       letter-spacing:var(--ned-line-2-mobile-tracking);
       transform:translate3d(var(--ned-line-2-mobile-x),var(--ned-line-2-mobile-y),0) rotate(var(--ned-line-2-rotation));
     }
     
-    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__body{
+    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__body {
       font-size:var(--ned-body-mobile-size);
       line-height:1.35;
       margin-top:clamp(34px,6svh,54px);
       max-width:min(var(--ned-body-width),86vw);
     }
     
-    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__button{
+    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__button {
       margin-top:4px;
       min-height:54px;
     }
     
-    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic{
+    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic {
       font-size:8px;
       left:var(--node-mobile-x);
       padding:12px;
       top:var(--node-mobile-y);
       width:var(--node-mobile-width);
     }
+    
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic.is-mobile-hidden{display:none}
     
-    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon{
+    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon {
       font-size:var(--icon-mobile-size);
       height:var(--icon-mobile-size);
       left:var(--icon-mobile-x);
       top:var(--icon-mobile-y);
       width:var(--icon-mobile-size);
     }
+    
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon.is-mobile-hidden{display:none}
     
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social{bottom:62px}
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social--left{left:22px}
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__social--right{right:22px}
     
-    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__rail{
+    #NedEditorialHero-{{ section.id }} .ned-editorial-hero__rail {
       bottom:24px;
       grid-template-columns:1fr;
       left:22px;
       right:22px;
     }
+    
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__rail>span{display:none}
   }
   
@@ -780,221 +728,17 @@
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic{transform:translate(-50%,-50%) rotate(var(--node-rotate))!important}
     #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon{transform:translate(-50%,-50%) rotate(var(--icon-rotate))!important}
   }
-{% endstyle %}
+</style>
 
 <script>
-  (()=>{
-    const section=document.getElementById('NedEditorialHero-{{ section.id }}');
-    if(!section||section.dataset.nedGravity!=='true'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-    const objects=[...section.querySelectorAll('[data-ned-gravity-object]')];
-    if(!objects.length)return;
-    const gravity=Number(section.dataset.nedGravityStrength)||0.25;
-    const damping=Number(section.dataset.nedGravityDamping)||0.75;
-    let bounds=section.getBoundingClientRect();
-    let states=[];
-    let previousTime=performance.now();
-    let animationId=null;
-
-    const reset = () => {
-      const oldBounds = bounds;
-      bounds = section.getBoundingClientRect();
-      const mobile = innerWidth <= 989;
-      
-      states = objects.map((element, index) => {
-        const hidden = getComputedStyle(element).display === 'none';
-        const objectBounds = element.getBoundingClientRect();
-        const prior = states[index];
-        
-        const startX = Number(element.dataset[mobile ? 'mobileX' : 'desktopX']) || 50;
-        const startY = Number(element.dataset[mobile ? 'mobileY' : 'desktopY']) || 50;
-        
-        // Use prior position if available for smooth transitions
-        let x, y;
-        if (prior && oldBounds.width && oldBounds.height) {
-          // Scale position proportionally
-          const scaleX = bounds.width / oldBounds.width;
-          const scaleY = bounds.height / oldBounds.height;
-          x = Math.min(Math.max(prior.x * scaleX, 0), bounds.width);
-          y = Math.min(Math.max(prior.y * scaleY, 0), bounds.height);
-        } else {
-          x = bounds.width * (startX / 100);
-          y = bounds.height * (startY / 100);
-        }
-        
-        // Clamp positions
-        const radius = Math.max(8, Math.min(objectBounds.width, objectBounds.height) / 2);
-        x = Math.max(radius, Math.min(bounds.width - radius, x));
-        y = Math.max(radius, Math.min(bounds.height - radius, y));
-        
-        return {
-          element,
-          hidden,
-          width: objectBounds.width,
-          height: objectBounds.height,
-          radius,
-          x,
-          y,
-          vx: prior?.vx ?? ((index % 2 ? -1.15 : 1.15) + (index * 0.1)),
-          vy: prior?.vy ?? (-3.8 - (index % 3) * 0.9),
-          rotation: prior?.rotation ?? (Number(element.dataset.rotation) || 0)
-        };
-      });
-      
-      // Initial collision resolution
-      for (let i = 0; i < 10; i++) {
-        resolveCollisions();
-      }
-    };
-
-    const resolveCollisions = () => {
-      for (let i = 0; i < states.length; i++) {
-        for (let j = i + 1; j < states.length; j++) {
-          const a = states[i];
-          const b = states[j];
-          if (a.hidden || b.hidden) continue;
-          
-          const dx = b.x - a.x;
-          const dy = b.y - a.y;
-          const distance = Math.hypot(dx, dy) || 1;
-          const minDist = a.radius + b.radius;
-          
-          if (distance >= minDist) continue;
-          
-          const nx = dx / distance;
-          const ny = dy / distance;
-          const overlap = (minDist - distance) / 2;
-          
-          a.x -= nx * overlap;
-          a.y -= ny * overlap;
-          b.x += nx * overlap;
-          b.y += ny * overlap;
-          
-          // Relative velocity along collision normal
-          const relV = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
-          if (relV < 0) {
-            const impulse = relV * 0.82;
-            a.vx += impulse * nx;
-            a.vy += impulse * ny;
-            b.vx -= impulse * nx;
-            b.vy -= impulse * ny;
-          }
-        }
-      }
-    };
-
-    const clampToBounds = (state) => {
-      const halfWidth = state.width / 2;
-      const halfHeight = state.height / 2;
-      
-      if (state.x - halfWidth < 0) {
-        state.x = halfWidth;
-        state.vx = Math.abs(state.vx) * damping;
-      }
-      if (state.x + halfWidth > bounds.width) {
-        state.x = bounds.width - halfWidth;
-        state.vx = -Math.abs(state.vx) * damping;
-      }
-      if (state.y - halfHeight < 0) {
-        state.y = halfHeight;
-        state.vy = Math.abs(state.vy) * damping;
-      }
-      if (state.y + halfHeight > bounds.height) {
-        state.y = bounds.height - halfHeight;
-        state.vy = -Math.abs(state.vy) * damping;
-      }
-    };
-
-    const frame = (time) => {
-      const step = Math.min(2, (time - previousTime) / 16.667 || 1);
-      previousTime = time;
-      
-      // Update positions
-      states.forEach(state => {
-        if (state.hidden) return;
-        state.vy += gravity * step;
-        state.x += state.vx * step;
-        state.y += state.vy * step;
-        state.vx *= 0.998;
-        state.rotation += state.vx * 0.08 * step;
-        clampToBounds(state);
-      });
-      
-      // Resolve collisions
-      for (let i = 0; i < 5; i++) {
-        resolveCollisions();
-      }
-      
-      // Apply transforms
-      states.forEach(state => {
-        if (state.hidden) return;
-        const x = state.x - state.width / 2;
-        const y = state.y - state.height / 2;
-        state.element.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${state.rotation}deg)`;
-      });
-      
-      animationId = requestAnimationFrame(frame);
-    };
-
-    const startAnimation = () => {
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-        animationId = null;
-      }
-      section.classList.add('is-gravity-active');
-      reset();
-      previousTime = performance.now();
-      animationId = requestAnimationFrame(frame);
-    };
-
-    const stopAnimation = () => {
-      if (animationId) {
-        cancelAnimationFrame(animationId);
-        animationId = null;
-      }
-    };
-
-    // Setup observer for section visibility
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          startAnimation();
-        } else {
-          stopAnimation();
-        }
-      });
-    }, { threshold: 0.1 });
-
-    observer.observe(section);
-
-    // Handle resize
-    const resizeObserver = new ResizeObserver(() => {
-      if (section.isIntersecting !== false) {
-        stopAnimation();
-        reset();
-        previousTime = performance.now();
-        animationId = requestAnimationFrame(frame);
-      }
-    });
-    resizeObserver.observe(section);
-
-    // Handle window resize
-    const handleResize = () => {
-      if (section.isIntersecting !== false) {
-        stopAnimation();
-        reset();
-        previousTime = performance.now();
-        animationId = requestAnimationFrame(frame);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-
-    // Cleanup
-    window.addEventListener('beforeunload', () => {
-      stopAnimation();
-      observer.disconnect();
-      resizeObserver.disconnect();
-      window.removeEventListener('resize', handleResize);
-    });
+  (function(){
+    const section = document.getElementById('NedEditorialHero-{{ section.id }}');
+    if(!section) return;
+    
+    const objects = section.querySelectorAll('[data-ned-gravity-object]');
+    if(objects.length) {
+      section.classList.add('has-gravity-objects');
+    }
   })();
 </script>
 
@@ -1018,6 +762,13 @@
     { "type": "url", "id": "rail_link", "label": "Bottom rail link" },
     { "type": "text", "id": "rail_right", "label": "Bottom rail right", "default": "Make your move" },
 
+    { "type": "header", "content": "Background Image" },
+    { "type": "image_picker", "id": "background_image", "label": "Background image (SVG, PNG, JPG, etc.)" },
+    { "type": "range", "id": "background_image_opacity", "label": "Image opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "select", "id": "background_image_size", "label": "Image size", "options": [{ "value": "cover", "label": "Cover" }, { "value": "contain", "label": "Contain" }, { "value": "auto", "label": "Auto" }], "default": "cover" },
+    { "type": "select", "id": "background_image_position", "label": "Image position", "options": [{ "value": "center", "label": "Center" }, { "value": "top", "label": "Top" }, { "value": "bottom", "label": "Bottom" }, { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" }], "default": "center" },
+    { "type": "select", "id": "background_image_repeat", "label": "Image repeat", "options": [{ "value": "no-repeat", "label": "No repeat" }, { "value": "repeat", "label": "Repeat" }, { "value": "repeat-x", "label": "Repeat horizontally" }, { "value": "repeat-y", "label": "Repeat vertically" }], "default": "no-repeat" },
+
     { "type": "header", "content": "Layout and frame" },
     { "type": "select", "id": "desktop_layout", "label": "Desktop layout", "options": [{ "value": "center", "label": "Centered" }, { "value": "asymmetric-left", "label": "Asymmetric left" }, { "value": "asymmetric-right", "label": "Asymmetric right" }], "default": "center" },
     { "type": "select", "id": "mobile_layout", "label": "Mobile alignment", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" }], "default": "center" },
@@ -1030,14 +781,15 @@
     { "type": "select", "id": "frame_position", "label": "Frame position", "options": [{ "value": "inside", "label": "Inside" }, { "value": "outside", "label": "Outside" }], "default": "inside" },
     { "type": "range", "id": "frame_width", "label": "Frame thickness", "min": 0, "max": 20, "step": 1, "unit": "px", "default": 1 },
     { "type": "color", "id": "frame_color", "label": "Frame color", "default": "#000000" },
-    { "type": "color", "id": "background_color", "label": "Background", "default": "#071a3a" },
-    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#071a3a" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" },
     { "type": "color", "id": "accent_color", "label": "Primary accent", "default": "#d9d4ff" },
     { "type": "color", "id": "pink_accent", "label": "Pink accent", "default": "#ff4fa3" },
 
     { "type": "header", "content": "━━━ LAYER CONTROLS ━━━" },
     { "type": "paragraph", "content": "Adjust the stacking order of all elements. Lower numbers are further back, higher numbers are in front." },
     { "type": "range", "id": "layer_background", "label": "Background layer (z-index)", "min": 0, "max": 20, "step": 1, "default": 1 },
+    { "type": "range", "id": "layer_background_image", "label": "Background image layer (z-index)", "min": 0, "max": 20, "step": 1, "default": 1 },
     { "type": "range", "id": "layer_halftone", "label": "Halftone layer (z-index)", "min": 0, "max": 20, "step": 1, "default": 2 },
     { "type": "range", "id": "layer_kinetics", "label": "Kinetic balls/objects layer (z-index)", "min": 0, "max": 20, "step": 1, "default": 3 },
     { "type": "range", "id": "layer_content", "label": "Content layer (z-index)", "min": 0, "max": 20, "step": 1, "default": 4 },
