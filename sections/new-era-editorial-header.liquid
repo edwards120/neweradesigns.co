@@ -1,7 +1,7 @@
 {% liquid
   assign desktop_logo = section.settings.desktop_logo | default: settings.logo
   assign mobile_logo = section.settings.mobile_logo | default: settings.favicon
-  assign header_mode = section.settings.header_mode | default: 'solid'
+  assign header_mode = 'solid'
   assign header_background = section.settings.background_color | default: '#071a3a'
   assign header_frame_border_space = section.settings.border_width | times: 2
   assign header_frame_height = section.settings.padding_vertical | times: 2 | plus: header_frame_border_space | plus: 64
@@ -243,7 +243,6 @@
     { "type": "range", "id": "mobile_logo_width", "label": "Mobile logo width", "min": 36, "max": 180, "step": 4, "unit": "px", "default": 72 },
     { "type": "range", "id": "compact_logo_breakpoint", "label": "Wordmark switches to icon", "min": 1000, "max": 1400, "step": 20, "unit": "px", "default": 1180 },
     { "type": "checkbox", "id": "show_mobile_quick_links", "label": "Show navigation options on mobile", "default": true },
-    { "type": "select", "id": "header_mode", "label": "Header mode on inner pages", "options": [{ "value": "overlay", "label": "Transparent overlay" }, { "value": "solid", "label": "Solid" }], "default": "solid" },
     { "type": "checkbox", "id": "enable_sticky", "label": "Sticky header", "default": true },
     { "type": "checkbox", "id": "show_frame", "label": "Show header frame", "default": true },
     { "type": "color_background", "id": "background_color", "label": "Background", "default": "#071a3a" },
@@ -282,3 +281,4 @@
   "presets": [{ "name": "NED editorial header" }]
 }
 {% endschema %}
+}
