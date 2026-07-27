@@ -15,7 +15,6 @@
       {% if block.type == 'portfolio_item' %}
         {% liquid
           assign project_link = block.settings.project_link | default: '/pages/cases'
-          assign project_alt = block.settings.image_alt | default: block.settings.title
         %}
         <article class="ned-project ned-service-project{% if block.settings.image != blank %} has-background{% endif %}" {{ block.shopify_attributes }}>
           <a class="ned-project-link" href="{{ project_link }}" aria-label="View {{ block.settings.title | escape }}">
