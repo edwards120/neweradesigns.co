@@ -8,8 +8,8 @@
     data-enable-drag="{{ section.settings.enable_drag }}"
     data-enable-flying="{{ section.settings.enable_flying_scroll }}"
     data-start-mode="{{ section.settings.start_position_mode }}"
-    data-start-desktop-x="{{ section.settings.start_desktop_x }}"
-    data-start-desktop-y="{{ section.settings.start_desktop_y }}"
+    data-start-x="{{ section.settings.start_x }}"
+    data-start-y="{{ section.settings.start_y }}"
     data-start-mobile-x="{{ section.settings.start_mobile_x }}"
     data-start-mobile-y="{{ section.settings.start_mobile_y }}"
     style="
@@ -1391,38 +1391,37 @@
       resolveStartPosition() {
   const isMobile = window.innerWidth <= 989;
   
-  // Get the hero section or main content area
+  // Use manual positioning if set
+  if (this.assistant.dataset.startMode === 'manual') {
+    const startX = Number(this.assistant.dataset.startX || 50);
+    const startY = Number(this.assistant.dataset.startY || 30);
+    this.initialX = (window.innerWidth - this.charSize) * (startX / 100);
+    this.initialY = (window.innerHeight - this.charSize) * (startY / 100);
+    return;
+  }
+  
+  // Auto-position: try to find hero section
   const heroSection = document.querySelector('#MainContent [class*="hero"], #MainContent .ned-editorial-hero, #MainContent .ned-hero-title-top');
   const header = document.querySelector('#shopify-section-sections--header, header');
-  
-  // Calculate center position
-  let centerX = window.innerWidth / 2;
-  let centerY = window.innerHeight / 2;
   
   if (heroSection) {
     const rect = heroSection.getBoundingClientRect();
     const headerRect = header ? header.getBoundingClientRect() : { bottom: 0 };
     const headerBottom = headerRect.bottom || 0;
     
-    // Position above the hero text, centered
-    const heroTop = Math.max(headerBottom + 40, rect.top);
-    const heroWidth = rect.width || window.innerWidth;
-    const heroHeight = rect.height || window.innerHeight;
+    this.initialX = rect.left + (rect.width * 0.5) - (this.charSize * 0.5);
+    this.initialY = Math.max(headerBottom + 20, rect.top + 20);
     
-    // Place Pegasus in the upper center of the hero area
-    this.initialX = rect.left + (heroWidth * 0.5) - (this.charSize * 0.5);
-    this.initialY = heroTop + 20;
-    
-    // Ensure it's visible
+    // Ensure it's within bounds
     this.initialX = Math.max(this.padding, Math.min(this.bounds.maxX, this.initialX));
-    this.initialY = Math.max(this.padding + 40, Math.min(this.bounds.maxY, this.initialY));
+    this.initialY = Math.max(this.padding + 20, Math.min(this.bounds.maxY, this.initialY));
     
     return;
   }
   
   // Fallback: center of screen
-  this.initialX = centerX - (this.charSize * 0.5);
-  this.initialY = Math.max(80, centerY - (this.charSize * 0.5));
+  this.initialX = (window.innerWidth - this.charSize) * 0.5;
+  this.initialY = (window.innerHeight - this.charSize) * 0.3;
 }
 
         const heroAnchor = document.querySelector(
