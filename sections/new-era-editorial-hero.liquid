@@ -151,7 +151,7 @@
             assign icon_asset = block.settings.icon | default: 'icon-star.svg'
             if block.settings.custom_icon_image != blank
               capture icon_markup
-                echo block.settings.custom_icon_image | image_url: width: 240 | image_tag: widths: '80, 120, 160, 240', sizes: '(max-width: 989px) 42px, 56px', loading: 'lazy', alt: block.settings.label | escape
+                echo block.settings.custom_icon_image | image_url: width: 240 | image_tag: widths: '80,120,160,240', sizes: '(max-width: 989px) 42px, 56px', loading: 'lazy', alt: block.settings.label
               endcapture
             else
               case block.settings.icon
@@ -240,9 +240,9 @@
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:nth-child(2),#NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:nth-child(3){aspect-ratio:1;border-radius:50%;clip-path:none}
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic span{transition:letter-spacing .18s ease,transform .18s cubic-bezier(.2,1.4,.3,1)}
   #NedEditorialHero-{{ section.id }}.has-kinetic-motion .ned-editorial-hero__kinetic{animation:nedHeroBounce-{{ section.id }} var(--node-speed) linear var(--node-delay) infinite;transform-origin:center bottom}
-  @keyframes nedHeroBounce-{{ section.id }}{0%,8%,28%,42%,100%{transform:translate(-50%,-50%) translate3d(0,0,0) rotate(var(--node-rotate)) scale(1)}10%{transform:translate(-50%,-50%) translate3d(0,2px,0) rotate(var(--node-rotate)) scale(1.04,.94)}18%{transform:translate(-50%,-50%) translate3d(var(--node-drift-x),calc(0px - var(--node-drift-y)),0) rotate(calc(var(--node-rotate) + 1deg)) scale(.98,1.02)}30%{transform:translate(-50%,-50%) translate3d(0,1px,0) rotate(var(--node-rotate)) scale(1.02,.97)}35%{transform:translate(-50%,-50%) translate3d(calc(var(--node-drift-x) * -.25),calc(var(--node-drift-y) * -.25),0) rotate(var(--node-rotate)) scale(.99,1.01)}}
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:hover,#NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:focus-visible{animation-play-state:paused;filter:saturate(1.3) brightness(1.08);z-index:6}
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:hover span,#NedEditorialHero-{{ section.id }} .ned-editorial-hero__kinetic:focus-visible span{letter-spacing:.2em;transform:scale(1.04)}
+  @keyframes nedHeroBounce-{{ section.id }}{0%,8%,28%,42%,100%{transform:translate(-50%,-50%) translate3d(0,0,0) rotate(var(--node-rotate)) scale(1)}10%{transform:translate(-50%,-50%) translate3d(0,2px,0) rotate(var(--node-rotate)) scale(1.04,.94)}18%{transform:translate(-50%,-50%) translate3d(var(--node-drift-x),calc(0px - var(--node-drift-y)),0) rotate(calc(var(--node-rotate) + 1deg)) scale(.98,1.02)}30%{transform:translate(-50%,-50%) translate3d(0,1px,0) rotate(var(--node-rotate)) scale(1.02,.97)}35%{transform:translate(-50%,-50%) translate3d(calc(var(--node-drift-x) * -.25),calc(var(--node-drift-y) * -.25),0) rotate(var(--node-rotate)) scale(.99,1.01)}}
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon{align-items:center;background:none;border-radius:0;box-shadow:none;color:var(--icon-color);display:flex;height:var(--icon-size);justify-content:center;left:var(--icon-x);pointer-events:auto;position:absolute;text-decoration:none;top:var(--icon-y);transform:translate(-50%,-50%) rotate(var(--icon-rotate));width:var(--icon-size);z-index:4}
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg{display:flex;filter:drop-shadow(0 1px 0 rgba(7,26,58,.35));height:100%;width:100%}
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__icon-svg svg{display:block;height:100%;width:100%}
