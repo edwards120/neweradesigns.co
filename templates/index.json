@@ -193,7 +193,7 @@
         "text_color": "#ffffff",
         "accent_color": "#f7e51d",
         "pink_accent": "#ff4fa3",
-        "layer_background": 0,
+        "layer_background": 20,
         "layer_halftone": 6,
         "layer_kinetics": 7,
         "layer_content": 4,
