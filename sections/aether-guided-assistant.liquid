@@ -594,49 +594,51 @@
 {% endschema %}
 
 <style>
-  /* ============================================
-     COMPLETE STYLES - FIXED BOUNDARIES
-     ============================================ */
+/* ========================================
+   COMPLETE STYLES - FIXED BOUNDARIES
+   ======================================== */
 
-  #AetherAssistant-{{ section.id }} {
-    position: fixed;
-    right: auto;
-    bottom: auto;
-    left: 0;
-    top: 0;
-    z-index: 60;
-    margin: 0;
-    padding: 0;
-    isolation: isolate;
-    pointer-events: none;
-    width: 0;
-    height: 0;
-    overflow: visible;
-    font-family: system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
-  }
+#AetherAssistant-{{ section.id }} {
+  position: fixed;
+  right: 0;
+  bottom: auto;
+  left: 0;
+  top: 0;
+  z-index: 60;
+  margin: 0;
+  padding: 0;
+  isolation: isolate;
+  pointer-events: none;
+  width: 100%;        /* ← was 0, needs width to anchor children */
+  height: 0;
+  overflow: visible;
+  font-family: system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+}
 
-  /* ===== LAUNCHER ===== */
-  #AetherAssistant-{{ section.id }} .aether-assistant__launcher {
-    position: absolute;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    width: auto !important;
-    height: auto !important;
-    display: inline-block !important;
-    cursor: pointer !important;
-    border-radius: 50% !important;
-    pointer-events: auto !important;
-    left: 0;
-    top: 0;
-    transform: none;
-    transition: none !important;
-    will-change: transform, left, top;
-    z-index: 10;
-  }
+/* ===== LAUNCHER ===== */
+#AetherAssistant-{{ section.id }} .aether-assistant__launcher {
+  position: fixed;    /* ← change from absolute to fixed */
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  display: inline-block !important;
+  cursor: pointer !important;
+  border-radius: 50% !important;
+  pointer-events: auto !important;
+  left: auto;         /* ← clear left */
+  right: 20px;        /* ← set your preferred X offset */
+  top: 20px;          /* ← pins to top */
+  bottom: auto;       /* ← explicitly unset bottom */
+  transform: none;
+  transition: none !important;
+  will-change: transform, left, top;
+  z-index: 10;
+}
 
   #AetherAssistant-{{ section.id }} .aether-assistant__launcher:focus-visible {
     outline: 2px solid var(--aether-blue);
