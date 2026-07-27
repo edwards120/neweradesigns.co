@@ -599,25 +599,26 @@
    ======================================== */
 
 #AetherAssistant-{{ section.id }} {
-  position: fixed;
-  right: 0;
-  bottom: auto;
-  left: 0;
-  top: 0;
+  position: fixed !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: 50% !important;
+  top: 50% !important;
   z-index: 60;
   margin: 0;
   padding: 0;
   isolation: isolate;
   pointer-events: none;
-  width: 50%;        /* ← was 0, needs width to anchor children */
+  width: 0;
   height: 0;
   overflow: visible;
   font-family: system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  transform: translate(-50%, -50%) !important;
 }
 
 /* ===== LAUNCHER ===== */
 #AetherAssistant-{{ section.id }} .aether-assistant__launcher {
-  position: fixed;    /* ← change from absolute to fixed */
+  position: absolute !important;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -630,11 +631,9 @@
   cursor: pointer !important;
   border-radius: 50% !important;
   pointer-events: auto !important;
-  left: auto;         /* ← clear left */
-  right: 20px;        /* ← set your preferred X offset */
-  top: 20px;          /* ← pins to top */
-  bottom: auto;       /* ← explicitly unset bottom */
-  transform: none;
+  left: 0 !important;
+  top: 0 !important;
+  transform: translate(-50%, -50%) !important;
   transition: none !important;
   will-change: transform, left, top;
   z-index: 10;
@@ -1365,14 +1364,41 @@
       }
 
       resolveStartPosition() {
-        const isMobile = window.innerWidth <= 989;
-        if (this.startMode === 'manual') {
-          const startX = isMobile ? this.startMobileX : this.startDesktopX;
-          const startY = isMobile ? this.startMobileY : this.startDesktopY;
-          this.initialX = (window.innerWidth - this.charSize) * (startX / 100);
-          this.initialY = (window.innerHeight - this.charSize) * (startY / 100);
-          return;
-        }
+  const isMobile = window.innerWidth <= 989;
+  
+  // Get the hero section or main content area
+  const heroSection = document.querySelector('#MainContent [class*="hero"], #MainContent .ned-editorial-hero, #MainContent .ned-hero-title-top');
+  const header = document.querySelector('#shopify-section-sections--header, header');
+  
+  // Calculate center position
+  let centerX = window.innerWidth / 2;
+  let centerY = window.innerHeight / 2;
+  
+  if (heroSection) {
+    const rect = heroSection.getBoundingClientRect();
+    const headerRect = header ? header.getBoundingClientRect() : { bottom: 0 };
+    const headerBottom = headerRect.bottom || 0;
+    
+    // Position above the hero text, centered
+    const heroTop = Math.max(headerBottom + 40, rect.top);
+    const heroWidth = rect.width || window.innerWidth;
+    const heroHeight = rect.height || window.innerHeight;
+    
+    // Place Pegasus in the upper center of the hero area
+    this.initialX = rect.left + (heroWidth * 0.5) - (this.charSize * 0.5);
+    this.initialY = heroTop + 20;
+    
+    // Ensure it's visible
+    this.initialX = Math.max(this.padding, Math.min(this.bounds.maxX, this.initialX));
+    this.initialY = Math.max(this.padding + 40, Math.min(this.bounds.maxY, this.initialY));
+    
+    return;
+  }
+  
+  // Fallback: center of screen
+  this.initialX = centerX - (this.charSize * 0.5);
+  this.initialY = Math.max(80, centerY - (this.charSize * 0.5));
+}
 
         const heroAnchor = document.querySelector(
           '#MainContent .ned-hero-title-top, [id^="NedEditorialHero-"] .ned-editorial-hero__line--1 > span'
