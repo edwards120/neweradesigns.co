@@ -40,8 +40,8 @@
             "link": "/pages/marketing-materials",
             "background": "#ff4fa3",
             "text_color": "#071a3a",
-            "width": 240,
-            "mobile_width": 140,
+            "width": 170,
+            "mobile_width": 110,
             "x": 89,
             "y": 54,
             "mobile_x": 83,
@@ -140,6 +140,7 @@
           "type": "hero_icon",
           "settings": {
             "icon": "asterisk",
+            "custom_icon_image": "shopify://shop_images/2X2_Logo.svg",
             "label": "Selected work",
             "link": "/pages/cases",
             "color": "#ffffff",
@@ -192,7 +193,7 @@
         "frame_color": "#000000",
         "background_color": "#071a3a",
         "text_color": "#ffffff",
-        "accent_color": "#f7e51d",
+        "accent_color": "#F7951D",
         "pink_accent": "#ff4fa3",
         "halftone_image": "shopify://shop_images/IMG_0950.heic",
         "halftone_opacity": 42,
@@ -373,6 +374,7 @@
     },
     "1785216284b62c2be3": {
       "type": "_blocks",
+      "disabled": true,
       "settings": {}
     },
     "work": {
@@ -424,7 +426,7 @@
             "image": "shopify://shop_images/CB87F5C4-DD7F-466F-9D91-345CDEB70448.gif",
             "image_alt": "Environmental graphics and accessible sign system",
             "image_ratio": "landscape",
-            "image_position": "center",
+            "image_position": "right",
             "link": "/pages/cases",
             "accent": "#537ecf"
           }
@@ -435,17 +437,18 @@
         "work_2",
         "work_3"
       ],
+      "disabled": true,
       "settings": {
         "eyebrow": "Selected work / concept studies",
         "heading": "Built to be read at speed.",
         "annotation": "SIGN SYSTEMS / SPATIAL IDENTITY / 3D",
-        "background": "#f3efe7",
-        "text_color": "#071a3a",
+        "background": "071A3A",
+        "text_color": "#FFFFFF",
         "accent": "#ff4fa3",
         "heading_font": "milo",
         "project_font": "milo",
-        "heading_tracking": 5.5,
-        "project_tracking": -2,
+        "heading_tracking": 16,
+        "project_tracking": -1.5,
         "mobile_heading_size": 58,
         "mobile_project_size": 58,
         "enable_motion": true,
@@ -482,6 +485,100 @@
       ],
       "name": "Bouncing balls",
       "settings": {}
+    },
+    "blocks_BfN7tW": {
+      "type": "_blocks",
+      "name": "3D model viewer with CTA",
+      "settings": {}
+    },
+    "blocks_DRkydy": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_6bb0cc8_PW8DLV": {
+          "type": "ai_gen_block_6bb0cc8",
+          "settings": {
+            "background_opacity": 0.5,
+            "section_padding": 40,
+            "max_width": 1200,
+            "link_1": "",
+            "link_2": "",
+            "link_3": "",
+            "link_4": "",
+            "columns_desktop": 4,
+            "columns_mobile": "2",
+            "image_gap": 20,
+            "image_aspect_ratio": "1 / 1",
+            "image_border_radius": 8,
+            "button_text": "More info",
+            "button_link": "",
+            "button_spacing": 30,
+            "button_font_size": 16,
+            "button_padding_vertical": 12,
+            "button_padding_horizontal": 30,
+            "button_border_radius": 4,
+            "button_bg_color": "#121212",
+            "button_text_color": "#ffffff",
+            "button_hover_bg_color": "#14213d",
+            "button_hover_text_color": "#ffffff"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_6bb0cc8_PW8DLV"
+      ],
+      "name": "Image grid with button",
+      "settings": {}
+    },
+    "new_era_featured_experience_tjYFeJ": {
+      "type": "new-era-featured-experience",
+      "blocks": {
+        "detail_yfWfVP": {
+          "type": "detail",
+          "settings": {
+            "text": "Typography / motion / play"
+          }
+        },
+        "detail_rjLTpy": {
+          "type": "detail",
+          "settings": {
+            "text": "Typography / motion / play"
+          }
+        },
+        "detail_PYHgHc": {
+          "type": "detail",
+          "settings": {
+            "text": "Typography / motion / play"
+          }
+        }
+      },
+      "block_order": [
+        "detail_yfWfVP",
+        "detail_rjLTpy",
+        "detail_PYHgHc"
+      ],
+      "name": "NED featured experience",
+      "settings": {
+        "eyebrow": "Featured experience / 01",
+        "classification": "Interactive identity study",
+        "overline": "Step inside the",
+        "title_line_1": "FUNK",
+        "title_line_2": "Machine",
+        "body": "<p>A playful identity system where typography, motion, and spatial behavior react immediately to the visitor.</p>",
+        "button_label": "Enter the experience",
+        "button_link": "",
+        "dimension": "24'-0\" TYPE FIELD",
+        "background": "#ef3e23",
+        "text_color": "#071a3a",
+        "accent": "#f7e51d",
+        "line_1_tracking": -7,
+        "line_2_tracking": -4,
+        "mobile_line_1_size": 84,
+        "mobile_line_2_size": 104,
+        "title_rotation": -2,
+        "enable_motion": true,
+        "motion_speed": 400
+      }
     }
   },
   "order": [
@@ -490,6 +587,9 @@
     "positioning",
     "1785216284b62c2be3",
     "work",
-    "blocks_AU37Vf"
+    "blocks_AU37Vf",
+    "blocks_BfN7tW",
+    "blocks_DRkydy",
+    "new_era_featured_experience_tjYFeJ"
   ]
 }

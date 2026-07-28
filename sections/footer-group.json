@@ -68,6 +68,65 @@
       "name": "Bouncy balls",
       "settings": {}
     },
+    "new_era_page_system_NqWCXE": {
+      "type": "new-era-page-system",
+      "blocks": {
+        "portfolio_item_NCQAG9": {
+          "type": "portfolio_item",
+          "settings": {
+            "title": "Wayfinding System Study",
+            "classification": "Speculative Study",
+            "discipline": "Wayfinding / Sign Family",
+            "annotation": "12'-0\" / ALUMINUM CABINET",
+            "description": "A fabrication-aware study connecting arrival, orientation, tenant visibility, and repeatable production logic.",
+            "image": "shopify://shop_images/CB87F5C4-DD7F-466F-9D91-345CDEB70448.gif",
+            "image_alt": "",
+            "project_link": ""
+          }
+        },
+        "portfolio_item_bePYR9": {
+          "type": "portfolio_item",
+          "settings": {
+            "title": "Wayfinding System Study",
+            "classification": "Speculative Study",
+            "discipline": "Wayfinding / Sign Family",
+            "annotation": "12'-0\" / ALUMINUM CABINET",
+            "description": "A fabrication-aware study connecting arrival, orientation, tenant visibility, and repeatable production logic.",
+            "image": "shopify://shop_images/IMG_D3A72E4F-3353-4EE6-937C-EB793A770A29.jpg",
+            "image_alt": "",
+            "project_link": ""
+          }
+        },
+        "portfolio_item_BFMYFF": {
+          "type": "portfolio_item",
+          "settings": {
+            "title": "Wayfinding System Study",
+            "classification": "Speculative Study",
+            "discipline": "Wayfinding / Sign Family",
+            "annotation": "12'-0\" / ALUMINUM CABINET",
+            "description": "A fabrication-aware study connecting arrival, orientation, tenant visibility, and repeatable production logic.",
+            "image_alt": "",
+            "project_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "portfolio_item_NCQAG9",
+        "portfolio_item_bePYR9",
+        "portfolio_item_BFMYFF"
+      ],
+      "name": "New Era page system",
+      "settings": {
+        "micro_label_size": 14,
+        "hero_title_line_1": "YOU NEED A",
+        "hero_title_line_2": "NEW ERA",
+        "hero_body": "We develop brand, wayfinding, and environmental systems that reduce friction and make the physical environment perform.",
+        "hero_button_label": "START A PROJECT",
+        "hero_button_link": "",
+        "service_1_image": "shopify://shop_images/IMG_0954.heic",
+        "service_2_image": "shopify://shop_images/IMG_1045.heic"
+      }
+    },
     "footer": {
       "type": "footer",
       "settings": {
@@ -90,6 +149,7 @@
     "blocks_imqyzt",
     "blocks_k8cQaX",
     "blocks_XeUitq",
+    "new_era_page_system_NqWCXE",
     "footer"
   ]
 }
