@@ -150,9 +150,9 @@
       "aether-guided-assistant": {
         "type": "aether-guided-assistant",
         "settings": {
-          "enabled": true,
+          "enabled": false,
           "enable_drag": true,
-          "character_size": 165,
+          "character_size": 125,
           "launcher_label": "Ask Pegasus",
           "eyebrow": "New Era studio guide",
           "title": "What can we build?",
@@ -162,7 +162,7 @@
           "contact_url": "",
           "contact_label": "Start a project",
           "footer_text": "Powered by New Era Designs",
-          "panel_width": 450,
+          "panel_width": 390,
           "bubble_enabled": false,
           "bubble_messages": "HEY - NEED A HAND?\nTALK TO ME.\nTELL ME WHAT YOU'RE BUILDING.\nWE'RE OPEN - ASK ME ANYTHING.\nLET ME HELP YOU FIND THE RIGHT SERVICE.\nCURIOUS ABOUT NEW ERA?\nNEED A QUOTE? START HERE.\nASK ME ABOUT CHRIS OR THE STUDIO.",
           "bubble_delay": 10,
