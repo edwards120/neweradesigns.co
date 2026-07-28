@@ -17,13 +17,13 @@
           "settings": {
             "label": "Wayfinding",
             "link": "/pages/marketing-materials",
-            "background": "#f7e51d",
+            "background": "#F7951D",
             "text_color": "#071a3a",
-            "width": 160,
+            "width": 190,
             "mobile_width": 90,
-            "x": 39,
+            "x": 61,
             "y": 77,
-            "mobile_x": 17,
+            "mobile_x": 44,
             "mobile_y": 48,
             "rotation": -7,
             "drift_x": 8,
@@ -99,19 +99,20 @@
           "type": "hero_icon",
           "settings": {
             "icon": "crosshair",
+            "custom_icon_image": "shopify://shop_images/new-era-designs-logo-04.svg",
             "label": "Services",
             "link": "/pages/marketing-materials",
             "color": "#f7e51d",
-            "size": 34,
+            "size": 62,
             "mobile_size": 24,
             "x": 72,
             "y": 30,
             "mobile_x": 83,
             "mobile_y": 34,
             "rotation": 12,
-            "bounce_height": 8,
-            "speed": 5,
-            "delay": 2,
+            "bounce_height": 18,
+            "speed": 7,
+            "delay": 6,
             "hide_mobile": false
           }
         },
@@ -751,6 +752,56 @@
         "motion_distance": 25
       }
     },
+    "new_era_featured_experience_K3Xyhe": {
+      "type": "new-era-featured-experience",
+      "blocks": {
+        "detail_gzXfgi": {
+          "type": "detail",
+          "settings": {
+            "text": "Typography / motion / play"
+          }
+        },
+        "detail_EHcgpX": {
+          "type": "detail",
+          "settings": {
+            "text": "Typography / motion / play"
+          }
+        },
+        "detail_cfTWCc": {
+          "type": "detail",
+          "settings": {
+            "text": "Typography / motion / play"
+          }
+        }
+      },
+      "block_order": [
+        "detail_gzXfgi",
+        "detail_EHcgpX",
+        "detail_cfTWCc"
+      ],
+      "name": "NED featured experience",
+      "settings": {
+        "eyebrow": "Featured experience / 01",
+        "classification": "Interactive identity study",
+        "overline": "Step inside the",
+        "title_line_1": "gbb",
+        "title_line_2": "Machine",
+        "body": "<p>A playful identity system where typography, motion, and spatial behavior react immediately to the visitor.</p>",
+        "button_label": "Enter the experience",
+        "button_link": "",
+        "dimension": "24'-0\" TYPE FIELD",
+        "background": "#ef3e23",
+        "text_color": "#071a3a",
+        "accent": "#f7e51d",
+        "line_1_tracking": -7,
+        "line_2_tracking": -4,
+        "mobile_line_1_size": 84,
+        "mobile_line_2_size": 104,
+        "title_rotation": -2,
+        "enable_motion": true,
+        "motion_speed": 400
+      }
+    },
     "closing": {
       "type": "new-era-editorial-panel",
       "blocks": {
@@ -853,6 +904,7 @@
     "funk_machine",
     "process",
     "podcast",
+    "new_era_featured_experience_K3Xyhe",
     "closing",
     "blocks_AU37Vf"
   ]
