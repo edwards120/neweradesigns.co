@@ -487,7 +487,7 @@
         "ai_gen_block_4f9a07b_iF9DkH": {
           "type": "ai_gen_block_4f9a07b",
           "settings": {
-            "headline": "INTERACTIVE DESIGN. LUXURY IN MOTION.",
+            "headline": "INTEbvhi,",
             "subtext": "Tap to move the system.",
             "heading_font": "sans_serif_n4",
             "text_color": "#ffffff",
@@ -500,8 +500,8 @@
             "ball_count": 8,
             "ball_size": "medium",
             "bounce_energy": 0.5,
-            "desktop_height": 600,
-            "mobile_height": 640
+            "desktop_height": 520,
+            "mobile_height": 580
           },
           "blocks": {}
         }
