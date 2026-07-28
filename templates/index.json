@@ -17,7 +17,7 @@
           "settings": {
             "label": "Wayfinding",
             "link": "/pages/marketing-materials",
-            "background": "#F7951D",
+            "background": "#f7951d",
             "text_color": "#071a3a",
             "width": 190,
             "mobile_width": 90,
@@ -283,94 +283,30 @@
         "gravity_damping": 90
       }
     },
-    "new_era_service_panels_eVt3MF": {
-      "type": "new-era-service-panels",
+    "blocks_cDEwTN": {
+      "type": "_blocks",
       "blocks": {
-        "service_XLwkYN": {
-          "type": "service",
+        "ai_gen_block_a688aa9_MMTE7j": {
+          "type": "ai_gen_block_a688aa9",
           "settings": {
-            "image": "shopify://shop_images/38B61577-526E-4D0B-B2CC-02A4C1A04230.jpg",
-            "layout": "full-bleed",
-            "eyebrow": "Brand identity + visual systems",
-            "script_accent": "Design",
-            "title": "Identity that holds up in real environments.",
-            "description": "<p>Build the visual language, hierarchy, and system rules before the space gets crowded.</p>",
-            "supporting_text": "<p>Use this area for a more complete explanation, proof point, or next-step note without overcrowding the main headline.</p>",
-            "points": "Identity system development\nNaming and hierarchy\nBrand-led sign standards",
-            "link": "",
-            "link_label": "View service"
-          }
-        },
-        "service_XjixcG": {
-          "type": "service",
-          "settings": {
-            "image": "shopify://shop_images/IMG_0954.heic",
-            "layout": "full-bleed",
-            "eyebrow": "Wayfinding + signage",
-            "script_accent": "Design",
-            "title": "Navigation that reduces friction.",
-            "description": "<p>Plan signs around entrances, circulation, tenant visibility, and visitor decisions.</p>",
-            "supporting_text": "<p>Use this area for a more complete explanation, proof point, or next-step note without overcrowding the main headline.</p>",
-            "points": "Signage family planning\nDirectional logic\nTenant and code coordination",
-            "link": "",
-            "link_label": "View service"
-          }
-        },
-        "service_MFycXb": {
-          "type": "service",
-          "settings": {
-            "image": "shopify://shop_images/CB87F5C4-DD7F-466F-9D91-345CDEB70448.gif",
-            "layout": "full-bleed",
-            "eyebrow": "Marketing materials + design",
-            "script_accent": "Design",
-            "title": "Campaign pieces that stay aligned.",
-            "description": "<p>Promotional layouts, event graphics, and presentation assets built from one visual direction.</p>",
-            "supporting_text": "<p>Use this area for a more complete explanation, proof point, or next-step note without overcrowding the main headline.</p>",
-            "points": "Presentation decks\nEvent graphics\nPrint and digital collateral",
-            "link": "",
-            "link_label": "View service"
-          }
+            "mobile_height": 100,
+            "heading": "Full Screen Video",
+            "heading_size": 80,
+            "heading_color": "#ffffff",
+            "text_alignment": "center",
+            "content_max_width": 800,
+            "show_overlay": true,
+            "overlay_color": "#000000",
+            "overlay_opacity": 0.3
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "service_XLwkYN",
-        "service_XjixcG",
-        "service_MFycXb"
+        "ai_gen_block_a688aa9_MMTE7j"
       ],
-      "name": "NED service panels",
-      "settings": {
-        "kicker": "Services offered",
-        "heading": "",
-        "text": "<p>Use visual panels to introduce each service, then let the copy, links, and anchors make the page easy to scan and navigate.</p>",
-        "script_heading": "",
-        "show_script_accents": true,
-        "background_color": "#121F3A",
-        "panel_background": "#000000",
-        "text_color": "#FFFFFF",
-        "primary_color": "#121F3A",
-        "accent_color": "#f6a229",
-        "heading_size": 96,
-        "panel_title_size": 88,
-        "body_size": 18,
-        "script_size": 160,
-        "header_width": 92,
-        "panel_title_width": 15,
-        "panel_copy_width": 64,
-        "show_diagonal_lines": true,
-        "animate_diagonal_lines": true,
-        "diagonal_motion": 100,
-        "show_bouncy_balls": false,
-        "gradient_percent": 20,
-        "ball_color_1": "#FCA311",
-        "ball_color_2": "#16213A",
-        "ball_color_3": "#1B2E9D",
-        "ball_color_4": "#0A1821",
-        "ball_radius_min": 10,
-        "ball_radius_max": 26,
-        "ball_count": 8,
-        "ball_size": "medium",
-        "bounce_intensity": "moderate"
-      }
+      "name": "Video panel",
+      "settings": {}
     },
     "positioning": {
       "type": "new-era-editorial-panel",
@@ -437,26 +373,6 @@
     },
     "1785216284b62c2be3": {
       "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_a688aa9_pjQDaM": {
-          "type": "ai_gen_block_a688aa9",
-          "settings": {
-            "mobile_height": 100,
-            "heading": "Full Screen Video",
-            "heading_size": 80,
-            "heading_color": "#ffffff",
-            "text_alignment": "center",
-            "content_max_width": 800,
-            "show_overlay": true,
-            "overlay_color": "#000000",
-            "overlay_opacity": 0.3
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_a688aa9_pjQDaM"
-      ],
       "settings": {}
     },
     "work": {
@@ -536,235 +452,6 @@
         "motion_speed": 400
       }
     },
-    "process": {
-      "type": "new-era-editorial-panel",
-      "blocks": {
-        "p1": {
-          "type": "annotation",
-          "settings": {
-            "text": "01 / LISTEN + MAP"
-          }
-        },
-        "p2": {
-          "type": "annotation",
-          "settings": {
-            "text": "02 / BUILD THE SYSTEM"
-          }
-        },
-        "p3": {
-          "type": "annotation",
-          "settings": {
-            "text": "03 / TEST + DELIVER"
-          }
-        }
-      },
-      "block_order": [
-        "p1",
-        "p2",
-        "p3"
-      ],
-      "settings": {
-        "index": "03",
-        "eyebrow": "Process / no mystery",
-        "heading": "From the room to the real world.",
-        "body": "<p>We turn stakeholder language into <strong>clear design decisions</strong>, then pressure-test every part against use, material, fabrication, and the people moving through it.</p>",
-        "button_label": "See the process",
-        "button_link": "/pages/info",
-        "layout": "right",
-        "background": "#537ecf",
-        "text_color": "#071a3a",
-        "accent": "#f7e51d",
-        "padding": 90,
-        "mobile_padding": 24,
-        "min_height": 750,
-        "rule_width": 1,
-        "heading_font": "milo",
-        "heading_size": 140,
-        "mobile_heading_size": 54,
-        "fluid_heading_size": 9,
-        "heading_tracking": -2,
-        "mobile_heading_tracking": -1,
-        "heading_line_height": 0.8,
-        "heading_x": 0,
-        "heading_y": 0,
-        "body_size": 19,
-        "mobile_body_size": 17,
-        "body_width": 620,
-        "show_spinning_disc": false,
-        "disc_label": "NEW ERA / ON AIR",
-        "disc_link": "",
-        "enable_motion": true,
-        "motion_speed": 400,
-        "motion_distance": 25
-      }
-    },
-    "podcast": {
-      "type": "new-era-editorial-panel",
-      "blocks": {
-        "pod_1": {
-          "type": "annotation",
-          "settings": {
-            "text": "THE ROOM PROTOCOL"
-          }
-        },
-        "pod_2": {
-          "type": "annotation",
-          "settings": {
-            "text": "CONVERSATION / PRACTICE / CULTURE"
-          }
-        }
-      },
-      "block_order": [
-        "pod_1",
-        "pod_2"
-      ],
-      "settings": {
-        "index": "04",
-        "eyebrow": "Podcast / field notes",
-        "heading": "The room is part of the work.",
-        "body": "<p>Conversations about design practice, power, process, and the decisions that shape what gets built.</p>",
-        "button_label": "Open the podcast",
-        "button_link": "/pages/podcast",
-        "layout": "left",
-        "background": "#071a3a",
-        "text_color": "#ffffff",
-        "accent": "#ff4fa3",
-        "padding": 90,
-        "mobile_padding": 24,
-        "min_height": 650,
-        "rule_width": 1,
-        "heading_font": "milo",
-        "heading_size": 110,
-        "mobile_heading_size": 54,
-        "fluid_heading_size": 9,
-        "heading_tracking": -2,
-        "mobile_heading_tracking": -1,
-        "heading_line_height": 0.8,
-        "heading_x": 0,
-        "heading_y": 0,
-        "body_size": 19,
-        "mobile_body_size": 17,
-        "body_width": 620,
-        "show_spinning_disc": true,
-        "disc_label": "NEW ERA / ON AIR",
-        "disc_link": "/pages/podcast",
-        "enable_motion": true,
-        "motion_speed": 400,
-        "motion_distance": 25
-      }
-    },
-    "new_era_featured_experience_K3Xyhe": {
-      "type": "new-era-featured-experience",
-      "blocks": {
-        "detail_gzXfgi": {
-          "type": "detail",
-          "settings": {
-            "text": "Typography / motion / play"
-          }
-        },
-        "detail_EHcgpX": {
-          "type": "detail",
-          "settings": {
-            "text": "Typography / motion / play"
-          }
-        },
-        "detail_cfTWCc": {
-          "type": "detail",
-          "settings": {
-            "text": "Typography / motion / play"
-          }
-        }
-      },
-      "block_order": [
-        "detail_gzXfgi",
-        "detail_EHcgpX",
-        "detail_cfTWCc"
-      ],
-      "name": "NED featured experience",
-      "settings": {
-        "eyebrow": "Featured experience / 01",
-        "classification": "Interactive identity study",
-        "overline": "Step inside the",
-        "title_line_1": "gbb",
-        "title_line_2": "Machine",
-        "body": "<p>A playful identity system where typography, motion, and spatial behavior react immediately to the visitor.</p>",
-        "button_label": "Enter the experience",
-        "button_link": "",
-        "dimension": "24'-0\" TYPE FIELD",
-        "background": "#ef3e23",
-        "text_color": "#071a3a",
-        "accent": "#f7e51d",
-        "line_1_tracking": -7,
-        "line_2_tracking": -4,
-        "mobile_line_1_size": 84,
-        "mobile_line_2_size": 104,
-        "title_rotation": -2,
-        "enable_motion": true,
-        "motion_speed": 400
-      }
-    },
-    "closing": {
-      "type": "new-era-editorial-panel",
-      "blocks": {
-        "annotation_kkaJJi": {
-          "type": "annotation",
-          "settings": {
-            "text": "12'-0\" / ALUMINUM CABINET"
-          }
-        },
-        "close_1": {
-          "type": "annotation",
-          "settings": {
-            "text": "REPLIES WITHIN 48 HOURS"
-          }
-        },
-        "close_2": {
-          "type": "annotation",
-          "settings": {
-            "text": "LET'S BRING YOU TO YOUR NEW ERA"
-          }
-        }
-      },
-      "block_order": [
-        "annotation_kkaJJi",
-        "close_1",
-        "close_2"
-      ],
-      "settings": {
-        "index": "05",
-        "eyebrow": "Ready when you are",
-        "heading": "Let's bring you to your new era.",
-        "body": "<p>Bring the messy brief, the half-built idea, or the physical environment that is not doing its job yet.</p>",
-        "button_label": "Let's talk",
-        "button_link": "/pages/contact",
-        "layout": "left",
-        "background": "#f7e51d",
-        "text_color": "#071a3a",
-        "accent": "#ff4fa3",
-        "padding": 90,
-        "mobile_padding": 24,
-        "min_height": 700,
-        "rule_width": 1,
-        "heading_font": "script",
-        "heading_size": 190,
-        "mobile_heading_size": 54,
-        "fluid_heading_size": 9,
-        "heading_tracking": -3,
-        "mobile_heading_tracking": -1,
-        "heading_line_height": 0.8,
-        "heading_x": 0,
-        "heading_y": 0,
-        "body_size": 19,
-        "mobile_body_size": 17,
-        "body_width": 620,
-        "show_spinning_disc": false,
-        "disc_label": "NEW ERA / ON AIR",
-        "disc_link": "",
-        "enable_motion": true,
-        "motion_speed": 400,
-        "motion_distance": 25
-      }
-    },
     "blocks_AU37Vf": {
       "type": "_blocks",
       "blocks": {
@@ -799,14 +486,10 @@
   },
   "order": [
     "hero",
-    "new_era_service_panels_eVt3MF",
+    "blocks_cDEwTN",
     "positioning",
     "1785216284b62c2be3",
     "work",
-    "process",
-    "podcast",
-    "new_era_featured_experience_K3Xyhe",
-    "closing",
     "blocks_AU37Vf"
   ]
 }
