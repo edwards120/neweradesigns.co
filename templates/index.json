@@ -283,6 +283,95 @@
         "gravity_damping": 90
       }
     },
+    "new_era_service_panels_eVt3MF": {
+      "type": "new-era-service-panels",
+      "blocks": {
+        "service_XLwkYN": {
+          "type": "service",
+          "settings": {
+            "image": "shopify://shop_images/38B61577-526E-4D0B-B2CC-02A4C1A04230.jpg",
+            "layout": "full-bleed",
+            "eyebrow": "Brand identity + visual systems",
+            "script_accent": "Design",
+            "title": "Identity that holds up in real environments.",
+            "description": "<p>Build the visual language, hierarchy, and system rules before the space gets crowded.</p>",
+            "supporting_text": "<p>Use this area for a more complete explanation, proof point, or next-step note without overcrowding the main headline.</p>",
+            "points": "Identity system development\nNaming and hierarchy\nBrand-led sign standards",
+            "link": "",
+            "link_label": "View service"
+          }
+        },
+        "service_XjixcG": {
+          "type": "service",
+          "settings": {
+            "image": "shopify://shop_images/IMG_0954.heic",
+            "layout": "full-bleed",
+            "eyebrow": "Wayfinding + signage",
+            "script_accent": "Design",
+            "title": "Navigation that reduces friction.",
+            "description": "<p>Plan signs around entrances, circulation, tenant visibility, and visitor decisions.</p>",
+            "supporting_text": "<p>Use this area for a more complete explanation, proof point, or next-step note without overcrowding the main headline.</p>",
+            "points": "Signage family planning\nDirectional logic\nTenant and code coordination",
+            "link": "",
+            "link_label": "View service"
+          }
+        },
+        "service_MFycXb": {
+          "type": "service",
+          "settings": {
+            "image": "shopify://shop_images/CB87F5C4-DD7F-466F-9D91-345CDEB70448.gif",
+            "layout": "full-bleed",
+            "eyebrow": "Marketing materials + design",
+            "script_accent": "Design",
+            "title": "Campaign pieces that stay aligned.",
+            "description": "<p>Promotional layouts, event graphics, and presentation assets built from one visual direction.</p>",
+            "supporting_text": "<p>Use this area for a more complete explanation, proof point, or next-step note without overcrowding the main headline.</p>",
+            "points": "Presentation decks\nEvent graphics\nPrint and digital collateral",
+            "link": "",
+            "link_label": "View service"
+          }
+        }
+      },
+      "block_order": [
+        "service_XLwkYN",
+        "service_XjixcG",
+        "service_MFycXb"
+      ],
+      "name": "NED service panels",
+      "settings": {
+        "kicker": "Services offered",
+        "heading": "Design systems people can understand at a glance.",
+        "text": "<p>Use visual panels to introduce each service, then let the copy, links, and anchors make the page easy to scan and navigate.</p>",
+        "script_heading": "Services",
+        "show_script_accents": true,
+        "background_color": "#121F3A",
+        "panel_background": "#000000",
+        "text_color": "#FFFFFF",
+        "primary_color": "#111d3a",
+        "accent_color": "#f6a229",
+        "heading_size": 76,
+        "panel_title_size": 70,
+        "body_size": 18,
+        "script_size": 112,
+        "header_width": 76,
+        "panel_title_width": 12,
+        "panel_copy_width": 48,
+        "show_diagonal_lines": true,
+        "animate_diagonal_lines": true,
+        "diagonal_motion": 130,
+        "show_bouncy_balls": false,
+        "gradient_percent": 20,
+        "ball_color_1": "#FCA311",
+        "ball_color_2": "#16213A",
+        "ball_color_3": "#1B2E9D",
+        "ball_color_4": "#0A1821",
+        "ball_radius_min": 10,
+        "ball_radius_max": 26,
+        "ball_count": 8,
+        "ball_size": "medium",
+        "bounce_intensity": "moderate"
+      }
+    },
     "positioning": {
       "type": "new-era-editorial-panel",
       "blocks": {
@@ -343,169 +432,6 @@
         "enable_motion": true,
         "motion_speed": 400,
         "motion_distance": 25
-      }
-    },
-    "capabilities": {
-      "type": "new-era-capability-field",
-      "blocks": {
-        "wayfinding": {
-          "type": "capability",
-          "settings": {
-            "label": "Wayfinding",
-            "annotation": "DECISION POINTS / SIGN FAMILIES",
-            "link": "",
-            "font_style": "milo",
-            "color": "#ffffff",
-            "shape_color": "#f7e51d",
-            "shape_text_color": "#071a3a",
-            "outline": false,
-            "size": 230,
-            "mobile_size": 170,
-            "text_size": 23,
-            "mobile_text_size": 16,
-            "tracking": 1,
-            "x": 24,
-            "y": 22,
-            "mobile_x": 35,
-            "mobile_y": 14,
-            "rotation": -6,
-            "drift_x": 8,
-            "drift_y": 18,
-            "float_speed": 4,
-            "motion_phase": 1
-          }
-        },
-        "brand": {
-          "type": "capability",
-          "settings": {
-            "label": "Brand systems",
-            "annotation": "VOICE / IDENTITY / TOOLKIT",
-            "link": "",
-            "font_style": "funk",
-            "color": "#ffffff",
-            "shape_color": "#ff4fa3",
-            "shape_text_color": "#071a3a",
-            "outline": false,
-            "size": 220,
-            "mobile_size": 160,
-            "text_size": 25,
-            "mobile_text_size": 16,
-            "tracking": 0,
-            "x": 72,
-            "y": 31,
-            "mobile_x": 65,
-            "mobile_y": 32,
-            "rotation": 4,
-            "drift_x": -8,
-            "drift_y": 16,
-            "float_speed": 5,
-            "motion_phase": 3
-          }
-        },
-        "environmental": {
-          "type": "capability",
-          "settings": {
-            "label": "Environmental",
-            "annotation": "SPACE / STORY / MATERIAL",
-            "link": "",
-            "font_style": "milo",
-            "color": "#ffffff",
-            "shape_color": "#537ecf",
-            "shape_text_color": "#ffffff",
-            "outline": false,
-            "size": 260,
-            "mobile_size": 190,
-            "text_size": 24,
-            "mobile_text_size": 15,
-            "tracking": 1,
-            "x": 46,
-            "y": 52,
-            "mobile_x": 42,
-            "mobile_y": 50,
-            "rotation": 10,
-            "drift_x": 6,
-            "drift_y": 20,
-            "float_speed": 6,
-            "motion_phase": 5
-          }
-        },
-        "signage": {
-          "type": "capability",
-          "settings": {
-            "label": "Signage",
-            "annotation": "FABRICATION-AWARE DESIGN",
-            "link": "",
-            "font_style": "script",
-            "color": "#ffffff",
-            "shape_color": "#f7e51d",
-            "shape_text_color": "#071a3a",
-            "outline": true,
-            "size": 230,
-            "mobile_size": 160,
-            "text_size": 30,
-            "mobile_text_size": 22,
-            "tracking": 0,
-            "x": 75,
-            "y": 72,
-            "mobile_x": 66,
-            "mobile_y": 69,
-            "rotation": 7,
-            "drift_x": -6,
-            "drift_y": 16,
-            "float_speed": 4,
-            "motion_phase": 2
-          }
-        },
-        "spatial": {
-          "type": "capability",
-          "settings": {
-            "label": "Spatial 3D",
-            "annotation": "SKETCHUP / CONCEPT / BUILD",
-            "link": "",
-            "font_style": "milo",
-            "color": "#ffffff",
-            "shape_color": "#ef3e23",
-            "shape_text_color": "#071a3a",
-            "outline": false,
-            "size": 210,
-            "mobile_size": 150,
-            "text_size": 22,
-            "mobile_text_size": 15,
-            "tracking": 1,
-            "x": 22,
-            "y": 81,
-            "mobile_x": 35,
-            "mobile_y": 85,
-            "rotation": 3,
-            "drift_x": 8,
-            "drift_y": 14,
-            "float_speed": 5,
-            "motion_phase": 4
-          }
-        }
-      },
-      "block_order": [
-        "wayfinding",
-        "brand",
-        "environmental",
-        "signage",
-        "spatial"
-      ],
-      "settings": {
-        "eyebrow": "What we make move",
-        "heading": "One studio. Many physical outcomes.",
-        "background": "#071a3a",
-        "text_color": "#ffffff",
-        "accent": "#ff4fa3",
-        "min_height": 1000,
-        "footer_left": "Systems / spaces / signals",
-        "footer_right": "",
-        "heading_tracking": 1,
-        "mobile_heading_size": 54,
-        "enable_motion": true,
-        "enable_ambient_motion": true,
-        "motion_speed": 280,
-        "pointer_strength": 26
       }
     },
     "work": {
@@ -898,8 +824,8 @@
   },
   "order": [
     "hero",
+    "new_era_service_panels_eVt3MF",
     "positioning",
-    "capabilities",
     "work",
     "funk_machine",
     "process",
