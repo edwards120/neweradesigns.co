@@ -340,25 +340,25 @@
       "name": "NED service panels",
       "settings": {
         "kicker": "Services offered",
-        "heading": "Design systems people can understand at a glance.",
+        "heading": "",
         "text": "<p>Use visual panels to introduce each service, then let the copy, links, and anchors make the page easy to scan and navigate.</p>",
-        "script_heading": "Services",
+        "script_heading": "",
         "show_script_accents": true,
         "background_color": "#121F3A",
         "panel_background": "#000000",
         "text_color": "#FFFFFF",
-        "primary_color": "#111d3a",
+        "primary_color": "#121F3A",
         "accent_color": "#f6a229",
-        "heading_size": 76,
-        "panel_title_size": 70,
+        "heading_size": 96,
+        "panel_title_size": 88,
         "body_size": 18,
-        "script_size": 112,
-        "header_width": 76,
-        "panel_title_width": 12,
-        "panel_copy_width": 48,
+        "script_size": 160,
+        "header_width": 92,
+        "panel_title_width": 15,
+        "panel_copy_width": 64,
         "show_diagonal_lines": true,
         "animate_diagonal_lines": true,
-        "diagonal_motion": 130,
+        "diagonal_motion": 100,
         "show_bouncy_balls": false,
         "gradient_percent": 20,
         "ball_color_1": "#FCA311",
@@ -399,6 +399,7 @@
         "note_2",
         "note_3"
       ],
+      "disabled": true,
       "settings": {
         "index": "02",
         "eyebrow": "Digital blueprint / physical impact",
@@ -433,6 +434,30 @@
         "motion_speed": 400,
         "motion_distance": 25
       }
+    },
+    "1785216284b62c2be3": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_a688aa9_pjQDaM": {
+          "type": "ai_gen_block_a688aa9",
+          "settings": {
+            "mobile_height": 100,
+            "heading": "Full Screen Video",
+            "heading_size": 80,
+            "heading_color": "#ffffff",
+            "text_alignment": "center",
+            "content_max_width": 800,
+            "show_overlay": true,
+            "overlay_color": "#000000",
+            "overlay_opacity": 0.3
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_a688aa9_pjQDaM"
+      ],
+      "settings": {}
     },
     "work": {
       "type": "new-era-selected-work",
@@ -480,7 +505,7 @@
             "discipline": "Accessibility / spatial logic",
             "description": "A decision point designed around legibility, reach range, progressive disclosure, and fast route confirmation.",
             "technical_note": "48–60\" TACTILE ZONE",
-            "image": "shopify://shop_images/Proposed_Graphics_Signage_Template_proposed_graphics.jpg",
+            "image": "shopify://shop_images/CB87F5C4-DD7F-466F-9D91-345CDEB70448.gif",
             "image_alt": "Environmental graphics and accessible sign system",
             "image_ratio": "landscape",
             "image_position": "center",
@@ -494,7 +519,6 @@
         "work_2",
         "work_3"
       ],
-      "disabled": true,
       "settings": {
         "eyebrow": "Selected work / concept studies",
         "heading": "Built to be read at speed.",
@@ -504,59 +528,10 @@
         "accent": "#ff4fa3",
         "heading_font": "milo",
         "project_font": "milo",
-        "heading_tracking": -3,
+        "heading_tracking": 5.5,
         "project_tracking": -2,
         "mobile_heading_size": 58,
-        "mobile_project_size": 44,
-        "enable_motion": true,
-        "motion_speed": 400
-      }
-    },
-    "funk_machine": {
-      "type": "new-era-featured-experience",
-      "blocks": {
-        "detail_1": {
-          "type": "detail",
-          "settings": {
-            "text": "TYPOGRAPHY / MOTION / PLAY"
-          }
-        },
-        "detail_2": {
-          "type": "detail",
-          "settings": {
-            "text": "IMMEDIATE RESPONSE / PRECISE STOP"
-          }
-        },
-        "detail_3": {
-          "type": "detail",
-          "settings": {
-            "text": "EXPERIMENT 01 / NEW ERA"
-          }
-        }
-      },
-      "block_order": [
-        "detail_1",
-        "detail_2",
-        "detail_3"
-      ],
-      "settings": {
-        "eyebrow": "Featured experience / 01",
-        "classification": "Interactive identity study",
-        "overline": "Step inside the",
-        "title_line_1": "FUNK",
-        "title_line_2": "Machine",
-        "body": "<p>A playful identity system where typography, motion, and spatial behavior react immediately to the visitor.</p>",
-        "button_label": "Enter the experience",
-        "button_link": "/pages/cases",
-        "dimension": "24'-0\" TYPE FIELD",
-        "background": "#ef3e23",
-        "text_color": "#071a3a",
-        "accent": "#f7e51d",
-        "line_1_tracking": -7,
-        "line_2_tracking": -4,
-        "mobile_line_1_size": 140,
-        "mobile_line_2_size": 104,
-        "title_rotation": -2,
+        "mobile_project_size": 58,
         "enable_motion": true,
         "motion_speed": 400
       }
@@ -826,8 +801,8 @@
     "hero",
     "new_era_service_panels_eVt3MF",
     "positioning",
+    "1785216284b62c2be3",
     "work",
-    "funk_machine",
     "process",
     "podcast",
     "new_era_featured_experience_K3Xyhe",
