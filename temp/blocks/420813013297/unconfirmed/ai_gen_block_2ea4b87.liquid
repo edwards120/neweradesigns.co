@@ -1,6 +1,507 @@
+{% doc %}
+  @prompt
+    can you make video section full but make the height and font, with body, and botton option. Make too like the site, using Funk Machine and Edwardianscript, can you change the font being able to use the fonts in the files folder, like mattewroas or milo
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  @font-face {
+    font-family: 'CustomHeadingFont';
+    src: url('{{ block.settings.heading_custom_font }}');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'CustomBodyFont';
+    src: url('{{ block.settings.body_custom_font }}');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  .ai-video-section-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: {{ block.settings.video_height_desktop }}px;
+    overflow: hidden;
+    display: block;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-video-section-{{ ai_gen_id }} {
+      height: {{ block.settings.video_height_mobile }}px;
+    }
+  }
+
+  .ai-video-section__video-wrapper-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ai-video-section__video-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-video-section__overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: {{ block.settings.overlay_color }};
+    opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+    pointer-events: none;
+  }
+
+  .ai-video-section__content-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: {{ block.settings.content_alignment }};
+    justify-content: {{ block.settings.content_vertical_alignment }};
+    height: 100%;
+    padding: 40px 20px;
+    text-align: {% if block.settings.content_alignment == 'flex-start' %}left{% elsif block.settings.content_alignment == 'flex-end' %}right{% else %}center{% endif %};
+  }
+
+  .ai-video-section__heading-{{ ai_gen_id }} {
+    {% if block.settings.heading_custom_font != blank %}
+      font-family: 'CustomHeadingFont', {{ block.settings.heading_font.family }}, {{ block.settings.heading_font.fallback_families }};
+    {% else %}
+      font-family: {{ block.settings.heading_font.family }}, {{ block.settings.heading_font.fallback_families }};
+      font-weight: {{ block.settings.heading_font.weight }};
+      font-style: {{ block.settings.heading_font.style }};
+    {% endif %}
+    font-size: {{ block.settings.heading_size_desktop }}px;
+    line-height: 1.2;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 20px;
+    max-width: {{ block.settings.content_max_width }}px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-video-section__heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size_mobile }}px;
+    }
+  }
+
+  .ai-video-section__body-{{ ai_gen_id }} {
+    {% if block.settings.body_custom_font != blank %}
+      font-family: 'CustomBodyFont', {{ block.settings.body_font.family }}, {{ block.settings.body_font.fallback_families }};
+    {% else %}
+      font-family: {{ block.settings.body_font.family }}, {{ block.settings.body_font.fallback_families }};
+      font-weight: {{ block.settings.body_font.weight }};
+      font-style: {{ block.settings.body_font.style }};
+    {% endif %}
+    font-size: {{ block.settings.body_size_desktop }}px;
+    line-height: 1.6;
+    color: {{ block.settings.body_color }};
+    margin: 0 0 30px;
+    max-width: {{ block.settings.content_max_width }}px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-video-section__body-{{ ai_gen_id }} {
+      font-size: {{ block.settings.body_size_mobile }}px;
+    }
+  }
+
+  .ai-video-section__button-{{ ai_gen_id }} {
+    display: inline-block;
+    padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
+    background-color: {{ block.settings.button_background_color }};
+    color: {{ block.settings.button_text_color }};
+    font-size: {{ block.settings.button_font_size }}px;
+    text-decoration: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .ai-video-section__button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_background_color }};
+    color: {{ block.settings.button_hover_text_color }};
+  }
+{% endstyle %}
+
+<video-section-{{ ai_gen_id }}
+  class="ai-video-section-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-video-section__video-wrapper-{{ ai_gen_id }}">
+    {% if block.settings.video_url != blank %}
+      <video
+        class="ai-video-section__video-{{ ai_gen_id }}"
+        autoplay
+        muted
+        loop
+        playsinline
+        {% if block.settings.video_url contains '.mp4' or block.settings.video_url contains '.webm' %}
+          src="{{ block.settings.video_url }}"
+        {% endif %}
+      >
+        {% if block.settings.video_url contains '.mp4' %}
+          <source src="{{ block.settings.video_url }}" type="video/mp4">
+        {% elsif block.settings.video_url contains '.webm' %}
+          <source src="{{ block.settings.video_url }}" type="video/webm">
+        {% endif %}
+      </video>
+    {% else %}
+      <div class="ai-video-section__placeholder-{{ ai_gen_id }}" style="width: 100%; height: 100%; background-color: #f4f4f4; display: flex; align-items: center; justify-content: center;">
+        {{ 'hero-apparel-1' | placeholder_svg_tag }}
+      </div>
+    {% endif %}
+  </div>
+
+  {% if block.settings.show_overlay %}
+    <div class="ai-video-section__overlay-{{ ai_gen_id }}"></div>
+  {% endif %}
+
+  <div class="ai-video-section__content-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-video-section__heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+    {% endif %}
+
+    {% if block.settings.body_text != blank %}
+      <div class="ai-video-section__body-{{ ai_gen_id }}">{{ block.settings.body_text }}</div>
+    {% endif %}
+
+    {% if block.settings.button_text != blank %}
+      <a
+        href="{{ block.settings.button_link }}"
+        class="ai-video-section__button-{{ ai_gen_id }}"
+      >
+        {{ block.settings.button_text }}
+      </a>
+    {% endif %}
+  </div>
+</video-section-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class VideoSection{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        const video = this.querySelector('.ai-video-section__video-{{ ai_gen_id }}');
+        if (video) {
+          video.play().catch(function(error) {
+            console.log('Video autoplay failed:', error);
+          });
+        }
+      }
+    }
+
+    customElements.define('video-section-{{ ai_gen_id }}', VideoSection{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Video section",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Video URL",
+      "info": "Upload video to Files and paste URL here (.mp4 or .webm)"
+    },
+    {
+      "type": "range",
+      "id": "video_height_desktop",
+      "label": "Height (desktop)",
+      "min": 300,
+      "max": 900,
+      "step": 50,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "video_height_mobile",
+      "label": "Height (mobile)",
+      "min": 200,
+      "max": 700,
+      "step": 50,
+      "unit": "px",
+      "default": 400
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Show overlay",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading text",
+      "default": "Video heading"
+    },
+    {
+      "type": "text",
+      "id": "heading_custom_font",
+      "label": "Custom font URL",
+      "info": "Upload font to Files, copy link, and paste here. Leave blank to use font picker below."
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Fallback font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "label": "Size (desktop)",
+      "min": 24,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Size (mobile)",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Body text"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "label": "Body text",
+      "default": "<p>Add your video description here</p>"
+    },
+    {
+      "type": "text",
+      "id": "body_custom_font",
+      "label": "Custom font URL",
+      "info": "Upload font to Files, copy link, and paste here. Leave blank to use font picker below."
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font",
+      "label": "Fallback font",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "range",
+      "id": "body_size_desktop",
+      "label": "Size (desktop)",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "body_size_mobile",
+      "label": "Size (mobile)",
+      "min": 12,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content max width",
+      "min": 400,
+      "max": 1000,
+      "step": 50,
+      "unit": "px",
+      "default": 700
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Horizontal alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "content_vertical_alignment",
+      "label": "Vertical alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "label": "Vertical padding",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "label": "Horizontal padding",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Background color",
+      "default": "#fca311"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background_color",
+      "label": "Hover background color",
+      "default": "#14213d"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Hover text color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video section"
+    }
+  ]
+}
 {% endschema %}
