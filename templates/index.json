@@ -284,28 +284,54 @@
         "gravity_damping": 90
       }
     },
-    "blocks_cDEwTN": {
+    "1785226147c1f7c339": {
       "type": "_blocks",
       "blocks": {
-        "ai_gen_block_a688aa9_MMTE7j": {
-          "type": "ai_gen_block_a688aa9",
+        "ai_gen_block_2ea4b87_XpUgDU": {
+          "type": "ai_gen_block_2ea4b87",
           "settings": {
-            "mobile_height": 100,
-            "heading": "Full Screen Video",
-            "heading_size": 80,
-            "heading_color": "#ffffff",
-            "text_alignment": "center",
-            "content_max_width": 800,
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/007447d80a3646aeb0c1929d76be46a2.mp4",
+            "video_height_desktop": 450,
+            "video_height_mobile": 400,
             "show_overlay": true,
             "overlay_color": "#000000",
-            "overlay_opacity": 0.3
+            "overlay_opacity": 30,
+            "heading": "Video heading",
+            "heading_custom_font": "",
+            "heading_font": "sans_serif_n4",
+            "heading_size_desktop": 64,
+            "heading_size_mobile": 40,
+            "heading_color": "#ffffff",
+            "body_text": "<p>Add your video description here</p>",
+            "body_custom_font": "",
+            "body_font": "assistant_n4",
+            "body_size_desktop": 18,
+            "body_size_mobile": 16,
+            "body_color": "#ffffff",
+            "content_max_width": 700,
+            "content_alignment": "center",
+            "content_vertical_alignment": "center",
+            "button_text": "Shop now",
+            "button_link": "",
+            "button_font_size": 16,
+            "button_padding_vertical": 14,
+            "button_padding_horizontal": 32,
+            "button_border_radius": 0,
+            "button_background_color": "#fca311",
+            "button_text_color": "#ffffff",
+            "button_hover_background_color": "#14213d",
+            "button_hover_text_color": "#ffffff"
           },
           "blocks": {}
         }
       },
       "block_order": [
-        "ai_gen_block_a688aa9_MMTE7j"
+        "ai_gen_block_2ea4b87_XpUgDU"
       ],
+      "settings": {}
+    },
+    "blocks_cDEwTN": {
+      "type": "_blocks",
       "name": "Video panel",
       "settings": {}
     },
@@ -530,59 +556,40 @@
       "name": "Image grid with button",
       "settings": {}
     },
-    "new_era_featured_experience_tjYFeJ": {
-      "type": "new-era-featured-experience",
+    "blocks_cA8mCh": {
+      "type": "_blocks",
       "blocks": {
-        "detail_yfWfVP": {
-          "type": "detail",
+        "ai_gen_block_0737cff_9U8mJr": {
+          "type": "ai_gen_block_0737cff",
           "settings": {
-            "text": "Typography / motion / play"
-          }
-        },
-        "detail_rjLTpy": {
-          "type": "detail",
-          "settings": {
-            "text": "Typography / motion / play"
-          }
-        },
-        "detail_PYHgHc": {
-          "type": "detail",
-          "settings": {
-            "text": "Typography / motion / play"
-          }
+            "model_url": "https://cdn.shopify.com/3d/models/671178fd2179fd6a/Auraria_Wayfinding.glb",
+            "poster_url": "",
+            "model_alt": "Interactive 3D model",
+            "model_label": "New Era Designs",
+            "desktop_width_percent": 100,
+            "viewer_height": 500,
+            "mobile_height": 350,
+            "border_radius": 8,
+            "background_color": "#0A0A0A",
+            "shadow_intensity": 1,
+            "exposure": 1,
+            "environment_image": "neutral",
+            "auto_rotate": true,
+            "rotation_speed": 15
+          },
+          "blocks": {}
         }
       },
       "block_order": [
-        "detail_yfWfVP",
-        "detail_rjLTpy",
-        "detail_PYHgHc"
+        "ai_gen_block_0737cff_9U8mJr"
       ],
-      "name": "NED featured experience",
-      "settings": {
-        "eyebrow": "Featured experience / 01",
-        "classification": "Interactive identity study",
-        "overline": "Step inside the",
-        "title_line_1": "FUNK",
-        "title_line_2": "Machine",
-        "body": "<p>A playful identity system where typography, motion, and spatial behavior react immediately to the visitor.</p>",
-        "button_label": "Enter the experience",
-        "button_link": "",
-        "dimension": "24'-0\" TYPE FIELD",
-        "background": "#ef3e23",
-        "text_color": "#071a3a",
-        "accent": "#f7e51d",
-        "line_1_tracking": -7,
-        "line_2_tracking": -4,
-        "mobile_line_1_size": 84,
-        "mobile_line_2_size": 104,
-        "title_rotation": -2,
-        "enable_motion": true,
-        "motion_speed": 400
-      }
+      "name": "3D Model Viewer",
+      "settings": {}
     }
   },
   "order": [
     "hero",
+    "1785226147c1f7c339",
     "blocks_cDEwTN",
     "positioning",
     "1785216284b62c2be3",
@@ -590,6 +597,6 @@
     "blocks_AU37Vf",
     "blocks_BfN7tW",
     "blocks_DRkydy",
-    "new_era_featured_experience_tjYFeJ"
+    "blocks_cA8mCh"
   ]
 }
