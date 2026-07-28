@@ -11,7 +11,45 @@
   "sections": {
     "new_era_page": {
       "type": "new-era-page-system",
-      "settings": {}
+      "blocks": {
+        "portfolio_item_ryn87w": {
+          "type": "portfolio_item",
+          "settings": {
+            "title": "Wayfinding System Study",
+            "classification": "Speculative Study",
+            "discipline": "Wayfinding / Sign Family",
+            "annotation": "12'-0\" / ALUMINUM CABINET",
+            "description": "A fabrication-aware study connecting arrival, orientation, tenant visibility, and repeatable production logic.",
+            "image_alt": "",
+            "project_link": ""
+          }
+        },
+        "portfolio_item_p8a3MQ": {
+          "type": "portfolio_item",
+          "settings": {
+            "title": "Wayfinding System Study",
+            "classification": "Speculative Study",
+            "discipline": "Wayfinding / Sign Family",
+            "annotation": "12'-0\" / ALUMINUM CABINET",
+            "description": "A fabrication-aware study connecting arrival, orientation, tenant visibility, and repeatable production logic.",
+            "image": "shopify://shop_images/IMG_0955.heic",
+            "image_alt": "",
+            "project_link": "https://chatgpt.com/?no_universal_links=1"
+          }
+        }
+      },
+      "block_order": [
+        "portfolio_item_ryn87w",
+        "portfolio_item_p8a3MQ"
+      ],
+      "settings": {
+        "micro_label_size": 13,
+        "hero_title_line_1": "YOU NEED A",
+        "hero_title_line_2": "NEW ERA",
+        "hero_body": "We develop brand, wayfinding, and environmental systems that reduce friction and make the physical environment perform.",
+        "hero_button_label": "START A PROJECT",
+        "hero_button_link": ""
+      }
     }
   },
   "order": [

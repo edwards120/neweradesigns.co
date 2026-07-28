@@ -92,7 +92,6 @@
         "service_JwXkFp",
         "service_7AAE9n"
       ],
-      "disabled": true,
       "name": "NED service panels",
       "settings": {
         "kicker": "Services offered",
@@ -140,7 +139,7 @@
             "text_color": "#ffffff",
             "button_label": "",
             "button_link": "",
-            "button_bg_color": "#FCA311",
+            "button_bg_color": "#fca311",
             "button_text_color": "#000000",
             "background_white_mode": "transparent",
             "overlay_opacity": 40,
@@ -225,8 +224,8 @@
   },
   "order": [
     "main",
-    "new_era_service_panels_8b4DzF",
     "blocks_x4P3ng",
+    "new_era_service_panels_8b4DzF",
     "177790781265c4ad5e"
   ]
 }

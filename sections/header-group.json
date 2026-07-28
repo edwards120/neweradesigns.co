@@ -122,6 +122,7 @@
         "nav_protected",
         "nav_contact"
       ],
+      "disabled": true,
       "settings": {
         "desktop_logo": "shopify://shop_images/Website_2026.svg",
         "desktop_logo_width": 220,
@@ -198,7 +199,6 @@
       "block_order": [
         "ai_gen_block_fb0338d_qTywaU"
       ],
-      "disabled": true,
       "settings": {}
     },
     "header": {
@@ -250,6 +250,7 @@
       "block_order": [
         "ai_gen_block_c47be21_ejC7UN"
       ],
+      "disabled": true,
       "name": "Interactive halftones",
       "settings": {}
     },
@@ -283,6 +284,7 @@
       "block_order": [
         "ai_gen_block_4f9a07b_z9n3cN"
       ],
+      "disabled": true,
       "name": "Bouncing balls",
       "settings": {}
     }
