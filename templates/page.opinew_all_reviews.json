@@ -29,14 +29,78 @@
         "portrait_mobile_image_width": 260,
         "show_highlights": true,
         "show_paragraph_circle": true,
-        "guide_opacity": 10,
+        "guide_opacity": 0,
         "cta_heading": "Have a space, sign system, or rollout to plan?",
         "cta_label": "Start a conversation",
         "cta_link": "shopify://pages/contact",
         "show_page_content": false,
-        "padding_top": 0,
+        "padding_top": 36,
         "padding_bottom": 24
       }
+    },
+    "blocks_x4P3ng": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_4f9a07b_AycpUq": {
+          "type": "ai_gen_block_4f9a07b",
+          "settings": {
+            "headline": "INTERACTIVE DESIGN. LUXURY IN MOTION.",
+            "subtext": "Tap to move the system.",
+            "heading_font": "sans_serif_n4",
+            "text_color": "#ffffff",
+            "button_label": "",
+            "button_link": "",
+            "button_bg_color": "#fca311",
+            "button_text_color": "#000000",
+            "background_white_mode": "transparent",
+            "overlay_opacity": 40,
+            "ball_count": 8,
+            "ball_size": "medium",
+            "bounce_energy": 0.5,
+            "desktop_height": 600,
+            "mobile_height": 640
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_23db1c7_NRpizi": {
+          "type": "ai_gen_block_23db1c7",
+          "name": "Logo carousel",
+          "settings": {
+            "title": "Trusted by leading brands",
+            "description": "<p>Join thousands of companies who trust our services</p>",
+            "text_alignment": "center",
+            "background_color": "#f3f3f3",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0,
+            "logo_width": 150,
+            "logo_height": 80,
+            "logo_spacing": 40,
+            "logo_background": "#ffffff",
+            "logo_padding": 20,
+            "logo_border_radius": 8,
+            "logo_grayscale": 100,
+            "logo_opacity": 70,
+            "animation_speed": 30,
+            "title_size": 32,
+            "title_color": "#121212",
+            "description_size": 16,
+            "description_color": "#121212",
+            "section_padding_top": 60,
+            "section_padding_bottom": 60,
+            "header_spacing": 40,
+            "title_spacing": 12,
+            "content_width": 1200,
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_4f9a07b_AycpUq",
+        "ai_gen_block_23db1c7_NRpizi"
+      ],
+      "name": "Bouncing balls",
+      "settings": {}
     },
     "new_era_service_panels_8b4DzF": {
       "type": "new-era-service-panels",
@@ -126,70 +190,6 @@
         "ball_size": "medium",
         "bounce_intensity": "moderate"
       }
-    },
-    "blocks_x4P3ng": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_4f9a07b_AycpUq": {
-          "type": "ai_gen_block_4f9a07b",
-          "settings": {
-            "headline": "INTERACTIVE DESIGN. LUXURY IN MOTION.",
-            "subtext": "Tap to move the system.",
-            "heading_font": "sans_serif_n4",
-            "text_color": "#ffffff",
-            "button_label": "",
-            "button_link": "",
-            "button_bg_color": "#fca311",
-            "button_text_color": "#000000",
-            "background_white_mode": "transparent",
-            "overlay_opacity": 40,
-            "ball_count": 8,
-            "ball_size": "medium",
-            "bounce_energy": 0.5,
-            "desktop_height": 600,
-            "mobile_height": 640
-          },
-          "blocks": {}
-        },
-        "ai_gen_block_23db1c7_NRpizi": {
-          "type": "ai_gen_block_23db1c7",
-          "name": "Logo carousel",
-          "settings": {
-            "title": "Trusted by leading brands",
-            "description": "<p>Join thousands of companies who trust our services</p>",
-            "text_alignment": "center",
-            "background_color": "#f3f3f3",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0,
-            "logo_width": 150,
-            "logo_height": 80,
-            "logo_spacing": 40,
-            "logo_background": "#ffffff",
-            "logo_padding": 20,
-            "logo_border_radius": 8,
-            "logo_grayscale": 100,
-            "logo_opacity": 70,
-            "animation_speed": 30,
-            "title_size": 32,
-            "title_color": "#121212",
-            "description_size": 16,
-            "description_color": "#121212",
-            "section_padding_top": 60,
-            "section_padding_bottom": 60,
-            "header_spacing": 40,
-            "title_spacing": 12,
-            "content_width": 1200,
-            "desktop_width_percent": 100
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_4f9a07b_AycpUq",
-        "ai_gen_block_23db1c7_NRpizi"
-      ],
-      "name": "Bouncing balls",
-      "settings": {}
     },
     "177790781265c4ad5e": {
       "type": "_blocks",
