@@ -20,7 +20,7 @@
             "discipline": "Wayfinding / sign family",
             "annotation": "12'-0\" / ALUMINUM CABINET",
             "description": "A fabrication-aware study connecting arrival, orientation, tenant visibility, and repeatable production logic.",
-            "image": "shopify://shop_images/Custom_Signage.jpg",
+            "image": "shopify://shop_images/c3aa05bf277a330aa8956464630dd8af.jpg",
             "image_alt": "Custom exterior signage and wayfinding project",
             "project_link": "/pages/cases"
           }
@@ -46,7 +46,7 @@
             "discipline": "Accessibility / spatial logic",
             "annotation": "48–60\" TACTILE ZONE",
             "description": "A decision point designed around legibility, reach range, progressive disclosure, and fast route confirmation.",
-            "image": "shopify://shop_images/Proposed_Graphics_Signage_Template_proposed_graphics.jpg",
+            "image": "shopify://shop_images/original_images_260450773_1914885655340332_4717429970085140595_n_K9rUOSTHY.jpg",
             "image_alt": "Environmental graphics and accessible sign system",
             "project_link": "/pages/cases"
           }
@@ -58,13 +58,15 @@
         "service_work_3"
       ],
       "settings": {
-        "micro_label_size": 13,
+        "micro_label_size": 16,
         "hero_title_line_1": "YOU NEED A",
         "hero_title_line_2": "NEW ERA",
         "hero_body": "We develop brand, wayfinding, and environmental systems that reduce friction and make the physical environment perform.",
         "hero_button_label": "START A PROJECT",
         "hero_button_link": "",
         "hero_image": "shopify://shop_images/IMG_0713.heic",
+        "mask_image": "shopify://shop_images/IMG_0950.heic",
+        "mask_video": "shopify://files/videos/Auraira Wayfind Last-compressed.mp4",
         "service_1_image": "shopify://shop_images/IMG_0713.heic",
         "service_2_image": "shopify://shop_images/IMG_0374.heic",
         "service_3_image": "shopify://shop_images/IMG_0953.heic",
