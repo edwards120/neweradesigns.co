@@ -28,7 +28,7 @@
             "rotation": -7,
             "drift_x": 8,
             "drift_y": 22,
-            "speed": 4,
+            "speed": 6,
             "delay": 1,
             "hide_mobile": true
           }
@@ -291,7 +291,7 @@
           "type": "ai_gen_block_2ea4b87",
           "settings": {
             "video_url": "https://cdn.shopify.com/videos/c/o/v/007447d80a3646aeb0c1929d76be46a2.mp4",
-            "video_height_desktop": 450,
+            "video_height_desktop": 600,
             "video_height_mobile": 300,
             "show_overlay": true,
             "overlay_color": "#000000",
@@ -497,11 +497,11 @@
             "button_text_color": "#000000",
             "background_image": "shopify://shop_images/Website_2026_Recovered_4f4a9c71-9b0e-4d4c-9f77-3dc5fdb5f7af.svg",
             "background_white_mode": "transparent",
-            "overlay_opacity": 40,
+            "overlay_opacity": 10,
             "ball_count": 8,
             "ball_size": "medium",
             "bounce_energy": 0.5,
-            "desktop_height": 620,
+            "desktop_height": 680,
             "mobile_height": 580
           },
           "blocks": {}
@@ -572,7 +572,7 @@
             "viewer_height": 410,
             "mobile_height": 350,
             "border_radius": 0,
-            "background_color": "#FFFFFF",
+            "background_color": "#ffffff",
             "shadow_intensity": 1,
             "exposure": 1,
             "environment_image": "neutral",
