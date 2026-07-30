@@ -4,10 +4,10 @@
   assign section_key = section.id | replace: '_', '' | downcase
   assign portrait_image = section.settings.portrait_image
   assign portrait_class = 'ned-about-portrait-' | append: section_key
-  assign portrait_url = section.settings.portrait_url | strip
+  assign background_image = section.settings.background_image
+  assign background_overlay_alpha = section.settings.background_overlay_opacity | divided_by: 100.0
   assign heading_font_file = section.settings.heading_font_file | strip
   assign body_font_file = section.settings.body_font_file | strip
-  assign accent_font_file = section.settings.accent_font_file | strip
 %}
 
 {%- style -%}
@@ -27,13 +27,13 @@
     }
   {% endif %}
 
-  {% if accent_font_file != blank %}
-    @font-face {
-      font-family: "NED Accent Upload";
-      src: url('{{ accent_font_file | file_url }}') format('woff2');
-      font-display: swap;
-    }
-  {% endif %}
+  @font-face {
+    font-family: "NED Edwardian Script";
+    src: url('https://cdn.shopify.com/s/files/1/0914/0138/8337/files/edwardianscriptitc.ttf?v=1781706849') format('truetype');
+    font-display: swap;
+    font-style: normal;
+    font-weight: 400;
+  }
 
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -54,21 +54,32 @@
     --ned-gold: {{ section.settings.accent_color }};
     --ned-highlight-one: {{ section.settings.highlight_one_color | color_modify: 'alpha', 0.8 }};
     --ned-highlight-two: {{ section.settings.highlight_two_color | color_modify: 'alpha', 0.95 }};
-    --ned-paper: {{ section.settings.paper_color }};
+    --ned-paper: #f7f6f2;
     --ned-page: {{ section.settings.page_background }};
     --ned-hero: {{ section.settings.hero_background }};
     --ned-line: {{ section.settings.text_color | color_modify: 'alpha', 0.14 }};
     --ned-heading-font: {% if heading_font_file != blank %}"NED Heading Upload"{% else %}var(--font-heading-family){% endif %};
     --ned-body-font: {% if body_font_file != blank %}"NED Body Upload"{% else %}var(--font-body-family){% endif %};
-    --ned-accent-font: {% if accent_font_file != blank %}"NED Accent Upload"{% else %}Georgia, "Times New Roman", serif{% endif %};
+    --ned-accent-font: "NED Edwardian Script", Georgia, "Times New Roman", serif;
     --ned-heading-tracking: {{ section.settings.heading_letter_spacing | divided_by: 100.0 }}em;
     --ned-body-tracking: {{ section.settings.body_letter_spacing | divided_by: 100.0 }}em;
     --ned-eyebrow-tracking: {{ section.settings.eyebrow_letter_spacing | divided_by: 100.0 }}em;
     --ned-animation-duration: {{ section.settings.animation_duration }}ms;
-    --ned-animation-stagger: {{ section.settings.animation_stagger }}ms;
-    background: var(--ned-page);
+    --ned-animation-stagger: 75ms;
+    background-color: var(--ned-page);
     color: var(--ned-ink);
     font-family: var(--ned-body-font);
+    {% if background_image != blank %}
+      background-image:
+        linear-gradient(
+          {{ section.settings.hero_background | color_modify: 'alpha', background_overlay_alpha }},
+          {{ section.settings.hero_background | color_modify: 'alpha', background_overlay_alpha }}
+        ),
+        url('{{ background_image | image_url: width: 2400 }}');
+      background-position: {{ section.settings.background_position_x }}% {{ section.settings.background_position_y }}%;
+      background-repeat: no-repeat;
+      background-size: {{ section.settings.background_size_desktop }}% auto;
+    {% endif %}
   }
 
   .ned-about-{{ section_key }} * {
@@ -87,7 +98,7 @@
     align-items: start;
     min-height: 0;
     padding: clamp(12px, 2vw, 24px) clamp(20px, 3vw, 44px) 0;
-    background: var(--ned-hero);
+    background: transparent;
   }
 
   .ned-about-eyebrow-{{ section_key }},
@@ -120,7 +131,7 @@
     color: var(--ned-gold);
     font-family: var(--ned-accent-font);
     font-size: 112%;
-    font-style: italic;
+    font-style: normal;
     font-weight: 400;
     letter-spacing: -0.05em;
     line-height: 0.8;
@@ -434,8 +445,8 @@
     inset: 0;
     z-index: 0;
     background-image:
-      linear-gradient(rgba(255, 255, 255, {{ section.settings.guide_opacity | divided_by: 100.0 }}) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, {{ section.settings.guide_opacity | divided_by: 100.0 }}) 1px, transparent 1px);
+      linear-gradient(rgba(255, 255, 255, 0) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0) 1px, transparent 1px);
     background-size: 72px 72px;
     pointer-events: none;
   }
@@ -662,6 +673,12 @@
   }
 
   @media (max-width: 900px) {
+    .ned-about-{{ section_key }} {
+      {% if background_image != blank %}
+        background-size: {{ section.settings.background_size_mobile }}% auto;
+      {% endif %}
+    }
+
     .ned-about-hero-{{ section_key }},
     .ned-about-story-{{ section_key }},
     .ned-about-process-grid-{{ section_key }} {
@@ -786,29 +803,19 @@
           </p>
         </div>
 
-        {% if portrait_image != blank or portrait_url != blank %}
+        {% if portrait_image != blank %}
           <figure class="ned-about-portrait-wrap-{{ section_key }}">
             <div class="about-image-system-frame">
               <div class="ned-about-image-viewport-{{ section_key }}">
-                {% if portrait_image != blank %}
-                  {{ portrait_image
-                    | image_url: width: 1800
-                    | image_tag:
-                      class: portrait_class,
-                      widths: '360, 540, 720, 900, 1200, 1500, 1800',
-                      sizes: '(min-width: 901px) 50vw, 90vw',
-                      loading: 'eager',
-                      alt: section.settings.portrait_alt
-                  }}
-                {% else %}
-                  <img
-                    class="ned-about-portrait-{{ section_key }}"
-                    src="{{ portrait_url | escape }}"
-                    alt="{{ section.settings.portrait_alt | escape }}"
-                    width="900"
-                    height="900"
-                    loading="eager">
-                {% endif %}
+                {{ portrait_image
+                  | image_url: width: 1800
+                  | image_tag:
+                    class: portrait_class,
+                    widths: '360, 540, 720, 900, 1200, 1500, 1800',
+                    sizes: '(min-width: 901px) 50vw, 90vw',
+                    loading: 'eager',
+                    alt: section.settings.portrait_alt
+                }}
               </div>
             </div>
           </figure>
@@ -876,11 +883,6 @@
         {% endif %}
       </div>
 
-      {% if section.settings.show_page_content and page.content != blank %}
-        <div class="ned-about-original-{{ section_key }} rte">
-          {{ page.content }}
-        </div>
-      {% endif %}
     </div>
   </section>
 {% else %}
@@ -1124,8 +1126,8 @@
     {
       "type": "checkbox",
       "id": "show_title_accent",
-      "label": "Use gold italic word in heading",
-      "info": "Turn this off to display the complete heading in the standard bold font.",
+      "label": "Use Edwardian Script accent word",
+      "info": "Uses the uploaded edwardianscriptitc.ttf file for the selected heading word.",
       "default": true
     },
     {
@@ -1160,13 +1162,13 @@
     {
       "type": "color",
       "id": "page_background",
-      "label": "Page background",
+      "label": "Background/base color",
       "default": "#FFFFFF"
     },
     {
       "type": "color",
       "id": "hero_background",
-      "label": "Hero background",
+      "label": "Background overlay color",
       "default": "#FFFFFF"
     },
     {
@@ -1206,12 +1208,6 @@
       "default": "#FFD278"
     },
     {
-      "type": "color",
-      "id": "paper_color",
-      "label": "Callout background",
-      "default": "#F7F6F2"
-    },
-    {
       "type": "header",
       "content": "Typography and uploaded fonts"
     },
@@ -1226,12 +1222,6 @@
       "id": "body_font_file",
       "label": "Body font filename",
       "info": "Enter the exact .woff2 filename from Content > Files. Leave blank to use the theme body font."
-    },
-    {
-      "type": "text",
-      "id": "accent_font_file",
-      "label": "Italic accent font filename",
-      "info": "Enter the exact .woff2 filename from Content > Files. Leave blank to use Georgia."
     },
     {
       "type": "range",
@@ -1268,13 +1258,6 @@
       "id": "portrait_image",
       "label": "Portrait image from Shopify Files",
       "info": "Choose an image already uploaded to Content > Files."
-    },
-    {
-      "type": "text",
-      "id": "portrait_url",
-      "label": "Legacy fallback image URL",
-      "info": "Used only when no Shopify Files image is selected.",
-      "default": "https://cdn.shopify.com/s/files/1/0914/0138/8337/files/ChatGPT_Image_Jun_17_2026_07_34_00_AM.png?v=1781699874"
     },
     {
       "type": "text",
@@ -1379,16 +1362,6 @@
       "default": 700
     },
     {
-      "type": "range",
-      "id": "animation_stagger",
-      "min": 0,
-      "max": 300,
-      "step": 25,
-      "unit": "ms",
-      "label": "Animation stagger",
-      "default": 75
-    },
-    {
       "type": "checkbox",
       "id": "enable_hover_motion",
       "label": "Enable image and card hover motion",
@@ -1396,17 +1369,62 @@
     },
     {
       "type": "header",
-      "content": "Architectural background"
+      "content": "Background image and overlay"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image from Shopify Files"
     },
     {
       "type": "range",
-      "id": "guide_opacity",
-      "min": 0,
-      "max": 10,
-      "step": 1,
+      "id": "background_size_desktop",
+      "min": 25,
+      "max": 250,
+      "step": 5,
       "unit": "%",
-      "label": "Background grid opacity",
-      "default": 3
+      "label": "Desktop background image size",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "background_size_mobile",
+      "min": 25,
+      "max": 250,
+      "step": 5,
+      "unit": "%",
+      "label": "Mobile background image size",
+      "default": 150
+    },
+    {
+      "type": "range",
+      "id": "background_position_x",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Move background left or right",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "background_position_y",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Move background up or down",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "background_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Background overlay color opacity",
+      "default": 20
     },
     {
       "type": "text",
@@ -1424,12 +1442,6 @@
       "type": "url",
       "id": "cta_link",
       "label": "Call-to-action link"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_page_content",
-      "label": "Show existing page content below layout",
-      "default": false
     },
     {
       "type": "header",
