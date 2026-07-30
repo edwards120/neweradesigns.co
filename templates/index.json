@@ -240,7 +240,7 @@
         "rail_right": "MAKE YOUR MOVE",
         "desktop_layout": "center",
         "mobile_layout": "center",
-        "desktop_min_height": 600,
+        "desktop_min_height": 1040,
         "mobile_min_height": 600,
         "content_max_width": 1060,
         "desktop_padding": 20,
