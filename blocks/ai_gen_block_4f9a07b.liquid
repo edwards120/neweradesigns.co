@@ -45,6 +45,9 @@
     display: block;
     position: relative;
     width: 100%;
+    margin: 0;
+    padding: 0;
+    line-height: 0;
     overflow: hidden;
     background-color: {% if block.settings.background_white_mode == '#ffffff' %}#ffffff{% else %}{{ block.settings.background_fill_color }}{% endif %};
   }
@@ -53,11 +56,24 @@
     position: relative;
     width: 100%;
     min-height: {{ block.settings.desktop_height }}px;
+    margin: 0;
+    padding: 0;
+    {% if block.settings.background_image != blank and block.settings.background_white_mode == 'transparent' %}
+      aspect-ratio: {{ block.settings.background_image.aspect_ratio }};
+      min-height: 0;
+    {% endif %}
   }
 
   @media screen and (max-width: 1000px) {
     .ai-bouncing-balls-container-{{ ai_gen_id }} {
       min-height: {{ block.settings.mobile_height }}px;
+      {% if block.settings.mobile_background_image != blank and block.settings.background_white_mode == 'transparent' %}
+        aspect-ratio: {{ block.settings.mobile_background_image.aspect_ratio }};
+        min-height: 0;
+      {% elsif block.settings.background_image != blank and block.settings.background_white_mode == 'transparent' %}
+        aspect-ratio: {{ block.settings.background_image.aspect_ratio }};
+        min-height: 0;
+      {% endif %}
     }
   }
 
@@ -128,7 +144,8 @@
     align-items: center;
     justify-content: center;
     min-height: inherit;
-    padding: 40px 20px;
+    padding: {% if block.settings.headline != blank or block.settings.subtext != blank or block.settings.button_label != blank %}40px 20px{% else %}0{% endif %};
+    line-height: normal;
     text-align: center;
     pointer-events: none;
   }
