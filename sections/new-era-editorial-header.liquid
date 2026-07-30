@@ -3,6 +3,9 @@
   assign mobile_logo = section.settings.mobile_logo | default: settings.favicon
   assign header_mode = 'solid'
   assign header_background = section.settings.background_color | default: '#071a3a'
+  assign header_background_image = section.settings.header_background_image
+  assign mobile_header_background_image = section.settings.mobile_header_background_image
+  assign header_background_fallback = header_background_image | default: mobile_header_background_image
   assign header_frame_border_space = section.settings.border_width | times: 2
   assign header_frame_height = section.settings.padding_vertical | times: 2 | plus: header_frame_border_space | plus: 64
   assign mobile_header_height = 94 | plus: header_frame_border_space
@@ -41,6 +44,17 @@
   data-section-id="{{ section.id }}"
 >
   <div class="ned-editorial-header__frame{% unless section.settings.show_frame %} is-unframed{% endunless %}">
+    {% if header_background_fallback != blank %}
+      <picture class="ned-editorial-header__background" aria-hidden="true">
+        {% if mobile_header_background_image != blank %}
+          <source media="(max-width: 989px)" srcset="{{ mobile_header_background_image | image_url: width: 1600 }}">
+        {% endif %}
+        {{ header_background_fallback
+          | image_url: width: 2400
+          | image_tag: loading: 'eager', widths: '800, 1200, 1600, 2000, 2400', alt: ''
+        }}
+      </picture>
+    {% endif %}
     <nav class="ned-editorial-header__desktop" aria-label="Primary navigation">
       <div class="ned-editorial-header__links ned-editorial-header__links--left">
         {% for block in section.blocks %}
@@ -125,9 +139,12 @@
   .ned-editorial-header{color:var(--ned-header-text);display:block;left:0;position:relative;top:0;width:100%;z-index:70}
   .ned-editorial-header--overlay{position:absolute}
   .ned-editorial-header.is-sticky{left:0;position:fixed;top:0;width:100%;z-index:95}
-  .ned-editorial-header__frame{background:var(--ned-header-bg);border:var(--ned-header-border-width) solid var(--ned-header-border);margin:clamp(8px,1.2vw,18px);padding:var(--ned-header-padding-y) var(--ned-header-padding-x)}
+  .ned-editorial-header__frame{background:var(--ned-header-bg);border:var(--ned-header-border-width) solid var(--ned-header-border);isolation:isolate;margin:0;overflow:hidden;padding:var(--ned-header-padding-y) var(--ned-header-padding-x);position:relative}
   .ned-editorial-header--overlay .ned-editorial-header__frame{background:transparent;backdrop-filter:none}
   .ned-editorial-header__frame.is-unframed{border:0}
+  .ned-editorial-header__background{display:block;inset:0;opacity:{{ section.settings.header_background_image_opacity | divided_by: 100.0 }};pointer-events:none;position:absolute;z-index:0}
+  .ned-editorial-header__background img{display:block;height:100%;object-fit:{{ section.settings.header_background_image_fit }};object-position:{{ section.settings.header_background_position_x }}% {{ section.settings.header_background_position_y }}%;width:100%}
+  .ned-editorial-header__desktop,.ned-editorial-header__mobile,.ned-editorial-header__mobile-quick,.ned-editorial-header__drawer{position:relative;z-index:1}
   .ned-editorial-header__desktop{align-items:center;display:grid;grid-template-columns:1fr minmax(160px,.44fr) 1fr;min-height:64px}
   .ned-editorial-header__links{align-items:center;display:flex;gap:clamp(20px,3.5vw,62px)}
   .ned-editorial-header__links--right{justify-content:flex-end}
@@ -162,6 +179,7 @@
     .ned-editorial-header--overlay{position:absolute}
     .ned-editorial-header__frame{background:var(--ned-header-bg);box-shadow:none;color:var(--ned-header-mobile-text);margin:0;padding:18px clamp(18px,5vw,34px)}
     .ned-editorial-header--overlay .ned-editorial-header__frame{background:transparent}
+    .ned-editorial-header__background img{object-position:{{ section.settings.mobile_header_background_position_x }}% {{ section.settings.mobile_header_background_position_y }}%}
     .ned-editorial-header__desktop{display:none}.ned-editorial-header__mobile{align-items:center;display:flex;justify-content:space-between;min-height:54px}
     .ned-editorial-header__mobile-brand{align-items:center;display:flex;min-height:58px;position:relative;width:var(--ned-header-mobile-logo-width);z-index:3}
     .ned-editorial-header__logo--mobile{max-height:62px;object-fit:contain;object-position:left center}
@@ -245,6 +263,16 @@
     { "type": "checkbox", "id": "show_mobile_quick_links", "label": "Show navigation options on mobile", "default": true },
     { "type": "checkbox", "id": "enable_sticky", "label": "Sticky header", "default": true },
     { "type": "checkbox", "id": "show_frame", "label": "Show header frame", "default": true },
+    { "type": "header", "content": "Header background image" },
+    { "type": "image_picker", "id": "header_background_image", "label": "Desktop header background image" },
+    { "type": "image_picker", "id": "mobile_header_background_image", "label": "Optional mobile header background image" },
+    { "type": "range", "id": "header_background_image_opacity", "label": "Background image opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "select", "id": "header_background_image_fit", "label": "Background image fit", "options": [{ "value": "cover", "label": "Fill header" }, { "value": "contain", "label": "Show full image" }], "default": "cover" },
+    { "type": "range", "id": "header_background_position_x", "label": "Desktop image horizontal position", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
+    { "type": "range", "id": "header_background_position_y", "label": "Desktop image vertical position", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
+    { "type": "range", "id": "mobile_header_background_position_x", "label": "Mobile image horizontal position", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
+    { "type": "range", "id": "mobile_header_background_position_y", "label": "Mobile image vertical position", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 50 },
+    { "type": "header", "content": "Header colors" },
     { "type": "color_background", "id": "background_color", "label": "Background", "default": "#071a3a" },
     { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
     { "type": "color_background", "id": "mobile_background_color", "label": "Mobile background", "default": "#f3efe7" },
