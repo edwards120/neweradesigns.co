@@ -145,7 +145,7 @@
             "link": "/pages/cases",
             "color": "#ffffff",
             "size": 90,
-            "mobile_size": 60,
+            "mobile_size": 20,
             "x": 77,
             "y": 74,
             "mobile_x": 83,
@@ -527,8 +527,7 @@
             "background_image": "shopify://shop_images/website_Background.svg",
             "background_opacity": 1,
             "section_padding": 70,
-            "max_width": 1000,
-            "image_1": "shopify://shop_images/IMG_3528.jpg",
+            "max_width": 1600,
             "link_1": "",
             "link_2": "",
             "link_3": "",
@@ -588,6 +587,42 @@
       ],
       "name": "3D Model Viewer",
       "settings": {}
+    },
+    "blocks_PcDRyW": {
+      "type": "_blocks",
+      "name": "Bouncing balls",
+      "settings": {}
+    },
+    "blocks_wz4LiC": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_4f9a07b_CekpX4": {
+          "type": "ai_gen_block_4f9a07b",
+          "settings": {
+            "headline": "INTERACTIVE DESIGN. LUXURY IN MOTION.",
+            "subtext": "Tap to move the system.",
+            "heading_font": "sans_serif_n4",
+            "text_color": "#ffffff",
+            "button_label": "",
+            "button_link": "",
+            "button_bg_color": "#FCA311",
+            "button_text_color": "#000000",
+            "background_white_mode": "transparent",
+            "overlay_opacity": 40,
+            "ball_count": 8,
+            "ball_size": "medium",
+            "bounce_energy": 0.5,
+            "desktop_height": 600,
+            "mobile_height": 640
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_4f9a07b_CekpX4"
+      ],
+      "name": "Bouncing balls",
+      "settings": {}
     }
   },
   "order": [
@@ -600,6 +635,8 @@
     "blocks_AU37Vf",
     "blocks_BfN7tW",
     "blocks_DRkydy",
-    "blocks_cA8mCh"
+    "blocks_cA8mCh",
+    "blocks_PcDRyW",
+    "blocks_wz4LiC"
   ]
 }
