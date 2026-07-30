@@ -133,15 +133,15 @@
           "type": "hero_icon",
           "settings": {
             "icon": "crosshair",
-            "custom_icon_image": "shopify://shop_images/new-era-designs-logo-04.svg",
+            "custom_icon_image": "shopify://shop_images/Instagram_white.svg",
             "label": "Services",
             "link": "/pages/marketing-materials",
             "color": "#f7e51d",
-            "size": 62,
-            "mobile_size": 24,
+            "size": 80,
+            "mobile_size": 48,
             "x": 72,
             "y": 30,
-            "mobile_x": 83,
+            "mobile_x": 17,
             "mobile_y": 34,
             "rotation": 12,
             "bounce_height": 18,
@@ -170,16 +170,37 @@
             "hide_mobile": false
           }
         },
+        "hero_icon_yAjWFA": {
+          "type": "hero_icon",
+          "settings": {
+            "icon": "icon-star.svg",
+            "custom_icon_image": "shopify://shop_images/YouTube_light_icon__2017_1.svg",
+            "label": "Explore New Era Designs",
+            "link": "",
+            "color": "#ffffff",
+            "size": 76,
+            "mobile_size": 46,
+            "x": 18,
+            "y": 28,
+            "mobile_x": 50,
+            "mobile_y": 26,
+            "rotation": 0,
+            "bounce_height": 18,
+            "speed": 6,
+            "delay": 5,
+            "hide_mobile": false
+          }
+        },
         "icon_plus": {
           "type": "hero_icon",
           "settings": {
             "icon": "asterisk",
-            "custom_icon_image": "shopify://shop_images/2X2_Logo.svg",
+            "custom_icon_image": "shopify://shop_images/linkedin-app-white-icon.webp",
             "label": "Selected work",
             "link": "/pages/cases",
             "color": "#ffffff",
             "size": 90,
-            "mobile_size": 20,
+            "mobile_size": 54,
             "x": 77,
             "y": 74,
             "mobile_x": 83,
@@ -187,7 +208,7 @@
             "rotation": 8,
             "bounce_height": 19,
             "speed": 8,
-            "delay": 5,
+            "delay": 6,
             "hide_mobile": false
           }
         }
@@ -201,6 +222,7 @@
         "icon_spark",
         "icon_cross",
         "icon_arrow",
+        "hero_icon_yAjWFA",
         "icon_plus"
       ],
       "settings": {
@@ -211,7 +233,7 @@
         "body": "<p>We develop <strong>brand, wayfinding, and environmental systems</strong> that reduce friction and make the physical environment <em>perform.</em></p>",
         "button_label": "START A PROJECT",
         "button_link": "/pages/contact",
-        "show_social_links": true,
+        "show_social_links": false,
         "rail_left": "CLEAR THE NOISE",
         "rail_center": "SCROLL DOWN",
         "rail_link": "",
