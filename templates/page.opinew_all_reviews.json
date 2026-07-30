@@ -42,19 +42,19 @@
         "show_highlights": true,
         "show_paragraph_circle": true,
         "reveal_animation": "scale-in",
-        "animation_duration": 700,
+        "animation_duration": 500,
         "enable_hover_motion": true,
         "background_image": "shopify://shop_images/website_Background2.svg",
-        "background_image_opacity": 65,
-        "background_size_desktop": 40,
-        "background_size_mobile": 150,
+        "background_image_opacity": 85,
+        "background_size_desktop": 90,
+        "background_size_mobile": 30,
         "background_position_x": 50,
         "background_position_y": 50,
         "background_overlay_opacity": 20,
         "cta_heading": "Have a space, sign system, or rollout to plan?",
         "cta_label": "Start a conversation",
         "cta_link": "shopify://pages/contact",
-        "padding_top": 68,
+        "padding_top": 0,
         "padding_bottom": 24
       }
     },
@@ -91,43 +91,10 @@
             "mobile_height": 640
           },
           "blocks": {}
-        },
-        "ai_gen_block_23db1c7_NRpizi": {
-          "type": "ai_gen_block_23db1c7",
-          "name": "Logo carousel",
-          "settings": {
-            "title": "Trusted by leading brands",
-            "description": "<p>Join thousands of companies who trust our services</p>",
-            "text_alignment": "center",
-            "background_color": "#f3f3f3",
-            "overlay_color": "#000000",
-            "overlay_opacity": 0,
-            "logo_width": 150,
-            "logo_height": 80,
-            "logo_spacing": 40,
-            "logo_background": "#ffffff",
-            "logo_padding": 20,
-            "logo_border_radius": 8,
-            "logo_grayscale": 100,
-            "logo_opacity": 70,
-            "animation_speed": 30,
-            "title_size": 32,
-            "title_color": "#121212",
-            "description_size": 16,
-            "description_color": "#121212",
-            "section_padding_top": 60,
-            "section_padding_bottom": 60,
-            "header_spacing": 40,
-            "title_spacing": 12,
-            "content_width": 1200,
-            "desktop_width_percent": 100
-          },
-          "blocks": {}
         }
       },
       "block_order": [
-        "ai_gen_block_4f9a07b_AycpUq",
-        "ai_gen_block_23db1c7_NRpizi"
+        "ai_gen_block_4f9a07b_AycpUq"
       ],
       "name": "Bouncing balls",
       "settings": {}
