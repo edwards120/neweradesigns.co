@@ -123,56 +123,6 @@
       "name": "Bouncy balls",
       "settings": {}
     },
-    "new_era_featured_experience_FyLLeK": {
-      "type": "new-era-featured-experience",
-      "blocks": {
-        "detail_D7RWG3": {
-          "type": "detail",
-          "settings": {
-            "text": "Typography / motion / play"
-          }
-        },
-        "detail_8Ey6ry": {
-          "type": "detail",
-          "settings": {
-            "text": "Typography / motion / play"
-          }
-        },
-        "detail_gxq76k": {
-          "type": "detail",
-          "settings": {
-            "text": "Typography / motion / play"
-          }
-        }
-      },
-      "block_order": [
-        "detail_D7RWG3",
-        "detail_8Ey6ry",
-        "detail_gxq76k"
-      ],
-      "name": "NED featured experience",
-      "settings": {
-        "eyebrow": "Featured experience / 01",
-        "classification": "Interactive identity study",
-        "overline": "Step inside the",
-        "title_line_1": "BUILD",
-        "title_line_2": "Magnetism",
-        "body": "<p>A playful identity system where typography, motion, and spatial behavior react immediately to the visitor.</p>",
-        "button_label": "Enter the experience",
-        "button_link": "",
-        "dimension": "24'-0\" TYPE FIELD",
-        "background": "#ef3e23",
-        "text_color": "#071a3a",
-        "accent": "#f7e51d",
-        "line_1_tracking": 1,
-        "line_2_tracking": -4.5,
-        "mobile_line_1_size": 92,
-        "mobile_line_2_size": 92,
-        "title_rotation": -2,
-        "enable_motion": true,
-        "motion_speed": 400
-      }
-    },
     "footer": {
       "type": "footer",
       "settings": {
@@ -196,7 +146,6 @@
     "blocks_k8cQaX",
     "cases_page_rfQJHh",
     "blocks_XeUitq",
-    "new_era_featured_experience_FyLLeK",
     "footer"
   ]
 }

@@ -34,7 +34,7 @@
         "body_letter_spacing": 0,
         "eyebrow_letter_spacing": 18,
         "portrait_alt": "Chris Edwards, spatial designer and wayfinding consultant at New Era Designs",
-        "portrait_max_width": 540,
+        "portrait_max_width": 680,
         "portrait_image_width": 720,
         "portrait_horizontal_offset": 180,
         "portrait_mobile_width": 340,
@@ -45,7 +45,8 @@
         "animation_duration": 700,
         "enable_hover_motion": true,
         "background_image": "shopify://shop_images/IMG_3304.jpg",
-        "background_size_desktop": 100,
+        "background_image_opacity": 65,
+        "background_size_desktop": 235,
         "background_size_mobile": 150,
         "background_position_x": 50,
         "background_position_y": 50,
@@ -72,6 +73,7 @@
             "button_bg_color": "#fca311",
             "button_text_color": "#000000",
             "background_fill_color": "#ffffff",
+            "allow_image_cropping": false,
             "desktop_image_fit": "cover",
             "mobile_image_fit": "cover",
             "desktop_position_x": 50,
@@ -130,95 +132,6 @@
       "name": "Bouncing balls",
       "settings": {}
     },
-    "new_era_service_panels_8b4DzF": {
-      "type": "new-era-service-panels",
-      "blocks": {
-        "service_LbLhmt": {
-          "type": "service",
-          "settings": {
-            "image": "shopify://shop_images/An_evening_with_Bun_B_1_f6fc1300-3a4c-488f-9a0c-c74e156ea9a0.jpg",
-            "layout": "image-left",
-            "eyebrow": "Brand identity + visual systems",
-            "script_accent": "Design",
-            "title": "Identity that holds up in real environments.",
-            "description": "<p>Build the visual language, hierarchy, and system rules before the space gets crowded.</p>",
-            "supporting_text": "<p>Use this area for a more complete explanation, proof point, or next-step note without overcrowding the main headline.</p>",
-            "points": "Identity system development\nNaming and hierarchy\nBrand-led sign standards",
-            "link": "",
-            "link_label": "View service"
-          }
-        },
-        "service_JwXkFp": {
-          "type": "service",
-          "settings": {
-            "image": "shopify://shop_images/original_images_260450773_1914885655340332_4717429970085140595_n_K9rUOSTHY.jpg",
-            "layout": "image-right",
-            "eyebrow": "Wayfinding + signage",
-            "script_accent": "Design",
-            "title": "Navigation that reduces friction.",
-            "description": "<p>Plan signs around entrances, circulation, tenant visibility, and visitor decisions.</p>",
-            "supporting_text": "<p>Use this area for a more complete explanation, proof point, or next-step note without overcrowding the main headline.</p>",
-            "points": "Signage family planning\nDirectional logic\nTenant and code coordination",
-            "link": "",
-            "link_label": "View service"
-          }
-        },
-        "service_7AAE9n": {
-          "type": "service",
-          "settings": {
-            "image": "shopify://shop_images/1.png",
-            "layout": "full-bleed",
-            "eyebrow": "Marketing materials + design",
-            "script_accent": "Design",
-            "title": "Campaign pieces that stay aligned.",
-            "description": "<p>Promotional layouts, event graphics, and presentation assets built from one visual direction.</p>",
-            "supporting_text": "<p>Use this area for a more complete explanation, proof point, or next-step note without overcrowding the main headline.</p>",
-            "points": "Presentation decks\nEvent graphics\nPrint and digital collateral",
-            "link": "",
-            "link_label": "View service"
-          }
-        }
-      },
-      "block_order": [
-        "service_LbLhmt",
-        "service_JwXkFp",
-        "service_7AAE9n"
-      ],
-      "name": "NED service panels",
-      "settings": {
-        "kicker": "Services offered",
-        "heading": "Design systems people",
-        "text": "<p>Use visual panels to introduce each service, then let the copy, links, and anchors make the page easy to scan and navigate.</p>",
-        "script_heading": "Services",
-        "show_script_accents": true,
-        "background_color": "#ffffff",
-        "panel_background": "#f5f2ec",
-        "text_color": "#111111",
-        "primary_color": "#111d3a",
-        "accent_color": "#f6a229",
-        "heading_size": 52,
-        "panel_title_size": 42,
-        "body_size": 18,
-        "script_size": 160,
-        "header_width": 56,
-        "panel_title_width": 13,
-        "panel_copy_width": 68,
-        "show_diagonal_lines": true,
-        "animate_diagonal_lines": true,
-        "diagonal_motion": 180,
-        "show_bouncy_balls": true,
-        "gradient_percent": 0,
-        "ball_color_1": "#fca311",
-        "ball_color_2": "#16213a",
-        "ball_color_3": "#1b2e9d",
-        "ball_color_4": "#0a1821",
-        "ball_radius_min": 10,
-        "ball_radius_max": 26,
-        "ball_count": 8,
-        "ball_size": "medium",
-        "bounce_intensity": "moderate"
-      }
-    },
     "177790781265c4ad5e": {
       "type": "_blocks",
       "blocks": {
@@ -253,7 +166,6 @@
   "order": [
     "main",
     "blocks_x4P3ng",
-    "new_era_service_panels_8b4DzF",
     "177790781265c4ad5e"
   ]
 }
