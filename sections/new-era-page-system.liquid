@@ -286,6 +286,85 @@
 @media(max-width:749px){#NewEra-{{ section.id }} .ned-hero{min-height:720px;padding:22px 18px}#NewEra-{{ section.id }} .ned-hero-nav{gap:12px;grid-template-columns:1fr 1fr;line-height:1.15}#NewEra-{{ section.id }} .ned-hero-nav>a{min-height:28px}#NewEra-{{ section.id }} .ned-hero-nav>a:nth-child(2),#NewEra-{{ section.id }} .ned-hero-nav>a:nth-child(4),#NewEra-{{ section.id }} .ned-hero-nav>a:last-child{text-align:left}#NewEra-{{ section.id }} .ned-hero-brand{grid-column:1 / -1;grid-row:1;margin-bottom:10px;text-align:center!important}#NewEra-{{ section.id }} .ned-hero-core{padding:58px 0 86px}#NewEra-{{ section.id }} .ned-hero-title-top{font-size:clamp(54px,18vw,82px)}#NewEra-{{ section.id }} .ned-hero-title-script{font-size:clamp(88px,29vw,132px);margin-top:-18px}#NewEra-{{ section.id }} .ned-hero-core>p{line-height:1.25;max-width:34ch}#NewEra-{{ section.id }} .ned-hero-social{bottom:72px}#NewEra-{{ section.id }} .ned-hero-social--left{left:18px}#NewEra-{{ section.id }} .ned-hero-social--right{right:18px}#NewEra-{{ section.id }} .ned-hero-foot{grid-template-columns:1fr}#NewEra-{{ section.id }} .ned-hero-foot>span{display:none}#NewEra-{{ section.id }} .ned-orb{display:none}}
 @media(max-width:749px){#NewEra-{{ section.id }} .ned-service-grid{padding:0 22px}#NewEra-{{ section.id }} .ned-service-grid article,#NewEra-{{ section.id }} .ned-service-grid article:nth-child(even){align-items:start;display:grid;gap:24px;grid-template-areas:'number' 'title' 'copy';grid-template-columns:1fr;min-height:0;padding:54px 0}#NewEra-{{ section.id }} .ned-service-grid article:nth-child(even) h2{text-align:left}}
 #NewEra-{{ section.id }} .ned-funk,#NewEra-{{ section.id }} .ned-process{background-color:var(--ned-navy-panel);background-image:none!important;color:#fff}
+
+/* SERVICES: restrained luxury editorial system. Content and type choices remain unchanged. */
+#NewEra-{{ section.id }}.ned-marketing-materials{--ned-luxury-paper:#f4f0e7;--ned-luxury-line:rgba(10,24,33,.22);--ned-luxury-muted:#5f625f;background:#071a3a;max-width:none;padding:0}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-panel{border:0;border-bottom:1px solid rgba(255,255,255,.16);border-radius:0;box-shadow:none;margin:0;padding:clamp(64px,7vw,112px)}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-page-hero{align-items:end;background-image:radial-gradient(circle at 82% 18%,rgba(252,163,17,.14),transparent 34%),linear-gradient(135deg,#06152f 0%,#071a3a 58%,#0d2850 100%)!important;display:grid;gap:clamp(36px,6vw,96px);grid-template-columns:minmax(0,1.45fr) minmax(280px,.55fr);grid-template-rows:auto 1fr auto;min-height:min(850px,calc(100vh - 78px));padding:clamp(70px,8vw,128px)}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-page-hero .ned-eyebrow{align-self:start;grid-column:1 / -1;margin:0;opacity:.7}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-page-hero h1{align-self:end;font-size:clamp(76px,10.5vw,156px);grid-column:1;letter-spacing:-.06em;line-height:.78;margin:0;max-width:9ch}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-page-hero h1 .ned-script{display:block;font-size:.72em;line-height:.78;margin-top:.2em;white-space:nowrap}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-page-hero p{align-self:end;border-left:1px solid rgba(255,255,255,.34);color:rgba(255,255,255,.78);font:500 clamp(15px,1.25vw,18px)/1.65 var(--ned-body-font);grid-column:2;margin:0 0 .35em;padding-left:clamp(22px,3vw,42px);max-width:38ch}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid{background:#cfc9bd;display:grid;gap:1px;grid-template-columns:repeat(2,minmax(0,1fr));padding:1px}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid article,#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid article:nth-child(even),#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid--right article{align-content:space-between;align-items:start;background:var(--ned-luxury-paper);border:0;display:grid;gap:clamp(42px,5vw,76px);grid-template-areas:'number' 'title' 'copy';grid-template-columns:1fr;min-height:clamp(430px,42vw,590px);padding:clamp(44px,5.4vw,84px);transform:none}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid article:hover{transform:none}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid .ned-service-overlay{background:linear-gradient(180deg,rgba(244,240,231,.74),rgba(244,240,231,.96))}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid .ned-service-media img,#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid .ned-service-media video{filter:grayscale(.55) contrast(.92);transform:none}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid b{color:var(--ned-luxury-muted);font:700 11px/1 var(--ned-body-font);letter-spacing:.18em}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid h2,#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid article:nth-child(even) h2,#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid--right h2{font-size:clamp(48px,5.6vw,82px);letter-spacing:-.055em;line-height:.84;text-align:left}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid p{align-self:end;color:#34383a;font:500 clamp(15px,1.25vw,18px)/1.65 var(--ned-body-font);max-width:36ch}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio{background:var(--ned-luxury-paper);color:var(--ink);padding:clamp(68px,7vw,116px)}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio-head{margin-bottom:clamp(82px,10vw,150px)}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio-rail{border-color:var(--ned-luxury-line);color:var(--ned-luxury-muted);font-family:var(--ned-body-font);padding-bottom:16px}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio-intro{align-items:end;display:grid;gap:clamp(34px,6vw,90px);grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);padding-top:clamp(56px,7vw,104px)}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio h2{color:var(--ink);font-family:var(--ned-heading-font);font-size:clamp(58px,8vw,118px);grid-column:1;letter-spacing:-.06em;line-height:.82;margin:0}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio h2 span{color:var(--ned-luxury-muted);display:block;margin:0;white-space:normal}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio-intro>p{color:#3f4343;font:500 clamp(15px,1.25vw,18px)/1.65 var(--ned-body-font);grid-column:2;margin:0;max-width:36ch}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project{border-top:1px solid var(--ned-luxury-line);margin:0;padding:clamp(62px,7vw,108px) 0}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project:last-child{border-bottom:1px solid var(--ned-luxury-line)}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-link{align-items:center;display:grid;gap:clamp(38px,6vw,92px);grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);min-height:0}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-stage,#NewEra-{{ section.id }}.ned-marketing-materials .ned-project:nth-child(2n) .ned-project-stage{aspect-ratio:4/3;background-color:#dad6cc;grid-column:1;grid-row:1;min-height:0;overflow:hidden}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-stage::after{background:linear-gradient(180deg,transparent 66%,rgba(7,26,58,.2));content:'';inset:0;pointer-events:none;position:absolute}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-word,#NewEra-{{ section.id }}.ned-marketing-materials .ned-crosshair{display:none}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-dimension{border-color:rgba(255,255,255,.65);bottom:18px;left:24px;right:24px;z-index:4}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-dimension span{background:#071a3a;color:#fff;font-family:var(--ned-body-font)}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-media,#NewEra-{{ section.id }}.ned-marketing-materials .ned-project:nth-child(2n) .ned-project-media,#NewEra-{{ section.id }}.ned-marketing-materials .ned-project:nth-child(3n) .ned-project-media{inset:9%;width:auto}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-copy,#NewEra-{{ section.id }}.ned-marketing-materials .ned-project:nth-child(2n) .ned-project-copy{align-self:center;background:transparent;border:0;grid-column:2;grid-row:1;padding:0;position:relative}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-index{border-bottom:1px solid var(--ned-luxury-line);color:var(--ned-luxury-muted);font-family:var(--ned-body-font);margin-bottom:clamp(34px,4vw,58px);padding-bottom:16px}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-copy h3{font-family:var(--ned-heading-font);font-size:clamp(38px,4vw,62px);letter-spacing:-.05em;line-height:.9;margin-bottom:24px}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-copy>p{color:#444847;font-family:var(--ned-body-font);font-size:15px;line-height:1.65}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-cta{border-color:var(--ned-luxury-line);font-family:var(--ned-body-font);margin-top:36px;padding:18px 0}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio-foot{border-color:var(--ned-luxury-line);font-family:var(--ned-body-font);margin-top:clamp(70px,8vw,120px);padding-top:20px}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-process{background:#071a3a;color:#fff;display:grid;gap:clamp(64px,8vw,130px);grid-template-columns:minmax(0,.8fr) minmax(360px,1.2fr);padding:clamp(84px,9vw,142px)}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-process h2{font-size:clamp(58px,7vw,104px);line-height:.84;margin:0;max-width:8ch}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-process ol{border-color:rgba(255,255,255,.35)}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-process li{border-color:rgba(255,255,255,.35);font-family:var(--ned-heading-font);font-size:clamp(24px,2.6vw,38px);gap:clamp(28px,4vw,58px);letter-spacing:-.02em;padding:28px 0}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-process li span{color:rgba(255,255,255,.58);font-family:var(--ned-body-font);letter-spacing:.12em}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-cta{background-image:radial-gradient(circle at 50% 0,rgba(252,163,17,.22),transparent 42%),linear-gradient(180deg,#0d2850,#06152f);color:#fff;min-height:clamp(560px,70vh,760px);padding:clamp(82px,9vw,140px)}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-cta>p{color:rgba(255,255,255,.68);font:700 11px/1.2 var(--ned-body-font);letter-spacing:.16em}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-cta h2{font-size:clamp(68px,10vw,144px);line-height:.8;margin-bottom:clamp(48px,6vw,78px)}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-btn--light{background:transparent;border:1px solid rgba(255,255,255,.62);color:#fff;padding:18px 24px;transition:background .25s ease,color .25s ease}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-btn--light:hover,#NewEra-{{ section.id }}.ned-marketing-materials .ned-btn--light:focus-visible{background:#fff;color:#071a3a}
+@media(max-width:989px){
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-page-hero{grid-template-columns:1fr;min-height:720px}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-page-hero h1,#NewEra-{{ section.id }}.ned-marketing-materials .ned-page-hero p{grid-column:1}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid{grid-template-columns:1fr}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio-intro,#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-link{grid-template-columns:1fr}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio h2,#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio-intro>p,#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-stage,#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-copy,#NewEra-{{ section.id }}.ned-marketing-materials .ned-project:nth-child(2n) .ned-project-copy{grid-column:1;grid-row:auto}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-copy,#NewEra-{{ section.id }}.ned-marketing-materials .ned-project:nth-child(2n) .ned-project-copy{padding-top:clamp(28px,5vw,48px)}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-process{grid-template-columns:1fr}
+}
+@media(max-width:749px){
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-panel{padding:54px 22px}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-page-hero{gap:34px;min-height:650px;padding:58px 24px}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-page-hero h1{font-size:clamp(62px,20vw,94px)}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-page-hero h1 .ned-script{font-size:.64em;white-space:normal}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-page-hero p{border-left:0;border-top:1px solid rgba(255,255,255,.34);padding:24px 0 0}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid{padding:1px}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid article,#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid article:nth-child(even){gap:34px;min-height:390px;padding:42px 26px}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid h2,#NewEra-{{ section.id }}.ned-marketing-materials .ned-service-grid article:nth-child(even) h2{font-size:clamp(44px,14vw,66px)}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio{padding:58px 22px}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio-rail{gap:20px;line-height:1.45}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio-intro{display:block;padding-top:50px}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio h2{font-size:clamp(52px,16vw,76px)}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-portfolio-intro>p{margin-top:30px}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project{margin:0;padding:58px 0}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-link{display:grid;min-height:0}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-project-stage,#NewEra-{{ section.id }}.ned-marketing-materials .ned-project:nth-child(2n) .ned-project-stage{aspect-ratio:4/3;min-height:0}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-process{display:grid;gap:48px;padding:68px 24px}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-cta{min-height:540px;padding:70px 24px}
+#NewEra-{{ section.id }}.ned-marketing-materials .ned-cta h2{font-size:clamp(58px,18vw,86px)}
+}
 {% endstyle %}
 
 {% schema %}
