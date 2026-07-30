@@ -197,7 +197,7 @@
             "icon": "asterisk",
             "custom_icon_image": "shopify://shop_images/linkedin-app-white-icon.webp",
             "label": "Selected work",
-            "link": "/pages/cases",
+            "link": "https://www.linkedin.com/in/chris-edwards-a978001a8/",
             "color": "#ffffff",
             "size": 90,
             "mobile_size": 54,
