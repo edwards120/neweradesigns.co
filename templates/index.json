@@ -134,8 +134,8 @@
           "settings": {
             "icon": "crosshair",
             "custom_icon_image": "shopify://shop_images/Instagram_white.svg",
-            "label": "Services",
-            "link": "/pages/marketing-materials",
+            "label": "",
+            "link": "https://www.instagram.com/edwards.ck/",
             "color": "#f7e51d",
             "size": 80,
             "mobile_size": 48,
