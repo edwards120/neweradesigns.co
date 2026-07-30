@@ -5,6 +5,7 @@
   assign portrait_image = section.settings.portrait_image
   assign portrait_class = 'ned-about-portrait-' | append: section_key
   assign background_image = section.settings.background_image
+  assign background_image_alpha = section.settings.background_image_opacity | divided_by: 100.0
   assign background_overlay_alpha = section.settings.background_overlay_opacity | divided_by: 100.0
   assign heading_font_file = section.settings.heading_font_file | strip
   assign body_font_file = section.settings.body_font_file | strip
@@ -66,27 +67,44 @@
     --ned-eyebrow-tracking: {{ section.settings.eyebrow_letter_spacing | divided_by: 100.0 }}em;
     --ned-animation-duration: {{ section.settings.animation_duration }}ms;
     --ned-animation-stagger: 75ms;
+    position: relative;
+    isolation: isolate;
     background-color: var(--ned-page);
     color: var(--ned-ink);
     font-family: var(--ned-body-font);
-    {% if background_image != blank %}
-      background-image:
-        linear-gradient(
-          {{ section.settings.hero_background | color_modify: 'alpha', background_overlay_alpha }},
-          {{ section.settings.hero_background | color_modify: 'alpha', background_overlay_alpha }}
-        ),
-        url('{{ background_image | image_url: width: 2400 }}');
+  }
+
+  {% if background_image != blank %}
+    .ned-about-{{ section_key }}::before,
+    .ned-about-{{ section_key }}::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .ned-about-{{ section_key }}::before {
+      z-index: -2;
+      background-image: url('{{ background_image | image_url: width: 2400 }}');
       background-position: {{ section.settings.background_position_x }}% {{ section.settings.background_position_y }}%;
       background-repeat: no-repeat;
       background-size: {{ section.settings.background_size_desktop }}% auto;
-    {% endif %}
-  }
+      opacity: {{ background_image_alpha }};
+    }
+
+    .ned-about-{{ section_key }}::after {
+      z-index: -1;
+      background: {{ section.settings.hero_background | color_modify: 'alpha', background_overlay_alpha }};
+    }
+  {% endif %}
 
   .ned-about-{{ section_key }} * {
     box-sizing: border-box;
   }
 
   .ned-about-shell-{{ section_key }} {
+    position: relative;
+    z-index: 0;
     width: min(1180px, calc(100% - 32px));
     margin: 0 auto;
   }
@@ -673,11 +691,11 @@
   }
 
   @media (max-width: 900px) {
-    .ned-about-{{ section_key }} {
-      {% if background_image != blank %}
+    {% if background_image != blank %}
+      .ned-about-{{ section_key }}::before {
         background-size: {{ section.settings.background_size_mobile }}% auto;
-      {% endif %}
-    }
+      }
+    {% endif %}
 
     .ned-about-hero-{{ section_key }},
     .ned-about-story-{{ section_key }},
@@ -1375,6 +1393,16 @@
       "type": "image_picker",
       "id": "background_image",
       "label": "Background image from Shopify Files"
+    },
+    {
+      "type": "range",
+      "id": "background_image_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Background image opacity",
+      "default": 35
     },
     {
       "type": "range",
