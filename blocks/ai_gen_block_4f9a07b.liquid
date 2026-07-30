@@ -46,7 +46,7 @@
     position: relative;
     width: 100%;
     overflow: hidden;
-    background-color: {{ block.settings.background_white_mode }};
+    background-color: {% if block.settings.background_white_mode == '#ffffff' %}#ffffff{% else %}{{ block.settings.background_fill_color }}{% endif %};
   }
 
   .ai-bouncing-balls-container-{{ ai_gen_id }} {
@@ -63,12 +63,43 @@
 
   .ai-bouncing-balls-bg-{{ ai_gen_id }} {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center;
+    max-width: none;
+    transform-origin: center;
+  }
+
+  .ai-bouncing-balls-bg-{{ ai_gen_id }}--desktop {
+    object-fit: {{ block.settings.desktop_image_fit }};
+    object-position: {{ block.settings.desktop_position_x }}% {{ block.settings.desktop_position_y }}%;
+    transform: scale({{ block.settings.desktop_image_zoom | divided_by: 100.0 }});
+  }
+
+  .ai-bouncing-balls-bg-{{ ai_gen_id }}--mobile {
+    display: none;
+  }
+
+  @media screen and (max-width: 1000px) {
+    .ai-bouncing-balls-bg-{{ ai_gen_id }}--desktop {
+      object-fit: {{ block.settings.mobile_image_fit }};
+      object-position: {{ block.settings.mobile_position_x }}% {{ block.settings.mobile_position_y }}%;
+      transform: scale({{ block.settings.mobile_image_zoom | divided_by: 100.0 }});
+    }
+
+    {% if block.settings.mobile_background_image != blank %}
+      .ai-bouncing-balls-bg-{{ ai_gen_id }}--desktop {
+        display: none;
+      }
+
+      .ai-bouncing-balls-bg-{{ ai_gen_id }}--mobile {
+        display: block;
+        object-fit: {{ block.settings.mobile_image_fit }};
+        object-position: {{ block.settings.mobile_position_x }}% {{ block.settings.mobile_position_y }}%;
+        transform: scale({{ block.settings.mobile_image_zoom | divided_by: 100.0 }});
+      }
+    {% endif %}
   }
 
   .ai-bouncing-balls-overlay-{{ ai_gen_id }} {
@@ -187,13 +218,25 @@
   <div class="ai-bouncing-balls-container-{{ ai_gen_id }}">
     {% if block.settings.background_image and block.settings.background_white_mode == 'transparent' %}
       <img
-        src="{{ block.settings.background_image | image_url: width: 2000 }}"
+        src="{{ block.settings.background_image | image_url: width: 2400 }}"
         alt="{{ block.settings.background_image.alt | escape }}"
-        class="ai-bouncing-balls-bg-{{ ai_gen_id }}"
+        class="ai-bouncing-balls-bg-{{ ai_gen_id }} ai-bouncing-balls-bg-{{ ai_gen_id }}--desktop"
         loading="lazy"
+        decoding="async"
         width="{{ block.settings.background_image.width }}"
         height="{{ block.settings.background_image.height }}"
       >
+      {% if block.settings.mobile_background_image != blank %}
+        <img
+          src="{{ block.settings.mobile_background_image | image_url: width: 1200 }}"
+          alt="{{ block.settings.mobile_background_image.alt | default: block.settings.background_image.alt | escape }}"
+          class="ai-bouncing-balls-bg-{{ ai_gen_id }} ai-bouncing-balls-bg-{{ ai_gen_id }}--mobile"
+          loading="lazy"
+          decoding="async"
+          width="{{ block.settings.mobile_background_image.width }}"
+          height="{{ block.settings.mobile_background_image.height }}"
+        >
+      {% endif %}
       <div class="ai-bouncing-balls-overlay-{{ ai_gen_id }}"></div>
     {% endif %}
 
@@ -428,7 +471,7 @@
       "type": "font_picker",
       "id": "heading_font",
       "label": "Heading font",
-      "default": "helvetica_n4"
+      "default": "assistant_n4"
     },
     {
       "type": "color",
@@ -469,7 +512,107 @@
     {
       "type": "image_picker",
       "id": "background_image",
-      "label": "Background image"
+      "label": "Desktop/background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_background_image",
+      "label": "Optional mobile image",
+      "info": "Leave blank to use the desktop image on phones."
+    },
+    {
+      "type": "color",
+      "id": "background_fill_color",
+      "label": "Color behind fitted image",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Responsive image fit"
+    },
+    {
+      "type": "select",
+      "id": "desktop_image_fit",
+      "label": "Desktop fit",
+      "options": [
+        { "value": "cover", "label": "Cover — fill and crop" },
+        { "value": "contain", "label": "Contain — show full image" },
+        { "value": "scale-down", "label": "Natural — never enlarge" },
+        { "value": "fill", "label": "Stretch — fill exactly" }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_fit",
+      "label": "Mobile fit",
+      "options": [
+        { "value": "cover", "label": "Cover — fill and crop" },
+        { "value": "contain", "label": "Contain — show full image" },
+        { "value": "scale-down", "label": "Natural — never enlarge" },
+        { "value": "fill", "label": "Stretch — fill exactly" }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "range",
+      "id": "desktop_position_x",
+      "label": "Desktop horizontal position",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "desktop_position_y",
+      "label": "Desktop vertical position",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "desktop_image_zoom",
+      "label": "Desktop image size",
+      "min": 50,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "mobile_position_x",
+      "label": "Mobile horizontal position",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_position_y",
+      "label": "Mobile vertical position",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_zoom",
+      "label": "Mobile image size",
+      "min": 50,
+      "max": 200,
+      "step": 5,
+      "unit": "%",
+      "default": 100
     },
     {
       "type": "select",
