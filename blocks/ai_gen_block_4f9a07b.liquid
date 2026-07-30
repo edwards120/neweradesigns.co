@@ -8,7 +8,7 @@
     • Royal Blue #1B2E9D
     • Obsidian #0A1821
     Background options:
-    • Allow an optional background image upload (cover, centered).
+    • Allow an optional background image upload with responsive full-image fit by default.
     • Allow an optional plain white background mode.
     • Add an adjustable dark overlay slider (0–70%) to keep text readable on photos.
     Animation behavior:
@@ -72,7 +72,7 @@
   }
 
   .ai-bouncing-balls-bg-{{ ai_gen_id }}--desktop {
-    object-fit: {{ block.settings.desktop_image_fit }};
+    object-fit: {% if block.settings.allow_image_cropping %}{{ block.settings.desktop_image_fit }}{% else %}contain{% endif %};
     object-position: {{ block.settings.desktop_position_x }}% {{ block.settings.desktop_position_y }}%;
     transform: scale({{ block.settings.desktop_image_zoom | divided_by: 100.0 }});
   }
@@ -83,7 +83,7 @@
 
   @media screen and (max-width: 1000px) {
     .ai-bouncing-balls-bg-{{ ai_gen_id }}--desktop {
-      object-fit: {{ block.settings.mobile_image_fit }};
+      object-fit: {% if block.settings.allow_image_cropping %}{{ block.settings.mobile_image_fit }}{% else %}contain{% endif %};
       object-position: {{ block.settings.mobile_position_x }}% {{ block.settings.mobile_position_y }}%;
       transform: scale({{ block.settings.mobile_image_zoom | divided_by: 100.0 }});
     }
@@ -95,7 +95,7 @@
 
       .ai-bouncing-balls-bg-{{ ai_gen_id }}--mobile {
         display: block;
-        object-fit: {{ block.settings.mobile_image_fit }};
+        object-fit: {% if block.settings.allow_image_cropping %}{{ block.settings.mobile_image_fit }}{% else %}contain{% endif %};
         object-position: {{ block.settings.mobile_position_x }}% {{ block.settings.mobile_position_y }}%;
         transform: scale({{ block.settings.mobile_image_zoom | divided_by: 100.0 }});
       }
@@ -531,6 +531,13 @@
       "content": "Responsive image fit"
     },
     {
+      "type": "checkbox",
+      "id": "allow_image_cropping",
+      "label": "Allow image cropping to fill banner",
+      "info": "Leave off to keep the complete artwork visible on every screen size.",
+      "default": false
+    },
+    {
       "type": "select",
       "id": "desktop_image_fit",
       "label": "Desktop fit",
@@ -540,7 +547,7 @@
         { "value": "scale-down", "label": "Natural — never enlarge" },
         { "value": "fill", "label": "Stretch — fill exactly" }
       ],
-      "default": "cover"
+      "default": "contain"
     },
     {
       "type": "select",
@@ -552,7 +559,7 @@
         { "value": "scale-down", "label": "Natural — never enlarge" },
         { "value": "fill", "label": "Stretch — fill exactly" }
       ],
-      "default": "cover"
+      "default": "contain"
     },
     {
       "type": "range",
