@@ -151,10 +151,12 @@
                 --img-mobile-width: {{ block.settings.mobile_width }}px;
                 --img-rotate: {{ block.settings.rotation }}deg;
                 --img-z: {{ block.settings.z_index }};
+                --img-opacity: {{ block.settings.opacity | divided_by: 100.0 }};
+                --img-blend: {{ block.settings.blend_mode }};
               "
               {{ block.shopify_attributes }}
             >
-              {{ block.settings.image | image_url: width: 1600 | image_tag: widths: '200,400,800,1600', loading: 'eager' }}
+              {{ block.settings.image | image_url: width: 3200 | image_tag: widths: '400,800,1200,1600,2400,3200', sizes: '(min-width: 750px) 100vw, 140vw', loading: 'eager', alt: '' }}
             </div>
           {% endif %}
         {% elsif block.type == 'kinetic_label' and section.settings.show_kinetic_labels %}
@@ -270,6 +272,8 @@
     width: var(--img-width);
     transform: translate(-50%, -50%) rotate(var(--img-rotate));
     z-index: var(--img-z);
+    opacity: var(--img-opacity);
+    mix-blend-mode: var(--img-blend);
     pointer-events: none;
   }
   #NedEditorialHero-{{ section.id }} .ned-editorial-hero__floating-img img {
@@ -571,17 +575,20 @@
   "blocks": [
     {
       "type": "image_layer",
-      "name": "Floating Image",
+      "name": "Layered background image",
+      "limit": 2,
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Image" },
-        { "type": "range", "id": "width", "label": "Desktop width", "min": 50, "max": 800, "step": 10, "unit": "px", "default": 300 },
-        { "type": "range", "id": "mobile_width", "label": "Mobile width", "min": 40, "max": 400, "step": 10, "unit": "px", "default": 180 },
-        { "type": "range", "id": "x", "label": "Desktop X position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50 },
-        { "type": "range", "id": "y", "label": "Desktop Y position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50 },
-        { "type": "range", "id": "mobile_x", "label": "Mobile X position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50 },
-        { "type": "range", "id": "mobile_y", "label": "Mobile Y position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50 },
+        { "type": "image_picker", "id": "image", "label": "Background image" },
+        { "type": "range", "id": "width", "label": "Desktop layer width", "min": 100, "max": 1800, "step": 20, "unit": "px", "default": 900 },
+        { "type": "range", "id": "mobile_width", "label": "Mobile layer width", "min": 80, "max": 800, "step": 10, "unit": "px", "default": 420 },
+        { "type": "range", "id": "x", "label": "Desktop horizontal position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50 },
+        { "type": "range", "id": "y", "label": "Desktop vertical position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50 },
+        { "type": "range", "id": "mobile_x", "label": "Mobile horizontal position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50 },
+        { "type": "range", "id": "mobile_y", "label": "Mobile vertical position", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 50 },
         { "type": "range", "id": "rotation", "label": "Rotation", "min": -180, "max": 180, "step": 4, "unit": "deg", "default": 0 },
-        { "type": "range", "id": "z_index", "label": "Layer order (z-index)", "min": 1, "max": 10, "step": 1, "default": 3 },
+        { "type": "range", "id": "opacity", "label": "Layer opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 100 },
+        { "type": "select", "id": "blend_mode", "label": "Blend mode", "default": "normal", "options": [{ "value": "normal", "label": "Normal" }, { "value": "multiply", "label": "Multiply" }, { "value": "screen", "label": "Screen" }, { "value": "overlay", "label": "Overlay" }, { "value": "soft-light", "label": "Soft light" }, { "value": "hard-light", "label": "Hard light" }, { "value": "difference", "label": "Difference" }] },
+        { "type": "range", "id": "z_index", "label": "Layer order", "min": 0, "max": 10, "step": 1, "default": 1 },
         { "type": "checkbox", "id": "enable_gravity", "label": "Affected by gravity bounce", "default": false },
         { "type": "checkbox", "id": "hide_mobile", "label": "Hide on mobile", "default": false }
       ]
