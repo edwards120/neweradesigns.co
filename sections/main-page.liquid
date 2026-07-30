@@ -2,10 +2,39 @@
 
 {% liquid
   assign section_key = section.id | replace: '_', '' | downcase
+  assign portrait_image = section.settings.portrait_image
+  assign portrait_class = 'ned-about-portrait-' | append: section_key
   assign portrait_url = section.settings.portrait_url | strip
+  assign heading_font_file = section.settings.heading_font_file | strip
+  assign body_font_file = section.settings.body_font_file | strip
+  assign accent_font_file = section.settings.accent_font_file | strip
 %}
 
 {%- style -%}
+  {% if heading_font_file != blank %}
+    @font-face {
+      font-family: "NED Heading Upload";
+      src: url('{{ heading_font_file | file_url }}') format('woff2');
+      font-display: swap;
+    }
+  {% endif %}
+
+  {% if body_font_file != blank %}
+    @font-face {
+      font-family: "NED Body Upload";
+      src: url('{{ body_font_file | file_url }}') format('woff2');
+      font-display: swap;
+    }
+  {% endif %}
+
+  {% if accent_font_file != blank %}
+    @font-face {
+      font-family: "NED Accent Upload";
+      src: url('{{ accent_font_file | file_url }}') format('woff2');
+      font-display: swap;
+    }
+  {% endif %}
+
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -19,14 +48,27 @@
   }
 
   .ned-about-{{ section_key }} {
-    --ned-ink: #111111;
-    --ned-navy: #111d3a;
-    --ned-gold: #d0a83f;
-    --ned-highlight-one: rgba(255, 230, 150, 0.8);
-    --ned-highlight-two: rgba(255, 210, 120, 0.95);
-    --ned-paper: #f7f6f2;
-    --ned-line: rgba(17, 17, 17, 0.14);
+    --ned-ink: {{ section.settings.text_color }};
+    --ned-body-text: {{ section.settings.body_text_color }};
+    --ned-navy: {{ section.settings.navy_color }};
+    --ned-gold: {{ section.settings.accent_color }};
+    --ned-highlight-one: {{ section.settings.highlight_one_color | color_modify: 'alpha', 0.8 }};
+    --ned-highlight-two: {{ section.settings.highlight_two_color | color_modify: 'alpha', 0.95 }};
+    --ned-paper: {{ section.settings.paper_color }};
+    --ned-page: {{ section.settings.page_background }};
+    --ned-hero: {{ section.settings.hero_background }};
+    --ned-line: {{ section.settings.text_color | color_modify: 'alpha', 0.14 }};
+    --ned-heading-font: {% if heading_font_file != blank %}"NED Heading Upload"{% else %}var(--font-heading-family){% endif %};
+    --ned-body-font: {% if body_font_file != blank %}"NED Body Upload"{% else %}var(--font-body-family){% endif %};
+    --ned-accent-font: {% if accent_font_file != blank %}"NED Accent Upload"{% else %}Georgia, "Times New Roman", serif{% endif %};
+    --ned-heading-tracking: {{ section.settings.heading_letter_spacing | divided_by: 100.0 }}em;
+    --ned-body-tracking: {{ section.settings.body_letter_spacing | divided_by: 100.0 }}em;
+    --ned-eyebrow-tracking: {{ section.settings.eyebrow_letter_spacing | divided_by: 100.0 }}em;
+    --ned-animation-duration: {{ section.settings.animation_duration }}ms;
+    --ned-animation-stagger: {{ section.settings.animation_stagger }}ms;
+    background: var(--ned-page);
     color: var(--ned-ink);
+    font-family: var(--ned-body-font);
   }
 
   .ned-about-{{ section_key }} * {
@@ -45,7 +87,7 @@
     align-items: start;
     min-height: 0;
     padding: clamp(12px, 2vw, 24px) clamp(20px, 3vw, 44px) 0;
-    background: #ffffff;
+    background: var(--ned-hero);
   }
 
   .ned-about-eyebrow-{{ section_key }},
@@ -54,7 +96,7 @@
     color: var(--ned-gold);
     font-size: 11px;
     font-weight: 800;
-    letter-spacing: 0.18em;
+    letter-spacing: var(--ned-eyebrow-tracking);
     line-height: 1.3;
     text-transform: uppercase;
   }
@@ -67,15 +109,16 @@
     color: var(--ned-ink);
     font-size: clamp(42px, 6vw, 78px);
     font-weight: 900;
-    letter-spacing: -0.055em;
+    font-family: var(--ned-heading-font);
+    letter-spacing: var(--ned-heading-tracking);
     line-height: 0.98;
   }
 
   .ned-about-title-accent-{{ section_key }} {
     display: inline-block;
     margin: 0 -0.05em;
-    color: #f0a22e;
-    font-family: Georgia, "Times New Roman", serif;
+    color: var(--ned-gold);
+    font-family: var(--ned-accent-font);
     font-size: 112%;
     font-style: italic;
     font-weight: 400;
@@ -87,8 +130,10 @@
   .ned-about-intro-{{ section_key }} {
     max-width: 720px;
     margin: 20px 0 0;
-    color: #494949;
+    color: var(--ned-body-text);
+    font-family: var(--ned-body-font);
     font-size: clamp(18px, 2vw, 24px);
+    letter-spacing: var(--ned-body-tracking);
     line-height: 1.52;
   }
 
@@ -355,14 +400,17 @@
     margin: 14px 0 0;
     font-size: clamp(34px, 4.8vw, 62px);
     font-weight: 850;
-    letter-spacing: -0.04em;
+    font-family: var(--ned-heading-font);
+    letter-spacing: var(--ned-heading-tracking);
     line-height: 1;
   }
 
   .ned-about-story-copy-{{ section_key }} p {
     margin: 0 0 22px;
-    color: #4b4b4b;
+    color: var(--ned-body-text);
+    font-family: var(--ned-body-font);
     font-size: clamp(16px, 1.7vw, 20px);
+    letter-spacing: var(--ned-body-tracking);
     line-height: 1.75;
   }
 
@@ -452,15 +500,19 @@
   .ned-about-capability-{{ section_key }} h3 {
     margin: 38px 0 14px;
     color: #ffffff;
+    font-family: var(--ned-heading-font);
     font-size: clamp(22px, 2.4vw, 31px);
     font-weight: 800;
+    letter-spacing: var(--ned-heading-tracking);
     line-height: 1.08;
   }
 
   .ned-about-capability-{{ section_key }} p {
     margin: 0;
     color: rgba(255, 255, 255, 0.72);
+    font-family: var(--ned-body-font);
     font-size: 15px;
+    letter-spacing: var(--ned-body-tracking);
     line-height: 1.65;
   }
 
@@ -488,8 +540,10 @@
     position: relative;
     border-top: 1px solid var(--ned-line);
     padding: 17px 12px 17px 22px;
-    color: #292929;
+    color: var(--ned-body-text);
+    font-family: var(--ned-body-font);
     font-size: 20px;
+    letter-spacing: var(--ned-body-tracking);
     font-weight: 650;
     line-height: 1.42;
     transition: background-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
@@ -528,8 +582,10 @@
 
   .ned-about-value-{{ section_key }} p {
     margin: 0;
-    color: #292929;
+    color: var(--ned-body-text);
+    font-family: var(--ned-body-font);
     font-size: clamp(20px, 2.3vw, 29px);
+    letter-spacing: var(--ned-body-tracking);
     font-weight: 650;
     line-height: 1.42;
   }
@@ -545,9 +601,10 @@
 
   .ned-about-cta-{{ section_key }} p {
     margin: 0;
+    font-family: var(--ned-heading-font);
     font-size: clamp(22px, 3vw, 38px);
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: var(--ned-heading-tracking);
   }
 
   .ned-about-cta-{{ section_key }} a {
@@ -574,6 +631,34 @@
 
   .ned-about-original-{{ section_key }} {
     margin-top: 64px;
+  }
+
+  .ned-about-{{ section_key }}.ned-motion-ready.ned-animation--fade-up [data-ned-reveal],
+  .ned-about-{{ section_key }}.ned-motion-ready.ned-animation--fade-in [data-ned-reveal],
+  .ned-about-{{ section_key }}.ned-motion-ready.ned-animation--scale-in [data-ned-reveal] {
+    opacity: 0;
+    transition: opacity var(--ned-animation-duration) ease, transform var(--ned-animation-duration) cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--ned-reveal-index, 0) * var(--ned-animation-stagger));
+  }
+
+  .ned-about-{{ section_key }}.ned-motion-ready.ned-animation--fade-up [data-ned-reveal] {
+    transform: translateY(28px);
+  }
+
+  .ned-about-{{ section_key }}.ned-motion-ready.ned-animation--scale-in [data-ned-reveal] {
+    transform: scale(0.965);
+  }
+
+  .ned-about-{{ section_key }}.ned-motion-ready [data-ned-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .ned-about-{{ section_key }}.ned-hover-off .about-image-system-frame:hover,
+  .ned-about-{{ section_key }}.ned-hover-off .about-image-system-frame:hover .ned-about-portrait-{{ section_key }},
+  .ned-about-{{ section_key }}.ned-hover-off .ned-about-capability-{{ section_key }}:hover,
+  .ned-about-{{ section_key }}.ned-hover-off .ned-about-deliverables-{{ section_key }} li:hover {
+    transform: none;
   }
 
   @media (max-width: 900px) {
@@ -641,6 +726,12 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .ned-about-{{ section_key }} [data-ned-reveal] {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+
     .ned-about-highlight-{{ section_key }} {
       background-size: 100% 55%;
       transition: none;
@@ -675,9 +766,9 @@
 {%- endstyle -%}
 
 {% if page.handle == 'info' and section.settings.enable_about_layout %}
-  <section class="ned-about-{{ section_key }} section-{{ section.id }}-padding{% unless section.settings.show_highlights %} ned-highlights-off{% endunless %}{% unless section.settings.show_paragraph_circle %} ned-circles-off{% endunless %}">
+  <section class="ned-about-{{ section_key }} section-{{ section.id }}-padding ned-animation--{{ section.settings.reveal_animation }}{% unless section.settings.enable_hover_motion %} ned-hover-off{% endunless %}{% unless section.settings.show_highlights %} ned-highlights-off{% endunless %}{% unless section.settings.show_paragraph_circle %} ned-circles-off{% endunless %}">
     <div class="ned-about-shell-{{ section_key }}">
-      <div class="ned-about-hero-{{ section_key }}">
+      <div class="ned-about-hero-{{ section_key }}" data-ned-reveal style="--ned-reveal-index: 0;">
         <div>
           <span class="ned-about-eyebrow-{{ section_key }}">{{ section.settings.eyebrow }}</span>
           {% liquid
@@ -695,24 +786,36 @@
           </p>
         </div>
 
-        {% if portrait_url != blank %}
+        {% if portrait_image != blank or portrait_url != blank %}
           <figure class="ned-about-portrait-wrap-{{ section_key }}">
             <div class="about-image-system-frame">
               <div class="ned-about-image-viewport-{{ section_key }}">
-                <img
-                  class="ned-about-portrait-{{ section_key }}"
-                  src="{{ portrait_url | escape }}"
-                  alt="{{ section.settings.portrait_alt | escape }}"
-                  width="900"
-                  height="900"
-                  loading="eager">
+                {% if portrait_image != blank %}
+                  {{ portrait_image
+                    | image_url: width: 1800
+                    | image_tag:
+                      class: portrait_class,
+                      widths: '360, 540, 720, 900, 1200, 1500, 1800',
+                      sizes: '(min-width: 901px) 50vw, 90vw',
+                      loading: 'eager',
+                      alt: section.settings.portrait_alt
+                  }}
+                {% else %}
+                  <img
+                    class="ned-about-portrait-{{ section_key }}"
+                    src="{{ portrait_url | escape }}"
+                    alt="{{ section.settings.portrait_alt | escape }}"
+                    width="900"
+                    height="900"
+                    loading="eager">
+                {% endif %}
               </div>
             </div>
           </figure>
         {% endif %}
       </div>
 
-      <div class="ned-about-story-{{ section_key }}">
+      <div class="ned-about-story-{{ section_key }}" data-ned-reveal style="--ned-reveal-index: 1;">
         <div>
           <span class="ned-about-section-label-{{ section_key }}">What I do</span>
           <h2>Design thinking grounded in how places actually work.</h2>
@@ -724,7 +827,7 @@
         </div>
       </div>
 
-      <div class="ned-about-capabilities-{{ section_key }}">
+      <div class="ned-about-capabilities-{{ section_key }}" data-ned-reveal style="--ned-reveal-index: 2;">
         <span class="ned-about-section-label-{{ section_key }}">Core capabilities</span>
         <h2>One connected system from identity to installation.</h2>
         <div class="ned-about-capability-grid-{{ section_key }}">
@@ -746,7 +849,7 @@
         </div>
       </div>
 
-      <div class="ned-about-process-{{ section_key }}">
+      <div class="ned-about-process-{{ section_key }}" data-ned-reveal style="--ned-reveal-index: 3;">
         <span class="ned-about-section-label-{{ section_key }}">The working layer</span>
         <h2>What the work can include</h2>
         <div class="ned-about-process-grid-{{ section_key }}">
@@ -766,7 +869,7 @@
         </div>
       </div>
 
-      <div class="ned-about-cta-{{ section_key }}">
+      <div class="ned-about-cta-{{ section_key }}" data-ned-reveal style="--ned-reveal-index: 4;">
         <p>{{ section.settings.cta_heading }}</p>
         {% if section.settings.cta_link != blank %}
           <a href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }} &rarr;</a>
@@ -936,6 +1039,29 @@
       var section = document.querySelector('.ned-about-{{ section_key }}');
       if (!section) return;
 
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var revealItems = section.querySelectorAll('[data-ned-reveal]');
+
+      if (section.classList.contains('ned-animation--none') || prefersReducedMotion || !('IntersectionObserver' in window)) {
+        revealItems.forEach(function(item) {
+          item.classList.add('is-visible');
+        });
+      } else {
+        section.classList.add('ned-motion-ready');
+        var revealObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.14 });
+
+        revealItems.forEach(function(item) {
+          revealObserver.observe(item);
+        });
+      }
+
       var highlights = section.querySelectorAll('.ned-about-highlight-{{ section_key }}:not([data-ned-ready]), .ned-about-circle-{{ section_key }}:not([data-ned-ready])');
 
       if (!('IntersectionObserver' in window)) {
@@ -1028,9 +1154,126 @@
       "default": "focused on brand systems, wayfinding, signage, and environmental graphics for commercial properties, retail environments, and design partners."
     },
     {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "page_background",
+      "label": "Page background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "hero_background",
+      "label": "Hero background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Heading and primary text",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "body_text_color",
+      "label": "Body text",
+      "default": "#4B4B4B"
+    },
+    {
+      "type": "color",
+      "id": "navy_color",
+      "label": "Dark panel and buttons",
+      "default": "#111D3A"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent and line color",
+      "default": "#D0A83F"
+    },
+    {
+      "type": "color",
+      "id": "highlight_one_color",
+      "label": "Highlight start",
+      "default": "#FFE696"
+    },
+    {
+      "type": "color",
+      "id": "highlight_two_color",
+      "label": "Highlight end",
+      "default": "#FFD278"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Callout background",
+      "default": "#F7F6F2"
+    },
+    {
+      "type": "header",
+      "content": "Typography and uploaded fonts"
+    },
+    {
+      "type": "text",
+      "id": "heading_font_file",
+      "label": "Heading font filename",
+      "info": "Enter the exact .woff2 filename from Content > Files. Leave blank to use the theme heading font."
+    },
+    {
+      "type": "text",
+      "id": "body_font_file",
+      "label": "Body font filename",
+      "info": "Enter the exact .woff2 filename from Content > Files. Leave blank to use the theme body font."
+    },
+    {
+      "type": "text",
+      "id": "accent_font_file",
+      "label": "Italic accent font filename",
+      "info": "Enter the exact .woff2 filename from Content > Files. Leave blank to use Georgia."
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "min": -10,
+      "max": 5,
+      "step": 1,
+      "unit": "%",
+      "label": "Heading letter tracking",
+      "default": -5
+    },
+    {
+      "type": "range",
+      "id": "body_letter_spacing",
+      "min": -5,
+      "max": 10,
+      "step": 1,
+      "unit": "%",
+      "label": "Body letter tracking",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_letter_spacing",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "%",
+      "label": "Eyebrow and label tracking",
+      "default": 18
+    },
+    {
+      "type": "image_picker",
+      "id": "portrait_image",
+      "label": "Portrait image from Shopify Files",
+      "info": "Choose an image already uploaded to Content > Files."
+    },
+    {
       "type": "text",
       "id": "portrait_url",
-      "label": "Portrait image URL",
+      "label": "Legacy fallback image URL",
+      "info": "Used only when no Shopify Files image is selected.",
       "default": "https://cdn.shopify.com/s/files/1/0914/0138/8337/files/ChatGPT_Image_Jun_17_2026_07_34_00_AM.png?v=1781699874"
     },
     {
@@ -1107,6 +1350,48 @@
       "type": "checkbox",
       "id": "show_paragraph_circle",
       "label": "Circle important paragraph phrases",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "select",
+      "id": "reveal_animation",
+      "label": "Section reveal style",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "fade-up", "label": "Fade up" },
+        { "value": "fade-in", "label": "Fade in" },
+        { "value": "scale-in", "label": "Soft scale" }
+      ],
+      "default": "fade-up"
+    },
+    {
+      "type": "range",
+      "id": "animation_duration",
+      "min": 200,
+      "max": 1600,
+      "step": 100,
+      "unit": "ms",
+      "label": "Animation duration",
+      "default": 700
+    },
+    {
+      "type": "range",
+      "id": "animation_stagger",
+      "min": 0,
+      "max": 300,
+      "step": 25,
+      "unit": "ms",
+      "label": "Animation stagger",
+      "default": 75
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_hover_motion",
+      "label": "Enable image and card hover motion",
       "default": true
     },
     {
