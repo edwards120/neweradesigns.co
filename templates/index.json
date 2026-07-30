@@ -12,6 +12,40 @@
     "hero": {
       "type": "new-era-editorial-hero",
       "blocks": {
+        "image_layer_BMhDHU": {
+          "type": "image_layer",
+          "settings": {
+            "width": 900,
+            "mobile_width": 420,
+            "x": 50,
+            "y": 50,
+            "mobile_x": 50,
+            "mobile_y": 50,
+            "rotation": 0,
+            "opacity": 100,
+            "blend_mode": "normal",
+            "z_index": 2,
+            "enable_gravity": false,
+            "hide_mobile": false
+          }
+        },
+        "image_layer_4MjanN": {
+          "type": "image_layer",
+          "settings": {
+            "width": 900,
+            "mobile_width": 420,
+            "x": 50,
+            "y": 50,
+            "mobile_x": 50,
+            "mobile_y": 50,
+            "rotation": 0,
+            "opacity": 100,
+            "blend_mode": "normal",
+            "z_index": 1,
+            "enable_gravity": false,
+            "hide_mobile": false
+          }
+        },
         "kinetic_wayfinding": {
           "type": "kinetic_label",
           "settings": {
@@ -159,6 +193,8 @@
         }
       },
       "block_order": [
+        "image_layer_BMhDHU",
+        "image_layer_4MjanN",
         "kinetic_wayfinding",
         "kinetic_brand",
         "kinetic_spatial",
@@ -195,7 +231,7 @@
         "text_color": "#ffffff",
         "accent_color": "#f7951d",
         "pink_accent": "#ff4fa3",
-        "halftone_image": "shopify://shop_images/IMG_0950.heic",
+        "halftone_image": "shopify://shop_images/website_Background2.svg",
         "halftone_opacity": 42,
         "halftone_size": 155,
         "animate_halftone": true,
@@ -496,6 +532,16 @@
             "button_bg_color": "#fca311",
             "button_text_color": "#000000",
             "background_image": "shopify://shop_images/Website_2026_Recovered_4f4a9c71-9b0e-4d4c-9f77-3dc5fdb5f7af.svg",
+            "background_fill_color": "#ffffff",
+            "allow_image_cropping": false,
+            "desktop_image_fit": "contain",
+            "mobile_image_fit": "contain",
+            "desktop_position_x": 50,
+            "desktop_position_y": 50,
+            "desktop_image_zoom": 100,
+            "mobile_position_x": 50,
+            "mobile_position_y": 50,
+            "mobile_image_zoom": 100,
             "background_white_mode": "transparent",
             "overlay_opacity": 10,
             "ball_count": 8,
@@ -605,8 +651,18 @@
             "text_color": "#ffffff",
             "button_label": "",
             "button_link": "",
-            "button_bg_color": "#FCA311",
+            "button_bg_color": "#fca311",
             "button_text_color": "#000000",
+            "background_fill_color": "#ffffff",
+            "allow_image_cropping": false,
+            "desktop_image_fit": "contain",
+            "mobile_image_fit": "contain",
+            "desktop_position_x": 50,
+            "desktop_position_y": 50,
+            "desktop_image_zoom": 100,
+            "mobile_position_x": 50,
+            "mobile_position_y": 50,
+            "mobile_image_zoom": 100,
             "background_white_mode": "transparent",
             "overlay_opacity": 40,
             "ball_count": 8,
