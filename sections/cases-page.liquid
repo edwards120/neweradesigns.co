@@ -6,6 +6,7 @@
   assign section_key = section.id | replace: '_', '' | downcase
   assign heading_font = section.settings.heading_font
   assign body_font = section.settings.body_font
+  assign hero_overlay_alpha = section.settings.hero_overlay_opacity | divided_by: 100.0
   assign script_font_stack = '"NED Edwardian", "Snell Roundhand", "Brush Script MT", cursive'
   if section.settings.billboard_script_font_mode == 'heading'
     assign script_font_stack = 'var(--ned-heading-font)'
@@ -17,7 +18,13 @@
 <section class="ned-cases ned-cases-{{ section_key }}" data-ned-motion-root="true">
   <div class="ned-cases-shell">
     <!-- Hero -->
-    <div class="ned-cases-hero" data-ned-animate="true" data-ned-animation="clip-up">
+    <div class="ned-cases-hero{% if section.settings.hero_background_image != blank %} has-background{% endif %}" data-ned-animate="true" data-ned-animation="clip-up">
+      {% if section.settings.hero_background_image != blank %}
+        <div class="ned-cases-hero-media" aria-hidden="true">
+          {{ section.settings.hero_background_image | image_url: width: 2400 | image_tag: widths: '750, 1100, 1500, 2000, 2400', sizes: '100vw', loading: 'eager', alt: '' }}
+        </div>
+        <span class="ned-cases-hero-overlay" aria-hidden="true"></span>
+      {% endif %}
       <div class="ned-cases-hero-copy" data-ned-animate="true">
         {% if section.settings.eyebrow != blank %}
           <span class="ned-cases-kicker">{{ section.settings.eyebrow }}</span>
@@ -258,6 +265,8 @@
     font-display: swap;
   }
 
+  #shopify-section-{{ section.id }} { padding-top: 0 !important; }
+
   .ned-cases-{{ section_key }} {
     --ned-navy: {{ section.settings.background_color }};
     --ned-black: {{ section.settings.deep_background_color }};
@@ -275,7 +284,7 @@
     background: linear-gradient(180deg, var(--ned-navy), var(--ned-black));
     color: var(--ned-white);
     font-family: var(--ned-body-font);
-    padding: clamp(40px, 6vw, 64px) 20px clamp(64px, 8vw, 96px);
+    padding: 0 20px clamp(64px, 8vw, 96px);
   }
 
   .ned-cases-{{ section_key }} * { box-sizing: border-box; }
@@ -283,13 +292,27 @@
 
   /* Hero */
   .ned-cases-hero {
-    display: grid;
-    grid-template-columns: 1fr minmax(260px, 380px);
-    gap: 34px;
     align-items: stretch;
     border-bottom: 1px solid rgba(198,150,46,0.35);
-    padding-bottom: 44px;
+    display: grid;
+    gap: 34px;
+    grid-template-columns: 1fr minmax(260px, 380px);
+    isolation: isolate;
+    min-height: clamp(500px, 62vh, 720px);
+    overflow: hidden;
+    padding: clamp(34px, 6vw, 72px);
+    position: relative;
   }
+
+  .ned-cases-hero-media,
+  .ned-cases-hero-overlay { inset: 0; position: absolute; }
+  .ned-cases-hero-media { z-index: -2; }
+  .ned-cases-hero-media img { height: 100%; object-fit: cover; width: 100%; }
+  .ned-cases-hero-overlay {
+    background: linear-gradient(90deg, rgba(5,7,13,{{ hero_overlay_alpha }}) 0%, rgba(5,7,13,{{ hero_overlay_alpha }}) 48%, rgba(5,7,13,0.28) 100%);
+    z-index: -1;
+  }
+  .ned-cases-hero-copy, .ned-cases-manifesto { position: relative; z-index: 1; }
 
   .ned-cases-kicker,
   .ned-cases-heading span,
@@ -567,6 +590,8 @@
     { "type": "text", "id": "eyebrow", "label": "Hero eyebrow", "default": "New Era Designs" },
     { "type": "text", "id": "title", "label": "Hero title", "default": "Cases, Concepts & Spatial Systems" },
     { "type": "richtext", "id": "intro", "label": "Hero intro", "default": "<p>A working archive of wayfinding systems, campaign environments, 3D studies, and the decision logic behind the design — supported by numbers that prove the work.</p>" },
+    { "type": "image_picker", "id": "hero_background_image", "label": "Hero background image" },
+    { "type": "range", "id": "hero_overlay_opacity", "label": "Hero image overlay", "min": 20, "max": 90, "step": 5, "unit": "%", "default": 65 },
     { "type": "text", "id": "manifesto_label", "label": "Manifesto label", "default": "How I Think" },
     { "type": "textarea", "id": "manifesto_text", "label": "Manifesto text", "default": "I design the system before the surface: the route, the decision, the material, the moment, and then the mark." },
     { "type": "header", "content": "Billboard showcase" },
