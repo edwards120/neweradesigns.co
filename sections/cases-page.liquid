@@ -7,6 +7,10 @@
   assign heading_font = section.settings.heading_font
   assign body_font = section.settings.body_font
   assign hero_overlay_alpha = section.settings.hero_overlay_opacity | divided_by: 100.0
+  assign hero_background_image = section.settings.hero_background_image
+  if hero_background_image == blank
+    assign hero_background_image = section.settings.billboard_image
+  endif
   assign script_font_stack = '"NED Edwardian", "Snell Roundhand", "Brush Script MT", cursive'
   if section.settings.billboard_script_font_mode == 'heading'
     assign script_font_stack = 'var(--ned-heading-font)'
@@ -18,10 +22,10 @@
 <section class="ned-cases ned-cases-{{ section_key }}" data-ned-motion-root="true">
   <div class="ned-cases-shell">
     <!-- Hero -->
-    <div class="ned-cases-hero{% if section.settings.hero_background_image != blank %} has-background{% endif %}" data-ned-animate="true" data-ned-animation="clip-up">
-      {% if section.settings.hero_background_image != blank %}
+    <div class="ned-cases-hero{% if hero_background_image != blank %} has-background{% endif %}" data-ned-animate="true" data-ned-animation="clip-up">
+      {% if hero_background_image != blank %}
         <div class="ned-cases-hero-media" aria-hidden="true">
-          {{ section.settings.hero_background_image | image_url: width: 2400 | image_tag: widths: '750, 1100, 1500, 2000, 2400', sizes: '100vw', loading: 'eager', alt: '' }}
+          {{ hero_background_image | image_url: width: 2400 | image_tag: widths: '750, 1100, 1500, 2000, 2400', sizes: '100vw', loading: 'eager', alt: '' }}
         </div>
         <span class="ned-cases-hero-overlay" aria-hidden="true"></span>
       {% endif %}
