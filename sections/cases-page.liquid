@@ -8,9 +8,6 @@
   assign body_font = section.settings.body_font
   assign hero_overlay_alpha = section.settings.hero_overlay_opacity | divided_by: 100.0
   assign hero_background_image = section.settings.hero_background_image
-  if hero_background_image == blank
-    assign hero_background_image = section.settings.billboard_image
-  endif
   assign script_font_stack = '"NED Edwardian", "Snell Roundhand", "Brush Script MT", cursive'
   if section.settings.billboard_script_font_mode == 'heading'
     assign script_font_stack = 'var(--ned-heading-font)'
@@ -100,6 +97,7 @@
 
     <!-- Process steps -->
     <div class="ned-cases-process" aria-label="Design process" data-ned-animate="true">
+      <span class="ned-cases-process__label">{{ section.settings.process_label }}</span>
       <div><span>01</span><p>{{ section.settings.process_1 }}</p></div>
       <div><span>02</span><p>{{ section.settings.process_2 }}</p></div>
       <div><span>03</span><p>{{ section.settings.process_3 }}</p></div>
@@ -110,6 +108,7 @@
     <div class="ned-cases-heading" data-ned-animate="true">
       <span>{{ section.settings.cases_label }}</span>
       <p>{{ section.settings.cases_subtitle }}</p>
+      <span class="ned-cases-heading__folio">{{ section.settings.applications_label }}</span>
     </div>
 
     <!-- Case grid -->
@@ -205,6 +204,7 @@
           </div>
 
           <div class="ned-case-content">
+            <span class="ned-case-index">APPLICATION / {{ forloop.index | prepend: '0' }}</span>
             <div class="ned-case-topline">
               <span>{{ block.settings.case_type }}</span>
               <span>{{ block.settings.case_year }}</span>
@@ -253,6 +253,14 @@
       <div><span>{{ section.settings.stack_1_label }}</span><p>{{ section.settings.stack_1_text }}</p></div>
       <div><span>{{ section.settings.stack_2_label }}</span><p>{{ section.settings.stack_2_text }}</p></div>
       <div><span>{{ section.settings.stack_3_label }}</span><p>{{ section.settings.stack_3_text }}</p></div>
+    </div>
+
+    <div class="ned-cases-cta" data-ned-animate="true">
+      <span>{{ section.settings.cta_eyebrow }}</span>
+      {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+        <a href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }} <span aria-hidden="true">↗</span></a>
+      {% endif %}
+      <i aria-hidden="true"></i>
     </div>
   </div>
 </section>
@@ -536,6 +544,310 @@
     .ned-studio-metrics__grid { grid-template-columns: 1fr; }
   }
 
++
+  .ned-cases-{{ section_key }} {
+    --ned-paper: {{ section.settings.editorial_background }};
+    --ned-ink: {{ section.settings.editorial_text }};
+    --ned-alert: {{ section.settings.editorial_alert }};
+    --ned-cta: {{ section.settings.cta_background }};
+    --ned-cta-tail: {{ section.settings.cta_tail_color }};
+    background: var(--ned-paper);
+    color: var(--ned-ink);
+    padding: 0;
+  }
+
+  .ned-cases-{{ section_key }} [data-ned-animate] {
+    clip-path: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-shell {
+    display: flex;
+    flex-direction: column;
+    max-width: 1680px;
+    width: 100%;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-hero {
+    background: var(--ned-black);
+    border-bottom: 3px solid var(--ned-metal);
+    grid-template-columns: minmax(0, 1.45fr) minmax(280px, .55fr);
+    min-height: clamp(680px, 82vh, 920px);
+    order: 1;
+    padding: clamp(70px, 8vw, 128px) clamp(28px, 8vw, 132px);
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-hero-copy { align-self: end; }
+
+  .ned-cases-{{ section_key }} .ned-cases-hero h1 {
+    font-size: clamp(68px, 8.6vw, 148px);
+    letter-spacing: -.055em;
+    line-height: .82;
+    max-width: 9ch;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-intro {
+    color: rgba(255,255,255,.72);
+    max-width: 54ch;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-manifesto {
+    align-content: end;
+    background: transparent;
+    border: 0;
+    border-left: 1px solid rgba(255,255,255,.28);
+    min-height: 0;
+    padding: 0 0 0 36px;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-manifesto p {
+    color: rgba(255,255,255,.78);
+    font-family: var(--ned-body-font);
+    font-size: clamp(17px, 1.35vw, 22px);
+    font-style: normal;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-billboard {
+    background: var(--ned-paper);
+    display: block;
+    margin: 0;
+    max-width: none;
+    order: 2;
+    padding: clamp(80px, 10vw, 150px) clamp(28px, 8vw, 132px);
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-billboard__face {
+    aspect-ratio: 2.25 / 1;
+    background: var(--ned-paper);
+    border: 1px solid rgba(16,16,16,.24);
+    color: var(--ned-ink);
+    transform: none;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-billboard__face img { opacity: .58; }
+  .ned-cases-{{ section_key }} .ned-cases-billboard__wash { background: linear-gradient(90deg, var(--ned-paper) 0 38%, rgba(243,239,231,.24) 78%, transparent); }
+  .ned-cases-{{ section_key }} .ned-cases-billboard__post { display: none; }
+  .ned-cases-{{ section_key }} .ned-studio-metrics { display: none; }
+
+  .ned-cases-{{ section_key }} .ned-cases-heading {
+    align-items: center;
+    border-bottom: 1px solid rgba(16,16,16,.24);
+    border-top: 1px solid rgba(16,16,16,.24);
+    display: grid;
+    grid-template-columns: 1fr minmax(280px, 1.1fr) 1fr;
+    margin: 0 clamp(28px, 8vw, 132px);
+    order: 4;
+    padding: 28px 0;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-heading > span,
+  .ned-cases-{{ section_key }} .ned-cases-heading__folio { color: var(--ned-ink); }
+
+  .ned-cases-{{ section_key }} .ned-cases-heading p {
+    color: rgba(16,16,16,.66);
+    font-size: 14px;
+    margin: 0;
+    text-align: left;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-heading__folio { text-align: right; }
+
+  .ned-cases-{{ section_key }} .ned-cases-grid {
+    background: var(--ned-paper);
+    gap: 0;
+    order: 5;
+    padding: clamp(80px, 9vw, 132px) clamp(28px, 8vw, 132px);
+  }
+
+  .ned-cases-{{ section_key }} .ned-case-card,
+  .ned-cases-{{ section_key }} .ned-case-card:nth-child(even),
+  .ned-cases-{{ section_key }} .ned-case-card--compact {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(16,16,16,.22);
+    box-shadow: none;
+    grid-template-columns: minmax(0, 1.45fr) minmax(320px, .55fr);
+    min-height: clamp(660px, 75vw, 880px);
+    padding: clamp(40px, 6vw, 88px) 0;
+  }
+
+  .ned-cases-{{ section_key }} .ned-case-card:first-child { padding-top: 0; }
+  .ned-cases-{{ section_key }} .ned-case-card:nth-child(even) .ned-case-media,
+  .ned-cases-{{ section_key }} .ned-case-card:nth-child(even) .ned-case-content { order: initial; }
+
+  .ned-cases-{{ section_key }} .ned-case-media,
+  .ned-cases-{{ section_key }} .ned-case-media model-viewer,
+  .ned-cases-{{ section_key }} .ned-case-media img,
+  .ned-cases-{{ section_key }} .ned-case-placeholder { min-height: clamp(560px, 62vw, 760px); }
+
+  .ned-cases-{{ section_key }} .ned-case-media {
+    background: #dedbd3;
+    border: 1px solid rgba(16,16,16,.18);
+  }
+
+  .ned-cases-{{ section_key }} .ned-case-content {
+    align-content: start;
+    color: var(--ned-ink);
+    padding: 0 0 0 clamp(30px, 5vw, 72px);
+  }
+
+  .ned-cases-{{ section_key }} .ned-case-index {
+    border-bottom: 1px solid rgba(16,16,16,.22);
+    color: rgba(16,16,16,.62);
+    display: block;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .17em;
+    margin-bottom: 44px;
+    padding-bottom: 18px;
+  }
+
+  .ned-cases-{{ section_key }} .ned-case-topline,
+  .ned-cases-{{ section_key }} .ned-case-location,
+  .ned-cases-{{ section_key }} .ned-case-thinking span,
+  .ned-cases-{{ section_key }} .ned-case-details span { color: var(--ned-alert); }
+
+  .ned-cases-{{ section_key }} .ned-case-content h2 {
+    color: var(--ned-ink);
+    font-size: clamp(52px, 6.6vw, 104px);
+    letter-spacing: -.055em;
+    line-height: .82;
+    max-width: 8ch;
+  }
+
+  .ned-cases-{{ section_key }} .ned-case-summary,
+  .ned-cases-{{ section_key }} .ned-case-details p { color: rgba(16,16,16,.7); }
+  .ned-cases-{{ section_key }} .ned-case-thinking { border-left-color: var(--ned-alert); }
+  .ned-cases-{{ section_key }} .ned-case-thinking p { color: var(--ned-ink); }
+  .ned-cases-{{ section_key }} .ned-case-summary mark,
+  .ned-cases-{{ section_key }} .ned-case-thinking mark { background: var(--ned-alert); color: #fff; }
+  .ned-cases-{{ section_key }} .ned-case-metric { color: var(--ned-white); background: var(--ned-black); font-size: 12px; letter-spacing: .12em; padding: 9px 12px; width: fit-content; text-transform: uppercase; }
+  .ned-cases-{{ section_key }} .ned-case-details div { border-top-color: rgba(16,16,16,.22); }
+
+  .ned-cases-{{ section_key }} .ned-cases-stack {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(16,16,16,.22);
+    border-top: 1px solid rgba(16,16,16,.22);
+    gap: 0;
+    margin: 0 clamp(28px, 8vw, 132px);
+    order: 6;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-stack div { background: transparent; border-right: 1px solid rgba(16,16,16,.22); padding: 34px; }
+  .ned-cases-{{ section_key }} .ned-cases-stack div:last-child { border-right: 0; }
+  .ned-cases-{{ section_key }} .ned-cases-stack span { color: var(--ned-alert); }
+  .ned-cases-{{ section_key }} .ned-cases-stack p { color: rgba(16,16,16,.72); }
+
+  .ned-cases-{{ section_key }} .ned-cases-process {
+    background: var(--ned-black);
+    border: 0;
+    color: #fff;
+    display: grid;
+    grid-template-columns: minmax(200px, .65fr) minmax(0, 1.35fr);
+    margin: clamp(90px, 11vw, 160px) 0 0;
+    order: 7;
+    padding: clamp(70px, 9vw, 130px) clamp(28px, 8vw, 132px);
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-process__label {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-process div {
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,.22);
+    border-right: 0;
+    display: grid;
+    grid-column: 2;
+    grid-template-columns: 72px 1fr;
+    min-height: 112px;
+    padding: 20px 0;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-process p {
+    font-family: var(--ned-heading-font);
+    font-size: clamp(34px, 4.4vw, 70px);
+    letter-spacing: -.04em;
+    line-height: .9;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-cta {
+    align-items: center;
+    background: var(--ned-cta);
+    color: #fff;
+    display: grid;
+    min-height: clamp(560px, 70vh, 760px);
+    order: 8;
+    padding: clamp(70px, 9vw, 130px);
+    place-items: center;
+    position: relative;
+    text-align: center;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-cta > span {
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-cta a {
+    border: 1px solid rgba(255,255,255,.65);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: .08em;
+    padding: 18px 24px;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .ned-cases-{{ section_key }} .ned-cases-cta i {
+    background: var(--ned-cta-tail);
+    bottom: 0;
+    height: 110px;
+    left: 0;
+    position: absolute;
+    right: 0;
+  }
+
+  @media (max-width: 900px) {
+    .ned-cases-{{ section_key }} .ned-cases-hero { grid-template-columns: 1fr; min-height: 720px; padding: 72px 24px; }
+    .ned-cases-{{ section_key }} .ned-cases-hero h1 { font-size: clamp(58px, 14vw, 92px); }
+    .ned-cases-{{ section_key }} .ned-cases-manifesto { border-left: 0; border-top: 1px solid rgba(255,255,255,.25); padding: 28px 0 0; }
+    .ned-cases-{{ section_key }} .ned-cases-billboard { padding: 64px 18px; }
+    .ned-cases-{{ section_key }} .ned-cases-billboard__face { aspect-ratio: 1 / 1.05; }
+    .ned-cases-{{ section_key }} .ned-cases-heading { grid-template-columns: 1fr; margin: 0 18px; }
+    .ned-cases-{{ section_key }} .ned-cases-heading p { margin: 16px 0; }
+    .ned-cases-{{ section_key }} .ned-cases-heading__folio { text-align: left; }
+    .ned-cases-{{ section_key }} .ned-cases-grid { padding: 64px 18px; }
+    .ned-cases-{{ section_key }} .ned-case-card,
+    .ned-cases-{{ section_key }} .ned-case-card:nth-child(even),
+    .ned-cases-{{ section_key }} .ned-case-card--compact { grid-template-columns: 1fr; min-height: 0; }
+    .ned-cases-{{ section_key }} .ned-case-media,
+    .ned-cases-{{ section_key }} .ned-case-media model-viewer,
+    .ned-cases-{{ section_key }} .ned-case-media img,
+    .ned-cases-{{ section_key }} .ned-case-placeholder { min-height: 420px; }
+    .ned-cases-{{ section_key }} .ned-case-content { padding: 34px 0 0; }
+    .ned-cases-{{ section_key }} .ned-case-content h2 { font-size: clamp(50px, 15vw, 78px); }
+    .ned-cases-{{ section_key }} .ned-cases-stack { grid-template-columns: 1fr; margin: 0 18px; }
+    .ned-cases-{{ section_key }} .ned-cases-stack div { border-bottom: 1px solid rgba(16,16,16,.22); border-right: 0; }
+    .ned-cases-{{ section_key }} .ned-cases-process { grid-template-columns: 1fr; padding: 70px 24px; }
+    .ned-cases-{{ section_key }} .ned-cases-process__label { margin-bottom: 40px; }
+    .ned-cases-{{ section_key }} .ned-cases-process div { grid-column: 1; }
+    .ned-cases-{{ section_key }} .ned-cases-cta { min-height: 540px; padding: 80px 24px 150px; }
+  }
+
+
   @media (prefers-reduced-motion: reduce) {
     .ned-cases-billboard__face { transition: none; }
     .ned-cases-billboard__message em { animation: none; clip-path: inset(0 0 0 0); }
@@ -580,8 +892,8 @@
   "class": "section",
   "settings": [
     { "type": "header", "content": "Style" },
-    { "type": "font_picker", "id": "heading_font", "label": "Heading font", "default": "helvetica_n7" },
-    { "type": "font_picker", "id": "body_font", "label": "Body font", "default": "helvetica_n4" },
+    { "type": "font_picker", "id": "heading_font", "label": "Heading font", "default": "assistant_n4" },
+    { "type": "font_picker", "id": "body_font", "label": "Body font", "default": "assistant_n4" },
     { "type": "color", "id": "background_color", "label": "Background color", "default": "#111d3a" },
     { "type": "color", "id": "deep_background_color", "label": "Deep background color", "default": "#05070d" },
     { "type": "color", "id": "card_background_color", "label": "Card background color", "default": "#ffffff" },
@@ -591,6 +903,11 @@
     { "type": "color", "id": "text_color", "label": "Main text color", "default": "#ffffff" },
     { "type": "color", "id": "muted_text_color", "label": "Muted text color", "default": "#d8dce7" },
     { "type": "color", "id": "soft_color", "label": "Soft color", "default": "#f7f3ea" },
+    { "type": "color", "id": "editorial_background", "label": "Editorial background", "default": "#f3efe7" },
+    { "type": "color", "id": "editorial_text", "label": "Editorial text", "default": "#101010" },
+    { "type": "color", "id": "editorial_alert", "label": "Editorial alert", "default": "#ef3e23" },
+    { "type": "color", "id": "cta_background", "label": "CTA background", "default": "#d82323" },
+    { "type": "color", "id": "cta_tail_color", "label": "CTA footer color", "default": "#fca311" },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "eyebrow", "label": "Hero eyebrow", "default": "New Era Designs" },
     { "type": "text", "id": "title", "label": "Hero title", "default": "Cases, Concepts & Spatial Systems" },
@@ -609,10 +926,12 @@
     { "type": "select", "id": "billboard_script_font_mode", "label": "Billboard script font source", "options": [{"value":"custom","label":"Edwardian script file"},{"value":"heading","label":"Heading font setting"},{"value":"body","label":"Body font setting"}], "default": "custom" },
     { "type": "textarea", "id": "billboard_caption", "label": "Billboard caption", "default": "Brand systems designed to read at speed, hold attention, and survive the physical world. Over 2.3 million sq ft visualized so far." },
     { "type": "text", "id": "process_1", "label": "Process 1", "default": "Read the site like a visitor — not just a floor plan." },
+    { "type": "text", "id": "process_label", "label": "Process label", "default": "[ Our process ]" },
     { "type": "text", "id": "process_2", "label": "Process 2", "default": "Find where confusion starts and what decision needs support." },
     { "type": "text", "id": "process_3", "label": "Process 3", "default": "Prototype hierarchy, placement, materials, and visibility — before fabrication." },
     { "type": "text", "id": "process_4", "label": "Process 4", "default": "Package the idea so owners, tenants, and fabricators can align faster." },
     { "type": "text", "id": "cases_label", "label": "Cases label", "default": "Featured Work" },
+    { "type": "text", "id": "applications_label", "label": "Applications label", "default": "Selected applications / 01" },
     { "type": "textarea", "id": "cases_subtitle", "label": "Cases subtitle", "default": "Spatial systems, concept studies, and campaign work shaped around signage, wayfinding, architecture, tenant visibility, and the customer journey. Every project has a story and a number." },
     { "type": "header", "content": "Studio metrics (top of page)" },
     { "type": "text", "id": "metrics_kicker", "label": "Metrics eyebrow", "default": "Studio by the numbers" },
@@ -631,7 +950,11 @@
     { "type": "text", "id": "stack_2_label", "label": "Bottom card 2 label", "default": "Visualization" },
     { "type": "textarea", "id": "stack_2_text", "label": "Bottom card 2 text", "default": "3D models turn abstract signage ideas into something a client can inspect, rotate, question, and approve with confidence." },
     { "type": "text", "id": "stack_3_label", "label": "Bottom card 3 label", "default": "Delivery" },
-    { "type": "textarea", "id": "stack_3_text", "label": "Bottom card 3 text", "default": "The final direction has to look sharp, explain itself clearly, and survive the handoff into fabrication, permitting, or presentation." }
+    { "type": "textarea", "id": "stack_3_text", "label": "Bottom card 3 text", "default": "The final direction has to look sharp, explain itself clearly, and survive the handoff into fabrication, permitting, or presentation." },
+    { "type": "header", "content": "Call to action" },
+    { "type": "text", "id": "cta_eyebrow", "label": "CTA eyebrow", "default": "Ready for something new?" },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Book your project" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" }
   ],
   "blocks": [
     {
